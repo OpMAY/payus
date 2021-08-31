@@ -5,11 +5,14 @@ import com.boot.demo.exception.rest.GrantAccessDeniedException;
 import com.boot.demo.model.TestModel;
 import com.boot.demo.model.UploadForm;
 import com.boot.demo.model.User;
+import com.boot.demo.model.utility.businessvalidation.BusinessStatusRequest;
+import com.boot.demo.model.utility.businessvalidation.BusinessValidation;
+import com.boot.demo.model.utility.businessvalidation.BusinessValidationRequest;
 import com.boot.demo.response.DefaultRes;
 import com.boot.demo.response.Message;
-import com.boot.demo.response.ResMessage;
 import com.boot.demo.response.StatusCode;
 import com.boot.demo.service.HomeService;
+import com.boot.demo.util.BusinessValidationService;
 import com.boot.demo.util.Constant;
 import com.boot.demo.util.FileUploadUtility;
 import lombok.*;
@@ -28,10 +31,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +47,9 @@ public class HomeController {
 
     @Autowired
     private HomeService homeService;
+
+    @Autowired
+    private BusinessValidationService businessValidationService;
 
     @Autowired
     private FileUploadUtility fileUploadUtility;
@@ -93,6 +99,33 @@ public class HomeController {
     public ModelAndView sample2() {
         HomeController();
         log.info("update");
+        return new ModelAndView("home");
+    }
+
+    @RequestMapping(value = "/test/business.do", method = RequestMethod.GET)
+    public ModelAndView businessTest() throws Exception {
+        HomeController();
+        log.info("business");
+        ArrayList<String> businessNoArr = new ArrayList<>();
+        businessNoArr.add("0000000000");
+        BusinessStatusRequest request = new BusinessStatusRequest(businessNoArr);
+        String status = businessValidationService.statusVerify(request);
+        BusinessValidation validation = new BusinessValidation();
+        validation.setB_no("0000000000");
+        validation.setStart_dt("20000101");
+        validation.setP_nm("홍길동");
+        validation.setP_nm2("홍길동");
+        validation.setB_nm("(주)테스트");
+        validation.setCorp_no("0000000000000");
+        validation.setB_sector("");
+        validation.setB_type("");
+        ArrayList<BusinessValidation> validationArrayList = new ArrayList<>();
+        validationArrayList.add(validation);
+        BusinessValidationRequest validationRequest = new BusinessValidationRequest();
+        validationRequest.setBusinesses(validationArrayList);
+        String validate = businessValidationService.validationVerify(validationRequest);
+        log.info("status : " + status);
+        log.info("validate : " + validate);
         return new ModelAndView("home");
     }
 
