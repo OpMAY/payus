@@ -8,13 +8,14 @@ import com.boot.demo.model.User;
 import com.boot.demo.model.utility.businessvalidation.BusinessStatusRequest;
 import com.boot.demo.model.utility.businessvalidation.BusinessValidation;
 import com.boot.demo.model.utility.businessvalidation.BusinessValidationRequest;
+import com.boot.demo.model.utility.kakaolocation.KakaoLocationResponse;
+import com.boot.demo.model.utility.kakaolocation.LocationCoordinate;
 import com.boot.demo.response.DefaultRes;
 import com.boot.demo.response.Message;
 import com.boot.demo.response.StatusCode;
 import com.boot.demo.service.HomeService;
-import com.boot.demo.util.BusinessValidationService;
-import com.boot.demo.util.Constant;
-import com.boot.demo.util.FileUploadUtility;
+import com.boot.demo.util.*;
+import com.google.gson.Gson;
 import lombok.*;
 import lombok.extern.log4j.Log4j;
 import org.json.JSONException;
@@ -50,6 +51,9 @@ public class HomeController {
 
     @Autowired
     private BusinessValidationService businessValidationService;
+
+    @Autowired
+    private KakaoLocationService kakaoLocationService;
 
     @Autowired
     private FileUploadUtility fileUploadUtility;
@@ -126,6 +130,30 @@ public class HomeController {
         String validate = businessValidationService.validationVerify(validationRequest);
         log.info("status : " + status);
         log.info("validate : " + validate);
+        return new ModelAndView("home");
+    }
+
+    @RequestMapping(value = "/test/location.do", method = RequestMethod.GET)
+    public ModelAndView locationTest() throws Exception{
+        HomeController();
+        log.info("location");
+        String result1 = kakaoLocationService.getLocationCoordinates("군자로 29 101호");
+        String result2 = kakaoLocationService.getLocationCoordinates("남부순환로 1892 청강빌딩 4층");
+        KakaoLocationResponse response1 = new Gson().fromJson(result1, KakaoLocationResponse.class);
+        KakaoLocationResponse response2 = new Gson().fromJson(result2, KakaoLocationResponse.class);
+        log.info(response1.getDocuments());
+        log.info(response1.getMeta());
+        log.info(response2.getDocuments());
+        log.info(response2.getMeta());
+        LocationCoordinate place1 = new LocationCoordinate();
+        LocationCoordinate place2 = new LocationCoordinate();
+        CoordinateDistanceUtil util = new CoordinateDistanceUtil();
+        place1.setLat(Double.parseDouble(response1.getDocuments().get(0).getY()));
+        place1.setLon(Double.parseDouble(response1.getDocuments().get(0).getX()));
+        place2.setLat(Double.parseDouble(response2.getDocuments().get(0).getY()));
+        place2.setLon(Double.parseDouble(response2.getDocuments().get(0).getX()));
+        double distance = util.distance(place1, place2);
+        log.info("두 곳 사이의 거리 : " + distance + "m");
         return new ModelAndView("home");
     }
 
