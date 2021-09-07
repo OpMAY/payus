@@ -2,9 +2,7 @@ package com.boot.demo.controller;
 
 import com.boot.demo.exception.enums.BusinessExceptionType;
 import com.boot.demo.exception.rest.GrantAccessDeniedException;
-import com.boot.demo.model.TestModel;
-import com.boot.demo.model.UploadForm;
-import com.boot.demo.model.User;
+import com.boot.demo.model.*;
 import com.boot.demo.model.utility.businessvalidation.BusinessStatusRequest;
 import com.boot.demo.model.utility.businessvalidation.BusinessValidation;
 import com.boot.demo.model.utility.businessvalidation.BusinessValidationRequest;
@@ -38,6 +36,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -154,6 +153,13 @@ public class HomeController {
         place2.setLon(Double.parseDouble(response2.getDocuments().get(0).getX()));
         double distance = util.distance(place1, place2);
         log.info("두 곳 사이의 거리 : " + distance + "m");
+        return new ModelAndView("home");
+    }
+
+    @RequestMapping(value = "/test/column.do", method = RequestMethod.GET)
+    public ModelAndView columnTest(){
+        HomeController();
+        homeService.excelTest();
         return new ModelAndView("home");
     }
 

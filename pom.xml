@@ -197,6 +197,12 @@
 			<artifactId>commons-codec</artifactId>
 			<version>1.10</version>
 		</dependency>
+		<!-- notification server google -->
+		<dependency>
+			<groupId>com.google.firebase</groupId>
+			<artifactId>firebase-admin</artifactId>
+			<version>6.8.1</version>
+		</dependency>
 	</dependencies>
 	<!--Amazon CDN Maven-->
 	<dependencyManagement>

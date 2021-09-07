@@ -10,5 +10,6 @@
     </settings>
     <typeAliases>
         <typeAlias alias="Test" type="com.boot.demo.model.Test"/>
+        <typeAlias alias="ColumnInfo" type="com.boot.demo.model.ColumnInfo"/>
     </typeAliases>
 </configuration>

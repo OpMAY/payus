@@ -23,6 +23,12 @@ public class Time {
         return dateFormat.format(now);
     }
 
+    public static String TimeForFile(){
+        Date now = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        return dateFormat.format(now);
+    }
+
     public static String TimeFormatNoSpecialCharacter() {
         Date now = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
@@ -45,11 +51,63 @@ public class Time {
         return dateFormat.format(now);
     }
 
+    /**
+     * @return 밀리초 시간 String을 받아 초 단위까지 표시
+     * "yyyy-MM-dd HH:mm:ss.SSS" -> "yyyy-MM-dd HH:mm:ss"
+     */
     public static String MsToSecond(String date){
         if(date.lastIndexOf(".") < 0)
             return date;
         else
             return date.substring(0, date.lastIndexOf("."));
+    }
+
+    /**
+     * @return Date 포맷 형태, String이 Date가 아니면 null 반환
+     * "2021-08-25" -> "yyyy-MM-dd"
+     * "2021-08-25 12:33:24" -> "yyyy-MM-dd HH:mm:ss"
+     * "2021-08-25 12:33:24.555" -> "yyyy-MM-dd HH:mm:ss.SSS"
+     * "한지우" -> null
+     */
+    public static String checkDateFormat(String date){
+        SimpleDateFormat dateFormatDay = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormatHMS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateFormatMS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        dateFormatDay.setLenient(false);
+        dateFormatHMS.setLenient(false);
+        dateFormatMS.setLenient(false);
+        String format = null;
+        try{
+            Date date1 = dateFormatDay.parse(date.trim());
+            String result = dateFormatDay.format(date1);
+            if(result.equals(date)){
+                format = "yyyy-MM-dd";
+            } else {
+                throw new Exception();
+            }
+        }catch (Exception e){
+            try{
+                Date date1 = dateFormatHMS.parse(date.trim());
+                String result = dateFormatHMS.format(date1);
+                if(result.equals(date)){
+                    format = "yyyy-MM-dd HH:mm:ss";
+                } else {
+                    throw new Exception();
+                }
+            } catch (Exception e1) {
+                try{
+                    Date date1 = dateFormatMS.parse(date.trim());
+                    String result = dateFormatMS.format(date1);
+                    if(result.equals(date)){
+                        format = "yyyy-MM-dd HH:mm:ss.SSS";
+                    } else {
+                        throw new Exception();
+                    }
+                } catch (Exception e2) {
+                }
+            }
+        }
+        return format;
     }
 
     public static Date StringToDateTimeFormat(String dateString) throws ParseException {
