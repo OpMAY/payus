@@ -156,12 +156,6 @@ public class HomeController {
         return new ModelAndView("home");
     }
 
-    @RequestMapping(value = "/test/column.do", method = RequestMethod.GET)
-    public ModelAndView columnTest(){
-        HomeController();
-        homeService.excelTest();
-        return new ModelAndView("home");
-    }
 
     /**
      * 기본값 설정해서 Parameter 받기
@@ -385,7 +379,7 @@ public class HomeController {
     public ResponseEntity<String> ajax() throws JSONException {
         HomeController();
         Message message = new Message();
-        message.put("test", new User("zlzldntlr@naver.com", "zlzldntlr", "김우식"));
+//        message.put("test", new User("zlzldntlr@naver.com", "zlzldntlr", "김우식"));
         message.put("test1", "object string test");
         return new ResponseEntity(
                 DefaultRes.res(

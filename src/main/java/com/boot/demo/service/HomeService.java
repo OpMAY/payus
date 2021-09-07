@@ -1,6 +1,5 @@
 package com.boot.demo.service;
 
-import com.boot.demo.dao.ArtistDao;
 import com.boot.demo.dao.TestDao;
 import com.boot.demo.model.Artist;
 import com.boot.demo.model.ColumnInfo;
@@ -28,9 +27,6 @@ public class HomeService {
     @Autowired
     private TestDao testDao;
 
-    @Autowired
-    private ArtistDao artistDao;
-
     public void sqlRollbackTest() {
         testDao.setSqlSession(sqlSession);
         testDao.sqlRollbackTest();
@@ -40,19 +36,6 @@ public class HomeService {
         testDao.setSqlSession(sqlSession);
         List<ColumnInfo> infoList = testDao.sqlColumnNameTest();
         Map<String, String> map = ClassProperties.getColumnInfoMap(infoList);
-    }
-
-    public void excelTest() {
-        artistDao.setSqlSession(sqlSession);
-        List<ColumnInfo> columnInfoList = artistDao.getArtistColumnInfo();
-        log.info(columnInfoList);
-        List<Artist> artistList = artistDao.getArtistList();
-        LinkedHashMap<String, String> map = ClassProperties.getColumnInfoMap(columnInfoList);
-        Map<String, Class<?>> classComponents = ClassProperties.getClassComponents(Artist.class);
-        List<Object> objectList = new ArrayList<Object>(artistList);
-        ExcelMaker excelMaker = new ExcelMaker();
-        String time = Time.TimeForFile();
-        excelMaker.makeExcel(map, classComponents, objectList, "test" + time, "test");
     }
 
     public <T> void doTest(Map<String, String> column_info, Map<String, Class<?>> components, List<Object> objectList, Class<T> objectClass) {

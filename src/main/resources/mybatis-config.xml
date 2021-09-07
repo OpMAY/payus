@@ -11,5 +11,11 @@
     <typeAliases>
         <typeAlias alias="Test" type="com.boot.demo.model.Test"/>
         <typeAlias alias="ColumnInfo" type="com.boot.demo.model.ColumnInfo"/>
+        <typeAlias alias="BannerImage" type="com.boot.demo.model.BannerImage"/>
+        <typeAlias alias="Review" type="com.boot.demo.model.Review"/>
+        <typeAlias alias="Vendor" type="com.boot.demo.model.Vendor"/>
+        <typeAlias alias="User" type="com.boot.demo.model.User"/>
+        <typeAlias alias="Room" type="com.boot.demo.model.Room"/>
+        <typeAlias alias="Store" type="com.boot.demo.model.Store"/>
     </typeAliases>
 </configuration>

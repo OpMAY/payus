@@ -1,0 +1,24 @@
+package com.boot.demo.model;
+
+import lombok.Data;
+
+@Data
+public class Store {
+    private int store_no;
+    private String store_name;
+    private String image_list;
+    private int payback_ratio;
+    private String explain;
+    private float star_ratio;
+    private int review_num;
+    private String address;
+    private String service_list;
+    private String information;
+    private String reg_date;
+    private String thumbnail;
+    private String address_1depth;
+    private String address_2depth;
+    private String address_3depth;
+    private String address_x;
+    private String address_y;
+}

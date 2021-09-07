@@ -1,17 +1,14 @@
 package com.boot.demo.model;
 
 import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 @Data
-public class User {
-    private int user_no;
+public class Vendor {
+    private int vendor_no;
     private String name;
     private String profile_img;
-    private String sns;
-    private String access_token;
-    private String email;
+    private String id;
+    private String password;
     private String phone;
     private String bank_name;
     private String bank_account;
