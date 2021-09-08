@@ -3,5 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.boot.demo.mapper.VendorMapper">
-
+    <select id="getUserInfoByUserNoForHome" resultType="HomeVendor">
+        select vendor_no, name, profile_img, point
+        from vendor
+        where vendor_no = #{vendor_no}
+    </select>
 </mapper>

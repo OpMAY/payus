@@ -33,10 +33,8 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -56,6 +54,9 @@ public class HomeController {
 
     @Autowired
     private FileUploadUtility fileUploadUtility;
+
+    @Autowired
+    private DemoStoreAddressService demoStoreAddressService;
 
     public void HomeController() {
         VIEW = new ModelAndView("home");
@@ -153,6 +154,13 @@ public class HomeController {
         place2.setLon(Double.parseDouble(response2.getDocuments().get(0).getX()));
         double distance = util.distance(place1, place2);
         log.info("두 곳 사이의 거리 : " + distance + "m");
+        return new ModelAndView("home");
+    }
+
+    @RequestMapping(value = "/demo/insert.do", method = RequestMethod.GET)
+    public ModelAndView insertStores(@RequestParam("no")int no) throws Exception {
+        HomeController();
+        demoStoreAddressService.insertStores(no);
         return new ModelAndView("home");
     }
 
@@ -383,7 +391,7 @@ public class HomeController {
         message.put("test1", "object string test");
         return new ResponseEntity(
                 DefaultRes.res(
-                        StatusCode.TEST, message.getHashMap("ajax")
+                        StatusCode.SUCCESS, message.getHashMap("ajax")
                 ), HttpStatus.OK
         );
     }

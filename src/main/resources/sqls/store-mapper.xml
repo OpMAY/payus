@@ -3,5 +3,25 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.boot.demo.mapper.StoreMapper">
-
+    <select id="getStoreRandomListForHome" resultType="HomePaybackStore">
+        select store_no, store_name, short_address, thumbnail, star_ratio, review_num, payback_ratio
+        from store
+        order by rand()
+        limit 10
+    </select>
+    <select id="getStoreListOrderByPaybackRatioForHome" resultType="HomePaybackStore">
+        select store_no, store_name, short_address, thumbnail, star_ratio, review_num, payback_ratio
+        from store
+        order by payback_ratio DESC
+        limit 10
+    </select>
+    <insert id="insertStores" useGeneratedKeys="true" keyProperty="store_no">
+        insert into store(store_name, image_list, payback_ratio, `explain`, star_ratio, review_num, address,
+                          service_list, information, thumbnail, reg_date, address_1depth, address_y, address_3depth,
+                          address_x, address_2depth, short_address, category, address_3depth_h)
+        VALUES (#{store_name}, #{image_list}, #{payback_ratio}, #{explain}, #{star_ratio}, #{review_num}, #{address},
+                #{service_list}, #{information}, #{thumbnail}, #{reg_date}, #{address_1depth}, #{address_y},
+                #{address_3depth},
+                #{address_x}, #{address_2depth}, #{short_address}, #{category}, #{address_3depth_h})
+    </insert>
 </mapper>

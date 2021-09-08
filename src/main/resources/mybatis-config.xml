@@ -17,5 +17,9 @@
         <typeAlias alias="User" type="com.boot.demo.model.User"/>
         <typeAlias alias="Room" type="com.boot.demo.model.Room"/>
         <typeAlias alias="Store" type="com.boot.demo.model.Store"/>
+        <typeAlias alias="HomeUser" type="com.boot.demo.model.response.home.HomeUser"/>
+        <typeAlias alias="HomeVendor" type="com.boot.demo.model.response.home.HomeVendor"/>
+        <typeAlias alias="HomePaybackStore" type="com.boot.demo.model.response.home.HomePaybackStore"/>
+        <typeAlias alias="StoreLike" type="com.boot.demo.model.StoreLike"/>
     </typeAliases>
 </configuration>

@@ -9,19 +9,19 @@ import lombok.Data;
 @Builder
 public class DefaultRes<T> {
 
-    private int status;
+    private String status;
     private T data;
 
-    public DefaultRes(final int status) {
+    public DefaultRes(final String status) {
         this.status = status;
         this.data = null;
     }
 
-    public static <T> DefaultRes<T> res(final int status) {
+    public static <T> DefaultRes<T> res(final String status) {
         return res(status, null);
     }
 
-    public static <T> DefaultRes<T> res(final int status, final T object) {
+    public static <T> DefaultRes<T> res(final String status, final T object) {
         return DefaultRes.<T>builder()
                 .data(object)
                 .status(status)
