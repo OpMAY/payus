@@ -18,4 +18,11 @@
         insert into user(name, access_token, sns, reg_date)
         VALUES (#{name}, #{access_token}, #{sns}, #{reg_date})
     </insert>
+    <update id="bankUpdate">
+        update user
+        SET bank_name=#{bank_name},
+            bank_account=#{bank_account},
+            bank_owner=#{bank_owner}
+        WHERE user_no = #{user_no}
+    </update>
 </mapper>

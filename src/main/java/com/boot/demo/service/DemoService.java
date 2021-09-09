@@ -3,6 +3,7 @@ package com.boot.demo.service;
 import com.boot.demo.dao.*;
 import com.boot.demo.model.BannerImage;
 import com.boot.demo.model.request.login.user.DemoUserLoginRequest;
+import com.boot.demo.model.request.login.user.register.DemoUserBankRequest;
 import com.boot.demo.model.response.home.HomePaybackStore;
 import com.boot.demo.model.response.home.HomeUser;
 import com.boot.demo.model.response.home.HomeVendor;
@@ -110,5 +111,12 @@ public class DemoService {
                 return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
             }
         }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ResponseEntity bankUpdate(DemoUserBankRequest request) {
+        userDao.setSqlSession(sqlSession);
+        userDao.bankUpdate(request.getUser());
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
     }
 }

@@ -5,13 +5,5 @@ import lombok.Data;
 @Data
 public class DemoUserBankRequest {
     private UserBankRequestComponents user;
-
-    @Data
-    public static class UserBankRequestComponents{
-        private int user_no;
-        private String bank_name;
-        private String bank_account;
-        private String bank_owner;
-    }
 }
 

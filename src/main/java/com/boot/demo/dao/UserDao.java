@@ -1,6 +1,8 @@
 package com.boot.demo.dao;
 
 import com.boot.demo.mapper.UserMapper;
+import com.boot.demo.model.request.login.user.register.DemoUserBankRequest;
+import com.boot.demo.model.request.login.user.register.UserBankRequestComponents;
 import com.boot.demo.model.response.home.HomeUser;
 import com.boot.demo.model.response.login.LoginCheck;
 import com.boot.demo.model.response.login.UserRegistration;
@@ -30,5 +32,10 @@ public class UserDao {
     public void registerUser(UserRegistration newUser) {
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
         userMapper.registerUser(newUser);
+    }
+
+    public void bankUpdate(UserBankRequestComponents request) {
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        userMapper.bankUpdate(request);
     }
 }
