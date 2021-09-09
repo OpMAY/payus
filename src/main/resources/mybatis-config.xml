@@ -21,5 +21,6 @@
         <typeAlias alias="HomeVendor" type="com.boot.demo.model.response.home.HomeVendor"/>
         <typeAlias alias="HomePaybackStore" type="com.boot.demo.model.response.home.HomePaybackStore"/>
         <typeAlias alias="StoreLike" type="com.boot.demo.model.StoreLike"/>
+        <typeAlias alias="LoginCheck" type="com.boot.demo.model.response.login.LoginCheck"/>
     </typeAliases>
 </configuration>

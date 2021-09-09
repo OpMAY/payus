@@ -2,7 +2,7 @@ package com.boot.demo.advice;
 
 import com.boot.demo.exception.rest.AuthorizationTokenException;
 import com.boot.demo.exception.rest.GrantAccessDeniedException;
-import com.boot.demo.response.DefaultRes;
+import com.boot.demo.response.IntegerRes;
 import com.boot.demo.response.StatusCode;
 import lombok.extern.log4j.Log4j;
 import org.json.JSONException;
@@ -100,7 +100,7 @@ public class RESTExceptionAdvice {
     @ExceptionHandler(AuthorizationTokenException.class)
     public ResponseEntity handleAuthorizationTokenException(AuthorizationTokenException e) {
         e.printStackTrace();
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.UNAUTHORIZED);
     }
 
 
@@ -110,7 +110,7 @@ public class RESTExceptionAdvice {
     @ExceptionHandler(JSONException.class)
     protected ResponseEntity handleJSONException(JSONException e) {
         e.printStackTrace();
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -128,7 +128,7 @@ public class RESTExceptionAdvice {
     protected ResponseEntity handleNoHandlerFoundException(NoHandlerFoundException e) {
         e.printStackTrace();
         log.info("handleNoHandlerFoundException");
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS), HttpStatus.NOT_FOUND);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -138,7 +138,7 @@ public class RESTExceptionAdvice {
     protected ResponseEntity handleGrantAccessDeniedException(GrantAccessDeniedException e) {
         e.printStackTrace();
         log.info("handleGrantAccessDeniedException");
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS), HttpStatus.FORBIDDEN);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.FORBIDDEN);
     }
 
     /**
@@ -150,7 +150,7 @@ public class RESTExceptionAdvice {
     protected ResponseEntity handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         e.printStackTrace();
         log.info("handleMethodArgumentNotValidException");
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -161,7 +161,7 @@ public class RESTExceptionAdvice {
     protected ResponseEntity handleBindException(BindException e) {
         e.printStackTrace();
         log.info("handleBindException");
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -172,7 +172,7 @@ public class RESTExceptionAdvice {
     protected ResponseEntity handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
         e.printStackTrace();
         log.info("handleMethodArgumentTypeMismatchException");
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -182,27 +182,27 @@ public class RESTExceptionAdvice {
     protected ResponseEntity handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         e.printStackTrace();
         log.info("handleHttpRequestMethodNotSupportedException");
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NullPointerException.class)
     protected ResponseEntity handleNullPointerException(Exception e) {
         e.printStackTrace();
         log.info("NullPointerException");
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity handleException(Exception e) {
         e.printStackTrace();
         log.info("Global General Exception");
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(FileNotFoundException.class)
     protected ResponseEntity handleFileNotFoundException(FileNotFoundException e) {
         e.printStackTrace();
         log.info("handleFileNotFoundException");
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS), HttpStatus.NO_CONTENT);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.NO_CONTENT);
     }
 }

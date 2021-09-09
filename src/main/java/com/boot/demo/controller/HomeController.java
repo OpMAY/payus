@@ -8,7 +8,7 @@ import com.boot.demo.model.utility.businessvalidation.BusinessValidation;
 import com.boot.demo.model.utility.businessvalidation.BusinessValidationRequest;
 import com.boot.demo.model.utility.kakaolocation.KakaoLocationResponse;
 import com.boot.demo.model.utility.kakaolocation.LocationCoordinate;
-import com.boot.demo.response.DefaultRes;
+import com.boot.demo.response.IntegerRes;
 import com.boot.demo.response.Message;
 import com.boot.demo.response.StatusCode;
 import com.boot.demo.service.HomeService;
@@ -390,7 +390,7 @@ public class HomeController {
 //        message.put("test", new User("zlzldntlr@naver.com", "zlzldntlr", "김우식"));
         message.put("test1", "object string test");
         return new ResponseEntity(
-                DefaultRes.res(
+                IntegerRes.res(
                         StatusCode.SUCCESS, message.getHashMap("ajax")
                 ), HttpStatus.OK
         );

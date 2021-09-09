@@ -4,7 +4,7 @@ import com.boot.demo.exception.enums.BusinessExceptionType;
 import com.boot.demo.exception.rest.AuthorizationTokenException;
 import com.boot.demo.model.Test;
 import com.boot.demo.model.file.MFile;
-import com.boot.demo.response.DefaultRes;
+import com.boot.demo.response.IntegerRes;
 import com.boot.demo.response.Message;
 import com.boot.demo.response.StatusCode;
 import com.boot.demo.util.Constant;
@@ -44,7 +44,7 @@ public class SampleController {
         test.setNo(no);
         test.setTestcol("testcol");
         message.put("test", test);
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
     }
 
     /**
@@ -57,7 +57,7 @@ public class SampleController {
         test.setNo(no);
         test.setTestcol("testcol");
         message.put("test", test);
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
     }
 
     /**
@@ -69,7 +69,7 @@ public class SampleController {
         AES256Util aes256Util = new AES256Util();
         String image_encoding = aes256Util.encrypt("http://localhost:8080/images/testimage.png");
         message.put("encoding", image_encoding);
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
     }
 
     /**
@@ -81,7 +81,7 @@ public class SampleController {
         AES256Util aes256Util = new AES256Util();
         String decoding = aes256Util.decrypt("RsGxYYmv0Ieo/xp2xbGEcmRX9YJVuXsdF7gUjPqSh/WDo2PkD0tvu3G2haSfewCc");
         message.put("decoding", decoding);
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
     }
 
     /**
@@ -92,7 +92,7 @@ public class SampleController {
     public ResponseEntity getProducesProtocol() throws JSONException {
         Message message = new Message();
         message.put("test", "message");
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
     }
 
     /**
@@ -103,7 +103,7 @@ public class SampleController {
     public ResponseEntity getConsumesProtocol() throws JSONException {
         Message message = new Message();
         message.put("content", "getConsumesProtocol success");
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
     }
 
     /**
@@ -118,7 +118,7 @@ public class SampleController {
         Message message = new Message();
         message.put("content", "getConsumesFileProtocol success");
         fileUploadUtility.uploadFile(null, file.getOriginalFilename(), file.getBytes(), Constant.LOCAL_SAVE);
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
     }
 
     /**
@@ -135,7 +135,7 @@ public class SampleController {
         Message message = new Message();
         log.info(files);
         message.put("content", "getConsumesFilesProtocol success");
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
     }
 
     /**
@@ -159,7 +159,7 @@ public class SampleController {
             log.info(fileOriginalName);
         }
         message.put("content", "getConsumesMultipleFilesProtocol success");
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
     }
 
     /**
@@ -192,7 +192,7 @@ public class SampleController {
         }
         message.put("data", data);
         message.put("content", "getConsumesMultipleFilesGetKeyProtocol success");
-        return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
     }
 
     @Value("${api.access_key}")
@@ -205,7 +205,7 @@ public class SampleController {
                 String api_access_key = new Security(access_key).createToken();
                 Message message = new Message();
                 message.put("access_token", api_access_key);
-                return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS, message.getHashMap("Auth()")), HttpStatus.OK);
+                return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("Auth()")), HttpStatus.OK);
             } else {
                 throw new AuthorizationTokenException(BusinessExceptionType.AUTHORIZATION_TOKEN_EXCEPTION);
             }
@@ -218,7 +218,7 @@ public class SampleController {
     public ResponseEntity ValidateToken(@RequestHeader HttpHeaders headers) {
         String token = headers.getFirst(HttpHeaders.AUTHORIZATION).substring(headers.getFirst(HttpHeaders.AUTHORIZATION).lastIndexOf("bearer ") + 7);
         if (new Security(access_key).validateToken(token)) {
-            return new ResponseEntity(DefaultRes.res(StatusCode.SUCCESS), HttpStatus.OK);
+            return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
         } else {
             throw new AuthorizationTokenException(BusinessExceptionType.AUTHORIZATION_TOKEN_EXCEPTION);
         }

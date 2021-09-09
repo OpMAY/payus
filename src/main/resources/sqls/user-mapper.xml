@@ -8,4 +8,14 @@
         from user
         WHERE user_no = #{user_no}
     </select>
+    <select id="getUserLogin" resultType="LoginCheck">
+        select user_no, bank_name, bank_account, bank_owner
+        from user
+        WHERE access_token = #{access_token}
+          AND sns = #{sns}
+    </select>
+    <insert id="registerUser" useGeneratedKeys="true" keyProperty="user_no">
+        insert into user(name, access_token, sns, reg_date)
+        VALUES (#{name}, #{access_token}, #{sns}, #{reg_date})
+    </insert>
 </mapper>
