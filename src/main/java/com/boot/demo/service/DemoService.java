@@ -12,11 +12,15 @@ import com.boot.demo.model.response.login.user.DemoUserLoginResponse;
 import com.boot.demo.model.response.login.user.LoginCheck;
 import com.boot.demo.model.response.login.user.UserRegistration;
 import com.boot.demo.model.response.login.vendor.VendorLoginResponse;
+import com.boot.demo.model.response.main.RecommendedStore;
+import com.boot.demo.model.response.main.StoreNoCheck;
 import com.boot.demo.model.utility.kakaolocation.KakaoLocationResponse;
+import com.boot.demo.model.utility.kakaolocation.LocationCoordinate;
 import com.boot.demo.response.IntegerRes;
 import com.boot.demo.response.Message;
 import com.boot.demo.response.StatusCode;
 import com.boot.demo.response.StringRes;
+import com.boot.demo.util.CoordinateDistanceUtil;
 import com.boot.demo.util.KakaoLocationService;
 import com.boot.demo.util.Time;
 import com.google.gson.Gson;
@@ -93,7 +97,7 @@ public class DemoService {
         LoginCheck loginCheck = userDao.getUserLogin(access_token, sns);
         boolean is_register = loginCheck == null;
         message.put("is_register", is_register);
-        if(is_register){
+        if (is_register) {
             // Register
             UserRegistration newUser = new UserRegistration();
             newUser.setName("유저" + newUser.getUser_no());
@@ -110,7 +114,7 @@ public class DemoService {
             DemoUserLoginResponse response = new DemoUserLoginResponse();
             response.setUser_no(loginCheck.getUser_no());
             message.put("user", response);
-            if(!(loginCheck.getBank_name() != null && loginCheck.getBank_account() != null && loginCheck.getBank_owner() != null)){
+            if (!(loginCheck.getBank_name() != null && loginCheck.getBank_account() != null && loginCheck.getBank_owner() != null)) {
                 return new ResponseEntity(StringRes.res(StatusCode.MORE_INFORMATION, message.getHashMap()), HttpStatus.OK);
             } else {
                 return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
@@ -132,7 +136,7 @@ public class DemoService {
         String id = request.getVendor().getId();
         String password = request.getVendor().getPassword();
         VendorLoginResponse response = vendorDao.loginVendor(id, password);
-        if(response == null) {
+        if (response == null) {
             return new ResponseEntity(StringRes.res(StatusCode.LOGIN_FAILED), HttpStatus.OK);
         } else {
             message.put("vendor", response);
@@ -152,5 +156,43 @@ public class DemoService {
         List<HomePaybackStore> storeList = storeDao.getStoreRandomListForMain(x, y, category);
         message.put("today_payback", storeList);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity getDemoMainPageReload(int category, String location, int last_index) throws Exception {
+        Message message = new Message();
+        storeDao.setSqlSession(sqlSession);
+        StoreNoCheck storeNoCheck = storeDao.checkStoreIsValid(last_index);
+        if (last_index != 0) {
+            if (storeNoCheck == null) {
+                return new ResponseEntity(StringRes.res(StatusCode.RELOAD_FAILED), HttpStatus.OK);
+            } else {
+                KakaoLocationService locationService = new KakaoLocationService();
+                String coordinateResult = locationService.getLocationCoordinates(location);
+                KakaoLocationResponse locationResponse = new Gson().fromJson(coordinateResult, KakaoLocationResponse.class);
+                String x = locationResponse.getDocuments().get(0).getX();
+                String y = locationResponse.getDocuments().get(0).getY();
+
+                double last_distance = storeDao.getDistanceOfLastIndex(x, y, last_index);
+                List<RecommendedStore> recommends = storeDao.getStoreRecommendListForMainReload(x, y, category, last_index, last_distance);
+                message.put("recommend", recommends);
+                if (recommends.size() > 0) {
+                    message.put("last_index", recommends.get(recommends.size() - 1).getStore_no());
+                }
+                return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
+            }
+        } else {
+            KakaoLocationService locationService = new KakaoLocationService();
+            String coordinateResult = locationService.getLocationCoordinates(location);
+            KakaoLocationResponse locationResponse = new Gson().fromJson(coordinateResult, KakaoLocationResponse.class);
+            String x = locationResponse.getDocuments().get(0).getX();
+            String y = locationResponse.getDocuments().get(0).getY();
+            List<RecommendedStore> recommends = storeDao.getStoreRecommendListForMain(x, y, category);
+            message.put("recommend", recommends);
+            if (recommends.size() > 0) {
+                message.put("last_index", recommends.get(recommends.size() - 1).getStore_no());
+            }
+            return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
+        }
     }
 }

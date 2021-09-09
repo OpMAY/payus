@@ -2,6 +2,9 @@ package com.boot.demo.mapper;
 
 import com.boot.demo.model.Store;
 import com.boot.demo.model.response.home.HomePaybackStore;
+import com.boot.demo.model.response.main.RecommendedStore;
+import com.boot.demo.model.response.main.StoreNoCheck;
+
 import java.util.List;
 
 public interface StoreMapper {
@@ -12,4 +15,14 @@ public interface StoreMapper {
     void insertStores(Store store);
 
     List<HomePaybackStore> getStoreRandomListForMain(String x, String y, int category);
+
+    StoreNoCheck checkStoreIsValid(int last_index);
+
+    List<RecommendedStore> getStoreRecommendListForMain(String x, String y, int category);
+
+    List<RecommendedStore> getStoreRecommendListForMainReload(String x, String y, int category, int last_index, double last_distance);
+
+    void updatePrices(int price, int store_no);
+
+    double getDistanceOfLastIndex(String x, String y, int last_index);
 }

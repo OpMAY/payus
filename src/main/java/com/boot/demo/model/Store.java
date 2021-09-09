@@ -24,4 +24,5 @@ public class Store {
     private String address_3depth_h;
     private double address_x;
     private double address_y;
+    private int price;
 }

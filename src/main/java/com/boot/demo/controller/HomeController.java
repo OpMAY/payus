@@ -164,6 +164,13 @@ public class HomeController {
         return new ModelAndView("home");
     }
 
+    @RequestMapping(value = "/demo/price.do", method = RequestMethod.GET)
+    public ModelAndView insertPrices(){
+        HomeController();
+        demoStoreAddressService.updatePrices();
+        return new ModelAndView("home");
+    }
+
 
     /**
      * 기본값 설정해서 Parameter 받기

@@ -22,6 +22,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Log4j
 @Service
@@ -113,6 +114,18 @@ public class DemoStoreAddressService {
             store.setAddress_y(lat);
             store.setShort_address(adrs_1depth + " " + adrs_2depth);
             storeDao.insertStores(store);
+        }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void updatePrices(){
+        storeDao.setSqlSession(sqlSession);
+        Random random = new Random();
+        for(int i = 1; i <= 38269; i++){
+            int price = random.nextInt(15);
+            if(price == 0)
+                price++;
+            storeDao.updatePrices(price * 10000, i);
         }
     }
 

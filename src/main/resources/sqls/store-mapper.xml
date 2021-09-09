@@ -34,7 +34,7 @@
                payback_ratio,
                (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
                             sin(radians(#{y})) * sin(radians(address_y))))
-                   AS dist,
+                        AS dist,
                category AS store_category
         FROM store
         HAVING dist <![CDATA[<=]]> 10
@@ -42,4 +42,60 @@
         ORDER BY payback_ratio DESC, rand()
         LIMIT 15
     </select>
+    <select id="checkStoreIsValid" resultType="StoreNoCheck">
+        select store_no, address_x, address_y
+        from store
+        where store_no = #{store_no}
+    </select>
+    <select id="getDistanceOfLastIndex" resultType="_double">
+        select (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+                            sin(radians(#{y})) * sin(radians(address_y))))
+                   AS dist from store WHERE store_no=#{last_index}
+    </select>
+    <select id="getStoreRecommendListForMain" resultType="RecommendedStore">
+        select store_no,
+               store_name,
+               `explain`,
+               short_address,
+               thumbnail,
+               review_num,
+               star_ratio,
+               price,
+               payback_ratio,
+               (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+                            sin(radians(#{y})) * sin(radians(address_y))))
+                        AS dist,
+               category AS store_category
+        from store
+        HAVING dist <![CDATA[<=]]> 10
+           AND store_category = #{category}
+        ORDER BY dist, store_no DESC
+        LIMIT 50
+    </select>
+    <select id="getStoreRecommendListForMainReload" resultType="RecommendedStore">
+        select store_no,
+               store_name,
+               `explain`,
+               short_address,
+               thumbnail,
+               review_num,
+               star_ratio,
+               price,
+               payback_ratio,
+               (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+                            sin(radians(#{y})) * sin(radians(address_y))))
+                        AS dist,
+               category AS store_category
+        from store
+        HAVING ((dist <![CDATA[>]]> #{last_distance} AND dist <![CDATA[<=]]> 10)
+            OR (store_no <![CDATA[<]]> #{last_index} AND (dist <![CDATA[>]]> #{last_distance} AND dist <![CDATA[<=]]> 10)))
+           AND store_category = #{category}
+        ORDER BY dist, store_no DESC
+        LIMIT 50
+    </select>
+    <update id="updatePrices">
+        update store
+        SET price=#{price}
+        WHERE store_no = #{store_no}
+    </update>
 </mapper>

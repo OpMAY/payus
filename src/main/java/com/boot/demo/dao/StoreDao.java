@@ -3,31 +3,34 @@ package com.boot.demo.dao;
 import com.boot.demo.mapper.StoreMapper;
 import com.boot.demo.model.Store;
 import com.boot.demo.model.response.home.HomePaybackStore;
+import com.boot.demo.model.response.main.RecommendedStore;
+import com.boot.demo.model.response.main.StoreNoCheck;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 @Repository
 public class StoreDao {
     private SqlSession sqlSession;
 
-    public void setSqlSession(SqlSession sqlSession){
-        if(this.sqlSession==null){
+    public void setSqlSession(SqlSession sqlSession) {
+        if (this.sqlSession == null) {
             this.sqlSession = sqlSession;
         }
     }
 
-    public List<HomePaybackStore> getStoreRandomListForHome(){
+    public List<HomePaybackStore> getStoreRandomListForHome() {
         StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
         return storeMapper.getStoreRandomListForHome();
     }
 
-    public List<HomePaybackStore> getStoreListOrderByPaybackRatioForHome(){
+    public List<HomePaybackStore> getStoreListOrderByPaybackRatioForHome() {
         StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
         return storeMapper.getStoreListOrderByPaybackRatioForHome();
     }
 
-    public void insertStores(Store store){
+    public void insertStores(Store store) {
         StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
         storeMapper.insertStores(store);
     }
@@ -35,5 +38,30 @@ public class StoreDao {
     public List<HomePaybackStore> getStoreRandomListForMain(String x, String y, int category) {
         StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
         return storeMapper.getStoreRandomListForMain(x, y, category);
+    }
+
+    public StoreNoCheck checkStoreIsValid(int last_index) {
+        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
+        return storeMapper.checkStoreIsValid(last_index);
+    }
+
+    public List<RecommendedStore> getStoreRecommendListForMain(String x, String y, int category) {
+        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
+        return storeMapper.getStoreRecommendListForMain(x, y, category);
+    }
+
+    public List<RecommendedStore> getStoreRecommendListForMainReload(String x, String y, int category, int last_index, double last_distance) {
+        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
+        return storeMapper.getStoreRecommendListForMainReload(x, y, category, last_index, last_distance);
+    }
+
+    public void updatePrices(int price, int store_no) {
+        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
+        storeMapper.updatePrices(price, store_no);
+    }
+
+    public double getDistanceOfLastIndex(String x, String y, int last_index){
+        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
+        return storeMapper.getDistanceOfLastIndex(x, y, last_index);
     }
 }
