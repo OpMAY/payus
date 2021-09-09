@@ -8,4 +8,10 @@
         from vendor
         where vendor_no = #{vendor_no}
     </select>
+    <select id="loginVendor" resultType="VendorLoginResponse">
+        select vendor_no
+        from vendor
+        WHERE id = #{id}
+          AND password = #{password}
+    </select>
 </mapper>

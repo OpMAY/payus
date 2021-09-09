@@ -2,8 +2,8 @@ package com.boot.demo.mapper;
 
 import com.boot.demo.model.request.login.user.register.UserBankRequestComponents;
 import com.boot.demo.model.response.home.HomeUser;
-import com.boot.demo.model.response.login.LoginCheck;
-import com.boot.demo.model.response.login.UserRegistration;
+import com.boot.demo.model.response.login.user.LoginCheck;
+import com.boot.demo.model.response.login.user.UserRegistration;
 
 public interface UserMapper {
     HomeUser getUserInfoByUserNoForHome(int user_no);

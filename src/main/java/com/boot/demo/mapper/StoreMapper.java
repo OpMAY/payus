@@ -10,4 +10,6 @@ public interface StoreMapper {
     List<HomePaybackStore> getStoreListOrderByPaybackRatioForHome();
 
     void insertStores(Store store);
+
+    List<HomePaybackStore> getStoreRandomListForMain(String x, String y, int category);
 }

@@ -1,4 +1,4 @@
-package com.boot.demo.model.response.login;
+package com.boot.demo.model.response.login.user;
 
 import lombok.Data;
 

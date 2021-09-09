@@ -4,17 +4,22 @@ import com.boot.demo.dao.*;
 import com.boot.demo.model.BannerImage;
 import com.boot.demo.model.request.login.user.DemoUserLoginRequest;
 import com.boot.demo.model.request.login.user.register.DemoUserBankRequest;
+import com.boot.demo.model.request.login.vendor.DemoVendorLoginRequest;
 import com.boot.demo.model.response.home.HomePaybackStore;
 import com.boot.demo.model.response.home.HomeUser;
 import com.boot.demo.model.response.home.HomeVendor;
-import com.boot.demo.model.response.login.DemoUserLoginResponse;
-import com.boot.demo.model.response.login.LoginCheck;
-import com.boot.demo.model.response.login.UserRegistration;
+import com.boot.demo.model.response.login.user.DemoUserLoginResponse;
+import com.boot.demo.model.response.login.user.LoginCheck;
+import com.boot.demo.model.response.login.user.UserRegistration;
+import com.boot.demo.model.response.login.vendor.VendorLoginResponse;
+import com.boot.demo.model.utility.kakaolocation.KakaoLocationResponse;
 import com.boot.demo.response.IntegerRes;
 import com.boot.demo.response.Message;
 import com.boot.demo.response.StatusCode;
 import com.boot.demo.response.StringRes;
+import com.boot.demo.util.KakaoLocationService;
 import com.boot.demo.util.Time;
+import com.google.gson.Gson;
 import lombok.extern.log4j.Log4j;
 import org.apache.ibatis.session.SqlSession;
 import org.json.JSONException;
@@ -55,7 +60,7 @@ public class DemoService {
     private VendorDao vendorDao;
 
     @Transactional(readOnly = true)
-    public Message homeScreen(String user_no_param, String vendor_no_param) {
+    public ResponseEntity homeScreen(String user_no_param, String vendor_no_param) throws JSONException {
         userDao.setSqlSession(sqlSession);
         vendorDao.setSqlSession(sqlSession);
         bannerImageDao.setSqlSession(sqlSession);
@@ -76,7 +81,7 @@ public class DemoService {
         message.put("banner_image", bannerImageList);
         message.put("today_payback", today_payback);
         message.put("event_payback", event_payback);
-        return message;
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -118,5 +123,34 @@ public class DemoService {
         userDao.setSqlSession(sqlSession);
         userDao.bankUpdate(request.getUser());
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ResponseEntity loginVendor(DemoVendorLoginRequest request) throws JSONException {
+        Message message = new Message();
+        vendorDao.setSqlSession(sqlSession);
+        String id = request.getVendor().getId();
+        String password = request.getVendor().getPassword();
+        VendorLoginResponse response = vendorDao.loginVendor(id, password);
+        if(response == null) {
+            return new ResponseEntity(StringRes.res(StatusCode.LOGIN_FAILED), HttpStatus.OK);
+        } else {
+            message.put("vendor", response);
+            return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity getDemoMainPage(int category, String location) throws Exception {
+        Message message = new Message();
+        storeDao.setSqlSession(sqlSession);
+        KakaoLocationService locationService = new KakaoLocationService();
+        String coordinateResult = locationService.getLocationCoordinates(location);
+        KakaoLocationResponse locationResponse = new Gson().fromJson(coordinateResult, KakaoLocationResponse.class);
+        String x = locationResponse.getDocuments().get(0).getX();
+        String y = locationResponse.getDocuments().get(0).getY();
+        List<HomePaybackStore> storeList = storeDao.getStoreRandomListForMain(x, y, category);
+        message.put("today_payback", storeList);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
     }
 }

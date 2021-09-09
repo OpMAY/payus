@@ -31,4 +31,9 @@ public class StoreDao {
         StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
         storeMapper.insertStores(store);
     }
+
+    public List<HomePaybackStore> getStoreRandomListForMain(String x, String y, int category) {
+        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
+        return storeMapper.getStoreRandomListForMain(x, y, category);
+    }
 }

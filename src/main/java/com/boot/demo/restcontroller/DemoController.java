@@ -2,6 +2,7 @@ package com.boot.demo.restcontroller;
 
 import com.boot.demo.model.request.login.user.DemoUserLoginRequest;
 import com.boot.demo.model.request.login.user.register.DemoUserBankRequest;
+import com.boot.demo.model.request.login.vendor.DemoVendorLoginRequest;
 import com.boot.demo.response.IntegerRes;
 import com.boot.demo.response.Message;
 import com.boot.demo.response.StatusCode;
@@ -32,8 +33,7 @@ public class DemoController {
     @RequestMapping(value = "/demo/home", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity getDemoHomePage(@RequestParam(value = "user_no", required = false)String user_no,
                                           @RequestParam(value = "vendor_no", required = false)String vendor_no) throws JSONException {
-        Message message = demoService.homeScreen(user_no, vendor_no);
-        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
+        return demoService.homeScreen(user_no, vendor_no);
     }
 
     /**
@@ -45,7 +45,7 @@ public class DemoController {
      * Status Code : 200, L426
      * Summary : 일반 유저 로그인을 호출하는 URL
      */
-    @RequestMapping(value = "/demo/login/user", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/demo/login/user", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
     public ResponseEntity loginUser(@RequestBody String body) throws JSONException {
         DemoUserLoginRequest request = new Gson().fromJson(body, DemoUserLoginRequest.class);
         return demoService.loginUser(request);
@@ -65,4 +65,36 @@ public class DemoController {
         DemoUserBankRequest request = new Gson().fromJson(body, DemoUserBankRequest.class);
         return demoService.bankUpdate(request);
     }
+
+    /**
+     * R_100_RegisterScreen_Function A
+     * method : Post
+     * produces : application/json
+     * body : Vendor(String id, String password)
+     * response Data : Vendor(int vendor_no)
+     * Status Code : 200, L401
+     * Summary : 일반 유저 회원가입 후 은행 정보를 추가하는 URL
+     */
+    @RequestMapping(value = "/demo/login/vendor", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+    public ResponseEntity loginVendor(@RequestBody String body) throws JSONException {
+        DemoVendorLoginRequest request = new Gson().fromJson(body, DemoVendorLoginRequest.class);
+        return demoService.loginVendor(request);
+    }
+
+    /**
+     * CL_001_MainScreen_Function A
+     * method : GET
+     * produces : application/json
+     * parameters : int category, String location
+     * response Data : Store(today_payback)
+     * Status Code : 200
+     * Summary : MainScreen 중 오늘의 페이백을 호출받는 URL
+     */
+    @RequestMapping(value = "/demo/main/lodgment", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity getDemoMainPage(@RequestParam(value = "category") int category,
+                                          @RequestParam(value = "location") String location) throws Exception {
+        return demoService.getDemoMainPage(category, location);
+    }
+
+
 }
