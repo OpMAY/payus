@@ -3,6 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.boot.demo.mapper.ReviewMapper">
+    <resultMap id="StoreReviewComponents" type="com.boot.demo.model.response.detail.StoreReviewComponents">
+        <result property="image_list" column="image_list"
+                typeHandler="com.boot.demo.handler.JsonTypeHandler"/>
+    </resultMap>
     <insert id="insertReviews" keyProperty="review_no" useGeneratedKeys="true">
         insert into review(store_no, user_no, reg_date, review_ratio, image_list, content, is_answered, answer_content,
         answer_date, user_name)
@@ -27,7 +31,7 @@
         from review
         WHERE store_no = #{store_no}
     </select>
-    <select id="getReviewsForDetail" resultType="StoreReviewComponents">
+    <select id="getReviewsForDetail" resultType="StoreReviewComponents" resultMap="StoreReviewComponents">
         select review_no,
                user_name,
                content,
@@ -41,4 +45,8 @@
         from review
         WHERE store_no = #{store_no}
     </select>
+    <update id="updateImages">
+        update review
+        SET image_list=#{image_list}
+    </update>
 </mapper>

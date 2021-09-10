@@ -90,4 +90,9 @@ public class StoreDao {
         StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
         storeMapper.updateImages(image_list);
     }
+
+    public void updateServices(String json, int store_no) {
+        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
+        storeMapper.updateServices(json, store_no);
+    }
 }

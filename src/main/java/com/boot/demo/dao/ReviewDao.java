@@ -33,4 +33,9 @@ public class ReviewDao {
         ReviewMapper reviewMapper = sqlSession.getMapper(ReviewMapper.class);
         return reviewMapper.getReviewsForDetail(store_no);
     }
+
+    public void updateImages(String image_list){
+        ReviewMapper reviewMapper = sqlSession.getMapper(ReviewMapper.class);
+        reviewMapper.updateImages(image_list);
+    }
 }

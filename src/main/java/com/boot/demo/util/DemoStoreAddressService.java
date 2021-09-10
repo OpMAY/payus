@@ -240,6 +240,35 @@ public class DemoStoreAddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
+    public void updateServices(){
+        storeDao.setSqlSession(sqlSession);
+        for(int i = 1; i <= 38269; i++) {
+            List<Integer> serviceList = new ArrayList<>();
+            for (int j = 1; j < 7; j++) {
+                if (getRandomBoolean()) {
+                    serviceList.add(j);
+                }
+            }
+            String json = new Gson().toJson(serviceList);
+            storeDao.updateServices(json, i);
+        }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void updateReviewImages(){
+        reviewDao.setSqlSession(sqlSession);
+        List<String> imageList = new ArrayList<>();
+        String image1 = "https://image-notepet.akamaized.net/resize/620x-/seimage/20191114%2F6a4c967c5b14197dd5d2c47424ae8e82.jpg";
+        String image2 = "http://kormedi.com/wp-content/uploads/2021/01/eab3a0ec9691ec9db4-580x387.jpg";
+        String image3 = "https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/4arX/image/rZ1xSXKCJ4cd-IExOYahRWdrqoo.jpg";
+        imageList.add(image1);
+        imageList.add(image2);
+        imageList.add(image3);
+        String json = new Gson().toJson(imageList);
+        reviewDao.updateImages(json);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
     public void insertRooms() {
         roomDao.setSqlSession(sqlSession);
         storeDao.setSqlSession(sqlSession);

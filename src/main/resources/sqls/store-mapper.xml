@@ -3,6 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.boot.demo.mapper.StoreMapper">
+    <resultMap id="StoreDetailResponse" type="com.boot.demo.model.response.detail.StoreDetailResponse">
+        <result property="image_list" column="image_list"
+                typeHandler="com.boot.demo.handler.JsonTypeHandler"/>
+        <result property="service_list" column="service_list"
+                typeHandler="com.boot.demo.handler.JsonTypeHandler"/>
+    </resultMap>
     <select id="getStoreRandomListForHome" resultType="HomePaybackStore">
         select store_no, store_name, short_address, thumbnail, star_ratio, review_num, payback_ratio
         from store
@@ -18,11 +24,11 @@
     <insert id="insertStores" useGeneratedKeys="true" keyProperty="store_no">
         insert into store(store_name, image_list, payback_ratio, `explain`, star_ratio, review_num, address,
                           service_list, information, thumbnail, reg_date, address_1depth, address_y, address_3depth,
-                          address_x, address_2depth, short_address, category, address_3depth_h)
+                          address_x, address_2depth, short_address, category, address_3depth_h, price)
         VALUES (#{store_name}, #{image_list}, #{payback_ratio}, #{explain}, #{star_ratio}, #{review_num}, #{address},
                 #{service_list}, #{information}, #{thumbnail}, #{reg_date}, #{address_1depth}, #{address_y},
                 #{address_3depth},
-                #{address_x}, #{address_2depth}, #{short_address}, #{category}, #{address_3depth_h})
+                #{address_x}, #{address_2depth}, #{short_address}, #{category}, #{address_3depth_h}, #{price})
     </insert>
     <select id="getStoreRandomListForMain" resultType="HomePaybackStore">
         select store_no,
@@ -116,22 +122,27 @@
         from store
         WHERE store_no = #{store_no}
     </select>
-    <select id="getStoreDetail" resultType="StoreDetailResponse">
+    <select id="getStoreDetail" resultType="StoreDetailResponse" resultMap="StoreDetailResponse">
         select store_no,
                store_name,
-               json_unquote(image_list) as image_list,
+               image_list,
                payback_ratio,
                `explain`,
                star_ratio,
                review_num,
                address,
                information,
-               json_unquote(service_list) as service_list
+               service_list
         from store
         WHERE store_no = #{store_no}
     </select>
     <update id="updateImages">
         update store
         SET image_list=#{image_list}
+    </update>
+    <update id="updateServices">
+        update store
+        SET service_list=#{service_list}
+        WHERE store_no = #{store_no}
     </update>
 </mapper>

@@ -12,4 +12,6 @@ public interface ReviewMapper {
     List<ReviewStoreUpdate> getSimpleReviewList(int store_no);
 
     List<StoreReviewComponents> getReviewsForDetail(int store_no);
+
+    void updateImages(String image_list);
 }

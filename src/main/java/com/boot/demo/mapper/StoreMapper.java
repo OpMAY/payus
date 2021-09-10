@@ -36,4 +36,6 @@ public interface StoreMapper {
     StoreDetailResponse getStoreDetail(int store_no);
 
     void updateImages(String image_list);
+
+    void updateServices(String service_list, int store_no);
 }
