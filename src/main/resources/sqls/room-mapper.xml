@@ -3,5 +3,25 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.boot.demo.mapper.RoomMapper">
-
+    <insert id="insertRoom" useGeneratedKeys="true" keyProperty="room_no">
+        insert into room(store_no, name, thumbnail, room_option, `explain`, price, price_option, reg_date)
+        VALUES
+        <foreach collection="roomList" item="item" separator=",">
+            (
+            #{item.store_no},
+            #{item.name},
+            #{item.thumbnail},
+            #{item.room_option},
+            #{item.explain},
+            #{item.price},
+            #{item.price_option},
+            #{item.reg_date}
+            )
+        </foreach>
+    </insert>
+    <select id="getRoomsForDetail" resultType="StoreRoomComponents">
+        select room_no, name, thumbnail, room_option, `explain`, price, price_option
+        from room
+        WHERE store_no = #{store_no}
+    </select>
 </mapper>

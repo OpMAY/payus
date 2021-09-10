@@ -1,5 +1,6 @@
 package com.boot.demo.dao;
 
+import com.boot.demo.mapper.StoreLikeMapper;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +12,15 @@ public class StoreLikeDao {
         if(this.sqlSession==null){
             this.sqlSession = sqlSession;
         }
+    }
+
+    public boolean checkStoreLikeByUserNo(int store_no, int user_no) {
+        StoreLikeMapper storeLikeMapper = sqlSession.getMapper(StoreLikeMapper.class);
+        return storeLikeMapper.checkStoreLikeByUserNo(store_no, user_no) != null;
+    }
+
+    public boolean checkStoreLikeByVendorNo(int store_no, int vendor_no) {
+        StoreLikeMapper storeLikeMapper = sqlSession.getMapper(StoreLikeMapper.class);
+        return storeLikeMapper.checkStoreLikeByVendorNo(store_no, vendor_no) != null;
     }
 }

@@ -2,6 +2,7 @@ package com.boot.demo.dao;
 
 import com.boot.demo.mapper.StoreMapper;
 import com.boot.demo.model.Store;
+import com.boot.demo.model.response.detail.StoreDetailResponse;
 import com.boot.demo.model.response.home.HomePaybackStore;
 import com.boot.demo.model.response.main.RecommendedStore;
 import com.boot.demo.model.response.main.StoreNoCheck;
@@ -63,5 +64,30 @@ public class StoreDao {
     public double getDistanceOfLastIndex(String x, String y, int last_index){
         StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
         return storeMapper.getDistanceOfLastIndex(x, y, last_index);
+    }
+
+    public void updateStoreForReview(int store_no, int review_num, float star_ratio) {
+        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
+        storeMapper.updateStoreForReview(store_no, review_num, star_ratio);
+    }
+
+    public void updateStorePrivate(int store_no, boolean is_private){
+        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
+        storeMapper.updateStorePrivate(store_no, is_private);
+    }
+
+    public boolean checkStorePrivate(int store_no){
+        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
+        return storeMapper.checkStorePrivate(store_no);
+    }
+
+    public StoreDetailResponse getStoreDetail(int store_no){
+        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
+        return storeMapper.getStoreDetail(store_no);
+    }
+
+    public void updateImages(String image_list){
+        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
+        storeMapper.updateImages(image_list);
     }
 }

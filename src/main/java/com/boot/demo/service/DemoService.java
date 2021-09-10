@@ -5,6 +5,9 @@ import com.boot.demo.model.BannerImage;
 import com.boot.demo.model.request.login.user.DemoUserLoginRequest;
 import com.boot.demo.model.request.login.user.register.DemoUserBankRequest;
 import com.boot.demo.model.request.login.vendor.DemoVendorLoginRequest;
+import com.boot.demo.model.response.detail.StoreDetailResponse;
+import com.boot.demo.model.response.detail.StoreReviewComponents;
+import com.boot.demo.model.response.detail.StoreRoomComponents;
 import com.boot.demo.model.response.home.HomePaybackStore;
 import com.boot.demo.model.response.home.HomeUser;
 import com.boot.demo.model.response.home.HomeVendor;
@@ -15,12 +18,10 @@ import com.boot.demo.model.response.login.vendor.VendorLoginResponse;
 import com.boot.demo.model.response.main.RecommendedStore;
 import com.boot.demo.model.response.main.StoreNoCheck;
 import com.boot.demo.model.utility.kakaolocation.KakaoLocationResponse;
-import com.boot.demo.model.utility.kakaolocation.LocationCoordinate;
 import com.boot.demo.response.IntegerRes;
 import com.boot.demo.response.Message;
 import com.boot.demo.response.StatusCode;
 import com.boot.demo.response.StringRes;
-import com.boot.demo.util.CoordinateDistanceUtil;
 import com.boot.demo.util.KakaoLocationService;
 import com.boot.demo.util.Time;
 import com.google.gson.Gson;
@@ -35,6 +36,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Log4j
 @Service
@@ -97,10 +99,11 @@ public class DemoService {
         LoginCheck loginCheck = userDao.getUserLogin(access_token, sns);
         boolean is_register = loginCheck == null;
         message.put("is_register", is_register);
+        UUID uuid = UUID.randomUUID();
         if (is_register) {
             // Register
             UserRegistration newUser = new UserRegistration();
-            newUser.setName("유저" + newUser.getUser_no());
+            newUser.setName("유저" + uuid.toString().substring(0,5));
             newUser.setAccess_token(access_token);
             newUser.setReg_date(Time.TimeFormatHMS());
             newUser.setSns(sns);
@@ -191,6 +194,45 @@ public class DemoService {
             message.put("recommend", recommends);
             if (recommends.size() > 0) {
                 message.put("last_index", recommends.get(recommends.size() - 1).getStore_no());
+            }
+            return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity getStoreDetail(String param1, String param2, int store_no) throws JSONException {
+        Message message = new Message();
+        storeDao.setSqlSession(sqlSession);
+        storeLikeDao.setSqlSession(sqlSession);
+        reviewDao.setSqlSession(sqlSession);
+        roomDao.setSqlSession(sqlSession);
+        storeLikeDao.setSqlSession(sqlSession);
+        StoreNoCheck storeNoCheck = storeDao.checkStoreIsValid(store_no);
+        boolean is_validStore = storeNoCheck == null;
+        int user_no = 0;
+        int vendor_no = 0;
+        if(param1 != null && !param1.equals("undefined")){
+            user_no = Integer.parseInt(param1);
+        } else if (param2 != null && !param2.equals("undefined")){
+            vendor_no = Integer.parseInt(param2);
+        }
+        if(is_validStore){
+            return new ResponseEntity(StringRes.res(StatusCode.DELETED_CONTENT), HttpStatus.OK);
+        } else if(storeDao.checkStorePrivate(store_no)){
+            return new ResponseEntity(StringRes.res(StatusCode.DENIED_CONTENT), HttpStatus.OK);
+        } else {
+            StoreDetailResponse response = storeDao.getStoreDetail(store_no);
+            List<StoreRoomComponents> roomComponents = roomDao.getRoomsForDetail(store_no);
+            List<StoreReviewComponents> reviewComponents = reviewDao.getReviewsForDetail(store_no);
+            response.setReview_list(reviewComponents);
+            response.setRoom_list(roomComponents);
+            message.put("store", response);
+            if(user_no != 0){
+                boolean is_like = storeLikeDao.checkStoreLikeByUserNo(store_no, user_no);
+                message.put("is_like", is_like);
+            } else if(vendor_no != 0){
+                boolean is_like = storeLikeDao.checkStoreLikeByVendorNo(store_no, vendor_no);
+                message.put("is_like", is_like);
             }
             return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
         }

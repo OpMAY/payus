@@ -112,4 +112,19 @@ public class DemoController {
         return demoService.getDemoMainPageReload(category, location, last_index);
     }
 
+    /**
+     * CL_001_MainScreen_Function B
+     * method : GET
+     * produces : application/json
+     * parameters : int category, String location, int last_index
+     * response Data : Store(today_payback), int last_index
+     * Status Code : 200
+     * Summary : MainScreen 중 추천 숙박을 50개씩 리로딩하는 URL
+     */
+    @RequestMapping(value = "/demo/detail", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity getStoreDetail(@RequestParam(value = "user_no", required = false) String user_no,
+                                         @RequestParam(value = "vendor_no", required = false) String vendor_no,
+                                         @RequestParam(value = "store_no") int store_no) throws JSONException {
+        return demoService.getStoreDetail(user_no, vendor_no, store_no);
+    }
 }

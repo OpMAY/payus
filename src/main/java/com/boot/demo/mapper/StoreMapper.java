@@ -1,6 +1,7 @@
 package com.boot.demo.mapper;
 
 import com.boot.demo.model.Store;
+import com.boot.demo.model.response.detail.StoreDetailResponse;
 import com.boot.demo.model.response.home.HomePaybackStore;
 import com.boot.demo.model.response.main.RecommendedStore;
 import com.boot.demo.model.response.main.StoreNoCheck;
@@ -25,4 +26,14 @@ public interface StoreMapper {
     void updatePrices(int price, int store_no);
 
     double getDistanceOfLastIndex(String x, String y, int last_index);
+
+    void updateStoreForReview(int store_no, int review_num, float star_ratio);
+
+    void updateStorePrivate(int store_no, boolean is_private);
+
+    boolean checkStorePrivate(int store_no);
+
+    StoreDetailResponse getStoreDetail(int store_no);
+
+    void updateImages(String image_list);
 }

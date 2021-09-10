@@ -171,6 +171,27 @@ public class HomeController {
         return new ModelAndView("home");
     }
 
+    @RequestMapping(value = "/demo/review.do", method = RequestMethod.GET)
+    public ModelAndView insertReview(){
+        HomeController();
+        demoStoreAddressService.insertReviews();
+        return new ModelAndView("home");
+    }
+
+    @RequestMapping(value = "/demo/review_num.do", method = RequestMethod.GET)
+    public ModelAndView insertReviewNum(){
+        HomeController();
+        demoStoreAddressService.updateStoreByReview();
+        return new ModelAndView("home");
+    }
+
+    @RequestMapping(value = "/demo/rooms.do", method = RequestMethod.GET)
+    public ModelAndView insertRoom(){
+        HomeController();
+        demoStoreAddressService.updateImages();
+        return new ModelAndView("home");
+    }
+
 
     /**
      * 기본값 설정해서 Parameter 받기

@@ -50,7 +50,9 @@
     <select id="getDistanceOfLastIndex" resultType="_double">
         select (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
                             sin(radians(#{y})) * sin(radians(address_y))))
-                   AS dist from store WHERE store_no=#{last_index}
+                   AS dist
+        from store
+        WHERE store_no = #{last_index}
     </select>
     <select id="getStoreRecommendListForMain" resultType="RecommendedStore">
         select store_no,
@@ -97,5 +99,39 @@
         update store
         SET price=#{price}
         WHERE store_no = #{store_no}
+    </update>
+    <update id="updateStoreForReview">
+        update store
+        SET review_num=#{review_num},
+            star_ratio=#{star_ratio}
+        WHERE store_no = #{store_no}
+    </update>
+    <update id="updateStorePrivate">
+        update store
+        SET is_private=#{is_private}
+        WHERE store_no = #{store_no}
+    </update>
+    <select id="checkStorePrivate" resultType="_boolean">
+        select is_private
+        from store
+        WHERE store_no = #{store_no}
+    </select>
+    <select id="getStoreDetail" resultType="StoreDetailResponse">
+        select store_no,
+               store_name,
+               json_unquote(image_list) as image_list,
+               payback_ratio,
+               `explain`,
+               star_ratio,
+               review_num,
+               address,
+               information,
+               json_unquote(service_list) as service_list
+        from store
+        WHERE store_no = #{store_no}
+    </select>
+    <update id="updateImages">
+        update store
+        SET image_list=#{image_list}
     </update>
 </mapper>
