@@ -25,7 +25,7 @@ public class DemoController {
      * H_001_HomeScreen_Function A
      * method : GET
      * produces : application/json
-     * parameters : user_no (not Required), vendor_no (not Required)
+     * parameters : user_no (X), vendor_no (X)
      * response Data : User, Vendor, BannerImage, Store(today_payback, event_payback)
      * Status Code : 200
      * Summary : 홈 스크린 정보를 호출하는 URL
@@ -113,13 +113,13 @@ public class DemoController {
     }
 
     /**
-     * CL_001_MainScreen_Function B
+     * D_001_DetailScreen_Function A
      * method : GET
      * produces : application/json
-     * parameters : int category, String location, int last_index
-     * response Data : Store(today_payback), int last_index
-     * Status Code : 200
-     * Summary : MainScreen 중 추천 숙박을 50개씩 리로딩하는 URL
+     * parameters : int store_no, int user_no(X), int vendor_no(X)
+     * response Data : Store, is_like
+     * Status Code : 200, D404, D501
+     * Summary : 숙박 세부 정보를 로딩하는 URL
      */
     @RequestMapping(value = "/demo/detail", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity getStoreDetail(@RequestParam(value = "user_no", required = false) String user_no,

@@ -205,14 +205,14 @@ public class DemoStoreAddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void updateStoreByReview(){
+    public void updateStoreByReview() {
         reviewDao.setSqlSession(sqlSession);
         storeDao.setSqlSession(sqlSession);
-        for(int i = 1; i <= 38269; i++){
+        for (int i = 1; i <= 38269; i++) {
             List<ReviewStoreUpdate> reviewList = reviewDao.getSimpleReviewList(i);
             int review_num = reviewList.size();
             float avg_star_ratio = 0;
-            for(ReviewStoreUpdate review : reviewList){
+            for (ReviewStoreUpdate review : reviewList) {
                 avg_star_ratio = avg_star_ratio + review.getReview_ratio();
             }
             avg_star_ratio = avg_star_ratio / reviewList.size();
@@ -226,7 +226,7 @@ public class DemoStoreAddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void updateImages(){
+    public void updateImages() {
         storeDao.setSqlSession(sqlSession);
         List<String> imageList = new ArrayList<>();
         String image1 = "https://image-notepet.akamaized.net/resize/620x-/seimage/20191114%2F6a4c967c5b14197dd5d2c47424ae8e82.jpg";
@@ -240,9 +240,17 @@ public class DemoStoreAddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void updateServices(){
+    public void updateStorePrivate() {
         storeDao.setSqlSession(sqlSession);
-        for(int i = 1; i <= 38269; i++) {
+        for (int i = 0; i <= 38269; i++) {
+            storeDao.updateStorePrivate(i, getRandomBoolean());
+        }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void updateServices() {
+        storeDao.setSqlSession(sqlSession);
+        for (int i = 1; i <= 38269; i++) {
             List<Integer> serviceList = new ArrayList<>();
             for (int j = 1; j < 7; j++) {
                 if (getRandomBoolean()) {
@@ -255,7 +263,7 @@ public class DemoStoreAddressService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void updateReviewImages(){
+    public void updateReviewImages() {
         reviewDao.setSqlSession(sqlSession);
         List<String> imageList = new ArrayList<>();
         String image1 = "https://image-notepet.akamaized.net/resize/620x-/seimage/20191114%2F6a4c967c5b14197dd5d2c47424ae8e82.jpg";
@@ -285,28 +293,28 @@ public class DemoStoreAddressService {
         String thumb = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/63/d5/dc/caption.jpg?w=600&h=300&s=1";
         List<Room> roomList = new ArrayList<>();
         List<Room> roomList1 = new ArrayList<>();
-        for(int i = 1; i <= 38269; i++) {
-            for(int j = 0; j < 8; j++) {
+        for (int i = 1; i <= 38269; i++) {
+            for (int j = 0; j < 8; j++) {
                 int price = 0;
                 Room room = new Room();
                 room.setStore_no(i);
                 room.setName(roomInfo.get(j).toUpperCase());
                 room.setThumbnail(thumb);
-                if(j == 0 || j == 2 || j == 5){
+                if (j == 0 || j == 2 || j == 5) {
                     room_option = "기준 2인/최대 2인";
-                } else if (j == 1 || j == 3||j==4 || j == 6){
+                } else if (j == 1 || j == 3 || j == 4 || j == 6) {
                     room_option = "기준 2인/최대 4인";
                 } else {
                     room_option = "기준 4인/최대 8인";
                 }
                 room.setRoom_option(room_option);
                 room.setExplain(roomInfo.get(j) + "는 편안한 숙박 환경을 제공합니다.");
-                if(roomInfo.get(j).contains("Single")){
+                if (roomInfo.get(j).contains("Single")) {
                     price = price + 30000;
-                } else if (roomInfo.get(j).contains("Double")){
+                } else if (roomInfo.get(j).contains("Double")) {
                     price = price + 40000;
                 }
-                if(roomInfo.get(j).contains("Classic")){
+                if (roomInfo.get(j).contains("Classic")) {
                     price = price + 50000;
                 } else if (roomInfo.get(j).contains("Deluxe")) {
                     price = price + 70000;
@@ -321,8 +329,8 @@ public class DemoStoreAddressService {
                 roomList.add(room);
             }
         }
-        for(int i = 0; i < 1000; i++){
-            log.info((i+1) + "번째 try");
+        for (int i = 0; i < 1000; i++) {
+            log.info((i + 1) + "번째 try");
             int start_idx = i * 500;
             int last_idx = (i + 1) * 500;
             if (roomList.size() <= start_idx) {
