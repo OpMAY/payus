@@ -5,6 +5,9 @@ import com.boot.demo.model.request.login.user.register.UserBankRequestComponents
 import com.boot.demo.model.response.home.HomeUser;
 import com.boot.demo.model.response.login.user.LoginCheck;
 import com.boot.demo.model.response.login.user.UserRegistration;
+import com.boot.demo.model.response.setting.BankInfoEditRequest;
+import com.boot.demo.model.response.setting.UserShortInfoResponse;
+import com.boot.demo.model.response.setting.UserSpecificInfoResponse;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -36,5 +39,25 @@ public class UserDao {
     public void bankUpdate(UserBankRequestComponents request) {
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
         userMapper.bankUpdate(request);
+    }
+
+    public UserShortInfoResponse getUserShortData(int user_no) {
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        return userMapper.getUserShortData(user_no);
+    }
+
+    public UserSpecificInfoResponse getUserProfile(int user_no) {
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        return userMapper.getUserProfile(user_no);
+    }
+
+    public void updateUserPersonal(int user_no, String phone) {
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        userMapper.updateUserPersonal(user_no, phone);
+    }
+
+    public void updateUserBank(int user_no, BankInfoEditRequest.BankInfoEditComponents bank) {
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        userMapper.updateUserBank(user_no, bank);
     }
 }

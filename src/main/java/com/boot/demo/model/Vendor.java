@@ -9,6 +9,7 @@ public class Vendor {
     private String profile_img;
     private String id;
     private String password;
+    private String email;
     private String phone;
     private String bank_name;
     private String bank_account;

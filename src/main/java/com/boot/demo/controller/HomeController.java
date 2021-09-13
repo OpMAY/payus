@@ -188,7 +188,7 @@ public class HomeController {
     @RequestMapping(value = "/demo/rooms.do", method = RequestMethod.GET)
     public ModelAndView insertRoom(){
         HomeController();
-        demoStoreAddressService.updateStorePrivate();
+        demoStoreAddressService.answerReview();
         return new ModelAndView("home");
     }
 

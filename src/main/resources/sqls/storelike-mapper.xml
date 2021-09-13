@@ -15,4 +15,24 @@
         WHERE vendor_no = #{vendor_no}
           AND store_no = #{store_no}
     </select>
+    <delete id="deleteUserStoreLike">
+        delete
+        from storelike
+        WHERE store_no = #{store_no}
+          AND user_no = #{user_no}
+    </delete>
+    <delete id="deleteVendorStoreLike">
+        delete
+        from storelike
+        WHERE store_no = #{store_no}
+          AND vendor_no = #{vendor_no}
+    </delete>
+    <insert id="insertUserStoreLike">
+        insert into storelike(store_no, user_no, reg_date)
+        VALUES (#{store_no}, #{user_no}, NOW())
+    </insert>
+    <insert id="insertVendorStoreLike">
+        insert into storelike(store_no, vendor_no, reg_date)
+        VALUES (#{store_no}, #{vendor_no}, NOW())
+    </insert>
 </mapper>

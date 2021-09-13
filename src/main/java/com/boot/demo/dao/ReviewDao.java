@@ -38,4 +38,9 @@ public class ReviewDao {
         ReviewMapper reviewMapper = sqlSession.getMapper(ReviewMapper.class);
         reviewMapper.updateImages(image_list);
     }
+
+    public void answerReview(int review_no, String answer_content, String answer_date) {
+        ReviewMapper reviewMapper = sqlSession.getMapper(ReviewMapper.class);
+        reviewMapper.answerReview(review_no, answer_content, answer_date);
+    }
 }

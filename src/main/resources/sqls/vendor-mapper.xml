@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.boot.demo.mapper.VendorMapper">
-    <select id="getUserInfoByUserNoForHome" resultType="HomeVendor">
+    <select id="getVendorInfoByVendorNoForHome" resultType="HomeVendor">
         select vendor_no, name, profile_img, point
         from vendor
         where vendor_no = #{vendor_no}
@@ -14,4 +14,37 @@
         WHERE id = #{id}
           AND password = #{password}
     </select>
+    <select id="getVendorShortData" resultType="VendorShortInfoResponse">
+        select vendor_no, name, point, profile_img
+        from vendor
+        WHERE vendor_no = #{vendor_no}
+    </select>
+    <select id="checkValidVendor" resultType="_boolean">
+        select EXISTS(select * from vendor WHERE vendor_no = #{vendor_no} AND password = #{password}) as success;
+    </select>
+    <select id="getVendorProfile" resultType="VendorSpecificInfoResponse">
+        select vendor_no,
+               id,
+               name,
+               email,
+               phone,
+               profile_img,
+               bank_name,
+               bank_owner,
+               bank_account
+        from vendor
+        WHERE vendor_no = #{vendor_no}
+    </select>
+    <update id="updateVendorPersonal">
+        update vendor
+        SET phone=#{phone}
+        WHERE vendor_no = #{vendor_no}
+    </update>
+    <update id="updateVendorBank">
+        update vendor
+        SET bank_name=#{bank.bank_name},
+            bank_account=#{bank.bank_account},
+            bank_owner=#{bank.bank_owner}
+        WHERE vendor_no = #{vendor_no}
+    </update>
 </mapper>

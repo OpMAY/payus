@@ -49,4 +49,11 @@
         update review
         SET image_list=#{image_list}
     </update>
+    <update id="answerReview">
+        update review
+        SET answer_content=#{answer_content},
+            answer_date=#{answer_date},
+            is_answered= true
+        WHERE review_no = #{review_no}
+    </update>
 </mapper>

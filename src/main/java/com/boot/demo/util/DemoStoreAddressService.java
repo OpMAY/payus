@@ -162,8 +162,6 @@ public class DemoStoreAddressService {
         Random random = new Random();
         List<Review> reviewList = new ArrayList<>();
         List<Review> reviewList1 = new ArrayList<>();
-        List<Review> reviewList2 = new ArrayList<>();
-        List<Review> reviewList3 = new ArrayList<>();
         for (int i = 1; i <= 38269; i++) {
             for (int j = 0; j < 4; j++) {
                 int tmp = random.nextInt(50);
@@ -222,7 +220,15 @@ public class DemoStoreAddressService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void answerReview() {
-
+        reviewDao.setSqlSession(sqlSession);
+        String answer_content = "리뷰에 대한 답변입니다. 앞으로도 저희 숙소를 자주 이용해주세요. 감사합니다.";
+        for(int i = 6501; i <= 159575; i++){
+            if(getRandomBoolean()){
+                String now = Time.TimeFormatHMS();
+                log.info(i + "번째 리뷰에 답변을 등록합니다.");
+                reviewDao.answerReview(i, answer_content, now);
+            }
+        }
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

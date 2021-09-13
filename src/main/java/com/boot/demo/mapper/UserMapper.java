@@ -4,6 +4,9 @@ import com.boot.demo.model.request.login.user.register.UserBankRequestComponents
 import com.boot.demo.model.response.home.HomeUser;
 import com.boot.demo.model.response.login.user.LoginCheck;
 import com.boot.demo.model.response.login.user.UserRegistration;
+import com.boot.demo.model.response.setting.BankInfoEditRequest;
+import com.boot.demo.model.response.setting.UserShortInfoResponse;
+import com.boot.demo.model.response.setting.UserSpecificInfoResponse;
 
 public interface UserMapper {
     HomeUser getUserInfoByUserNoForHome(int user_no);
@@ -13,4 +16,12 @@ public interface UserMapper {
     void registerUser(UserRegistration newUser);
 
     void bankUpdate(UserBankRequestComponents request);
+
+    UserShortInfoResponse getUserShortData(int user_no);
+
+    UserSpecificInfoResponse getUserProfile(int user_no);
+
+    void updateUserPersonal(int user_no, String phone);
+
+    void updateUserBank(int user_no, BankInfoEditRequest.BankInfoEditComponents bank);
 }

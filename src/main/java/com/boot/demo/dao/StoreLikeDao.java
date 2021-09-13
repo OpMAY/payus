@@ -23,4 +23,24 @@ public class StoreLikeDao {
         StoreLikeMapper storeLikeMapper = sqlSession.getMapper(StoreLikeMapper.class);
         return storeLikeMapper.checkStoreLikeByVendorNo(store_no, vendor_no) != null;
     }
+
+    public void deleteUserStoreLike(int store_no, int user_no) {
+        StoreLikeMapper storeLikeMapper = sqlSession.getMapper(StoreLikeMapper.class);
+        storeLikeMapper.deleteUserStoreLike(store_no, user_no);
+    }
+
+    public void deleteVendorStoreLike(int store_no, int vendor_no) {
+        StoreLikeMapper storeLikeMapper = sqlSession.getMapper(StoreLikeMapper.class);
+        storeLikeMapper.deleteVendorStoreLike(store_no, vendor_no);
+    }
+
+    public void insertUserStoreLike(int store_no, int user_no) {
+        StoreLikeMapper storeLikeMapper = sqlSession.getMapper(StoreLikeMapper.class);
+        storeLikeMapper.insertUserStoreLike(store_no, user_no);
+    }
+
+    public void insertVendorStoreLike(int store_no, int vendor_no) {
+        StoreLikeMapper storeLikeMapper = sqlSession.getMapper(StoreLikeMapper.class);
+        storeLikeMapper.insertVendorStoreLike(store_no, vendor_no);
+    }
 }
