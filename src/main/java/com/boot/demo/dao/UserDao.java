@@ -1,13 +1,13 @@
 package com.boot.demo.dao;
 
 import com.boot.demo.mapper.UserMapper;
-import com.boot.demo.model.request.login.user.register.UserBankRequestComponents;
-import com.boot.demo.model.response.home.HomeUser;
-import com.boot.demo.model.response.login.user.LoginCheck;
-import com.boot.demo.model.response.login.user.UserRegistration;
-import com.boot.demo.model.response.setting.BankInfoEditRequest;
-import com.boot.demo.model.response.setting.UserShortInfoResponse;
-import com.boot.demo.model.response.setting.UserSpecificInfoResponse;
+import com.boot.demo.model.demo.request.login.user.register.UserBankRequestComponents;
+import com.boot.demo.model.demo.response.home.HomeUser;
+import com.boot.demo.model.demo.response.login.user.LoginCheck;
+import com.boot.demo.model.demo.response.login.user.UserRegistration;
+import com.boot.demo.model.demo.response.setting.BankInfoEditRequest;
+import com.boot.demo.model.demo.response.setting.UserShortInfoResponse;
+import com.boot.demo.model.demo.response.setting.UserSpecificInfoResponse;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 

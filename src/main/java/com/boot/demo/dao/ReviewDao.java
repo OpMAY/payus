@@ -1,9 +1,9 @@
 package com.boot.demo.dao;
 
 import com.boot.demo.mapper.ReviewMapper;
-import com.boot.demo.model.Review;
-import com.boot.demo.model.response.detail.ReviewStoreUpdate;
-import com.boot.demo.model.response.detail.StoreReviewComponents;
+import com.boot.demo.model.demo.Review;
+import com.boot.demo.model.demo.response.detail.ReviewStoreUpdate;
+import com.boot.demo.model.demo.response.detail.StoreReviewComponents;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 

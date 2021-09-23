@@ -1,13 +1,13 @@
 package com.boot.demo.restcontroller;
 
-import com.boot.demo.model.request.detail.StoreLikeRequest;
-import com.boot.demo.model.request.file.FileUploadRequest;
-import com.boot.demo.model.request.login.user.DemoUserLoginRequest;
-import com.boot.demo.model.request.login.user.register.DemoUserBankRequest;
-import com.boot.demo.model.request.login.vendor.DemoVendorLoginRequest;
-import com.boot.demo.model.response.setting.BankInfoEditRequest;
-import com.boot.demo.model.response.setting.PersonalInfoEditRequest;
-import com.boot.demo.model.response.setting.VendorValidRequest;
+import com.boot.demo.model.demo.request.detail.StoreLikeRequest;
+import com.boot.demo.model.demo.request.file.FileUploadRequest;
+import com.boot.demo.model.demo.request.login.user.DemoUserLoginRequest;
+import com.boot.demo.model.demo.request.login.user.register.DemoUserBankRequest;
+import com.boot.demo.model.demo.request.login.vendor.DemoVendorLoginRequest;
+import com.boot.demo.model.demo.response.setting.BankInfoEditRequest;
+import com.boot.demo.model.demo.response.setting.PersonalInfoEditRequest;
+import com.boot.demo.model.demo.response.setting.VendorValidRequest;
 import com.boot.demo.service.DemoService;
 import com.google.gson.Gson;
 import lombok.extern.log4j.Log4j;

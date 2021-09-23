@@ -1,7 +1,7 @@
 package com.boot.demo.dao;
 
 import com.boot.demo.mapper.BannerImageMapper;
-import com.boot.demo.model.BannerImage;
+import com.boot.demo.model.demo.BannerImage;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 import java.util.List;

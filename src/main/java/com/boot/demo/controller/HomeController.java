@@ -2,7 +2,8 @@ package com.boot.demo.controller;
 
 import com.boot.demo.exception.enums.BusinessExceptionType;
 import com.boot.demo.exception.rest.GrantAccessDeniedException;
-import com.boot.demo.model.*;
+import com.boot.demo.model.TestModel;
+import com.boot.demo.model.demo.UploadForm;
 import com.boot.demo.model.utility.businessvalidation.BusinessStatusRequest;
 import com.boot.demo.model.utility.businessvalidation.BusinessValidation;
 import com.boot.demo.model.utility.businessvalidation.BusinessValidationRequest;
@@ -30,6 +31,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -57,6 +61,9 @@ public class HomeController {
 
     @Autowired
     private DemoStoreAddressService demoStoreAddressService;
+
+    @Autowired
+    private EmailSendService emailSendService;
 
     public void HomeController() {
         VIEW = new ModelAndView("home");
@@ -134,10 +141,10 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/test/location.do", method = RequestMethod.GET)
-    public ModelAndView locationTest() throws Exception{
+    public ModelAndView locationTest() throws Exception {
         HomeController();
         log.info("location");
-        String result1 = kakaoLocationService.getLocationCoordinates("군자로 29 101호");
+        String result1 = kakaoLocationService.getLocationCoordinates("남부순환로220길 34");
         String result2 = kakaoLocationService.getLocationCoordinates("남부순환로 1892 청강빌딩 4층");
         KakaoLocationResponse response1 = new Gson().fromJson(result1, KakaoLocationResponse.class);
         KakaoLocationResponse response2 = new Gson().fromJson(result2, KakaoLocationResponse.class);
@@ -157,36 +164,74 @@ public class HomeController {
         return new ModelAndView("home");
     }
 
+    @RequestMapping(value = "/demo/email.do", method = RequestMethod.GET)
+    public ModelAndView emailFindPage() {
+        HomeController();
+        return new ModelAndView("email");
+    }
+
+    @RequestMapping(value = "/demo/email/find.do", method = RequestMethod.POST)
+    public ModelAndView sendValidationCode(HttpServletResponse response, @RequestParam("name") String name, @RequestParam("email") String email) {
+        log.info("name : " + name);
+        String validationCode = emailSendService.sendEmailForValidation(email);
+        Cookie cookie = new Cookie("validationCode", validationCode);
+        cookie.setMaxAge(180);
+        response.addCookie(cookie);
+        return new ModelAndView("email_validation");
+    }
+
+    @Data
+    class TokenValidation{
+        private String validationToken;
+    }
+    @RequestMapping(value = "/demo/email/validation.do", method = RequestMethod.POST)
+    @ResponseBody
+    public int validationCheck(HttpServletRequest request, @RequestBody String body) {
+        TokenValidation validation = new Gson().fromJson(body, TokenValidation.class);
+        Cookie[] cookies = request.getCookies();
+        for(Cookie cookie : cookies){
+            if(cookie.getName().equals("validationCode")){
+                String value = cookie.getValue();
+                if(validation.getValidationToken().equals(value)){
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        }
+        return 0;
+    }
+
     @RequestMapping(value = "/demo/insert.do", method = RequestMethod.GET)
-    public ModelAndView insertStores(@RequestParam("no")int no) throws Exception {
+    public ModelAndView insertStores(@RequestParam("no") int no) throws Exception {
         HomeController();
         demoStoreAddressService.insertStores(no);
         return new ModelAndView("home");
     }
 
     @RequestMapping(value = "/demo/price.do", method = RequestMethod.GET)
-    public ModelAndView insertPrices(){
+    public ModelAndView insertPrices() {
         HomeController();
         demoStoreAddressService.updatePrices();
         return new ModelAndView("home");
     }
 
     @RequestMapping(value = "/demo/review.do", method = RequestMethod.GET)
-    public ModelAndView insertReview(){
+    public ModelAndView insertReview() {
         HomeController();
         demoStoreAddressService.insertReviews();
         return new ModelAndView("home");
     }
 
     @RequestMapping(value = "/demo/review_num.do", method = RequestMethod.GET)
-    public ModelAndView insertReviewNum(){
+    public ModelAndView insertReviewNum() {
         HomeController();
         demoStoreAddressService.updateStoreByReview();
         return new ModelAndView("home");
     }
 
     @RequestMapping(value = "/demo/rooms.do", method = RequestMethod.GET)
-    public ModelAndView insertRoom(){
+    public ModelAndView insertRoom() {
         HomeController();
         demoStoreAddressService.answerReview();
         return new ModelAndView("home");

@@ -1,10 +1,10 @@
 package com.boot.demo.mapper;
 
-import com.boot.demo.model.Store;
-import com.boot.demo.model.response.detail.StoreDetailResponse;
-import com.boot.demo.model.response.home.HomePaybackStore;
-import com.boot.demo.model.response.main.RecommendedStore;
-import com.boot.demo.model.response.main.StoreNoCheck;
+import com.boot.demo.model.demo.Store;
+import com.boot.demo.model.demo.response.detail.StoreDetailResponse;
+import com.boot.demo.model.demo.response.home.HomePaybackStore;
+import com.boot.demo.model.demo.response.main.RecommendedStore;
+import com.boot.demo.model.demo.response.main.StoreNoCheck;
 
 import java.util.List;
 

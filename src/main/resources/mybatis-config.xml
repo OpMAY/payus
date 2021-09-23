@@ -11,18 +11,18 @@
     <typeAliases>
         <typeAlias alias="Test" type="com.boot.demo.model.Test"/>
         <typeAlias alias="ColumnInfo" type="com.boot.demo.model.ColumnInfo"/>
-        <typeAlias alias="BannerImage" type="com.boot.demo.model.BannerImage"/>
-        <typeAlias alias="Review" type="com.boot.demo.model.Review"/>
-        <typeAlias alias="Vendor" type="com.boot.demo.model.Vendor"/>
-        <typeAlias alias="User" type="com.boot.demo.model.User"/>
-        <typeAlias alias="Room" type="com.boot.demo.model.Room"/>
-        <typeAlias alias="Store" type="com.boot.demo.model.Store"/>
-        <typeAlias alias="HomeUser" type="com.boot.demo.model.response.home.HomeUser"/>
-        <typeAlias alias="HomeVendor" type="com.boot.demo.model.response.home.HomeVendor"/>
-        <typeAlias alias="HomePaybackStore" type="com.boot.demo.model.response.home.HomePaybackStore"/>
-        <typeAlias alias="StoreLike" type="com.boot.demo.model.StoreLike"/>
-        <typeAlias alias="LoginCheck" type="com.boot.demo.model.response.login.user.LoginCheck"/>
-        <typeAlias alias="StoreNoCheck" type="com.boot.demo.model.response.main.StoreNoCheck"/>
-        <typeAlias alias="RecommendedStore" type="com.boot.demo.model.response.main.RecommendedStore"/>
+        <typeAlias alias="BannerImage" type="com.boot.demo.model.demo.BannerImage"/>
+        <typeAlias alias="Review" type="com.boot.demo.model.demo.Review"/>
+        <typeAlias alias="Vendor" type="com.boot.demo.model.demo.Vendor"/>
+        <typeAlias alias="User" type="com.boot.demo.model.demo.User"/>
+        <typeAlias alias="Room" type="com.boot.demo.model.demo.Room"/>
+        <typeAlias alias="Store" type="com.boot.demo.model.demo.Store"/>
+        <typeAlias alias="HomeUser" type="com.boot.demo.model.demo.response.home.HomeUser"/>
+        <typeAlias alias="HomeVendor" type="com.boot.demo.model.demo.response.home.HomeVendor"/>
+        <typeAlias alias="HomePaybackStore" type="com.boot.demo.model.demo.response.home.HomePaybackStore"/>
+        <typeAlias alias="StoreLike" type="com.boot.demo.model.demo.StoreLike"/>
+        <typeAlias alias="LoginCheck" type="com.boot.demo.model.demo.response.login.user.LoginCheck"/>
+        <typeAlias alias="StoreNoCheck" type="com.boot.demo.model.demo.response.main.StoreNoCheck"/>
+        <typeAlias alias="RecommendedStore" type="com.boot.demo.model.demo.response.main.RecommendedStore"/>
     </typeAliases>
 </configuration>

@@ -1,19 +1,14 @@
 package com.boot.demo.service;
 
 import com.boot.demo.dao.TestDao;
-import com.boot.demo.model.Artist;
 import com.boot.demo.model.ColumnInfo;
 import com.boot.demo.util.ClassProperties;
-import com.boot.demo.util.ExcelMaker;
-import com.boot.demo.util.Time;
 import lombok.extern.log4j.Log4j;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 

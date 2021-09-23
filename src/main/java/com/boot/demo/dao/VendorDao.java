@@ -1,11 +1,11 @@
 package com.boot.demo.dao;
 
 import com.boot.demo.mapper.VendorMapper;
-import com.boot.demo.model.response.home.HomeVendor;
-import com.boot.demo.model.response.login.vendor.VendorLoginResponse;
-import com.boot.demo.model.response.setting.BankInfoEditRequest;
-import com.boot.demo.model.response.setting.VendorShortInfoResponse;
-import com.boot.demo.model.response.setting.VendorSpecificInfoResponse;
+import com.boot.demo.model.demo.response.home.HomeVendor;
+import com.boot.demo.model.demo.response.login.vendor.VendorLoginResponse;
+import com.boot.demo.model.demo.response.setting.BankInfoEditRequest;
+import com.boot.demo.model.demo.response.setting.VendorShortInfoResponse;
+import com.boot.demo.model.demo.response.setting.VendorSpecificInfoResponse;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 

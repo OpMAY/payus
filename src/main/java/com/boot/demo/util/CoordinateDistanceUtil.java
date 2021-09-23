@@ -2,6 +2,11 @@ package com.boot.demo.util;
 
 import com.boot.demo.model.utility.kakaolocation.LocationCoordinate;
 
+/**
+    주석 생성 날짜 - 2021-09-14, 화, 11:23
+    코드 설명 : 두 좌표를 받아 두 좌표 사이의 거리를 구하는 Util
+    특이 사항 : SQL 의 거리 비교 계산 방식과 달라 우선 PayUs 에서는 사용 X
+**/
 public class CoordinateDistanceUtil {
     public double distance(LocationCoordinate start, LocationCoordinate end) {
         double theta = start.getLon() - end.getLon();

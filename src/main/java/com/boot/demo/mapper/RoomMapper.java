@@ -1,7 +1,7 @@
 package com.boot.demo.mapper;
 
-import com.boot.demo.model.Room;
-import com.boot.demo.model.response.detail.StoreRoomComponents;
+import com.boot.demo.model.demo.Room;
+import com.boot.demo.model.demo.response.detail.StoreRoomComponents;
 
 import java.util.List;
 

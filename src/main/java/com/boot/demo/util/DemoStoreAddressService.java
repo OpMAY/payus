@@ -4,11 +4,11 @@ import com.boot.demo.dao.ReviewDao;
 import com.boot.demo.dao.RoomDao;
 import com.boot.demo.dao.StoreDao;
 import com.boot.demo.dao.UserDao;
-import com.boot.demo.model.Review;
-import com.boot.demo.model.Room;
-import com.boot.demo.model.Store;
-import com.boot.demo.model.response.detail.ReviewStoreUpdate;
-import com.boot.demo.model.response.home.HomeUser;
+import com.boot.demo.model.demo.Review;
+import com.boot.demo.model.demo.Room;
+import com.boot.demo.model.demo.Store;
+import com.boot.demo.model.demo.response.detail.ReviewStoreUpdate;
+import com.boot.demo.model.demo.response.home.HomeUser;
 import com.boot.demo.model.utility.demoaddress.Item;
 import com.boot.demo.model.utility.demoaddress.Root;
 import com.boot.demo.response.demostore.DemoStoreCategory;
@@ -28,6 +28,11 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+
+/**
+    주석 생성 날짜 - 2021-09-14, 화, 11:15
+    코드 설명 : DemoDay DB Setting
+**/
 @Log4j
 @Service
 public class DemoStoreAddressService {

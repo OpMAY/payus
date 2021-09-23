@@ -1,8 +1,8 @@
 package com.boot.demo.mapper;
 
-import com.boot.demo.model.Review;
-import com.boot.demo.model.response.detail.ReviewStoreUpdate;
-import com.boot.demo.model.response.detail.StoreReviewComponents;
+import com.boot.demo.model.demo.Review;
+import com.boot.demo.model.demo.response.detail.ReviewStoreUpdate;
+import com.boot.demo.model.demo.response.detail.StoreReviewComponents;
 
 import java.util.List;
 

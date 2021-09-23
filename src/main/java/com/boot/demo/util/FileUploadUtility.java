@@ -40,10 +40,10 @@ public class FileUploadUtility {
      * @param type         file upload type(AWS or LOCAL)
      */
     public String uploadFile(String cdn_dir_path, String originalName, byte[] fileDate, String type) throws IOException {
-        log.info(upload_path);
-        log.info(accessKey);
-        log.info(secretKey);
-        log.info(bucketName);
+        log.info("Local Upload Path : " + upload_path);
+        log.info("Access Key : " + accessKey);
+        log.info("Secret Key : " + secretKey);
+        log.info("Bucket Name : " + bucketName);
         UUID uid = UUID.randomUUID();
         String savedName = uid.toString() + "_" + originalName;
         File target = new File(upload_path, savedName);
@@ -52,6 +52,8 @@ public class FileUploadUtility {
             FileCopyUtils.copy(fileDate, target);
             //org.springframework.util 패키지의 FileCopyUtils는 파일 데이터를 파일로 처리하거나, 복사하는 등의 기능이 있다.
         } else if (type.equals(Constant.AWS_SAVE)) {
+            log.info("Uploading to AWS..");
+            log.info("CDN Upload Path : " + cdn_dir_path);
             FileCopyUtils.copy(fileDate, target);
             CDNService cdnService = new CDNService(accessKey, secretKey, bucketName);
             AWSModel awsModel = new AWSModel();

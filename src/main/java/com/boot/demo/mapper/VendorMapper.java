@@ -1,10 +1,10 @@
 package com.boot.demo.mapper;
 
-import com.boot.demo.model.response.home.HomeVendor;
-import com.boot.demo.model.response.login.vendor.VendorLoginResponse;
-import com.boot.demo.model.response.setting.BankInfoEditRequest;
-import com.boot.demo.model.response.setting.VendorShortInfoResponse;
-import com.boot.demo.model.response.setting.VendorSpecificInfoResponse;
+import com.boot.demo.model.demo.response.home.HomeVendor;
+import com.boot.demo.model.demo.response.login.vendor.VendorLoginResponse;
+import com.boot.demo.model.demo.response.setting.BankInfoEditRequest;
+import com.boot.demo.model.demo.response.setting.VendorShortInfoResponse;
+import com.boot.demo.model.demo.response.setting.VendorSpecificInfoResponse;
 
 public interface VendorMapper {
     HomeVendor getVendorInfoByVendorNoForHome(int vendor_no);

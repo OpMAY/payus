@@ -1,8 +1,8 @@
 package com.boot.demo.dao;
 
 import com.boot.demo.mapper.RoomMapper;
-import com.boot.demo.model.Room;
-import com.boot.demo.model.response.detail.StoreRoomComponents;
+import com.boot.demo.model.demo.Room;
+import com.boot.demo.model.demo.response.detail.StoreRoomComponents;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 

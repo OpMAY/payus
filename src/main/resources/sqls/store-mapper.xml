@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.boot.demo.mapper.StoreMapper">
-    <resultMap id="StoreDetailResponse" type="com.boot.demo.model.response.detail.StoreDetailResponse">
+    <resultMap id="StoreDetailResponse" type="com.boot.demo.model.demo.response.detail.StoreDetailResponse">
         <result property="image_list" column="image_list"
                 typeHandler="com.boot.demo.handler.JsonTypeHandler"/>
         <result property="service_list" column="service_list"

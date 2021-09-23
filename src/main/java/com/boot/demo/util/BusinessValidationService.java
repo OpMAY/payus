@@ -15,6 +15,10 @@ import java.util.ArrayList;
 @Log4j
 @Service
 public class BusinessValidationService {
+    /**
+        주석 생성 날짜 - 2021-09-14, 화, 11:22
+        코드 설명 : 사업자 등록 번호 조회하는 API
+    **/
     public String statusVerify(BusinessStatusRequest request) throws IOException {
         log.info(request.getB_no());
         BusinessApi api = new BusinessApi();
