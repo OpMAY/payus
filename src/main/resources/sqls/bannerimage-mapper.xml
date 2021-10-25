@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.boot.demo.mapper.BannerImageMapper">
+<mapper namespace="com.mvsolutions.payus.mapper.BannerImageMapper">
     <select id="getBannerImageList" resultType="BannerImage">
         select banner_no, banner_url
         from bannerimage

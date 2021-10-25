@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.boot.demo.mapper.StoreLikeMapper">
+<mapper namespace="com.mvsolutions.payus.mapper.StoreLikeMapper">
     <select id="checkStoreLikeByUserNo" resultType="string">
         select reg_date
         from storelike

@@ -2,12 +2,12 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.boot.demo.mapper.StoreMapper">
-    <resultMap id="StoreDetailResponse" type="com.boot.demo.model.demo.response.detail.StoreDetailResponse">
+<mapper namespace="com.mvsolutions.payus.mapper.StoreMapper">
+    <resultMap id="StoreDetailResponse" type="com.mvsolutions.payus.model.demo.response.detail.StoreDetailResponse">
         <result property="image_list" column="image_list"
-                typeHandler="com.boot.demo.handler.JsonTypeHandler"/>
+                typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
         <result property="service_list" column="service_list"
-                typeHandler="com.boot.demo.handler.JsonTypeHandler"/>
+                typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
     </resultMap>
     <select id="getStoreRandomListForHome" resultType="HomePaybackStore">
         select store_no, store_name, short_address, thumbnail, star_ratio, review_num, payback_ratio

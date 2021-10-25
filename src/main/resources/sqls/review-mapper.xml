@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.boot.demo.mapper.ReviewMapper">
-    <resultMap id="StoreReviewComponents" type="com.boot.demo.model.demo.response.detail.StoreReviewComponents">
+<mapper namespace="com.mvsolutions.payus.mapper.ReviewMapper">
+    <resultMap id="StoreReviewComponents" type="com.mvsolutions.payus.model.demo.response.detail.StoreReviewComponents">
         <result property="image_list" column="image_list"
-                typeHandler="com.boot.demo.handler.JsonTypeHandler"/>
+                typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
     </resultMap>
     <insert id="insertReviews" keyProperty="review_no" useGeneratedKeys="true">
         insert into review(store_no, user_no, reg_date, review_ratio, image_list, content, is_answered, answer_content,

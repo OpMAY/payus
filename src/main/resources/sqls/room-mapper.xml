@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.boot.demo.mapper.RoomMapper">
+<mapper namespace="com.mvsolutions.payus.mapper.RoomMapper">
     <insert id="insertRoom" useGeneratedKeys="true" keyProperty="room_no">
         insert into room(store_no, name, thumbnail, room_option, `explain`, price, price_option, reg_date)
         VALUES
