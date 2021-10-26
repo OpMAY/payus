@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mvsolutions.payus.mapper.StoreMapper">
+    <resultMap id="StoreDetailResponse" type="com.mvsolutions.payus.model.demo.response.detail.StoreDetailResponse">
+        <result property="image_list" column="image_list"
+                typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+        <result property="service_list" column="service_list"
+                typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+    </resultMap>
+    <select id="getStoreRandomListForHome" resultType="HomePaybackStore">
+        select store_no, store_name, short_address, thumbnail, star_ratio, review_num, payback_ratio
+        from store
+        order by rand()
+        limit 10
+    </select>
+    <select id="getStoreListOrderByPaybackRatioForHome" resultType="HomePaybackStore">
+        select store_no, store_name, short_address, thumbnail, star_ratio, review_num, payback_ratio
+        from store
+        order by payback_ratio DESC
+        limit 10
+    </select>
+    <insert id="insertStores" useGeneratedKeys="true" keyProperty="store_no">
+        insert into store(store_name, image_list, payback_ratio, `explain`, star_ratio, review_num, address,
+                          service_list, information, thumbnail, reg_date, address_1depth, address_y, address_3depth,
+                          address_x, address_2depth, short_address, category, address_3depth_h, price)
+        VALUES (#{store_name}, #{image_list}, #{payback_ratio}, #{explain}, #{star_ratio}, #{review_num}, #{address},
+                #{service_list}, #{information}, #{thumbnail}, #{reg_date}, #{address_1depth}, #{address_y},
+                #{address_3depth},
+                #{address_x}, #{address_2depth}, #{short_address}, #{category}, #{address_3depth_h}, #{price})
+    </insert>
+    <select id="getStoreRandomListForMain" resultType="HomePaybackStore">
+        select store_no,
+               store_name,
+               short_address,
+               thumbnail,
+               star_ratio,
+               review_num,
+               payback_ratio,
+               (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+                            sin(radians(#{y})) * sin(radians(address_y))))
+                        AS dist,
+               category AS store_category
+        FROM store
+        HAVING dist <![CDATA[<=]]> 10
+           AND store_category = #{category}
+        ORDER BY payback_ratio DESC, rand()
+        LIMIT 15
+    </select>
+    <select id="checkStoreIsValid" resultType="StoreNoCheck">
+        select store_no, address_x, address_y
+        from store
+        where store_no = #{store_no}
+    </select>
+    <select id="getDistanceOfLastIndex" resultType="_double">
+        select (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+                            sin(radians(#{y})) * sin(radians(address_y))))
+                   AS dist
+        from store
+        WHERE store_no = #{last_index}
+    </select>
+    <select id="getStoreRecommendListForMain" resultType="RecommendedStore">
+        select store_no,
+               store_name,
+               `explain`,
+               short_address,
+               thumbnail,
+               review_num,
+               star_ratio,
+               price,
+               payback_ratio,
+               (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+                            sin(radians(#{y})) * sin(radians(address_y))))
+                        AS dist,
+               category AS store_category
+        from store
+        HAVING dist <![CDATA[<=]]> 10
+           AND store_category = #{category}
+        ORDER BY dist, store_no DESC
+        LIMIT 50
+    </select>
+    <select id="getStoreRecommendListForMainReload" resultType="RecommendedStore">
+        select store_no,
+               store_name,
+               `explain`,
+               short_address,
+               thumbnail,
+               review_num,
+               star_ratio,
+               price,
+               payback_ratio,
+               (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+                            sin(radians(#{y})) * sin(radians(address_y))))
+                        AS dist,
+               category AS store_category
+        from store
+        HAVING ((dist <![CDATA[>]]> #{last_distance} AND dist <![CDATA[<=]]> 10)
+            OR (store_no <![CDATA[<]]> #{last_index} AND (dist <![CDATA[>]]> #{last_distance} AND dist <![CDATA[<=]]> 10)))
+           AND store_category = #{category}
+        ORDER BY dist, store_no DESC
+        LIMIT 50
+    </select>
+    <update id="updatePrices">
+        update store
+        SET price=#{price}
+        WHERE store_no = #{store_no}
+    </update>
+    <update id="updateStoreForReview">
+        update store
+        SET review_num=#{review_num},
+            star_ratio=#{star_ratio}
+        WHERE store_no = #{store_no}
+    </update>
+    <update id="updateStorePrivate">
+        update store
+        SET is_private=#{is_private}
+        WHERE store_no = #{store_no}
+    </update>
+    <select id="checkStorePrivate" resultType="_boolean">
+        select is_private
+        from store
+        WHERE store_no = #{store_no}
+    </select>
+    <select id="getStoreDetail" resultType="StoreDetailResponse" resultMap="StoreDetailResponse">
+        select store_no,
+               store_name,
+               image_list,
+               payback_ratio,
+               `explain`,
+               star_ratio,
+               review_num,
+               address,
+               information,
+               service_list
+        from store
+        WHERE store_no = #{store_no}
+    </select>
+    <update id="updateImages">
+        update store
+        SET image_list=#{image_list}
+    </update>
+    <update id="updateServices">
+        update store
+        SET service_list=#{service_list}
+        WHERE store_no = #{store_no}
+    </update>
+</mapper>

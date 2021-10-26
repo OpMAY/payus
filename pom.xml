@@ -8,12 +8,12 @@
 		<version>2.5.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.boot</groupId>
-	<artifactId>demo</artifactId>
+	<groupId>com.mvsolutions</groupId>
+	<artifactId>payus</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
+	<name>payus</name>
 	<packaging>war</packaging>
-	<description>Demo project for Spring Boot</description>
+	<description>PayUs Project</description>
 	<properties>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 		<log4j-version>1.2.17</log4j-version> <!--Logger Version-->
@@ -202,6 +202,18 @@
 			<groupId>com.google.firebase</groupId>
 			<artifactId>firebase-admin</artifactId>
 			<version>6.8.1</version>
+		</dependency>
+		<!-- 이메일 인증: https://mvnrepository.com/artifact/javax.mail/mail -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>5.2.0.RELEASE</version>
 		</dependency>
 	</dependencies>
 	<!--Amazon CDN Maven-->
