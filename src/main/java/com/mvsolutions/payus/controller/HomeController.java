@@ -88,6 +88,12 @@ public class HomeController {
         return VIEW;
     }
 
+    @RequestMapping(value = "/front.do", method = RequestMethod.GET)
+    public ModelAndView frontTest(){
+        VIEW = new ModelAndView("login_admin");
+        return VIEW;
+    }
+
     /**
      * 파라미터 타입은 다르지만 로직은 분리 해야할 때
      * Type parameter same but different values at sample, sample1, sample2
