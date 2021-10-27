@@ -1,0 +1,155 @@
+@import url(//fonts.googleapis.com/earlyaccess/hanna.css);
+@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Hahmlet:wght@300&family=Noto+Sans+KR:wght@300&display=swap');
+
+.btn-auth-sign-in {
+    color: white;
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #927dd0;
+    border-color: #927dd0;
+    font-size: large;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+    border-radius: 0;
+}
+
+.btn-auth-sign-in:hover {
+    opacity: 0.7;
+}
+
+.vendor-input-warning{
+    color: #ff6b6a;
+    font-size: small;
+    display: none;
+    justify-content: flex-end;
+}
+
+.btn-back{
+    color: #5d647a;
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #b6cfd0;
+    border-color: #b6cfd0;
+    font-size: large;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+    border-radius: 0;
+}
+
+.btn-back:hover{
+    opacity: 0.7;
+}
+
+.btn-auth-sign-up {
+    color: white;
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #927dd0;
+    border-color: #927dd0;
+    font-size: large;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+    border-radius: 0;
+}
+
+.btn-id-copy{
+    position: absolute;
+    top: 50%;
+    right: 2%;
+    color: white;
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #927dd0;
+    border-color: #927dd0;
+    height: 30px;
+    border-radius: 0;
+}
+
+.btn-id-copy:hover{
+    opacity: 0.7;
+}
+
+.btn-business-verify-text{
+    position: absolute;
+    top: 50%;
+    right: 2%;
+    color: white;
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #927dd0;
+    border-color: #927dd0;
+    height: 30px;
+    border-radius: 0;
+}
+
+.btn-business-verify-text:hover{
+    opacity: 0.7;
+}
+
+.btn-business-verify-file{
+    position: absolute;
+    top: 32%;
+    right: 2%;
+    color: white;
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #927dd0;
+    border-color: #927dd0;
+    height: 30px;
+    border-radius: 0;
+}
+
+.btn-business-verify-file:hover{
+    opacity: 0.7;
+}
+
+.btn-auth-sign-up:hover {
+    opacity: 0.7;
+}
+
+.hanna-font {
+    font-family: 'Hanna', sans-serif;
+    color: #8668d0;
+}
+
+.noto-font{
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.dohyun-font{
+    font-family: 'Do Hyeon', sans-serif;
+    font-weight: 400;
+}
+
+.vendor-input-file{
+    color: #5d647a;
+    font-size: small;
+    display: flex;
+    justify-content: flex-start;
+    line-height: 150%;
+}
+
+.filebox .upload-name {
+    display: inline-block;
+    height: 40px;
+    padding: 0 10px;
+    vertical-align: middle;
+    border: 1px solid #dddddd;
+    width: 78%;
+    color: #999999;
+}
+
+.filebox-label {
+    display: inline-block;
+    color: white;
+    background-color: #927dd0;
+    cursor: pointer;
+    height: 30px;
+    margin-left: 10px;
+}
+
+.filebox input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
