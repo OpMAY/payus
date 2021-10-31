@@ -24,7 +24,7 @@
     <!-- Layout styles -->
     <link rel="stylesheet" href="/css/demo_5/style.css">
     <!-- End layout styles -->
-    <link rel="shortcut icon" href="/images/favicon.png"/>
+    <link rel="shortcut icon" href="/images/payus_logo.png"/>
     <!-- Custom layout style for vendor -->
     <link rel="stylesheet" href="/css/vendor_style.css">
     <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -54,6 +54,7 @@
                                             <label for="vendor-register-name">이름</label>
                                             <input class="form-control" id="vendor-register-name"
                                                    onkeyup="checkNameValue(false)"
+                                                   onfocus="checkNameValue(false)"
                                                    placeholder="이름을 입력해주세요."
                                                    style="height: 8%">
                                             <h6 class="vendor-input-warning" id="warning-name" style="margin-top: 10px">
@@ -68,6 +69,7 @@
                                                 <div class="col-4" style="display: flex">
                                                     <input class="form-control" id="vendor-register-phone-1"
                                                            onkeyup="checkPhoneValue(false)"
+                                                           onfocus="checkPhoneValue(false)"
                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                                                            style="height: 150%">
                                                     <h3 style="color: black; position: absolute; top: 0; left: 100%; transform: translate(-45%, 35%)">
@@ -76,6 +78,7 @@
                                                 <div class="col-4" style="display: flex">
                                                     <input class="form-control" id="vendor-register-phone-2"
                                                            onkeyup="checkPhoneValue(false)"
+                                                           onfocus="checkPhoneValue(false)"
                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                                                            style="height: 150%">
                                                     <h3 style="color: black; position: absolute; top: 0; left: 100%; transform: translate(-45%, 35%)">
@@ -84,6 +87,7 @@
                                                 <div class="col-4">
                                                     <input class="form-control" id="vendor-register-phone-3"
                                                            onkeyup="checkPhoneValue(false)"
+                                                           onfocus="checkPhoneValue(false)"
                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
                                                            style="height: 150%">
                                                 </div>
@@ -95,7 +99,7 @@
                                         <div class="form-group">
                                             <label for="vendor-register-email">이메일</label>
                                             <input type="email" class="form-control" id="vendor-register-email"
-                                                   placeholder="example@example.com" onkeyup="checkEmailValue(false)"
+                                                   placeholder="example@example.com" onkeyup="checkEmailValue(false)" onfocus="checkEmailValue(false)"
                                                    style="height: 8%">
                                         </div>
                                         <h6 class="vendor-input-warning" id="warning-email">이메일을 올바르게 입력해주세요.</h6>
@@ -105,6 +109,7 @@
                                             <label for="vendor-register-id">아이디</label>
                                             <input class="form-control" id="vendor-register-id"
                                                    onkeyup="checkIdValue(false)"
+                                                   onfocus="checkIdValue(false)"
                                                    placeholder="아이디를 입력해주세요."
                                                    style="height: 8%">
                                         </div>
@@ -117,6 +122,7 @@
                                             <input type="password" class="form-control" id="vendor-register-password"
                                                    autocomplete="current-password" placeholder="비밀번호를 입력해주세요."
                                                    onkeyup="checkPasswordValue(false)"
+                                                   onfocus="checkPasswordValue(false)"
                                                    style="height: 8%">
                                         </div>
                                         <h6 class="vendor-input-warning" id="warning-password">비밀번호는 영어 소문자와 숫자로 구성되어야
@@ -129,6 +135,7 @@
                                                    id="vendor-register-password-verify"
                                                    autocomplete="current-password" placeholder="비밀번호를 확인해주세요."
                                                    onkeyup="checkPasswordMatches(false)"
+                                                   onfocus="checkPasswordMatches(false)"
                                                    style="height: 8%">
                                         </div>
                                         <h6 class="vendor-input-warning" id="warning-password-check"

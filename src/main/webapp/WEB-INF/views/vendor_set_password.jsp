@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>공급자 아이디 찾기 결과</title>
+    <title>공급자 비밀번호 찾기</title>
     <!-- core:css -->
     <link rel="stylesheet" href="/vendors/core/core.css">
     <!-- endinject -->
@@ -46,33 +46,37 @@
                         <div class="col-12">
                             <div class="auth-form-wrapper px-4 py-5">
                                 <div class="row justify-content-center">
-                                    <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0">아이디 찾기 결과</h3>
+                                    <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0">비밀번호 재설정</h3>
                                 </div>
                                 <form class="forms-sample noto-font">
                                     <div class="col-12">
-                                        <div class="form-group" style="position: relative">
-                                            <label for="vendor-result-id">아이디</label>
-                                            <input class="form-control" id="vendor-result-id"
-                                                   value="SampleId1234"
-                                                   placeholder="이름을 입력해주세요."
-                                                   style="height: 15%; text-align: center" disabled>
-                                            <button type="button" class="btn btn-id-copy"
-                                                    onclick="copyID()">
-                                                복사하기
-                                            </button>
+                                        <div class="form-group">
+                                            <label for="vendor-reset-password-id">아이디</label>
+                                            <input class="form-control" id="vendor-reset-password-id" value="${ID}" disabled
+                                                   style="height: 15%">
                                         </div>
                                     </div>
-                                    <div class="mt-3">
-                                        <div class="col-12">
-                                            <button type="button" class="btn btn-auth-sign-in d-block"
-                                                    onclick="window.location.href = '/vendor/login.do';">
-                                                로그인 하러가기
-                                            </button>
-                                            <button type="button" class="btn btn-auth-sign-in d-block"
-                                                    onclick="window.location.href = '/vendor/find/password.do';">
-                                                비밀번호 찾기
-                                            </button>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="vendor-reset-password">새 비밀번호</label>
+                                            <input class="form-control" id="vendor-reset-password"
+                                                   placeholder="새로운 비밀번호를 입력하세요."
+                                                   style="height: 15%">
                                         </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="vendor-reset-password-check">새 비밀번호 확인</label>
+                                            <input class="form-control" id="vendor-reset-password-check"
+                                                   placeholder="새로운 비밀번호를 입력하세요."
+                                                   style="height: 15%">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-payus"
+                                                id="email-verification-button">
+                                            확인
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -85,11 +89,7 @@
     </div>
 </div>
 <script>
-    function copyID() {
-        let id = document.getElementById("vendor-result-id");
-        navigator.clipboard.writeText(id.value);
-        alert("복사되었습니다.");
-    }
+
 </script>
 </body>
 </html>

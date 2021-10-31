@@ -24,7 +24,7 @@
     <!-- Layout styles -->
     <link rel="stylesheet" href="/css/demo_5/style.css">
     <!-- End layout styles -->
-    <link rel="shortcut icon" href="/images/favicon.png"/>
+    <link rel="shortcut icon" href="/images/payus_logo.png"/>
     <!-- Custom layout style for vendor -->
     <link rel="stylesheet" href="/css/vendor_style.css">
     <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -24,8 +24,9 @@
     <!-- Layout styles -->
     <link rel="stylesheet" href="/css/demo_5/style.css">
     <!-- End layout styles -->
-    <link rel="shortcut icon" href="/images/favicon.png"/>
+    <link rel="shortcut icon" href="/images/payus_logo.png"/>
     <link rel="stylesheet" href="/css/vendor_style.css">
+    <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div class="main-wrapper">
@@ -46,11 +47,22 @@
                                 <div class="row justify-content-center">
                                     <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0">공급자 로그인 페이지</h3>
                                 </div>
+                                <%
+                                    String cookie = "";
+                                    Cookie[] cookies = request.getCookies(); //쿠키생성
+                                    if (cookies != null && cookies.length > 0)
+                                        for (Cookie value : cookies) {
+                                            if (value.getName().equals("userId")) { // 내가 원하는 쿠키명 찾아서 값 저장
+                                                cookie = value.getValue();
+                                            }
+                                        }
+                                %>
                                 <form class="forms-sample noto-font">
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="adminInputId" class="noto-font">아이디</label>
-                                            <input class="form-control noto-font" id="adminInputId" placeholder="아이디를 입력하세요."
+                                            <input class="form-control noto-font" id="adminInputId"
+                                                   placeholder="아이디를 입력하세요." value="<%=cookie%>"
                                                    style="height: 10%">
                                         </div>
                                     </div>
@@ -64,14 +76,17 @@
                                     </div>
                                     <div class="row mx-auto">
                                         <div class="col-12" style="display: flex; justify-content: flex-end">
-                                            <a href="/vendor/find/identification.do" class="d-block text-muted noto-font" style="word-break: keep-all">아이디 찾기</a>
-                                            <a href="#" class="d-block text-muted noto-font" style="margin-left: 5px; word-break: keep-all">비밀번호 찾기</a>
+                                            <a href="/vendor/find/identification.do"
+                                               class="d-block text-muted noto-font" style="word-break: keep-all">아이디
+                                                찾기</a>
+                                            <a href="/vendor/find/password.do" class="d-block text-muted noto-font"
+                                               style="margin-left: 5px; word-break: keep-all">비밀번호 찾기</a>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-check form-check-flat form-check-primary">
                                             <label class="form-check-label noto-font">
-                                                <input type="checkbox" class="form-check-input noto-font">
+                                                <input type="checkbox" class="form-check-input noto-font" id="id-check" onchange="checkAlert()">
                                                 아이디 기억하기
                                             </label>
                                         </div>
@@ -82,14 +97,17 @@
                                             <button type="button" class="btn btn-auth-sign-in d-block">
                                                 로그인
                                             </button>
-                                            <button type="button" class="btn btn-auth-sign-up d-block" onclick="window.location.href='/vendor/register.do'">
+                                            <button type="button" class="btn btn-auth-sign-up d-block"
+                                                    onclick="window.location.href='/vendor/register.do'">
                                                 회원가입
                                             </button>
                                         </div>
                                     </div>
                                     <div class="col-12" style="display: flex">
-                                        <a href="#" class="text-muted noto-font" style="word-break: keep-all">개인정보 취급방침</a>
-                                        <a href="#" class="text-muted ml-auto noto-font" style="word-break: keep-all;">서비스 이용약관</a>
+                                        <a href="#" class="text-muted noto-font" style="word-break: keep-all">개인정보
+                                            취급방침</a>
+                                        <a href="#" class="text-muted ml-auto noto-font" style="word-break: keep-all;">서비스
+                                            이용약관</a>
                                     </div>
                                 </form>
                             </div>
@@ -101,7 +119,13 @@
         </div>
     </div>
 </div>
-
+<script>
+    function checkAlert() {
+        if ($('#id-check').is(":checked")) {
+            alert('해당 기능은 공공 장소의 기기에선 사용을 권장하지 않습니다.\n개인 기기에서만 사용해 주시길 바랍니다.');
+        }
+    }
+</script>
 <!-- core:js -->
 <script src="/vendors/core/core.js"></script>
 <!-- endinject -->

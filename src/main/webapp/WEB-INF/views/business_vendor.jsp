@@ -24,7 +24,7 @@
     <!-- Layout styles -->
     <link rel="stylesheet" href="/css/demo_5/style.css">
     <!-- End layout styles -->
-    <link rel="shortcut icon" href="/images/favicon.png"/>
+    <link rel="shortcut icon" href="/images/payus_logo.png"/>
     <!-- Custom layout style for vendor -->
     <link rel="stylesheet" href="/css/vendor_style.css">
     <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -45,8 +45,10 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="auth-form-wrapper px-4 py-5">
-                                <div class="row justify-content-center">
-                                    <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0">사업자 등록 번호 인증</h3>
+                                <div class="row" style="justify-content: center">
+                                    <h3 class="d-block mb-2 noto-font" style="color: #8668d0">사업자 등록 번호 인증</h3>
+                                    <h6 class="noto-font" style="margin-bottom: 30px;word-break: keep-all">등록 심사를 위해 두 가지
+                                        방법 중 최소 한 가지 이상 등록하셔야 합니다</h6>
                                 </div>
                                 <form class="forms-sample noto-font">
                                     <div class="col-12">
@@ -59,7 +61,8 @@
                                                    onkeyup="checkCorporateRegiNumber(this.value)"
                                                    onfocus="checkCorporateRegiNumber(this.value)"
                                                    style="height: 13%">
-                                            <button type="button" class="btn btn-business-verify-text" id="business-text-button">
+                                            <button type="button" class="btn btn-business-verify-text"
+                                                    id="business-text-button">
                                                 인증하기
                                             </button>
                                             <h6 class="vendor-input-warning" id="warning-business-text"
@@ -130,22 +133,22 @@
         }
     });
 
-    function checkCorporateRegiNumber(number){
-        let numberMap = number.replace(/-/gi, '').split('').map(function (d){
+    function checkCorporateRegiNumber(number) {
+        let numberMap = number.replace(/-/gi, '').split('').map(function (d) {
             return parseInt(d, 10);
         });
 
-        if(numberMap.length === 10){
+        if (numberMap.length === 10) {
             let keyArr = [1, 3, 7, 1, 3, 7, 1, 3, 5];
             let chk = 0;
 
-            keyArr.forEach(function(d, i){
+            keyArr.forEach(function (d, i) {
                 chk += d * numberMap[i];
             });
 
-            chk += parseInt((keyArr[8] * numberMap[8])/ 10, 10);
+            chk += parseInt((keyArr[8] * numberMap[8]) / 10, 10);
             console.log(chk);
-            if(!(Math.floor(numberMap[9]) === ( (10 - (chk % 10) ) % 10))){
+            if (!(Math.floor(numberMap[9]) === ((10 - (chk % 10)) % 10))) {
                 document.getElementById('warning-business-text').setAttribute('style', 'display:flex');
                 document.getElementById('business-text-button').setAttribute('style', 'top:43%');
             } else {
