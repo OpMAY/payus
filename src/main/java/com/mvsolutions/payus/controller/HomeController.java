@@ -90,7 +90,7 @@ public class HomeController {
 
     @RequestMapping(value = "/front.do", method = RequestMethod.GET)
     public ModelAndView frontTest(){
-        VIEW = new ModelAndView("register_vendor");
+        VIEW = new ModelAndView("modal_test");
         return VIEW;
     }
 

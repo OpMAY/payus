@@ -168,6 +168,10 @@
 
     });
 
+    window.onbeforeunload = function (e) {
+        return 0;
+    };
+
     $(":input").keypress(function (e) {
         if (this.value === '')
             if (e.keyCode === 32)
