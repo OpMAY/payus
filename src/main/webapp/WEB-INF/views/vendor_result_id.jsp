@@ -55,10 +55,10 @@
                                             <input class="form-control" id="vendor-result-id"
                                                    value="SampleId1234"
                                                    placeholder="이름을 입력해주세요."
-                                                   style="height: 15%; text-align: center" disabled>
-                                            <button type="button" class="btn btn-id-copy"
+                                                   style="height: 15%;" disabled>
+                                            <button type="button" class="btn btn-id-copy" style="word-break: keep-all"
                                                     onclick="copyID()">
-                                                복사하기
+                                                복사
                                             </button>
                                         </div>
                                     </div>

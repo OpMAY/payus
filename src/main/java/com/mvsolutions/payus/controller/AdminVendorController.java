@@ -30,9 +30,15 @@ public class AdminVendorController {
         return VIEW;
     }
 
+    @RequestMapping("/vendor/register/bank.do")
+    public ModelAndView VendorBankPage(){
+        VIEW = new ModelAndView("register_vendor_2");
+        return VIEW;
+    }
+
     @RequestMapping("/vendor/register/business.do")
     public ModelAndView VendorBusinessPage() {
-        VIEW = new ModelAndView("business_vendor");
+        VIEW = new ModelAndView("register_vendor_3");
         return VIEW;
     }
 

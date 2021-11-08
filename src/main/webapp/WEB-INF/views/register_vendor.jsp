@@ -45,10 +45,68 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="auth-form-wrapper px-4 py-5">
-                                <div class="row justify-content-center">
+                                <div class="row" style="display: flex;align-content: center;flex-direction: column">
                                     <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0">공급자 회원가입 페이지</h3>
+                                    <span class="noto-font sub-title"><strong>회원 정보 (1 / 4)</strong></span>
                                 </div>
                                 <form class="forms-sample noto-font">
+                                    <div class="col-12">
+                                        <div class="form-group" style="position: relative">
+                                            <label for="vendor-register-email">이메일</label>
+                                            <input type="email" class="form-control" id="vendor-register-email"
+                                                   placeholder="example@example.com" onkeyup="checkEmailValue(false)" onfocus="checkEmailValue(false)"
+                                                   style="height: 8%">
+                                            <button type="button" class="btn btn-password-find-button"
+                                                    id="password-verification-button" onclick="validationEmail()" style="word-break: keep-all">
+                                                인증
+                                            </button>
+                                        </div>
+                                        <span class="vendor-input-warning" id="warning-email">이메일을 올바르게 입력해주세요.</span>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group" style="display: none; position: relative" id="email-validation-div">
+                                            <label for="vendor-find-password-email-validation-code">인증코드</label>
+                                            <input class="form-control" id="vendor-find-password-email-validation-code"
+                                                   placeholder="인증 코드"
+                                                   style="height: 60px">
+                                            <button type="button" class="btn btn-email-validation-resend" style="word-break: keep-all"
+                                                    id="email-verification-resend" onclick="validationResend()">
+                                                재전송
+                                            </button>
+                                            <span class="validation-timer" id="timer">인증 만료 시간 - 5 : 00</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-payus" style="display: none"
+                                                id="email-verification-button" onclick="validationCode()">
+                                            확인
+                                        </button>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="vendor-register-password">비밀번호</label>
+                                            <input type="password" class="form-control" id="vendor-register-password"
+                                                   autocomplete="current-password" placeholder="비밀번호를 입력해주세요."
+                                                   onkeyup="checkPasswordValue(false)"
+                                                   onfocus="checkPasswordValue(false)"
+                                                   style="height: 8%">
+                                        </div>
+                                        <span class="vendor-input-warning" id="warning-password">비밀번호는 영어 소문자와 숫자로 구성되어야
+                                            하며 최소 8자입니다.</span>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="vendor-register-password-verify">비밀번호 확인</label>
+                                            <input type="password" class="form-control"
+                                                   id="vendor-register-password-verify"
+                                                   autocomplete="current-password" placeholder="비밀번호를 확인해주세요."
+                                                   onkeyup="checkPasswordMatches(false)"
+                                                   onfocus="checkPasswordMatches(false)"
+                                                   style="height: 8%">
+                                        </div>
+                                        <span class="vendor-input-warning" id="warning-password-check"
+                                              style="display: none">비밀번호가 일치하지 않습니다.</span>
+                                    </div>
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="vendor-register-name">이름</label>
@@ -57,9 +115,9 @@
                                                    onfocus="checkNameValue(false)"
                                                    placeholder="이름을 입력해주세요."
                                                    style="height: 8%">
-                                            <h6 class="vendor-input-warning" id="warning-name" style="margin-top: 10px">
+                                            <span class="vendor-input-warning" id="warning-name" style="margin-top: 10px">
                                                 이름은 2자 이상 30자 이하로
-                                                입력해주세요.</h6>
+                                                입력해주세요.</span>
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -84,7 +142,7 @@
                                                     <h3 style="color: black; position: absolute; top: 0; left: 100%; transform: translate(-45%, 35%)">
                                                         -</h3>
                                                 </div>
-                                                <div class="col-4">
+                                                <div class="col-4" style="display:flex;">
                                                     <input class="form-control" id="vendor-register-phone-3"
                                                            onkeyup="checkPhoneValue(false)"
                                                            onfocus="checkPhoneValue(false)"
@@ -93,58 +151,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <h6 class="vendor-input-warning" id="warning-phone">연락처를 올바르게 입력해주세요.</h6>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label for="vendor-register-email">이메일</label>
-                                            <input type="email" class="form-control" id="vendor-register-email"
-                                                   placeholder="example@example.com" onkeyup="checkEmailValue(false)" onfocus="checkEmailValue(false)"
-                                                   style="height: 8%">
-                                        </div>
-                                        <h6 class="vendor-input-warning" id="warning-email">이메일을 올바르게 입력해주세요.</h6>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label for="vendor-register-id">아이디</label>
-                                            <input class="form-control" id="vendor-register-id"
-                                                   onkeyup="checkIdValue(false)"
-                                                   onfocus="checkIdValue(false)"
-                                                   placeholder="아이디를 입력해주세요."
-                                                   style="height: 8%">
-                                        </div>
-                                        <h6 class="vendor-input-warning" id="warning-id">아이디는 영어 소문자 및 숫자로 구성 가능하며 최소 4자
-                                            최대 30자입니다.</h6>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label for="vendor-register-password">비밀번호</label>
-                                            <input type="password" class="form-control" id="vendor-register-password"
-                                                   autocomplete="current-password" placeholder="비밀번호를 입력해주세요."
-                                                   onkeyup="checkPasswordValue(false)"
-                                                   onfocus="checkPasswordValue(false)"
-                                                   style="height: 8%">
-                                        </div>
-                                        <h6 class="vendor-input-warning" id="warning-password">비밀번호는 영어 소문자와 숫자로 구성되어야
-                                            하며 최소 8자입니다.</h6>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label for="vendor-register-password-verify">비밀번호 확인</label>
-                                            <input type="password" class="form-control"
-                                                   id="vendor-register-password-verify"
-                                                   autocomplete="current-password" placeholder="비밀번호를 확인해주세요."
-                                                   onkeyup="checkPasswordMatches(false)"
-                                                   onfocus="checkPasswordMatches(false)"
-                                                   style="height: 8%">
-                                        </div>
-                                        <h6 class="vendor-input-warning" id="warning-password-check"
-                                            style="display: none">비밀번호가 일치하지 않습니다.</h6>
+                                        <span class="vendor-input-warning" id="warning-phone">연락처를 올바르게 입력해주세요.</span>
                                     </div>
                                     <div class="mt-3">
                                         <div class="col-12">
                                             <button type="button" class="btn btn-auth-sign-in d-block"
-                                                    onclick="submitRegister()">
+<%--                                                    onclick="submitRegister()">--%>
+                                                onclick="window.location.href = '/vendor/register/bank.do'">
                                                 다음
                                             </button>
                                             <button type="button" class="btn btn-back d-block"
@@ -164,13 +177,61 @@
     </div>
 </div>
 <script>
+
+    let setTime = 299;
+    let timeInstance;
+    function timer(){
+        let minute = Math.floor(setTime / 60);
+        let second = setTime % 60;
+        let m;
+        if(second > 9){
+            m = minute + " : " + second;
+        } else {
+            m = minute + " : 0" + second;
+        }
+        document.getElementById("timer").innerText = "인증 만료 시간 - " + m;
+        setTime--;
+        if(setTime < 0){
+            document.getElementById("timer").innerText = "인증이 만료되었습니다.";
+            clearInterval(timerInstance);
+        }
+    }
+
+    function validationResend(){
+        setTime = 300;
+        clearInterval(timerInstance);
+        timerInstance = setInterval(timer, 1000);
+        alert('인증코드가 재전송되었습니다.');
+    }
+
+    function validationEmail() {
+        let email = document.getElementById("vendor-register-email");
+        if (!checkValueEmpty(email))
+            alert("입력 값을 먼저 입력해주세요.");
+        else {
+            alert("인증 메일이 발송되었습니다.");
+            email.disabled = true;
+            document.getElementById("email-validation-div").setAttribute("style", "display : block; position : relative");
+            document.getElementById("email-verification-button").setAttribute("style", "display :block");
+            document.getElementById("password-verification-button").setAttribute("disabled", "disabled");
+            timerInstance = setInterval(timer, 1000);
+        }
+    }
+
+    function checkValueEmpty(element) {
+        if (element !== undefined) {
+            return !(element.value === null || element.value === "");
+        } else
+            return false;
+    }
+
     $(document).ready(function () {
 
     });
 
-    window.onbeforeunload = function (e) {
-        return 0;
-    };
+    // window.onbeforeunload = function (e) {
+    //     return 0;
+    // };
 
     $(":input").keypress(function (e) {
         if (this.value === '')
@@ -189,9 +250,6 @@
             return false;
         } else if (!checkEmailValue(true)) {
             alert("이메일을 확인해주세요.");
-            return false;
-        } else if (!checkIdValue(true)) {
-            alert("아이디를 확인해주세요.");
             return false;
         } else if (!checkPasswordValue(true)) {
             alert("비밀번호를 확인해주세요.");
@@ -255,22 +313,6 @@
                 return false;
             else
                 document.getElementById('warning-email').setAttribute('style', 'display:flex');
-        }
-    }
-
-    function checkIdValue(send) {
-        let id = document.getElementById('vendor-register-id');
-        let idRegex = /^[a-z0-9+]{4,30}$/;
-        if (idRegex.test(id.value)) {
-            if (send)
-                return true;
-            else
-                document.getElementById('warning-id').setAttribute('style', 'display:none');
-        } else {
-            if (send)
-                return false;
-            else
-                document.getElementById('warning-id').setAttribute('style', 'display:flex');
         }
     }
 

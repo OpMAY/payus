@@ -31,7 +31,7 @@
 <body>
 <div class="main-wrapper">
     <div class="page-wrapper full-page">
-        <div class="page-content d-flex align-items-center justify-content-center" style="flex-direction: column">
+        <div class="page-content d-flex align-items-center justify-content-center page-content-border" style="flex-direction: column;">
             <div class="row">
                 <div class="col-md-12 col-xl-8 d-flex"
                      style="margin-bottom: 20px; flex-direction: row; align-items: center">
@@ -77,18 +77,10 @@
                                     <div class="row mx-auto">
                                         <div class="col-12" style="display: flex; justify-content: flex-end">
                                             <a href="/vendor/find/identification.do"
-                                               class="d-block text-muted noto-font" style="word-break: keep-all">아이디
+                                               class="d-block noto-font vendor-identification-find" style="word-break: keep-all">아이디
                                                 찾기</a>
-                                            <a href="/vendor/find/password.do" class="d-block text-muted noto-font"
+                                            <a href="/vendor/find/password.do" class="d-block noto-font vendor-identification-find"
                                                style="margin-left: 5px; word-break: keep-all">비밀번호 찾기</a>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-check form-check-flat form-check-primary">
-                                            <label class="form-check-label noto-font">
-                                                <input type="checkbox" class="form-check-input noto-font" id="id-check" onchange="checkAlert()">
-                                                아이디 기억하기
-                                            </label>
                                         </div>
                                     </div>
                                     <hr/>
@@ -103,12 +95,6 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="col-12" style="display: flex">
-                                        <a href="#" class="text-muted noto-font" style="word-break: keep-all">개인정보
-                                            취급방침</a>
-                                        <a href="#" class="text-muted ml-auto noto-font" style="word-break: keep-all;">서비스
-                                            이용약관</a>
-                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -117,15 +103,11 @@
             </div>
 
         </div>
+        <!-- partial:partials/_footer.jsp -->
+        <jsp:include page="partials/vendor_footer.jsp" flush="true"></jsp:include>
+        <!-- partial -->
     </div>
 </div>
-<script>
-    function checkAlert() {
-        if ($('#id-check').is(":checked")) {
-            alert('해당 기능은 공공 장소의 기기에선 사용을 권장하지 않습니다.\n개인 기기에서만 사용해 주시길 바랍니다.');
-        }
-    }
-</script>
 <!-- core:js -->
 <script src="/vendors/core/core.js"></script>
 <!-- endinject -->

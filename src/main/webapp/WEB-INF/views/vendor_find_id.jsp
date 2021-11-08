@@ -84,7 +84,7 @@
                                                     <h3 style="color: black; position: absolute; top: 0; left: 100%; transform: translate(-45%, 18%)">
                                                         -</h3>
                                                 </div>
-                                                <div class="col-4">
+                                                <div class="col-4" style="display: flex">
                                                     <input class="form-control" id="vendor-find-id-phone-3"
                                                            onkeyup="checkPhoneValue(false)"
                                                            onfocus="checkPhoneValue(false)"
@@ -98,7 +98,7 @@
                                     <div class="mt-3">
                                         <div class="col-12">
                                             <button type="button" class="btn btn-auth-sign-in d-block"
-                                                    onclick="alert('회원가입 완료')">
+                                                    onclick="window.location.href='/vendor/find/identification/result.do'">
                                                 아이디 찾기
                                             </button>
                                         </div>

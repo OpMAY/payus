@@ -48,9 +48,9 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(restInterceptor)
-                .addPathPatterns("/api/**")
-                .excludePathPatterns(rest_interceptor_excluded_urls);
+//        registry.addInterceptor(restInterceptor)
+//                .addPathPatterns("/api/**")
+//                .excludePathPatterns(rest_interceptor_excluded_urls);
         registry.addInterceptor(mvcInterceptor)
                 .addPathPatterns("*.do");
         /*.excludePathPatterns(mvc_interceptor_excluded_urls);*/

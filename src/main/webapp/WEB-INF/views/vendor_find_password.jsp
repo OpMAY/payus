@@ -50,27 +50,19 @@
                                 </div>
                                 <form class="forms-sample noto-font">
                                     <div class="col-12">
-                                        <div class="form-group">
-                                            <label for="vendor-find-password-id">아이디</label>
-                                            <input class="form-control" id="vendor-find-password-id"
-                                                   placeholder="아이디를 입력해주세요."
-                                                   style="height: 60px">
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
                                         <div class="form-group" style="position: relative">
                                             <label for="vendor-find-password-email">이메일</label>
-                                            <input class="form-control" id="vendor-find-password-email"
+                                            <input type="email" class="form-control" id="vendor-find-password-email"
                                                    placeholder="example@example.com" onkeyup="checkEmailValue(false)"
                                                    onfocus="checkEmailValue(false)"
                                                    style="height: 60px">
+                                            <span class="vendor-input-warning" id="warning-email"
+                                                style="margin-top: 10px;max-inline-size: max-content;">
+                                                이메일을 형식에 맞게 입력하세요.</span>
                                             <button type="button" class="btn btn-password-find-button"
-                                                    id="password-verification-button" onclick="validationEmail()">
-                                                인증번호 받기
+                                                    id="password-verification-button" onclick="validationEmail()" style="word-break: keep-all">
+                                                인증
                                             </button>
-                                            <h6 class="vendor-input-warning" id="warning-email"
-                                                style="margin-top: 10px">
-                                                이메일을 올바른 형태로 입력해주세요.</h6>
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -83,7 +75,7 @@
                                                     id="email-verification-resend" onclick="validationResend()">
                                                 재전송
                                             </button>
-                                            <span class="validation-timer" id="timer">인증 만료 시간 - 3 : 00</span>
+                                            <span class="validation-timer" id="timer">인증 만료 시간 - 5 : 00</span>
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -103,7 +95,7 @@
     </div>
 </div>
 <script>
-    let setTime = 179;
+    let setTime = 299;
     let timeInstance;
     function timer(){
         let minute = Math.floor(setTime / 60);
@@ -123,24 +115,22 @@
     }
 
     function validationResend(){
-        setTime = 180;
+        setTime = 300;
         clearInterval(timerInstance);
         timerInstance = setInterval(timer, 1000);
         alert('인증코드가 재전송되었습니다.');
     }
 
     function validationEmail() {
-        let id = document.getElementById("vendor-find-password-id");
         let email = document.getElementById("vendor-find-password-email");
-        if (!checkValueEmpty(id) || !checkValueEmpty(email))
+        if (!checkValueEmpty(email))
             alert("입력 값을 먼저 입력해주세요.");
         else {
             alert("인증 메일이 발송되었습니다.");
-            id.setAttribute("disabled", true);
-            email.setAttribute("disabled", true);
+            email.disabled = true;
             document.getElementById("email-validation-div").setAttribute("style", "display : block; position : relative");
             document.getElementById("email-verification-button").setAttribute("style", "display :block");
-            document.getElementById("password-verification-button").setAttribute("disabled", true);
+            document.getElementById("password-verification-button").setAttribute("disabled", "disabled");
             timerInstance = setInterval(timer, 1000);
         }
     }
@@ -163,14 +153,14 @@
                 return true;
             else {
                 document.getElementById('warning-email').setAttribute('style', 'display:none;margin-top: 10px');
-                document.getElementById('password-verification-button').setAttribute('style', 'top : 50%');
+                document.getElementById('password-verification-button').setAttribute('style', 'top : 50%; word-break:keep-all;');
             }
         } else {
             if (send)
                 return false;
             else {
                 document.getElementById('warning-email').setAttribute('style', 'display:flex;margin-top: 10px');
-                document.getElementById('password-verification-button').setAttribute('style', 'top : 38%');
+                document.getElementById('password-verification-button').setAttribute('style', 'top : 38%; word-break:keep-all;');
             }
         }
     }

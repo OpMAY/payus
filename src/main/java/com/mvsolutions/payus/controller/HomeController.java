@@ -181,7 +181,7 @@ public class HomeController {
         log.info("name : " + name);
         String validationCode = emailSendService.sendEmailForValidation(email);
         Cookie cookie = new Cookie("validationCode", validationCode);
-        cookie.setMaxAge(180);
+        cookie.setMaxAge(300);
         response.addCookie(cookie);
         return new ModelAndView("email_validation");
     }

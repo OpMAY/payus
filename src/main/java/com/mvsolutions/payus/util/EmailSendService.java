@@ -1,6 +1,8 @@
 package com.mvsolutions.payus.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -10,9 +12,13 @@ import javax.mail.internet.MimeMessage;
 import java.util.UUID;
 
 @Service
+@PropertySource("classpath:mail.properties")
 public class EmailSendService {
     @Autowired
     JavaMailSender emailSender;
+
+    @Value("${admin.mail.id}")
+    private String adminEmailID;
 
     public String sendEmailForValidation(String toMail) {
         //TODO 1. Select Vendor From Email
@@ -20,7 +26,7 @@ public class EmailSendService {
         //Validation Code
         String validationCode = UUID.randomUUID().toString().substring(0, 8);
 
-        String setFrom = "hjw8622@gmail.com";
+        String setFrom = adminEmailID;
         String title = "[PayUs] 비밀번호 찾기 인증 이메일입니다.";
         String content = System.getProperty("line.separator") + "안녕하세요. 공급자님" + System.getProperty("line.separator") + "PayUs 공급자 비밀번호 찾기 인증번호는 " + validationCode + "입니다." + System.getProperty("line.separator") + "인증 화면에서 해당 코드를 입력해주세요." + System.getProperty("line.separator");
 
