@@ -88,6 +88,12 @@ public class HomeController {
         return VIEW;
     }
 
+    @RequestMapping(value = "/front.do", method = RequestMethod.GET)
+    public ModelAndView frontTest(){
+        VIEW = new ModelAndView("modal_test");
+        return VIEW;
+    }
+
     /**
      * 파라미터 타입은 다르지만 로직은 분리 해야할 때
      * Type parameter same but different values at sample, sample1, sample2
@@ -175,7 +181,7 @@ public class HomeController {
         log.info("name : " + name);
         String validationCode = emailSendService.sendEmailForValidation(email);
         Cookie cookie = new Cookie("validationCode", validationCode);
-        cookie.setMaxAge(180);
+        cookie.setMaxAge(300);
         response.addCookie(cookie);
         return new ModelAndView("email_validation");
     }
