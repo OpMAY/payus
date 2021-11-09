@@ -1,7 +1,6 @@
 package com.mvsolutions.payus.util;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -9,10 +8,9 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 import java.net.URI;
-import java.net.URLEncoder;
-import java.util.List;
+import java.net.URISyntaxException;
 
 /**
  * KAKAO DEVELOPERS API 주소 검색
@@ -33,8 +31,11 @@ import java.util.List;
  * **/
 
 public class KakaoLocationApi {
-    private final String REST_API_KEY = "6ea961726165307daa0af03f7cca7d1a";
-    private final String BASE_URL = "https://dapi.kakao.com/v2/local/search/address.";
+    private final String REST_API_KEY = "b59ff3937ee712fcc589f4f1adeeaa21";
+    private final String ADDRESS_SEARCH_URL = "https://dapi.kakao.com/v2/local/search/address.";
+    private final String COORDINATE_TO_ADDRESS_URL = "https://dapi.kakao.com/v2/local/geo/coord2address.";
+    private final String KEYWORD_ADDRESS_SEARCH_URL = "https://dapi.kakao.com/v2/local/search/keyword.";
+
     //REQUIRED PARAMETERS
     private final String FORMAT_JSON = "json";
     private final String FORMAT_XML = "xml";
@@ -55,7 +56,29 @@ public class KakaoLocationApi {
         return post;
     }
 
-    private HttpGet getGet(String url, String location) throws Exception {
+    private HttpGet initKeywordAddressSearch(String url, String keyword) throws URISyntaxException {
+        HttpGet get = new HttpGet(url);
+        get.setHeader("Accept", "application/json");
+        get.setHeader("Content-Type", "application/json");
+        get.setHeader("Accept-Charset", "utf-8");
+        get.setHeader("Authorization", "KakaoAK " + REST_API_KEY);
+        URI uri = new URIBuilder(get.getURI()).addParameter("query", keyword).build();
+        get.setURI(uri);
+        return get;
+    }
+
+    private HttpGet initCoordinateToAddress(String url, String x, String y) throws URISyntaxException {
+        HttpGet get = new HttpGet(url);
+        get.setHeader("Accept", "application/json");
+        get.setHeader("Content-Type", "application/json");
+        get.setHeader("Accept-Charset", "utf-8");
+        get.setHeader("Authorization", "KakaoAK " + REST_API_KEY);
+        URI uri = new URIBuilder(get.getURI()).addParameter("x", x).addParameter("y", y).build();
+        get.setURI(uri);
+        return get;
+    }
+
+    private HttpGet initLocationCoordinates(String url, String location) throws URISyntaxException {
         HttpGet get = new HttpGet(url);
         get.setHeader("Accept", "application/json");
         get.setHeader("Content-Type", "application/json");
@@ -66,9 +89,21 @@ public class KakaoLocationApi {
         return get;
     }
 
-    public HttpResponse getLocationCoordinates(String location) throws Exception {
+    public HttpResponse getLocationCoordinates(String location) throws IOException, URISyntaxException {
         HttpClient client = HttpClientBuilder.create().build();
-        HttpGet get = getGet(BASE_URL + FORMAT_JSON, location);
+        HttpGet get = initLocationCoordinates(ADDRESS_SEARCH_URL + FORMAT_JSON, location);
+        return client.execute(get);
+    }
+
+    public HttpResponse getCoordinateToAddress(String x, String y) throws URISyntaxException, IOException {
+        HttpClient client = HttpClientBuilder.create().build();
+        HttpGet get = initCoordinateToAddress(COORDINATE_TO_ADDRESS_URL + FORMAT_JSON, x, y);
+        return client.execute(get);
+    }
+
+    public HttpResponse getKeywordAddressSearch(String keyword) throws URISyntaxException, IOException {
+        HttpClient client = HttpClientBuilder.create().build();
+        HttpGet get = initKeywordAddressSearch(KEYWORD_ADDRESS_SEARCH_URL + FORMAT_JSON, keyword);
         return client.execute(get);
     }
 

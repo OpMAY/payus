@@ -3,7 +3,6 @@ package com.mvsolutions.payus.controller;
 import com.mvsolutions.payus.exception.enums.BusinessExceptionType;
 import com.mvsolutions.payus.exception.rest.GrantAccessDeniedException;
 import com.mvsolutions.payus.model.TestModel;
-import com.mvsolutions.payus.model.demo.UploadForm;
 import com.mvsolutions.payus.model.utility.businessvalidation.BusinessStatusRequest;
 import com.mvsolutions.payus.model.utility.businessvalidation.BusinessValidation;
 import com.mvsolutions.payus.model.utility.businessvalidation.BusinessValidationRequest;
@@ -17,6 +16,8 @@ import com.google.gson.Gson;
 import com.mvsolutions.payus.util.*;
 import lombok.*;
 import lombok.extern.log4j.Log4j;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +38,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,9 +63,6 @@ public class HomeController {
     private FileUploadUtility fileUploadUtility;
 
     @Autowired
-    private DemoStoreAddressService demoStoreAddressService;
-
-    @Autowired
     private EmailSendService emailSendService;
 
     public void HomeController() {
@@ -72,7 +72,6 @@ public class HomeController {
     @RequestMapping(value = "/home.do", method = RequestMethod.GET)
     public ModelAndView Home() {
         HomeController();
-        homeService.sqlRollbackTest();
         return new ModelAndView("home");
     }
 
@@ -170,6 +169,15 @@ public class HomeController {
         return new ModelAndView("home");
     }
 
+    @RequestMapping(value = "/test/juso", method = RequestMethod.GET)
+    public ModelAndView jusoTest(@RequestParam("keyword") String keyword) throws IOException {
+        JusoApi api = new JusoApi();
+        HttpResponse response = api.getJusoSearch(keyword);
+        String result = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
+        log.info(result);
+        return new ModelAndView("home");
+    }
+
     @RequestMapping(value = "/demo/email.do", method = RequestMethod.GET)
     public ModelAndView emailFindPage() {
         HomeController();
@@ -206,41 +214,6 @@ public class HomeController {
             }
         }
         return 0;
-    }
-
-    @RequestMapping(value = "/demo/insert.do", method = RequestMethod.GET)
-    public ModelAndView insertStores(@RequestParam("no") int no) throws Exception {
-        HomeController();
-        demoStoreAddressService.insertStores(no);
-        return new ModelAndView("home");
-    }
-
-    @RequestMapping(value = "/demo/price.do", method = RequestMethod.GET)
-    public ModelAndView insertPrices() {
-        HomeController();
-        demoStoreAddressService.updatePrices();
-        return new ModelAndView("home");
-    }
-
-    @RequestMapping(value = "/demo/review.do", method = RequestMethod.GET)
-    public ModelAndView insertReview() {
-        HomeController();
-        demoStoreAddressService.insertReviews();
-        return new ModelAndView("home");
-    }
-
-    @RequestMapping(value = "/demo/review_num.do", method = RequestMethod.GET)
-    public ModelAndView insertReviewNum() {
-        HomeController();
-        demoStoreAddressService.updateStoreByReview();
-        return new ModelAndView("home");
-    }
-
-    @RequestMapping(value = "/demo/rooms.do", method = RequestMethod.GET)
-    public ModelAndView insertRoom() {
-        HomeController();
-        demoStoreAddressService.answerReview();
-        return new ModelAndView("home");
     }
 
 
@@ -306,75 +279,75 @@ public class HomeController {
      * File Upload Test Logic
      */
     /*Post File Upload*/
-    @RequestMapping(value = "/upload.do", method = RequestMethod.POST)
-    public ModelAndView upload(UploadForm uploadForm) throws Exception {
-        HomeController();
-        log.info(uploadForm);
-        if (uploadForm.getFile().getSize() != 0) {
-            log.info("originalName:" + uploadForm.getFile().getOriginalFilename());
-            log.info("size:" + uploadForm.getFile().getSize());
-            log.info("ContentType:" + uploadForm.getFile().getContentType());
-        }
-        String savedName = fileUploadUtility.uploadFile("cdn_path", uploadForm.getFile().getOriginalFilename(), uploadForm.getFile().getBytes(), Constant.LOCAL_SAVE);
-        VIEW.addObject("savedName", savedName);
-        return VIEW;
-    }
-
-    /**
-     * Files Upload Test Logic
-     * Type <input type="file" multiple="multiple"/>
-     * UploadForm -> private List<MultipartFile> files;
-     */
-    /*Post Files Upload*/
-    @RequestMapping(value = "/uploads.do", method = RequestMethod.POST)
-    public ModelAndView uploadsMultiple(UploadForm uploadForm) throws Exception {
-        HomeController();
-        ArrayList<String> names = new ArrayList<>();
-        HashMap<String, MultipartFile> hashMap = new HashMap<>();
-        for (int i = 0; i < uploadForm.getFiles().size(); i++) {
-            hashMap.put("files" + i, uploadForm.getFiles().get(i));
-        }
-        for (Map.Entry<String, MultipartFile> entry : hashMap.entrySet()) {
-            MultipartFile file = entry.getValue();
-            if (file.getSize() != 0) {
-                log.info("File originalName:" + file.getOriginalFilename());
-                log.info("File Size:" + file.getSize());
-                log.info("File ContentType:" + file.getContentType());
-            }
-            String savedName = fileUploadUtility.uploadFile("cdn_path", file.getOriginalFilename(), file.getBytes(), Constant.LOCAL_SAVE);
-            names.add(savedName);
-        }
-        log.info(names);
-        VIEW.addObject("savedNames", names);
-        return VIEW;
-    }
-
-    /**
-     * Files Upload Test Logic
-     * Type <input type="file" name="file-1"/>
-     * Type <input type="file" name="file-2"/>
-     * Type <input type="file" name="file-3"/>
-     * Upload
-     */
-    /*Post Files Upload*/
-    @RequestMapping(value = "/uploadsOther.do", method = RequestMethod.POST)
-    public ModelAndView uploads(@RequestParam Map<String, MultipartFile> fileMap, UploadForm uploadForm) throws Exception {
-        HomeController();
-        ArrayList<String> names = new ArrayList<>();
-        for (Map.Entry<String, MultipartFile> entry : fileMap.entrySet()) {
-            MultipartFile file = entry.getValue();
-            if (file.getSize() != 0) {
-                log.info("File originalName:" + file.getOriginalFilename());
-                log.info("File Size:" + file.getSize());
-                log.info("File ContentType:" + file.getContentType());
-            }
-            String savedName = fileUploadUtility.uploadFile("cdn_path", file.getOriginalFilename(), file.getBytes(), Constant.LOCAL_SAVE);
-            names.add(savedName);
-        }
-        log.info(names);
-        VIEW.addObject("savedNames", names);
-        return VIEW;
-    }
+//    @RequestMapping(value = "/upload.do", method = RequestMethod.POST)
+//    public ModelAndView upload(UploadForm uploadForm) throws Exception {
+//        HomeController();
+//        log.info(uploadForm);
+//        if (uploadForm.getFile().getSize() != 0) {
+//            log.info("originalName:" + uploadForm.getFile().getOriginalFilename());
+//            log.info("size:" + uploadForm.getFile().getSize());
+//            log.info("ContentType:" + uploadForm.getFile().getContentType());
+//        }
+//        String savedName = fileUploadUtility.uploadFile("cdn_path", uploadForm.getFile().getOriginalFilename(), uploadForm.getFile().getBytes(), Constant.LOCAL_SAVE);
+//        VIEW.addObject("savedName", savedName);
+//        return VIEW;
+//    }
+//
+//    /**
+//     * Files Upload Test Logic
+//     * Type <input type="file" multiple="multiple"/>
+//     * UploadForm -> private List<MultipartFile> files;
+//     */
+//    /*Post Files Upload*/
+//    @RequestMapping(value = "/uploads.do", method = RequestMethod.POST)
+//    public ModelAndView uploadsMultiple(UploadForm uploadForm) throws Exception {
+//        HomeController();
+//        ArrayList<String> names = new ArrayList<>();
+//        HashMap<String, MultipartFile> hashMap = new HashMap<>();
+//        for (int i = 0; i < uploadForm.getFiles().size(); i++) {
+//            hashMap.put("files" + i, uploadForm.getFiles().get(i));
+//        }
+//        for (Map.Entry<String, MultipartFile> entry : hashMap.entrySet()) {
+//            MultipartFile file = entry.getValue();
+//            if (file.getSize() != 0) {
+//                log.info("File originalName:" + file.getOriginalFilename());
+//                log.info("File Size:" + file.getSize());
+//                log.info("File ContentType:" + file.getContentType());
+//            }
+//            String savedName = fileUploadUtility.uploadFile("cdn_path", file.getOriginalFilename(), file.getBytes(), Constant.LOCAL_SAVE);
+//            names.add(savedName);
+//        }
+//        log.info(names);
+//        VIEW.addObject("savedNames", names);
+//        return VIEW;
+//    }
+//
+//    /**
+//     * Files Upload Test Logic
+//     * Type <input type="file" name="file-1"/>
+//     * Type <input type="file" name="file-2"/>
+//     * Type <input type="file" name="file-3"/>
+//     * Upload
+//     */
+//    /*Post Files Upload*/
+//    @RequestMapping(value = "/uploadsOther.do", method = RequestMethod.POST)
+//    public ModelAndView uploads(@RequestParam Map<String, MultipartFile> fileMap, UploadForm uploadForm) throws Exception {
+//        HomeController();
+//        ArrayList<String> names = new ArrayList<>();
+//        for (Map.Entry<String, MultipartFile> entry : fileMap.entrySet()) {
+//            MultipartFile file = entry.getValue();
+//            if (file.getSize() != 0) {
+//                log.info("File originalName:" + file.getOriginalFilename());
+//                log.info("File Size:" + file.getSize());
+//                log.info("File ContentType:" + file.getContentType());
+//            }
+//            String savedName = fileUploadUtility.uploadFile("cdn_path", file.getOriginalFilename(), file.getBytes(), Constant.LOCAL_SAVE);
+//            names.add(savedName);
+//        }
+//        log.info(names);
+//        VIEW.addObject("savedNames", names);
+//        return VIEW;
+//    }
 
     /**
      * Lombok Annotation Logic

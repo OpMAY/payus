@@ -1,41 +1,19 @@
 package com.mvsolutions.payus.mapper;
 
-import com.mvsolutions.payus.model.demo.Store;
-import com.mvsolutions.payus.model.demo.response.detail.StoreDetailResponse;
-import com.mvsolutions.payus.model.demo.response.home.HomePaybackStore;
-import com.mvsolutions.payus.model.demo.response.main.RecommendedStore;
-import com.mvsolutions.payus.model.demo.response.main.StoreNoCheck;
+
+import com.mvsolutions.payus.model.rest.basic.Store;
+import com.mvsolutions.payus.model.rest.response.MainPageStore;
 
 import java.util.List;
 
 public interface StoreMapper {
-    List<HomePaybackStore> getStoreRandomListForHome();
+    List<MainPageStore> getStoreListForMain(double x, double y, int class_first);
 
-    List<HomePaybackStore> getStoreListOrderByPaybackRatioForHome();
+    List<MainPageStore> getStoreListForMainReload(int class_first, double distance, int last_index, double x, double y);
 
-    void insertStores(Store store);
+    double getDistanceOfLastIndex(double x, double y, int last_index);
 
-    List<HomePaybackStore> getStoreRandomListForMain(String x, String y, int category);
+    boolean checkStoreExists(int last_index);
 
-    StoreNoCheck checkStoreIsValid(int last_index);
-
-    List<RecommendedStore> getStoreRecommendListForMain(String x, String y, int category);
-
-    List<RecommendedStore> getStoreRecommendListForMainReload(String x, String y, int category, int last_index, double last_distance);
-
-    void updatePrices(int price, int store_no);
-
-    double getDistanceOfLastIndex(String x, String y, int last_index);
-
-    void updateStoreForReview(int store_no, int review_num, float star_ratio);
-
-    void updateStorePrivate(int store_no, boolean is_private);
-
-    boolean checkStorePrivate(int store_no);
-
-    StoreDetailResponse getStoreDetail(int store_no);
-
-    void updateImages(String image_list);
-
-    void updateServices(String service_list, int store_no);
+    void insertStore(Store store);
 }

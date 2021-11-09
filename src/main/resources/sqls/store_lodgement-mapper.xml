@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mvsolutions.payus.mapper.StoreLodgementMapper">
+    <insert id="insertLodgement" keyProperty="lodgement_no" useGeneratedKeys="true">
+        insert into store_lodgement(store_no, service_list, information, room_options)
+        VALUES (#{store_no}, #{service_list}, #{information}, #{room_options})
+    </insert>
+</mapper>

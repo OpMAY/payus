@@ -7,6 +7,7 @@ import com.mvsolutions.payus.model.file.MFile;
 import com.mvsolutions.payus.response.IntegerRes;
 import com.mvsolutions.payus.response.Message;
 import com.mvsolutions.payus.response.StatusCode;
+import com.mvsolutions.payus.service.HomeService;
 import com.mvsolutions.payus.util.Constant;
 import com.mvsolutions.payus.util.FileUploadUtility;
 import com.mvsolutions.payus.util.security.AES256Util;
@@ -34,6 +35,9 @@ import java.util.*;
 @RestController
 public class SampleController {
 
+    @Autowired
+    private HomeService homeService;
+
     /**
      * Test Method(PathVariable) GET
      */
@@ -58,6 +62,13 @@ public class SampleController {
         test.setTestcol("testcol");
         message.put("test", test);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/test/sample/store", method = RequestMethod.GET)
+    public ResponseEntity sampleStoreData() throws Exception {
+        homeService.insertStores(1);
+        homeService.insertStores(2);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
     }
 
     /**

@@ -3,55 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mvsolutions.payus.mapper.UserMapper">
-    <select id="getUserInfoByUserNoForHome" resultType="HomeUser">
-        select user_no, name, point, profile_img
+    <select id="getUserForMainPage" resultType="MainPageUser">
+        select user_no, nickname, point
         from user
         WHERE user_no = #{user_no}
     </select>
-    <select id="getUserLogin" resultType="LoginCheck">
-        select user_no, bank_name, bank_account, bank_owner
-        from user
-        WHERE access_token = #{access_token}
-          AND sns = #{sns}
-    </select>
-    <insert id="registerUser" useGeneratedKeys="true" keyProperty="user_no">
-        insert into user(name, access_token, sns, reg_date)
-        VALUES (#{name}, #{access_token}, #{sns}, #{reg_date})
-    </insert>
-    <update id="bankUpdate">
-        update user
-        SET bank_name=#{bank_name},
-            bank_account=#{bank_account},
-            bank_owner=#{bank_owner}
-        WHERE user_no = #{user_no}
-    </update>
-    <select id="getUserShortData" resultType="UserShortInfoResponse">
-        select user_no, name, point, profile_img
-        from user
-        WHERE user_no = #{user_no}
-    </select>
-    <select id="getUserProfile" resultType="UserSpecificInfoResponse">
-        select user_no,
-               name,
-               email,
-               phone,
-               profile_img,
-               bank_name,
-               bank_owner,
-               bank_account
-        from user
-        WHERE user_no = #{user_no}
-    </select>
-    <update id="updateUserPersonal">
-        update user
-        SET phone=#{phone}
-        WHERE user_no = #{user_no}
-    </update>
-    <update id="updateUserBank">
-        update user
-        SET bank_name=#{bank.bank_name},
-            bank_account=#{bank.bank_account},
-            bank_owner=#{bank.bank_owner}
-        WHERE user_no = #{user_no}
-    </update>
 </mapper>

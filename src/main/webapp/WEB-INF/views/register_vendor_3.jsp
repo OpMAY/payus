@@ -61,6 +61,11 @@
                                                    onkeyup="checkCorporateRegiNumber(this.value)"
                                                    onfocus="checkCorporateRegiNumber(this.value)"
                                                    style="height: 70px">
+                                            <button type="button" class="btn btn-business-verify-text"
+                                                    id="password-verification-button" onclick="validationEmail()"
+                                                    style="word-break: keep-all">
+                                                인증
+                                            </button>
                                             <h6 class="vendor-input-warning" id="warning-business-text"
                                                 style="margin-top: 10px">
                                                 올바른 사업자 등록 번호를 입력해주세요.</h6>
@@ -101,33 +106,6 @@
                                                    style="color: black;height: 70px" placeholder="대표자 명을 입력해주세요."/>
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <div class="form-group" style="position: relative">
-                                            <label for="vendor-register-store-address">업체 지번 주소</label>
-                                            <input class="form-control" id="vendor-register-store-address" disabled
-                                                   style="color: black;height: 70px" placeholder="주소 찾기로 정보를 입력해주세요."/>
-                                            <button type="button" class="btn btn-business-address-find"
-                                                    onclick="addressButton()" style="word-break: keep-all"
-                                                    id="business-address-button">
-                                                찾기
-                                            </button>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="vendor-register-store-road-address">업체 도로명 주소</label>
-                                            <input class="form-control" id="vendor-register-store-road-address" disabled
-                                                   style="color: black;height: 70px" placeholder="주소 찾기로 정보를 입력해주세요."/>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div id="kakao_map" style="width: 100%; height: 300px;margin-top: 10px; margin-bottom: 10px; "></div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group" style="display: none" id="rest-address-form">
-                                            <label for="vendor-register-store-rest-address">업체 세부 주소</label>
-                                            <input class="form-control" id="vendor-register-store-rest-address" disabled
-                                                   style="color: black;height: 70px;" placeholder="세부 주소를 입력해주세요."/>
-                                        </div>
-                                    </div>
                                     <div class="mt-3">
                                         <div class="col-12">
                                             <button type="button" class="btn btn-auth-sign-in d-block"
@@ -151,18 +129,6 @@
         if (this.value === '')
             if (e.keyCode === 32)
                 e.preventDefault();
-    });
-
-    let mapContainer = document.getElementById("kakao_map"), mapOption = {
-        center: new daum.maps.LatLng(37.537187, 127.005476),
-        level: 5
-    };
-
-    let map = new daum.maps.Map(mapContainer, mapOption);
-    let geoCoder = new daum.maps.services.Geocoder();
-    let marker = new daum.maps.Marker({
-        position: new daum.maps.LatLng(37.537187, 127.005476),
-        map: map
     });
 
 
@@ -243,38 +209,6 @@
         }
     }
 
-    function addressButton() {
-        let roadAddrInput = document.getElementById("vendor-register-store-road-address");
-        let jibunAddrInput = document.getElementById("vendor-register-store-address");
-        let restAddrInput = document.getElementById("vendor-register-store-rest-address");
-        let restAddrForm = document.getElementById("rest-address-form");
-        new daum.Postcode({
-            oncomplete: function (data) {
-                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
-                // 예제를 참고하여 다양한 활용법을 확인해 보세요.
-                let roadAddr = data.roadAddress;
-                let extraRoadAddr = '';
-                let jibunAddr = data.jibunAddress;
-                roadAddrInput.value = roadAddr;
-                jibunAddrInput.value = jibunAddr;
-                restAddrInput.removeAttribute("disabled");
-                restAddrInput.setAttribute("placeholder", "세부 주소를 입력해주세요.");
-                restAddrForm.removeAttribute("style");
-
-                geoCoder.addressSearch(data.address, function(results, status){
-                    if(status === daum.maps.services.Status.OK){
-                        let result = results[0];
-
-                        let coords = new daum.maps.LatLng(result.y, result.x);
-                        mapContainer.style.display = 'block';
-                        map.relayout();
-                        map.setCenter(coords);
-                        marker.setPosition(coords);
-                    }
-                });
-            }
-        }).open();
-    }
 
     function checkBusinessNumberValidate() {
         let number = document.getElementById("vendor-register-business-number");

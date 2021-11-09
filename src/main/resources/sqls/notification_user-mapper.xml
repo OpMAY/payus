@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mvsolutions.payus.mapper.NotificationUserMapper">
+    <select id="checkUserNotificationUnread" resultType="_boolean">
+        select EXISTS(SELECT * from notification_user WHERE user_no = #{user_no} AND read_check = false)
+    </select>
+</mapper>
