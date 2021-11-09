@@ -54,22 +54,26 @@
                                         <div class="form-group" style="position: relative">
                                             <label for="vendor-register-email">이메일</label>
                                             <input type="email" class="form-control" id="vendor-register-email"
-                                                   placeholder="example@example.com" onkeyup="checkEmailValue(false)" onfocus="checkEmailValue(false)"
-                                                   style="height: 8%">
+                                                   placeholder="example@example.com" onkeyup="checkEmailValue(false)"
+                                                   onfocus="checkEmailValue(false)"
+                                                   style="height: 8%" autocomplete="off">
                                             <button type="button" class="btn btn-password-find-button"
-                                                    id="password-verification-button" onclick="validationEmail()" style="word-break: keep-all">
+                                                    id="password-verification-button" onclick="validationEmail()"
+                                                    style="word-break: keep-all">
                                                 인증
                                             </button>
                                         </div>
                                         <span class="vendor-input-warning" id="warning-email">이메일을 올바르게 입력해주세요.</span>
                                     </div>
                                     <div class="col-12">
-                                        <div class="form-group" style="display: none; position: relative" id="email-validation-div">
+                                        <div class="form-group" style="display: none; position: relative"
+                                             id="email-validation-div">
                                             <label for="vendor-find-password-email-validation-code">인증코드</label>
                                             <input class="form-control" id="vendor-find-password-email-validation-code"
                                                    placeholder="인증 코드"
                                                    style="height: 60px">
-                                            <button type="button" class="btn btn-email-validation-resend" style="word-break: keep-all"
+                                            <button type="button" class="btn btn-email-validation-resend"
+                                                    style="word-break: keep-all"
                                                     id="email-verification-resend" onclick="validationResend()">
                                                 재전송
                                             </button>
@@ -115,7 +119,8 @@
                                                    onfocus="checkNameValue(false)"
                                                    placeholder="이름을 입력해주세요."
                                                    style="height: 8%">
-                                            <span class="vendor-input-warning" id="warning-name" style="margin-top: 10px">
+                                            <span class="vendor-input-warning" id="warning-name"
+                                                  style="margin-top: 10px">
                                                 이름은 2자 이상 30자 이하로
                                                 입력해주세요.</span>
                                         </div>
@@ -153,11 +158,25 @@
                                         </div>
                                         <span class="vendor-input-warning" id="warning-phone">연락처를 올바르게 입력해주세요.</span>
                                     </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="container" style="margin-bottom: 15px">
+                                                <a onclick="alert('A 태그')" class="noto-font payus-atag"><u>서비스 이용약관</u></a>
+                                                <input type="checkbox" id="service-agree"/>
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="container">
+                                                <a onclick="alert('A 태그')" class="noto-font payus-atag"><u>개인정보 처리 방침</u></a>
+                                                <input type="checkbox" id="personal-agree"/>
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                    </div>
                                     <div class="mt-3">
                                         <div class="col-12">
                                             <button type="button" class="btn btn-auth-sign-in d-block"
-<%--                                                    onclick="submitRegister()">--%>
-                                                onclick="window.location.href = '/vendor/register/bank.do'">
+                                            <%--                                                    onclick="submitRegister()">--%>
+                                                    onclick="window.location.href = '/vendor/register/bank.do'">
                                                 다음
                                             </button>
                                             <button type="button" class="btn btn-back d-block"
@@ -180,24 +199,25 @@
 
     let setTime = 299;
     let timeInstance;
-    function timer(){
+
+    function timer() {
         let minute = Math.floor(setTime / 60);
         let second = setTime % 60;
         let m;
-        if(second > 9){
+        if (second > 9) {
             m = minute + " : " + second;
         } else {
             m = minute + " : 0" + second;
         }
         document.getElementById("timer").innerText = "인증 만료 시간 - " + m;
         setTime--;
-        if(setTime < 0){
+        if (setTime < 0) {
             document.getElementById("timer").innerText = "인증이 만료되었습니다.";
             clearInterval(timerInstance);
         }
     }
 
-    function validationResend(){
+    function validationResend() {
         setTime = 300;
         clearInterval(timerInstance);
         timerInstance = setInterval(timer, 1000);

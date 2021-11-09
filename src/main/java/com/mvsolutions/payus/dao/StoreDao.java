@@ -1,11 +1,9 @@
 package com.mvsolutions.payus.dao;
 
+
 import com.mvsolutions.payus.mapper.StoreMapper;
-import com.mvsolutions.payus.model.demo.Store;
-import com.mvsolutions.payus.model.demo.response.detail.StoreDetailResponse;
-import com.mvsolutions.payus.model.demo.response.home.HomePaybackStore;
-import com.mvsolutions.payus.model.demo.response.main.RecommendedStore;
-import com.mvsolutions.payus.model.demo.response.main.StoreNoCheck;
+import com.mvsolutions.payus.model.rest.basic.Store;
+import com.mvsolutions.payus.model.rest.response.MainPageStore;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -21,78 +19,28 @@ public class StoreDao {
         }
     }
 
-    public List<HomePaybackStore> getStoreRandomListForHome() {
-        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
-        return storeMapper.getStoreRandomListForHome();
+    public List<MainPageStore> getStoreListForMain(double x, double y, int class_first) {
+        StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
+        return mapper.getStoreListForMain(x, y, class_first);
     }
 
-    public List<HomePaybackStore> getStoreListOrderByPaybackRatioForHome() {
-        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
-        return storeMapper.getStoreListOrderByPaybackRatioForHome();
+    public List<MainPageStore> getStoreListForMainReload(int class_first, double distance, int last_index, double x, double y) {
+        StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
+        return mapper.getStoreListForMainReload(class_first, distance, last_index, x, y);
     }
 
-    public void insertStores(Store store) {
-        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
-        storeMapper.insertStores(store);
+    public double getDistanceOfLastIndex(double x, double y, int last_index) {
+        StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
+        return mapper.getDistanceOfLastIndex(x, y, last_index);
     }
 
-    public List<HomePaybackStore> getStoreRandomListForMain(String x, String y, int category) {
-        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
-        return storeMapper.getStoreRandomListForMain(x, y, category);
+    public boolean checkStoreExists(int last_index) {
+        StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
+        return mapper.checkStoreExists(last_index);
     }
 
-    public StoreNoCheck checkStoreIsValid(int last_index) {
-        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
-        return storeMapper.checkStoreIsValid(last_index);
-    }
-
-    public List<RecommendedStore> getStoreRecommendListForMain(String x, String y, int category) {
-        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
-        return storeMapper.getStoreRecommendListForMain(x, y, category);
-    }
-
-    public List<RecommendedStore> getStoreRecommendListForMainReload(String x, String y, int category, int last_index, double last_distance) {
-        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
-        return storeMapper.getStoreRecommendListForMainReload(x, y, category, last_index, last_distance);
-    }
-
-    public void updatePrices(int price, int store_no) {
-        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
-        storeMapper.updatePrices(price, store_no);
-    }
-
-    public double getDistanceOfLastIndex(String x, String y, int last_index){
-        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
-        return storeMapper.getDistanceOfLastIndex(x, y, last_index);
-    }
-
-    public void updateStoreForReview(int store_no, int review_num, float star_ratio) {
-        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
-        storeMapper.updateStoreForReview(store_no, review_num, star_ratio);
-    }
-
-    public void updateStorePrivate(int store_no, boolean is_private){
-        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
-        storeMapper.updateStorePrivate(store_no, is_private);
-    }
-
-    public boolean checkStorePrivate(int store_no){
-        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
-        return storeMapper.checkStorePrivate(store_no);
-    }
-
-    public StoreDetailResponse getStoreDetail(int store_no){
-        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
-        return storeMapper.getStoreDetail(store_no);
-    }
-
-    public void updateImages(String image_list){
-        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
-        storeMapper.updateImages(image_list);
-    }
-
-    public void updateServices(String json, int store_no) {
-        StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
-        storeMapper.updateServices(json, store_no);
+    public void insertStore(Store store) {
+        StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
+        mapper.insertStore(store);
     }
 }

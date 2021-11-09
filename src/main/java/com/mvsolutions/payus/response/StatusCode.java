@@ -9,4 +9,5 @@ public class StatusCode {
     public static final String DELETED_CONTENT = "D404";
     public static final String DENIED_CONTENT = "D501";
     public static final int BAD_REQUEST = 400;
+    public static final String COORDINATE_ERROR = "M400";
 }

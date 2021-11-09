@@ -91,7 +91,7 @@ import java.io.FileNotFoundException;
  */
 
 @Log4j
-@RestControllerAdvice(basePackages = "com.mvsolutions.payus.controller.rest")
+@RestControllerAdvice(basePackages = "com.mvsolutions.payus.restcontroller")
 public class RESTExceptionAdvice {
 
     /**
