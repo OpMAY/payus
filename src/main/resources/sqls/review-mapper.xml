@@ -3,5 +3,25 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mvsolutions.payus.mapper.ReviewMapper">
-
+    <select id="VendorReviewContentResponse" resultType="VendorReviewContentResponse">
+        select review_no, user_name, content, rate, reg_date
+        from review
+        WHERE review_no = #{review_no}
+          AND answer_status = false
+    </select>
+    <select id="checkReviewExists" resultType="_boolean">
+        select EXISTS(select * from review WHERE review_no = #{review_no})
+    </select>
+    <select id="checkReviewAnswered" resultType="_boolean">
+        select answer_status
+        from review
+        WHERE review_no = #{review_no}
+    </select>
+    <update id="answerReview">
+        update review
+        SET answer_status  = true,
+            answer_content = #{answer_content},
+            answer_date    = #{answer_date}
+        WHERE review_no = #{review_no}
+    </update>
 </mapper>

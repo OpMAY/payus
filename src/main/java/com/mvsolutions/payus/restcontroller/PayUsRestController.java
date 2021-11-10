@@ -6,11 +6,12 @@ import com.mvsolutions.payus.model.rest.request.loginpage.user.UserRegisterReque
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.request.mainpage.MainPageReloadingRequest;
 import com.mvsolutions.payus.model.rest.request.mainpage.MainPageRequest;
+import com.mvsolutions.payus.model.rest.request.suphomepage.VendorAnswerReviewRequest;
 import com.mvsolutions.payus.model.rest.request.suphomepage.VendorHomeRequest;
+import com.mvsolutions.payus.model.rest.request.suphomepage.VendorNotificationDeleteRequest;
+import com.mvsolutions.payus.model.rest.request.suphomepage.VendorNotificationRequest;
 import com.mvsolutions.payus.model.rest.response.mainpage.GeoCodeCoordinateRequest;
-import com.mvsolutions.payus.service.MainPageService;
-import com.mvsolutions.payus.service.UserService;
-import com.mvsolutions.payus.service.VendorService;
+import com.mvsolutions.payus.service.*;
 import lombok.extern.log4j.Log4j;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,12 @@ public class PayUsRestController {
 
     @Autowired
     private VendorService vendorService;
+
+    @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
+    private ReviewService reviewService;
 
     /**
      * PreHome#001
@@ -96,5 +103,38 @@ public class PayUsRestController {
     public ResponseEntity VendorHome(@RequestParam("vendor_no") int vendor_no) throws JSONException {
         VendorHomeRequest request = new VendorHomeRequest(vendor_no);
         return vendorService.getVendorHome(request);
+    }
+
+    /**
+     * SupNotification#001
+     **/
+    @RequestMapping(value = "/api/vendor/notification", method = RequestMethod.POST)
+    public ResponseEntity VendorNotification(@RequestBody String body) throws JSONException {
+        VendorNotificationRequest request = new Gson().fromJson(body, VendorNotificationRequest.class);
+        return notificationService.getVendorNotification(request);
+    }
+
+    /**
+     * SupNotification#002
+     **/
+    @RequestMapping(value = "/api/vendor/notification/delete", method = RequestMethod.POST)
+    public ResponseEntity DeleteVendorNotification(@RequestBody String body) {
+        VendorNotificationDeleteRequest request = new Gson().fromJson(body, VendorNotificationDeleteRequest.class);
+        return notificationService.deleteVendorNotification(request);
+    }
+
+    /**
+     * SupReviewAnswer#001
+     **/
+    @RequestMapping(value = "/api/vendor/review/content", method = RequestMethod.GET)
+    public ResponseEntity GetReviewContentFromNotification(@RequestParam("review_no") int review_no) throws JSONException {
+        return reviewService.getReviewContentFromNotification(review_no);
+    }
+
+    /** SupReviewAnswer#002 **/
+    @RequestMapping(value = "/api/vendor/review/answer", method = RequestMethod.POST)
+    public ResponseEntity AnswerReview(@RequestBody String body) {
+        VendorAnswerReviewRequest request = new Gson().fromJson(body, VendorAnswerReviewRequest.class);
+        return reviewService.answerReview(request);
     }
 }

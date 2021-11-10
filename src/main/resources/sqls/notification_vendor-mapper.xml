@@ -3,5 +3,32 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mvsolutions.payus.mapper.NotificationVendorMapper">
-
+    <resultMap id="notificationJson"
+               type="com.mvsolutions.payus.model.rest.response.suphomepage.VendorNotificationResponse">
+        <result property="notification_json" column="notification_json"
+                typeHandler="com.mvsolutions.payus.handler.JsonObjectTypeHandler"/>
+    </resultMap>
+    <select id="getNotificationList" resultType="VendorNotificationResponse">
+        select notification_no, type, content, reg_date, notification_json
+        from notification_vendor WHERE vendor_no = #{vendor_no}
+        <choose>
+            <when test="type != 0 and last_index == 0">
+                AND type=#{type}
+            </when>
+            <when test="type == 0 and last_index == 0">
+                AND (reg_date <![CDATA[<]]> #{reg_date} OR
+                (reg_date <![CDATA[=]]> #{reg_date} AND notification_no <![CDATA[<]]> #{last_index}))
+            </when>
+            <when test="type != 0 and last_index != 0">
+                AND type=#{type} AND (reg_date <![CDATA[<]]> #{reg_date} OR
+                (reg_date <![CDATA[=]]> #{reg_date} AND notification_no <![CDATA[<]]> #{last_index}))
+            </when>
+        </choose>
+        LIMIT 10 ORDER BY reg_date DESC, notification_no DESC
+    </select>
+    <delete id="deleteVendorNotification">
+        delete
+        from notification_vendor
+        WHERE vendor_no = #{vendor_no}
+    </delete>
 </mapper>
