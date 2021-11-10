@@ -22,4 +22,11 @@
         from vendor
         WHERE vendor_no = #{vendor_no}
     </select>
+    <select id="getVendorHome" resultType="VendorHomeResponse">
+        select name, point, vendor.vendor_no as vendor_no, vendor_name
+        from store,
+             vendor
+        WHERE store.vendor_no = #{vendor_no}
+           OR vendor.vendor_no = #{vendor_no}
+    </select>
 </mapper>
