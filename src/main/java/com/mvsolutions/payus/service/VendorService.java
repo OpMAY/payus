@@ -3,8 +3,10 @@ package com.mvsolutions.payus.service;
 import com.mvsolutions.payus.dao.PenaltyVendorDao;
 import com.mvsolutions.payus.dao.VendorDao;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
+import com.mvsolutions.payus.model.rest.request.suphomepage.VendorHomeRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorPenaltyResponse;
+import com.mvsolutions.payus.model.rest.response.suphomepage.VendorHomeResponse;
 import com.mvsolutions.payus.response.IntegerRes;
 import com.mvsolutions.payus.response.Message;
 import com.mvsolutions.payus.response.StatusCode;
@@ -22,7 +24,7 @@ import java.util.List;
 
 @Log4j
 @Service
-public class VendorLoginService {
+public class VendorService {
     @Autowired
     private SqlSession sqlSession;
 
@@ -36,11 +38,11 @@ public class VendorLoginService {
     public ResponseEntity loginVendor(VendorLoginRequest request) throws JSONException {
         Message message = new Message();
         vendorDao.setSqlSession(sqlSession);
-        if(vendorDao.checkVendorExists(request)){
+        if (vendorDao.checkVendorExists(request)) {
             // 로그인 성공 시
             VendorLoginResponse response = vendorDao.loginVendor(request);
             message.put("vendor", response);
-            if(vendorDao.checkVendorPenalty(response.getVendor_no())){
+            if (vendorDao.checkVendorPenalty(response.getVendor_no())) {
                 // 정지된 공급자 일 시
                 penaltyVendorDao.setSqlSession(sqlSession);
                 List<VendorPenaltyResponse> penaltyList = penaltyVendorDao.getVendorPenaltyInfo(response.getVendor_no());
@@ -54,5 +56,18 @@ public class VendorLoginService {
             return new ResponseEntity(StringRes.res(StatusCode.LOGIN_FAILED), HttpStatus.OK);
         }
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("loginVendor()")), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity getVendorHome(VendorHomeRequest request) throws JSONException {
+        Message message = new Message();
+        vendorDao.setSqlSession(sqlSession);
+        VendorHomeResponse response = vendorDao.getVendorHome(request);
+        if (response == null) {
+            // 잘못 접근해서 vendor_no가 올바르지 않을 시
+            return new ResponseEntity(StringRes.res(StatusCode.LOGIN_FAILED), HttpStatus.OK);
+        }
+        message.put("vendor", response);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getVendorHome()")), HttpStatus.OK);
     }
 }

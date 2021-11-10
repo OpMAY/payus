@@ -27,7 +27,7 @@ import java.util.List;
 
 @Service
 @Log4j
-public class UserLoginService {
+public class UserService {
     @Autowired
     private SqlSession sqlSession;
 

@@ -3,7 +3,9 @@ package com.mvsolutions.payus.dao;
 import com.mvsolutions.payus.mapper.VendorMapper;
 import com.mvsolutions.payus.model.rest.basic.Vendor;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
+import com.mvsolutions.payus.model.rest.request.suphomepage.VendorHomeRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
+import com.mvsolutions.payus.model.rest.response.suphomepage.VendorHomeResponse;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -35,6 +37,11 @@ public class VendorDao {
     public String getVendorName(int vendor_no) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         return mapper.getVendorName(vendor_no);
+    }
+
+    public VendorHomeResponse getVendorHome(VendorHomeRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorHome(request);
     }
 
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
