@@ -1,6 +1,6 @@
 package com.mvsolutions.payus.mapper;
 
-import com.mvsolutions.payus.model.rest.response.MainPageAdvertisementBanner;
+import com.mvsolutions.payus.model.rest.response.mainpage.MainPageAdvertisementBanner;
 
 import java.util.List;
 

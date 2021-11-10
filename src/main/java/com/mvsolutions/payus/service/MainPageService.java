@@ -2,11 +2,9 @@ package com.mvsolutions.payus.service;
 
 import com.google.gson.Gson;
 import com.mvsolutions.payus.dao.*;
-import com.mvsolutions.payus.model.rest.request.GeoCodeAddressRequest;
-import com.mvsolutions.payus.model.rest.request.MainPageReloadingRequest;
-import com.mvsolutions.payus.model.rest.request.MainPageRequest;
-import com.mvsolutions.payus.model.rest.response.*;
-import com.mvsolutions.payus.model.utility.kakaolocation.Documents;
+import com.mvsolutions.payus.model.rest.request.mainpage.MainPageReloadingRequest;
+import com.mvsolutions.payus.model.rest.request.mainpage.MainPageRequest;
+import com.mvsolutions.payus.model.rest.response.mainpage.*;
 import com.mvsolutions.payus.model.utility.kakaolocation.KakaoLocationResponse;
 import com.mvsolutions.payus.response.IntegerRes;
 import com.mvsolutions.payus.response.Message;
@@ -25,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

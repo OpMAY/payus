@@ -8,4 +8,37 @@
         from user
         WHERE user_no = #{user_no}
     </select>
+    <select id="checkUserExists" resultType="_boolean">
+        select EXISTS(select * from user WHERE sns = #{sns} AND access_token = #{access_token})
+    </select>
+    <select id="getUserForLogin" resultType="UserLoginResponse">
+        select user_no, user_penalty
+        from user
+        WHERE sns = #{sns}
+          AND access_token = #{access_token}
+    </select>
+    <update id="updateUserFcmToken">
+        update user
+        SET fcm_token = #{fcm_token}
+        WHERE user_no = #{user_no}
+    </update>
+    <select id="checkUserPenalty" resultType="_boolean">
+        select user_penalty
+        from user
+        WHERE user_no = #{user_no}
+    </select>
+    <select id="getUserName" resultType="string">
+        select nickname
+        from user
+        WHERE user_no = #{user_no}
+    </select>
+    <insert id="registerUser" useGeneratedKeys="true" keyProperty="user_no">
+        insert into user(sns, access_token, fcm_token, reg_date, marketing_agree, event_push)
+        VALUES (#{sns}, #{access_token}, #{fcm_token}, #{reg_date}, #{marketing_agree}, #{event_push})
+    </insert>
+    <update id="updateUserName">
+        update user
+        SET nickname=#{nickname}
+        WHERE user_no = #{user_no}
+    </update>
 </mapper>

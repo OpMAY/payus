@@ -1,11 +1,15 @@
 package com.mvsolutions.payus.restcontroller;
 
 import com.google.gson.Gson;
-import com.mvsolutions.payus.model.rest.request.GeoCodeAddressRequest;
-import com.mvsolutions.payus.model.rest.request.MainPageReloadingRequest;
-import com.mvsolutions.payus.model.rest.request.MainPageRequest;
-import com.mvsolutions.payus.model.rest.response.GeoCodeCoordinateRequest;
+import com.mvsolutions.payus.model.rest.request.loginpage.user.UserLoginRequest;
+import com.mvsolutions.payus.model.rest.request.loginpage.user.UserRegisterRequest;
+import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
+import com.mvsolutions.payus.model.rest.request.mainpage.MainPageReloadingRequest;
+import com.mvsolutions.payus.model.rest.request.mainpage.MainPageRequest;
+import com.mvsolutions.payus.model.rest.response.mainpage.GeoCodeCoordinateRequest;
 import com.mvsolutions.payus.service.MainPageService;
+import com.mvsolutions.payus.service.UserLoginService;
+import com.mvsolutions.payus.service.VendorLoginService;
 import lombok.extern.log4j.Log4j;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,12 @@ import java.net.URISyntaxException;
 public class PayUsRestController {
     @Autowired
     private MainPageService mainPageService;
+
+    @Autowired
+    private UserLoginService userLoginService;
+
+    @Autowired
+    private VendorLoginService vendorLoginService;
 
     /** PreHome#001 **/
     @RequestMapping(value = "/api/geocode/coordinate", method = RequestMethod.POST)
@@ -43,5 +53,26 @@ public class PayUsRestController {
                                         @RequestParam("last_index") int last_index) throws JSONException, IOException, URISyntaxException {
         MainPageReloadingRequest request = new MainPageReloadingRequest(address, class_first, last_index);
         return mainPageService.getMainReload(request);
+    }
+
+    /** UserLoginPage#001 **/
+    @RequestMapping(value = "/api/user/login", method = RequestMethod.POST)
+    public ResponseEntity LoginUser(@RequestBody String body) throws JSONException {
+        UserLoginRequest request = new Gson().fromJson(body, UserLoginRequest.class);
+        return userLoginService.loginUser(request);
+    }
+
+    /** UserLoginPage#002 **/
+    @RequestMapping(value = "/api/user/register", method = RequestMethod.POST)
+    public ResponseEntity RegisterUser(@RequestBody String body) throws JSONException {
+        UserRegisterRequest request = new Gson().fromJson(body, UserRegisterRequest.class);
+        return userLoginService.registerUser(request);
+    }
+
+    /** SupLoginPage#001 **/
+    @RequestMapping(value = "/api/vendor/login", method = RequestMethod.POST)
+    public ResponseEntity LoginVendor(@RequestBody String body) throws JSONException {
+        VendorLoginRequest request = new Gson().fromJson(body, VendorLoginRequest.class);
+        return vendorLoginService.loginVendor(request);
     }
 }

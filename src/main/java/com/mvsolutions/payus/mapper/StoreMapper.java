@@ -2,7 +2,7 @@ package com.mvsolutions.payus.mapper;
 
 
 import com.mvsolutions.payus.model.rest.basic.Store;
-import com.mvsolutions.payus.model.rest.response.MainPageStore;
+import com.mvsolutions.payus.model.rest.response.mainpage.MainPageStore;
 
 import java.util.List;
 

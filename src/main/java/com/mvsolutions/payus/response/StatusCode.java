@@ -10,4 +10,6 @@ public class StatusCode {
     public static final String DENIED_CONTENT = "D501";
     public static final int BAD_REQUEST = 400;
     public static final String COORDINATE_ERROR = "M400";
+    public static final String REGISTER_REQUIRED = "L404";
+    public static final int INTERNAL_SERVER_ERROR = 500;
 }
