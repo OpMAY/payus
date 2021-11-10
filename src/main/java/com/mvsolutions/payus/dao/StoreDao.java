@@ -3,7 +3,7 @@ package com.mvsolutions.payus.dao;
 
 import com.mvsolutions.payus.mapper.StoreMapper;
 import com.mvsolutions.payus.model.rest.basic.Store;
-import com.mvsolutions.payus.model.rest.response.MainPageStore;
+import com.mvsolutions.payus.model.rest.response.mainpage.MainPageStore;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 

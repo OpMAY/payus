@@ -1,4 +1,4 @@
-package com.mvsolutions.payus.model.rest.response;
+package com.mvsolutions.payus.model.rest.response.mainpage;
 
 import lombok.Data;
 

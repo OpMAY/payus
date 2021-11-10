@@ -3,5 +3,23 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mvsolutions.payus.mapper.VendorMapper">
-
+    <select id="checkVendorExists" resultType="_boolean">
+        select EXISTS(select * from vendor WHERE id = #{id} AND password = #{password})
+    </select>
+    <select id="loginVendor" resultType="VendorLoginResponse">
+        select vendor_no, valid_vendor, vendor_penalty
+        from vendor
+        WHERE id = #{id}
+          AND password = #{password}
+    </select>
+    <select id="checkVendorPenalty" resultType="_boolean">
+        select vendor_penalty
+        from vendor
+        WHERE vendor_no = #{vendor_no}
+    </select>
+    <select id="getVendorName" resultType="string">
+        select vendor_name
+        from vendor
+        WHERE vendor_no = #{vendor_no}
+    </select>
 </mapper>
