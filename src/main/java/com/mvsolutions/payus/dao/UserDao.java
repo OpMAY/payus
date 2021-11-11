@@ -2,8 +2,10 @@ package com.mvsolutions.payus.dao;
 
 import com.mvsolutions.payus.mapper.UserMapper;
 import com.mvsolutions.payus.model.rest.basic.User;
+import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.user.UserLoginResponse;
 import com.mvsolutions.payus.model.rest.response.mainpage.MainPageUser;
+import com.mvsolutions.payus.model.rest.response.suppointpage.PaybackUserDataResponse;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -55,5 +57,15 @@ public class UserDao {
     public void updateUserName(int user_no, String nickname) {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         mapper.updateUserName(user_no, nickname);
+    }
+
+    public PaybackUserDataResponse getUserDataForPayback(int user_no) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.getUserDataForPayback(user_no);
+    }
+
+    public void requestPayback(PaybackRequest request) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        mapper.requestPayback(request);
     }
 }

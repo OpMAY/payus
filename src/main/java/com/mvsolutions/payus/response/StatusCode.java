@@ -13,4 +13,8 @@ public class StatusCode {
     public static final String REGISTER_REQUIRED = "L404";
     public static final int INTERNAL_SERVER_ERROR = 500;
     public static final String ALREADY_ANSWERED = "A400";
+    public static final String TIME_EXPIRED = "T401";
+    public static final String CAN_NOT_CANCEL_POINT = "P401";
+    public static final String NO_USER_DETECTED = "U404";
+    public static final String PENALTY_USER = "U501";
 }

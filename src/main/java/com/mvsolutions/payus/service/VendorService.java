@@ -1,12 +1,14 @@
 package com.mvsolutions.payus.service;
 
 import com.mvsolutions.payus.dao.PenaltyVendorDao;
+import com.mvsolutions.payus.dao.StoreDao;
 import com.mvsolutions.payus.dao.VendorDao;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.request.suphomepage.VendorHomeRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorPenaltyResponse;
 import com.mvsolutions.payus.model.rest.response.suphomepage.VendorHomeResponse;
+import com.mvsolutions.payus.model.rest.response.suppointpage.PointStoreDataResponse;
 import com.mvsolutions.payus.response.IntegerRes;
 import com.mvsolutions.payus.response.Message;
 import com.mvsolutions.payus.response.StatusCode;
@@ -33,6 +35,9 @@ public class VendorService {
 
     @Autowired
     private PenaltyVendorDao penaltyVendorDao;
+
+    @Autowired
+    private StoreDao storeDao;
 
     @Transactional(readOnly = true)
     public ResponseEntity loginVendor(VendorLoginRequest request) throws JSONException {
@@ -69,5 +74,18 @@ public class VendorService {
         }
         message.put("vendor", response);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getVendorHome()")), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity getStorePaybackData(int vendor_no) throws JSONException {
+        Message message = new Message();
+        storeDao.setSqlSession(sqlSession);
+        PointStoreDataResponse response = storeDao.getStorePaybackData(vendor_no);
+        if(response == null) {
+            // 회원 탈퇴한 공급자가 해당 화면에 들어오게 될 경우 400
+            return new ResponseEntity(IntegerRes.res(StatusCode.BAD_REQUEST), HttpStatus.OK);
+        }
+        message.put("store", response);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getStorePaybackData()")), HttpStatus.OK);
     }
 }

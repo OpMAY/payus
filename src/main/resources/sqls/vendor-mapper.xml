@@ -27,6 +27,16 @@
         from store,
              vendor
         WHERE store.vendor_no = #{vendor_no}
-           OR vendor.vendor_no = #{vendor_no}
+          AND vendor.vendor_no = #{vendor_no}
     </select>
+    <select id="getVendorPoint" resultType="SupPointChargeDataResponse">
+        select vendor_no, point
+        from vendor
+        WHERE vendor_no = #{vendor_no}
+    </select>
+    <update id="requestPayback">
+        update vendor
+        SET point = point - #{point}
+        WHERE vendor_no = #{vendor_no}
+    </update>
 </mapper>

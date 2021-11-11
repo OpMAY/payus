@@ -10,4 +10,5 @@ public interface NotificationVendorMapper {
     List<VendorNotificationResponse> getNotificationList(VendorNotificationRequest request);
 
     void deleteVendorNotification(VendorNotificationDeleteRequest request);
+
 }

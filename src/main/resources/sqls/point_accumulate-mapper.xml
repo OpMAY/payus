@@ -3,5 +3,76 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mvsolutions.payus.mapper.PointAccumulateMapper">
-
+    <select id="getVendorAccumulateList" resultType="VendorPointAccumulateListResponse">
+        SET @StoreNo = (select store_no
+                        from store
+                        WHERE vendor_no = #{vendor_no});
+        select point_accumulate.accumulate_no,
+               point_accumulate.user_no,
+               user.nickname,
+               point_accumulate.point,
+               status,
+               point_accumulate.reg_date,
+               user_read_check
+        from point_accumulate,
+             user
+        WHERE point_accumulate.store_no = @StoreNo
+          AND user.user_no = point_accumulate.user_no
+        ORDER BY reg_date DESC, accumulate_no DESC
+        LIMIT 10
+    </select>
+    <select id="getVendorAccumulateListReload" resultType="VendorPointAccumulateListResponse">
+        SET @StoreNo = (select store_no
+                        from store
+                        WHERE vendor_no = #{vendor_no});
+        SET @RegDate = (select reg_date
+                        from point_accumulate
+                        WHERE accumulate_no = #{last_index});
+        select point_accumulate.accumulate_no,
+               point_accumulate.user_no,
+               user.nickname,
+               point_accumulate.point,
+               status,
+               point_accumulate.reg_date,
+               user_read_check
+        from point_accumulate,
+             user
+        WHERE point_accumulate.store_no = @StoreNo
+          AND user.user_no = point_accumulate.user_no
+          AND (point_accumulate.reg_date <![CDATA[<]]> @RegDate OR
+               (point_accumulate.reg_date <![CDATA[=]]> @RegDate AND point_accumulate.accumulate_no <![CDATA[<]]> #{last_index}))
+        ORDER BY reg_date DESC, accumulate_no DESC
+        LIMIT 10
+    </select>
+    <select id="checkPointAbleToCancel" resultType="_boolean">
+        select IF(status = 1, false, true)
+        from point_accumulate
+        WHERE accumulate_no = #{accumulate_no}
+    </select>
+    <update id="pointCancelRequestUpdate">
+        update point_accumulate
+        SET status = 3
+        WHERE accumulate_no = #{accumulate_no}
+    </update>
+    <update id="updateVendorReadCheck">
+        update point_accumulate SET vendor_read_check = true WHERE
+        <choose>
+            <when test="chargeList.size != 0">
+                accumulate_no in
+                <foreach collection="accumulateList" item="item" index="index" open="(" separator="OR" close=")">
+                    #{item.charge_no}
+                </foreach>
+            </when>
+        </choose>
+    </update>
+    <insert id="requestPayback" useGeneratedKeys="true" keyProperty="accumulate_no">
+        SET @StoreNo = (select store_no
+                        from store
+                        WHERE vendor_no = #{vendor_no});
+        SET @StoreName = (select name
+                          from store
+                          WHERE vendor_no = #{vendor_no});
+        insert into point_accumulate (user_no, store_no, store_name, point, reg_date, payback_rate, price)
+        VALUES (#{user_no}, @StoreNo, @StoreName, #{point}, #{reg_date}, #{payback_rate}, #{price})
+    </insert>
 </mapper>

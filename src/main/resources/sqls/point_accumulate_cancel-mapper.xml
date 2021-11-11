@@ -3,5 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mvsolutions.payus.mapper.PointAccumulateCancelMapper">
-
+    <insert id="insertPointCancelRequest" useGeneratedKeys="true" keyProperty="cancel_no">
+        insert into point_accumulate_cancel(accumulate_no, reason, reg_date)
+        VALUES (#{accumulate_no}, #{reason}, #{reg_date})
+    </insert>
 </mapper>

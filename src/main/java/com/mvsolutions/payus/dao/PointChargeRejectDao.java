@@ -15,5 +15,10 @@ public class PointChargeRejectDao {
         }
     }
 
+    public String getChargeRejectReason(int content_no) {
+        PointChargeRejectMapper mapper = sqlSession.getMapper(PointChargeRejectMapper.class);
+        return mapper.getChargeRejectReason(content_no);
+    }
+
 //    private PointChargeRejectMapper mapper = sqlSession.getMapper(PointChargeRejectMapper.class);
 }

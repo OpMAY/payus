@@ -79,13 +79,10 @@ public class MainPageService {
         message.put("banner_list", bannerList);
 
         // 받은 주소로 좌표 확인
-//        String result = kakaoLocationService.getLocationCoordinates(request.getAddress());
-//        KakaoLocationResponse kakaoLocationResponse = new Gson().fromJson(result, KakaoLocationResponse.class);
-//        double x = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getX());
-//        double y = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getY());
-
-        double x = 127.070361832869;
-        double y = 37.5406780333481;
+        String result = kakaoLocationService.getLocationCoordinates(request.getAddress());
+        KakaoLocationResponse kakaoLocationResponse = new Gson().fromJson(result, KakaoLocationResponse.class);
+        double x = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getX());
+        double y = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getY());
 
         // 해당 좌표 내 50KM (OR 100KM) 내의 랜덤 상점 리스트 (30개)를 불러옴
         List<MainPageStore> lodgementStoreList = storeDao.getStoreListForMain(x, y, StoreType.LODGEMENT);
@@ -106,13 +103,10 @@ public class MainPageService {
         }
 
         // 받은 주소로 좌표 확인
-//        String result = kakaoLocationService.getLocationCoordinates(request.getAddress());
-//        KakaoLocationResponse kakaoLocationResponse = new Gson().fromJson(result, KakaoLocationResponse.class);
-//        double x = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getX());
-//        double y = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getY());
-
-        double x = 127.070361832869;
-        double y = 37.5406780333481;
+        String result = kakaoLocationService.getLocationCoordinates(request.getAddress());
+        KakaoLocationResponse kakaoLocationResponse = new Gson().fromJson(result, KakaoLocationResponse.class);
+        double x = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getX());
+        double y = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getY());
 
         // 받은 last_index, class_first 로 리로딩 작업
         double last_index_distance = storeDao.getDistanceOfLastIndex(x, y, request.getLast_index());
