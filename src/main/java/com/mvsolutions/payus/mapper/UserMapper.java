@@ -1,8 +1,10 @@
 package com.mvsolutions.payus.mapper;
 
 import com.mvsolutions.payus.model.rest.basic.User;
+import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.user.UserLoginResponse;
 import com.mvsolutions.payus.model.rest.response.mainpage.MainPageUser;
+import com.mvsolutions.payus.model.rest.response.suppointpage.PaybackUserDataResponse;
 
 public interface UserMapper {
 
@@ -21,4 +23,8 @@ public interface UserMapper {
     void registerUser(User user);
 
     void updateUserName(int user_no, String nickname);
+
+    PaybackUserDataResponse getUserDataForPayback(int user_no);
+
+    void requestPayback(PaybackRequest request);
 }

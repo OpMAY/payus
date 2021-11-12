@@ -3,5 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mvsolutions.payus.mapper.PointAccumulateRejectMapper">
-
+    <select id="getAccumulateRejectReason" resultType="string">
+        select reason
+        from point_accumulate_reject
+        WHERE accumulate_no = #{content_no}
+    </select>
 </mapper>

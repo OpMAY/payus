@@ -4,6 +4,7 @@ package com.mvsolutions.payus.dao;
 import com.mvsolutions.payus.mapper.StoreMapper;
 import com.mvsolutions.payus.model.rest.basic.Store;
 import com.mvsolutions.payus.model.rest.response.mainpage.MainPageStore;
+import com.mvsolutions.payus.model.rest.response.suppointpage.PointStoreDataResponse;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -42,5 +43,10 @@ public class StoreDao {
     public void insertStore(Store store) {
         StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
         mapper.insertStore(store);
+    }
+
+    public PointStoreDataResponse getStorePaybackData(int vendor_no) {
+        StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
+        return mapper.getStorePaybackData(vendor_no);
     }
 }

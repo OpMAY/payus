@@ -57,4 +57,12 @@
                 #{address_3depth}, #{address_short}, #{address_road}, #{review_num}, #{store_private}, #{img_list},
                 #{reg_date})
     </insert>
+    <select id="getStorePaybackData" resultType="PointStoreDataResponse">
+        SET @Point = (select point
+                      from vendor
+                      WHERE vendor_no = #{vendor_no});
+        select store_no, payback_rate, @Point as point
+        from store
+        WHERE vendor_no = #{vendor_no}
+    </select>
 </mapper>

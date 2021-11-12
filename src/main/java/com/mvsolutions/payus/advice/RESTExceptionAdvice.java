@@ -6,6 +6,7 @@ import com.mvsolutions.payus.response.IntegerRes;
 import com.mvsolutions.payus.response.StatusCode;
 import lombok.extern.log4j.Log4j;
 import org.json.JSONException;
+import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -204,5 +205,12 @@ public class RESTExceptionAdvice {
         e.printStackTrace();
         log.info("handleFileNotFoundException");
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.NO_CONTENT);
+    }
+
+    @ExceptionHandler(MyBatisSystemException.class)
+    protected ResponseEntity myBatisSystemException(MyBatisSystemException e) {
+        e.printStackTrace();
+        log.info("myBatisSystemException");
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

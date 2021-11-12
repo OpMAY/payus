@@ -32,3 +32,4 @@ build/
 .vscode/
 
 out/
+/src/main/resources/private/

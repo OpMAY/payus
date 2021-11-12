@@ -19,6 +19,12 @@ public class NotificationVendorDao {
         }
     }
 
+    private NotificationVendorMapper mapper;
+
+    private NotificationVendorMapper initMapper() {
+        return sqlSession.getMapper(NotificationVendorMapper.class);
+    }
+
     public List<VendorNotificationResponse> getNotificationList(VendorNotificationRequest request) {
         NotificationVendorMapper mapper = sqlSession.getMapper(NotificationVendorMapper.class);
         return mapper.getNotificationList(request);

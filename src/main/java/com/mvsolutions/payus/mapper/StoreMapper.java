@@ -3,6 +3,7 @@ package com.mvsolutions.payus.mapper;
 
 import com.mvsolutions.payus.model.rest.basic.Store;
 import com.mvsolutions.payus.model.rest.response.mainpage.MainPageStore;
+import com.mvsolutions.payus.model.rest.response.suppointpage.PointStoreDataResponse;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface StoreMapper {
     boolean checkStoreExists(int last_index);
 
     void insertStore(Store store);
+
+    PointStoreDataResponse getStorePaybackData(int vendor_no);
 }

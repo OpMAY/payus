@@ -3,7 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mvsolutions.payus.mapper.ReviewMapper">
-    <select id="VendorReviewContentResponse" resultType="VendorReviewContentResponse">
+    <resultMap id="VendorReviewContentResponse"
+               type="com.mvsolutions.payus.model.rest.response.suphomepage.VendorReviewContentResponse">
+        <result column="image_list" property="image_list" typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+    </resultMap>
+    <select id="VendorReviewContentResponse" resultType="VendorReviewContentResponse" resultMap="VendorReviewContentResponse">
         select review_no, user_name, content, rate, reg_date
         from review
         WHERE review_no = #{review_no}

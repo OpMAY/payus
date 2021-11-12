@@ -3,8 +3,10 @@ package com.mvsolutions.payus.mapper;
 
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.request.suphomepage.VendorHomeRequest;
+import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
 import com.mvsolutions.payus.model.rest.response.suphomepage.VendorHomeResponse;
+import com.mvsolutions.payus.model.rest.response.suppointpage.SupPointChargeDataResponse;
 
 public interface VendorMapper {
     boolean checkVendorExists(VendorLoginRequest request);
@@ -16,4 +18,8 @@ public interface VendorMapper {
     String getVendorName(int vendor_no);
 
     VendorHomeResponse getVendorHome(VendorHomeRequest request);
+
+    SupPointChargeDataResponse getVendorPoint(int vendor_no);
+
+    void requestPayback(PaybackRequest request);
 }
