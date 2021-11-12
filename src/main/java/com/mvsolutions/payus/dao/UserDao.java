@@ -3,9 +3,13 @@ package com.mvsolutions.payus.dao;
 import com.mvsolutions.payus.mapper.UserMapper;
 import com.mvsolutions.payus.model.rest.basic.User;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
+import com.mvsolutions.payus.model.rest.request.usermypage.UserPointWithdrawRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.user.UserLoginResponse;
 import com.mvsolutions.payus.model.rest.response.mainpage.MainPageUser;
 import com.mvsolutions.payus.model.rest.response.suppointpage.PaybackUserDataResponse;
+import com.mvsolutions.payus.model.rest.response.usermypage.UserMyPagePersonalDataResponse;
+import com.mvsolutions.payus.model.rest.response.usermypage.UserMyPageResponse;
+import com.mvsolutions.payus.model.rest.response.usermypage.UserWithdrawPageResponse;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -67,5 +71,35 @@ public class UserDao {
     public void requestPayback(PaybackRequest request) {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         mapper.requestPayback(request);
+    }
+
+    public UserMyPageResponse getUserMyPageData(int user_no) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.getUserMyPageData(user_no);
+    }
+
+    public UserWithdrawPageResponse getUserDataForWithdraw(int user_no) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.getUserDataForWithdraw(user_no);
+    }
+
+    public int getUserPoint(int user_no) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.getUserPoint(user_no);
+    }
+
+    public void updatePointWithdraw(UserPointWithdrawRequest request) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        mapper.updatePointWithdraw(request);
+    }
+
+    public UserMyPagePersonalDataResponse getUserMyPagePersonalData(int user_no) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.getUserMyPagePersonalData(user_no);
+    }
+
+    public boolean checkUserExistsByUserNo(int user_no) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.checkUserExistsByUserNo(user_no);
     }
 }

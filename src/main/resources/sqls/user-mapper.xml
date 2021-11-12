@@ -51,4 +51,43 @@
         SET point = point + #{point}
         WHERE user_no = #{user_no}
     </update>
+    <select id="getUserMyPageData" resultType="UserMyPageResponse">
+        select user_no, nickname, point
+        from user
+        WHERE user_no = #{user_no}
+    </select>
+    <select id="getUserDataForWithdraw" resultType="UserWithdrawPageResponse">
+        select user_no, point
+        from user
+        WHERE user_no = #{user_no}
+    </select>
+    <select id="getUserPoint" resultType="_int">
+        select point
+        from user
+        WHERE user_no = #{user_no}
+    </select>
+    <update id="updatePointWithdraw">
+        update user
+        SET point = point - #{request_point}
+        WHERE user_no = #{user_no}
+    </update>
+    <select id="getUserMyPagePersonalData" resultType="UserMyPagePersonalDataResponse">
+        select user_no,
+               sns,
+               nickname,
+               phone,
+               bank_name,
+               bank_account,
+               bank_owner,
+               event_push,
+               review_push,
+               point_push,
+               report_push,
+               marketing_agree
+        from user
+        WHERE user_no = #{user_no}
+    </select>
+    <select id="checkUserExistsByUserNo" resultType="_boolean">
+        select EXISTS(select * from user WHERE user_no = #{user_no})
+    </select>
 </mapper>

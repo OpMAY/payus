@@ -7,7 +7,9 @@ import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorChargeCancelRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorPointCancelRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorPointChargeRequest;
+import com.mvsolutions.payus.model.rest.request.usermypage.UserPointWithdrawRequest;
 import com.mvsolutions.payus.model.rest.response.suppointpage.*;
+import com.mvsolutions.payus.model.rest.response.usermypage.UserWithdrawPageResponse;
 import com.mvsolutions.payus.response.IntegerRes;
 import com.mvsolutions.payus.response.Message;
 import com.mvsolutions.payus.response.StatusCode;
@@ -155,7 +157,7 @@ public class PointService {
             pointAccumulateRejectDao.setSqlSession(sqlSession);
             String reason;
             int status = pointAccumulateDao.getPointAccumulateByAccumulateNo(content_no).getStatus();
-            if(status == PointAccumulateType.CANCEL_REQUEST || status == PointAccumulateType.CANCELED) {
+            if (status == PointAccumulateType.CANCEL_REQUEST || status == PointAccumulateType.CANCELED) {
                 // 취소 사유 전송 (취소 요청 전송됨, 취소됨)
                 reason = pointAccumulateCancelDao.getPointAccumulateCancelReason(content_no);
             } else if (status == PointAccumulateType.CANCEL_REJECT) {
@@ -171,7 +173,7 @@ public class PointService {
             pointChargeRejectDao.setSqlSession(sqlSession);
             int status = pointChargeDao.checkVendorChargeRejected(content_no);
             String reason;
-            if(status == PointChargeType.REJECTED){
+            if (status == PointChargeType.REJECTED) {
                 // 반려 상태일 때 반려사유
                 reason = pointChargeRejectDao.getChargeRejectReason(content_no);
             } else if (status == PointChargeType.CANCEL_REQUEST || status == PointChargeType.CANCELED) {
@@ -283,6 +285,43 @@ public class PointService {
         notificationUser.setReg_date(time);
         notificationUser.setType(NotificationType.PAYBACK);
         // 공급자에게 알림 전송
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity getUserPointForWithdrawPage(int user_no) throws JSONException {
+        Message message = new Message();
+        userDao.setSqlSession(sqlSession);
+        // user_no, point
+        UserWithdrawPageResponse response = userDao.getUserDataForWithdraw(user_no);
+        if(response == null) {
+            // 없는 유저면 U404
+            return new ResponseEntity(StringRes.res(StatusCode.NO_USER_DETECTED), HttpStatus.OK);
+        }
+        message.put("user", response);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getUserPointForWithdrawPage()")), HttpStatus.OK);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ResponseEntity requestUserPointWithdraw(UserPointWithdrawRequest request) {
+        userDao.setSqlSession(sqlSession);
+        pointWithdrawDao.setSqlSession(sqlSession);
+        int userPoint = userDao.getUserPoint(request.getUser_no());
+        if(userPoint != request.getOriginal_point()) {
+            // 서버 DB와 유저의 포인트 양이 다를 때 P407
+            return new ResponseEntity(StringRes.res(StatusCode.POINT_NOT_MATCH), HttpStatus.OK);
+        } else if (userPoint < request.getRequest_point()) {
+            // 인출하는데 사용하는 포인트보다 보유 포인트가 적을 때 P403
+            return new ResponseEntity(StringRes.res(StatusCode.NOT_ENOUGH_POINT), HttpStatus.OK);
+        } else if (request.getRequest_point() < 1000) {
+            // 인출 요청 금액이 1000 포인트 미만일 시 P408
+            return new ResponseEntity(StringRes.res(StatusCode.LOWER_THAN_1000), HttpStatus.OK);
+        }
+        request.setReg_date(Time.TimeFormatHMS());
+        // 인출 요청
+        pointWithdrawDao.requestWithdraw(request);
+        // 포인트 업데이트
+        userDao.updatePointWithdraw(request);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
     }
 }

@@ -14,6 +14,8 @@ import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorChargeCancelRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorPointCancelRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorPointChargeRequest;
+import com.mvsolutions.payus.model.rest.request.usermypage.UserPersonalDataEditRequest;
+import com.mvsolutions.payus.model.rest.request.usermypage.UserPointWithdrawRequest;
 import com.mvsolutions.payus.model.rest.response.mainpage.GeoCodeCoordinateRequest;
 import com.mvsolutions.payus.service.*;
 import lombok.extern.log4j.Log4j;
@@ -226,12 +228,63 @@ public class PayUsRestController {
         return vendorService.getStorePaybackData(vendor_no);
     }
 
-    /** SupQRPayBack#003 **/
+    /**
+     * SupQRPayBack#003
+     **/
     @RequestMapping(value = "/api/vendor/payback/request", method = RequestMethod.POST)
     public ResponseEntity RequestPayback(@RequestBody String body) throws JSONException {
         PaybackRequest request = new Gson().fromJson(body, PaybackRequest.class);
         return pointService.requestPayback(request);
     }
 
+    /**
+     * UserMyPage#001
+     **/
+    @RequestMapping(value = "/api/user/mypage", method = RequestMethod.GET)
+    public ResponseEntity GetUserMyPageData(@RequestParam("user_no") int user_no) throws JSONException {
+        return userService.getUserMyPageData(user_no);
+    }
+
+    /**
+     * UserCashPage#001
+     **/
+    @RequestMapping(value = "/api/user/point/withdraw/data", method = RequestMethod.GET)
+    public ResponseEntity GetUserPointForWithdrawPage(@RequestParam("user_no") int user_no) throws JSONException {
+        return pointService.getUserPointForWithdrawPage(user_no);
+    }
+
+    /**
+     * UserCashPage#002
+     **/
+    @RequestMapping(value = "/api/user/point/withdraw/request", method = RequestMethod.POST)
+    public ResponseEntity RequestUserPointWithdraw(@RequestBody String body) {
+        UserPointWithdrawRequest request = new Gson().fromJson(body, UserPointWithdrawRequest.class);
+        return pointService.requestUserPointWithdraw(request);
+    }
+
+    /**
+     * UserEditPage#001
+     **/
+    @RequestMapping(value = "/api/user/mypage/data", method = RequestMethod.GET)
+    public ResponseEntity GetUserMyPagePersonalData(@RequestParam("user_no") int user_no) throws JSONException {
+        return userService.getUserMyPagePersonalData(user_no);
+    }
+
+    /**
+     * UserEditPage#002
+     **/
+    @RequestMapping(value = "/api/user/mypage/edit", method = RequestMethod.POST)
+    public ResponseEntity EditUserPersonalData(@RequestBody String body) {
+        UserPersonalDataEditRequest request = new Gson().fromJson(body, UserPersonalDataEditRequest.class);
+        return userService.editUserPersonalData(request);
+    }
+
+    /**
+     * UserCustomCenter#001
+     **/
+    @RequestMapping(value = "/api/user/customcenter", method = RequestMethod.GET)
+    public ResponseEntity GetCustomCenterData(@RequestParam("user_no") int user_no) throws JSONException {
+        return userService.getCustomCenterData(user_no);
+    }
 
 }

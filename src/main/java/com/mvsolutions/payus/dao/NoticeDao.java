@@ -15,5 +15,10 @@ public class NoticeDao {
         }
     }
 
+    public int getLatestNoticeNo() {
+        NoticeMapper mapper = sqlSession.getMapper(NoticeMapper.class);
+        return mapper.getLatestNoticeNo();
+    }
+
 //    private NoticeMapper mapper = sqlSession.getMapper(NoticeMapper.class);
 }

@@ -3,5 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mvsolutions.payus.mapper.ReportStoreMapper">
-
+    <select id="checkReportAnswered" resultType="_boolean">
+        select EXISTS(select * from report_store WHERE read_check = false)
+    </select>
 </mapper>

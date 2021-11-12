@@ -16,4 +16,5 @@ public class ReportStore {
     private boolean answer_status;
     private String answer_content;
     private String answer_date;
+    private boolean read_check;
 }

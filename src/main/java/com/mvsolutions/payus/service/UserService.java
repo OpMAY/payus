@@ -1,17 +1,24 @@
 package com.mvsolutions.payus.service;
 
+import com.mvsolutions.payus.dao.NoticeDao;
 import com.mvsolutions.payus.dao.PenaltyUserDao;
+import com.mvsolutions.payus.dao.ReportStoreDao;
 import com.mvsolutions.payus.dao.UserDao;
 import com.mvsolutions.payus.model.rest.basic.User;
 import com.mvsolutions.payus.model.rest.request.loginpage.user.UserLoginRequest;
-import com.mvsolutions.payus.model.rest.response.loginpage.user.UserPenaltyResponse;
 import com.mvsolutions.payus.model.rest.request.loginpage.user.UserRegisterRequest;
+import com.mvsolutions.payus.model.rest.request.usermypage.UserPersonalDataEditRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.user.UserLoginResponse;
+import com.mvsolutions.payus.model.rest.response.loginpage.user.UserPenaltyResponse;
 import com.mvsolutions.payus.model.rest.response.loginpage.user.UserRegisterResponse;
+import com.mvsolutions.payus.model.rest.response.usermypage.UserMyPagePersonalDataResponse;
+import com.mvsolutions.payus.model.rest.response.usermypage.UserMyPageResponse;
 import com.mvsolutions.payus.response.IntegerRes;
 import com.mvsolutions.payus.response.Message;
 import com.mvsolutions.payus.response.StatusCode;
 import com.mvsolutions.payus.response.StringRes;
+import com.mvsolutions.payus.response.payus.point.PaybackRule;
+import com.mvsolutions.payus.response.payus.user.UserPersonalDataEditType;
 import com.mvsolutions.payus.util.Time;
 import lombok.extern.log4j.Log4j;
 import org.apache.ibatis.session.SqlSession;
@@ -36,6 +43,12 @@ public class UserService {
 
     @Autowired
     private PenaltyUserDao penaltyUserDao;
+
+    @Autowired
+    private ReportStoreDao reportStoreDao;
+
+    @Autowired
+    private NoticeDao noticeDao;
 
     @Transactional(propagation = Propagation.REQUIRED)
     public ResponseEntity loginUser(UserLoginRequest request) throws JSONException {
@@ -72,10 +85,10 @@ public class UserService {
     public ResponseEntity registerUser(UserRegisterRequest request) throws JSONException {
         Message message = new Message();
         userDao.setSqlSession(sqlSession);
-        if(userDao.checkUserExists(request.getSns(), request.getAccess_token())){
+        if (userDao.checkUserExists(request.getSns(), request.getAccess_token())) {
             // 유저가 존재하는데 접근한 경우
             return new ResponseEntity(IntegerRes.res(StatusCode.BAD_REQUEST), HttpStatus.OK);
-        } else if (request.getAccess_token() == null){
+        } else if (request.getAccess_token() == null) {
             // Access Token 누락 시
             return new ResponseEntity(IntegerRes.res(StatusCode.BAD_REQUEST), HttpStatus.OK);
         }
@@ -93,7 +106,103 @@ public class UserService {
         user.setNickname(nickname);
         userDao.updateUserName(user.getUser_no(), nickname);
         UserRegisterResponse response = new UserRegisterResponse();
+        response.setUser_no(user.getUser_no());
         message.put("user", response);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("registerUser()")), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity getUserMyPageData(int user_no) throws JSONException {
+        Message message = new Message();
+        userDao.setSqlSession(sqlSession);
+        UserMyPageResponse response = userDao.getUserMyPageData(user_no);
+        if (response == null) {
+            // 유저 없을 때
+            return new ResponseEntity(StringRes.res(StatusCode.NO_USER_DETECTED), HttpStatus.OK);
+        }
+        // 유저 코드 서버에서 계산해서 반환
+        response.setUser_code(PaybackRule.UserCodeCalculation(response.getUser_no(), true));
+        message.put("user", response);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getUserMyPageData()")), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity getCustomCenterData(int user_no) throws JSONException {
+        Message message = new Message();
+        reportStoreDao.setSqlSession(sqlSession);
+        noticeDao.setSqlSession(sqlSession);
+        int recent_no = noticeDao.getLatestNoticeNo();
+        // 가장 최신 공지사항의 notice_no
+        message.put("latest_notice", recent_no);
+        if (user_no != 0) {
+            // 읽지 않은(답변 달렸는데) 문의 내역 있는지
+            boolean answerStatus = reportStoreDao.checkReportAnswered(user_no);
+            message.put("has_answer", answerStatus);
+        }
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getCustomCenterData()")), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity getUserMyPagePersonalData(int user_no) throws JSONException {
+        Message message = new Message();
+        userDao.setSqlSession(sqlSession);
+        // 유저 정보 수정 페이지에서 데이터 수정
+        UserMyPagePersonalDataResponse response = userDao.getUserMyPagePersonalData(user_no);
+        message.put("user", response);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getUserMyPagePersonalData()")), HttpStatus.OK);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ResponseEntity editUserPersonalData(UserPersonalDataEditRequest request) throws JSONException {
+        Message message = new Message();
+        userDao.setSqlSession(sqlSession);
+        if(userDao.checkUserExistsByUserNo(request.getUser_no())) {
+            return new ResponseEntity(StringRes.res(StatusCode.NO_USER_DETECTED), HttpStatus.OK);
+        }
+        switch (request.getType()){
+            case UserPersonalDataEditType
+                    .NICKNAME :
+
+                break;
+            case UserPersonalDataEditType
+                    .PHONE :
+
+                break;
+            case UserPersonalDataEditType
+                    .BANK_NAME :
+
+                break;
+            case UserPersonalDataEditType
+                    .BANK_ACCOUNT :
+
+                break;
+            case UserPersonalDataEditType
+                    .BANK_OWNER :
+
+                break;
+            case UserPersonalDataEditType
+                    .EVENT_PUSH :
+
+                break;
+            case UserPersonalDataEditType
+                    .REVIEW_PUSH :
+
+                break;
+            case UserPersonalDataEditType
+                    .POINT_PUSH :
+
+                break;
+            case UserPersonalDataEditType
+                    .REPORT_PUSH :
+
+                break;
+            case UserPersonalDataEditType
+                    .MARKETING_AGREE :
+
+                break;
+            default:
+                return new ResponseEntity(StringRes.res(StatusCode.USER_EDIT_TYPE_ERROR), HttpStatus.OK);
+        }
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("editUserPersonalData()")), HttpStatus.OK);
     }
 }
