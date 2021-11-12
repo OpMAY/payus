@@ -21,5 +21,10 @@ public class PointChargeCancelDao {
         mapper.insertChargeCancelRequest(request);
     }
 
+    public String getChargeCancelReason(int content_no) {
+        PointChargeCancelMapper mapper = sqlSession.getMapper(PointChargeCancelMapper.class);
+        return mapper.getChargeCancelReason(content_no);
+    }
+
 //    private PointChargeCancelMapper mapper = sqlSession.getMapper(PointChargeCancelMapper.class);
 }

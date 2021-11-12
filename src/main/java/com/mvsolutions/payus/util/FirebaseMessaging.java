@@ -17,11 +17,12 @@ import java.util.List;
 @Service
 public class FirebaseMessaging {
     //초기화
-    //초기화
     public void initFirebase() {
         try {
-            FileInputStream refreshToken = new FileInputStream("/www/weart-page_com/ROOT/resources/weart-ucc-firebase-adminsdk-3e85h-646607f007.json");
-            //FileInputStream refreshToken = new FileInputStream("E:\\vodAppServer\\src\\main\\webapp\\resources\\weart-ucc-firebase-adminsdk-3e85h-646607f007.json");
+            // Remote
+            //FileInputStream refreshToken = new FileInputStream("/www/weart-page_com/ROOT/resources/weart-ucc-firebase-adminsdk-3e85h-646607f007.json");
+            // Local
+            FileInputStream refreshToken = new FileInputStream("E:/Projects/payus/src/main/resources/private/payus-307315-firebase-adminsdk-e98c2-9b9f5c5d52.json");
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(refreshToken))
                     .build();

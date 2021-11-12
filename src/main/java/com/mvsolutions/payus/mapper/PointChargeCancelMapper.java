@@ -4,4 +4,6 @@ import com.mvsolutions.payus.model.rest.request.suppointpage.VendorChargeCancelR
 
 public interface PointChargeCancelMapper {
     void insertChargeCancelRequest(VendorChargeCancelRequest request);
+
+    String getChargeCancelReason(int content_no);
 }

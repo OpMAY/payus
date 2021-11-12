@@ -1,6 +1,5 @@
 package com.mvsolutions.payus.dao;
 
-import com.mvsolutions.payus.mapper.AdvertisementBannerMapper;
 import com.mvsolutions.payus.mapper.PointChargeMapper;
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorPointChargeRequest;
 import com.mvsolutions.payus.model.rest.response.suppointpage.VendorPointChargeListResponse;
@@ -47,6 +46,11 @@ public class PointChargeDao {
     public void updateReadCheck(List<VendorPointChargeListResponse> chargeList) {
         PointChargeMapper mapper = sqlSession.getMapper(PointChargeMapper.class);
         mapper.updateReadCheck(chargeList);
+    }
+
+    public int checkVendorChargeRejected(int content_no) {
+        PointChargeMapper mapper = sqlSession.getMapper(PointChargeMapper.class);
+        return mapper.checkVendorChargeStatus(content_no);
     }
 
 //    private PointChargeMapper mapper = sqlSession.getMapper(PointChargeMapper.class);

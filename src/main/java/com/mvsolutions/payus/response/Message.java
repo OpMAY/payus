@@ -48,7 +48,10 @@ public class Message {
         String log_str = "\n" + fn + " has started business logic";
         while (iterator.hasNext()) {
             String key = iterator.next().toString();
-            log_str += "\nkey : " + key + ", data:" + map.get(key).toString();
+            if (map.get(key) != null)
+                log_str += "\nkey : " + key + ", data:" + map.get(key).toString();
+            else
+                log_str += "\nkey : " + key + ", data:" + map.get(key);
         }
         log.info(log_str);
         return map;
@@ -60,7 +63,10 @@ public class Message {
         String log_str = "Started";
         while (iterator.hasNext()) {
             String key = iterator.next().toString();
-            log_str += "\nkey : " + key + ", data:" + map.get(key).toString();
+            if (map.get(key) != null)
+                log_str += "\nkey : " + key + ", data:" + map.get(key).toString();
+            else
+                log_str += "\nkey : " + key + ", data:" + map.get(key);
         }
         log.info(log_str);
         return map;

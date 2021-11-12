@@ -1,20 +1,39 @@
 package com.mvsolutions.payus.response;
 
 public class StatusCode {
+    // Integer Status Code
     public static final int SUCCESS = 200;
     public static final int UPDATING = 999;
-    public static final String MORE_INFORMATION = "L426";
+    public static final int BAD_REQUEST = 400;
+    public static final int INTERNAL_SERVER_ERROR = 500;
+
+    // String Custom Status Code
+
+    /** User / Vendor Acess **/
     public static final String LOGIN_FAILED = "L401";
+    public static final String REGISTER_REQUIRED = "L404";
+    public static final String NO_USER_DETECTED = "U404";
+    public static final String PENALTY_USER = "U501";
+
+    /** Content Loading / Reloading **/
     public static final String RELOAD_FAILED = "R400";
     public static final String DELETED_CONTENT = "D404";
     public static final String DENIED_CONTENT = "D501";
-    public static final int BAD_REQUEST = 400;
-    public static final String COORDINATE_ERROR = "M400";
-    public static final String REGISTER_REQUIRED = "L404";
-    public static final int INTERNAL_SERVER_ERROR = 500;
-    public static final String ALREADY_ANSWERED = "A400";
-    public static final String TIME_EXPIRED = "T401";
+
+    /** Point **/
     public static final String CAN_NOT_CANCEL_POINT = "P401";
-    public static final String NO_USER_DETECTED = "U404";
-    public static final String PENALTY_USER = "U501";
+    public static final String PAYBACK_RATE_DIFFERENT = "P402";
+    public static final String NOT_ENOUGH_POINT = "P403";
+    public static final String PRICE_EXCEEDED = "P404";
+    public static final String POINT_RESULT_ERROR = "P405";
+    public static final String POINT_STATUS_ERROR = "P406";
+
+    /** Request Data Error **/
+    // 지도 좌표 관련 에러 - 해당 좌표에 관한 주소가 없을 때
+    public static final String COORDINATE_ERROR = "M400";
+    // 취소, 리뷰 작성 등의 시간 제한을 지닌 컨텐츠 접근에 시간이 만료되었을 때
+    public static final String TIME_EXPIRED = "T401";
+    // 답변을 작성할 수 있는 컨텐츠 중 이미 답변이 존재하는 컨텐츠에 답변을 작성하려고 할 때
+    public static final String ALREADY_ANSWERED = "A400";
+
 }

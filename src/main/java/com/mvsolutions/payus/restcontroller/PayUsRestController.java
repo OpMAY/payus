@@ -160,7 +160,7 @@ public class PayUsRestController {
      * SupPointCharge#002
      **/
     @RequestMapping(value = "/api/vendor/point/charge/request", method = RequestMethod.POST)
-    public ResponseEntity ChargeVendorPoint(@RequestBody String body) {
+    public ResponseEntity ChargeRequestVendorPoint(@RequestBody String body) {
         VendorPointChargeRequest request = new Gson().fromJson(body, VendorPointChargeRequest.class);
         return pointService.chargeRequestVendorPoint(request);
     }
@@ -228,8 +228,10 @@ public class PayUsRestController {
 
     /** SupQRPayBack#003 **/
     @RequestMapping(value = "/api/vendor/payback/request", method = RequestMethod.POST)
-    public ResponseEntity RequestPayback(@RequestBody String body) {
+    public ResponseEntity RequestPayback(@RequestBody String body) throws JSONException {
         PaybackRequest request = new Gson().fromJson(body, PaybackRequest.class);
         return pointService.requestPayback(request);
     }
+
+
 }

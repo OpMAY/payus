@@ -17,4 +17,6 @@ public interface PointChargeMapper {
     void chargeCancelRequestUpdate(int charge_no);
 
     void updateReadCheck(List<VendorPointChargeListResponse> chargeList);
+
+    int checkVendorChargeStatus(int content_no);
 }

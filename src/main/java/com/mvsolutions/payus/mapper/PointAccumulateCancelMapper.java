@@ -5,4 +5,6 @@ import com.mvsolutions.payus.model.rest.request.suppointpage.VendorPointCancelRe
 public interface PointAccumulateCancelMapper {
 
     void insertPointCancelRequest(VendorPointCancelRequest request);
+
+    String getPointAccumulateCancelReason(int content_no);
 }

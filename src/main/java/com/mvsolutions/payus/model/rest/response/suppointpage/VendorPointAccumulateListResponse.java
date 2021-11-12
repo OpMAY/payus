@@ -11,5 +11,4 @@ public class VendorPointAccumulateListResponse {
     private int status;
     private String reg_date;
     private boolean read_check;
-    private String reject_reason;
 }

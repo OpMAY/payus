@@ -46,4 +46,9 @@
             </when>
         </choose>
     </update>
+    <select id="checkVendorChargeStatus" resultType="_int">
+        select status
+        from point_charge
+        WHERE charge_no = #{content_no}
+    </select>
 </mapper>

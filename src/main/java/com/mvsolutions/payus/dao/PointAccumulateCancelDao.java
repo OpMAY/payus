@@ -20,6 +20,11 @@ public class PointAccumulateCancelDao {
         mapper.insertPointCancelRequest(request);
     }
 
+    public String getPointAccumulateCancelReason(int content_no) {
+        PointAccumulateCancelMapper mapper = sqlSession.getMapper(PointAccumulateCancelMapper.class);
+        return mapper.getPointAccumulateCancelReason(content_no);
+    }
+
 
 //    private PointAccumulateCancelMapper mapper = sqlSession.getMapper(PointAccumulateCancelMapper.class);
 }

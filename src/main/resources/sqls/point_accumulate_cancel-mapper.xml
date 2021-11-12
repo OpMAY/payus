@@ -7,4 +7,9 @@
         insert into point_accumulate_cancel(accumulate_no, reason, reg_date)
         VALUES (#{accumulate_no}, #{reason}, #{reg_date})
     </insert>
+    <select id="getPointAccumulateCancelReason" resultType="string">
+        select reason
+        from point_accumulate_cancel
+        WHERE accumulate_no = #{content_no}
+    </select>
 </mapper>

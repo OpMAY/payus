@@ -7,4 +7,9 @@
         insert into point_charge_cancel (charge_no, reason, reg_date)
         VALUES (#{charge_no}, #{reason}, #{reg_date})
     </insert>
+    <select id="getChargeCancelReason" resultType="string">
+        select reason
+        from point_charge_cancel
+        WHERE charge_no = #{content_no}
+    </select>
 </mapper>
