@@ -10,4 +10,5 @@ public class MFile {
     private String file_url;
     private String file_type;
     private long file_size;
+    private byte[] file_bytes;
 }

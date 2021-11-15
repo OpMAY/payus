@@ -156,49 +156,50 @@ public class UserService {
     public ResponseEntity editUserPersonalData(UserPersonalDataEditRequest request) throws JSONException {
         Message message = new Message();
         userDao.setSqlSession(sqlSession);
-        if(userDao.checkUserExistsByUserNo(request.getUser_no())) {
+        if (userDao.checkUserExistsByUserNo(request.getUser_no())) {
             return new ResponseEntity(StringRes.res(StatusCode.NO_USER_DETECTED), HttpStatus.OK);
         }
-        switch (request.getType()){
+        switch (request.getType()) {
             case UserPersonalDataEditType
-                    .NICKNAME :
-
+                    .NICKNAME:
+                userDao.editUserNickName(request.getUser_no(), request.getData());
                 break;
             case UserPersonalDataEditType
-                    .PHONE :
-
+                    .PHONE:
+                userDao.editUserPhone(request.getUser_no(), request.getData());
                 break;
             case UserPersonalDataEditType
-                    .BANK_NAME :
-
+                    .BANK_NAME:
+                userDao.editUserBankName(request.getUser_no(), request.getData());
                 break;
             case UserPersonalDataEditType
-                    .BANK_ACCOUNT :
-
+                    .BANK_ACCOUNT:
+                userDao.editUserBankAccount(request.getUser_no(), request.getData());
                 break;
             case UserPersonalDataEditType
-                    .BANK_OWNER :
-
+                    .BANK_OWNER:
+                userDao.editUserBankOwner(request.getUser_no(), request.getData());
                 break;
             case UserPersonalDataEditType
-                    .EVENT_PUSH :
-
+                    .EVENT_PUSH:
+                message.put("event_push", userDao.updateUserEventPush(request.getUser_no()));
                 break;
             case UserPersonalDataEditType
-                    .REVIEW_PUSH :
-
+                    .REVIEW_PUSH:
+                message.put("review_push", userDao.updateUserReviewPush(request.getUser_no()));
                 break;
             case UserPersonalDataEditType
-                    .POINT_PUSH :
-
+                    .POINT_PUSH:
+                message.put("point_push", userDao.updateUserPointPush(request.getUser_no()));
                 break;
             case UserPersonalDataEditType
-                    .REPORT_PUSH :
-
+                    .REPORT_PUSH:
+                message.put("report_push", userDao.updateUserReportPush(request.getUser_no()));
                 break;
             case UserPersonalDataEditType
-                    .MARKETING_AGREE :
-
+                    .MARKETING_AGREE:
+                // 마케팅 및 이벤트 Push 이용 동의 이므로 이 값에 따라 event_push 동일 적용
+                message.put("marketing_agree", userDao.updateMarketingAgree(request.getUser_no()));
                 break;
             default:
                 return new ResponseEntity(StringRes.res(StatusCode.USER_EDIT_TYPE_ERROR), HttpStatus.OK);

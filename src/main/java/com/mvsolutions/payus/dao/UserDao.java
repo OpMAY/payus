@@ -17,8 +17,8 @@ import org.springframework.stereotype.Repository;
 public class UserDao {
     private SqlSession sqlSession;
 
-    public void setSqlSession(SqlSession sqlSession){
-        if(this.sqlSession==null){
+    public void setSqlSession(SqlSession sqlSession) {
+        if (this.sqlSession == null) {
             this.sqlSession = sqlSession;
         }
     }
@@ -101,5 +101,55 @@ public class UserDao {
     public boolean checkUserExistsByUserNo(int user_no) {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         return mapper.checkUserExistsByUserNo(user_no);
+    }
+
+    public void editUserNickName(int user_no, String data) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        mapper.editUserNickName(user_no, data);
+    }
+
+    public void editUserPhone(int user_no, String data) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        mapper.editUserPhone(user_no, data);
+    }
+
+    public void editUserBankName(int user_no, String data) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        mapper.editUserBankName(user_no, data);
+    }
+
+    public void editUserBankAccount(int user_no, String data) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        mapper.editUserBankAccount(user_no, data);
+    }
+
+    public void editUserBankOwner(int user_no, String data) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        mapper.editUserBankOwner(user_no, data);
+    }
+
+    public boolean updateUserEventPush(int user_no) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.updateUserEventPush(user_no);
+    }
+
+    public boolean updateUserReviewPush(int user_no) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.updateUserReviewPush(user_no);
+    }
+
+    public boolean updateUserPointPush(int user_no) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.updateUserPointPush(user_no);
+    }
+
+    public boolean updateUserReportPush(int user_no) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.updateUserReportPush(user_no);
+    }
+
+    public boolean updateMarketingAgree(int user_no) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.updateMarketingAgree(user_no);
     }
 }

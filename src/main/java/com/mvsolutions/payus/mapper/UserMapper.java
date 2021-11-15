@@ -43,4 +43,24 @@ public interface UserMapper {
     UserMyPagePersonalDataResponse getUserMyPagePersonalData(int user_no);
 
     boolean checkUserExistsByUserNo(int user_no);
+
+    void editUserNickName(int user_no, String data);
+
+    void editUserPhone(int user_no, String data);
+
+    void editUserBankName(int user_no, String data);
+
+    void editUserBankAccount(int user_no, String data);
+
+    void editUserBankOwner(int user_no, String data);
+
+    boolean updateUserEventPush(int user_no);
+
+    boolean updateUserReviewPush(int user_no);
+
+    boolean updateUserPointPush(int user_no);
+
+    boolean updateUserReportPush(int user_no);
+
+    boolean updateMarketingAgree(int user_no);
 }

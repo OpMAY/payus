@@ -2,8 +2,11 @@ package com.mvsolutions.payus.dao;
 
 import com.mvsolutions.payus.mapper.ReviewMapper;
 import com.mvsolutions.payus.model.rest.request.suphomepage.VendorAnswerReviewRequest;
+import com.mvsolutions.payus.model.rest.request.usermypage.UserReviewDeleteRequest;
 import com.mvsolutions.payus.model.rest.response.suphomepage.VendorReviewContentResponse;
+import com.mvsolutions.payus.model.rest.response.usermypage.UserMyReviewResponse;
 import org.apache.ibatis.session.SqlSession;
+import org.bouncycastle.cert.ocsp.Req;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -34,6 +37,16 @@ public class ReviewDao {
     public void answerReview(VendorAnswerReviewRequest request) {
         ReviewMapper mapper = sqlSession.getMapper(ReviewMapper.class);
         mapper.answerReview(request);
+    }
+
+    public UserMyReviewResponse getReviewContentFromPointList(int accumulate_no) {
+        ReviewMapper mapper = sqlSession.getMapper(ReviewMapper.class);
+        return mapper.getReviewContentFromPointList(accumulate_no);
+    }
+
+    public void deleteReviewByUser(UserReviewDeleteRequest request) {
+        ReviewMapper mapper = sqlSession.getMapper(ReviewMapper.class);
+        mapper.deleteReviewByUser(request);
     }
 
 //    private ReviewMapper mapper = sqlSession.getMapper(ReviewMapper.class);

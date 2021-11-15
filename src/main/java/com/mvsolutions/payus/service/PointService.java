@@ -9,7 +9,7 @@ import com.mvsolutions.payus.model.rest.request.suppointpage.VendorPointCancelRe
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorPointChargeRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserPointWithdrawRequest;
 import com.mvsolutions.payus.model.rest.response.suppointpage.*;
-import com.mvsolutions.payus.model.rest.response.usermypage.UserWithdrawPageResponse;
+import com.mvsolutions.payus.model.rest.response.usermypage.*;
 import com.mvsolutions.payus.response.IntegerRes;
 import com.mvsolutions.payus.response.Message;
 import com.mvsolutions.payus.response.StatusCode;
@@ -98,7 +98,7 @@ public class PointService {
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(propagation = Propagation.REQUIRED)
     public ResponseEntity getVendorPointList(int vendor_no) throws JSONException {
         Message message = new Message();
         pointChargeDao.setSqlSession(sqlSession);
@@ -120,7 +120,7 @@ public class PointService {
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getVendorPointList()")), HttpStatus.OK);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(propagation = Propagation.REQUIRED)
     public ResponseEntity getVendorPointListReload(int vendor_no, int last_index, int reload_type) throws JSONException {
         Message message = new Message();
         if (reload_type == 1) {
@@ -130,7 +130,7 @@ public class PointService {
             pointAccumulateDao.updateVendorReadCheck(accumulateList);
             message.put("accumulate", accumulateList);
             if (accumulateList.size() > 0) {
-                message.put("last_index1", accumulateList.get(accumulateList.size() - 1).getAccumulate_no());
+                message.put("last_index", accumulateList.get(accumulateList.size() - 1).getAccumulate_no());
             }
         } else if (reload_type == 2) {
             // 충전 내역 리로딩
@@ -139,7 +139,7 @@ public class PointService {
             pointChargeDao.updateReadCheck(chargeList);
             message.put("charge", chargeList);
             if (chargeList.size() > 0) {
-                message.put("last_index2", chargeList.get(chargeList.size() - 1).getCharge_no());
+                message.put("last_index", chargeList.get(chargeList.size() - 1).getCharge_no());
             }
         }
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getVendorPointListReload()")), HttpStatus.OK);
@@ -294,7 +294,7 @@ public class PointService {
         userDao.setSqlSession(sqlSession);
         // user_no, point
         UserWithdrawPageResponse response = userDao.getUserDataForWithdraw(user_no);
-        if(response == null) {
+        if (response == null) {
             // 없는 유저면 U404
             return new ResponseEntity(StringRes.res(StatusCode.NO_USER_DETECTED), HttpStatus.OK);
         }
@@ -307,7 +307,7 @@ public class PointService {
         userDao.setSqlSession(sqlSession);
         pointWithdrawDao.setSqlSession(sqlSession);
         int userPoint = userDao.getUserPoint(request.getUser_no());
-        if(userPoint != request.getOriginal_point()) {
+        if (userPoint != request.getOriginal_point()) {
             // 서버 DB와 유저의 포인트 양이 다를 때 P407
             return new ResponseEntity(StringRes.res(StatusCode.POINT_NOT_MATCH), HttpStatus.OK);
         } else if (userPoint < request.getRequest_point()) {
@@ -323,5 +323,65 @@ public class PointService {
         // 포인트 업데이트
         userDao.updatePointWithdraw(request);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ResponseEntity getUserPointListPage(int user_no) throws JSONException {
+        Message message = new Message();
+        userDao.setSqlSession(sqlSession);
+        pointAccumulateDao.setSqlSession(sqlSession);
+        pointWithdrawDao.setSqlSession(sqlSession);
+        // 유저 정보
+        UserMyPageResponse userResponse = userDao.getUserMyPageData(user_no);
+        message.put("user", userResponse);
+        // 적립 리스트, 인출 리스트
+        List<UserPointAccumulateListResponse> accumulateList = pointAccumulateDao.getUserPointAccumulateList(user_no);
+        List<UserPointWithdrawListResponse> withdrawList = pointWithdrawDao.getUserPointWithdrawList(user_no);
+        // 해당 데이터들 읽기 여부 업데이트 - 후처리
+        pointAccumulateDao.updateUserReadCheck(accumulateList);
+        pointWithdrawDao.updateUserReadCheck(withdrawList);
+        message.put("accumulate", accumulateList);
+        message.put("withdraw", withdrawList);
+        if (accumulateList.size() > 0)
+            message.put("last_index1", accumulateList.get(accumulateList.size() - 1).getAccumulate_no());
+        if (withdrawList.size() > 0)
+            message.put("last_index2", withdrawList.get(withdrawList.size() - 1).getWithdraw_no());
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("GetUserPointListPage()")), HttpStatus.OK);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ResponseEntity getUserPointListPageReload(int user_no, int last_index, int reload_type) throws JSONException {
+        Message message = new Message();
+        pointAccumulateDao.setSqlSession(sqlSession);
+        pointWithdrawDao.setSqlSession(sqlSession);
+        if (reload_type == 1) {
+            List<UserPointAccumulateListResponse> accumulateList = pointAccumulateDao.getUserPointAccumulateListReload(user_no, last_index);
+            // 읽기 여부 후처리
+            pointAccumulateDao.updateUserReadCheck(accumulateList);
+            message.put("accumulate", accumulateList);
+            if (accumulateList.size() > 0)
+                message.put("last_index", accumulateList.get(accumulateList.size() - 1).getAccumulate_no());
+        } else if (reload_type == 2) {
+            List<UserPointWithdrawListResponse> withdrawList = pointWithdrawDao.getUserPointWithdrawListReload(user_no, last_index);
+            // 읽기 여부 후처리
+            pointWithdrawDao.updateUserReadCheck(withdrawList);
+            message.put("withdraw", withdrawList);
+            if (withdrawList.size() > 0)
+                message.put("last_index", withdrawList.get(withdrawList.size() - 1).getWithdraw_no());
+        }
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getUserPointListPageReload()")), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity getUserPointWithdrawRejectReason(int withdraw_no) throws JSONException {
+        Message message = new Message();
+        pointWithdrawRejectDao.setSqlSession(sqlSession);
+        if (!pointWithdrawDao.checkWithdrawRejected(withdraw_no)) {
+            // 반려된 내역이 아닌데 반려사유 요청한 경우
+            return new ResponseEntity(IntegerRes.res(StatusCode.BAD_REQUEST), HttpStatus.OK);
+        }
+        UserWithdrawRejectReasonResponse response = pointWithdrawRejectDao.getWithdrawRejectReason(withdraw_no);
+        message.put("reason", response);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getUserPointWithdrawRejectReason()")), HttpStatus.OK);
     }
 }

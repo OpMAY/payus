@@ -207,7 +207,7 @@ public class SampleController {
      * data.append("files1", fileInput.files[0], "/C:/Users/zlzld/OneDrive/Desktop/red-velvet-really-bad-boy-rbb-joy-irene-yeri-seulgi-wendy-s7812.jpg");
      */
     @RequestMapping(value = "/test/consumesmultiplekeyfiles", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity getConsumesMultipleFilesGetKeyProtocol(HttpServletRequest request, String data) throws JSONException {
+    public ResponseEntity getConsumesMultipleFilesGetKeyProtocol(HttpServletRequest request, String data) throws JSONException, IOException {
         Message message = new Message();
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
         Map<String, MultipartFile> fileMap = multipartHttpServletRequest.getFileMap();
@@ -220,7 +220,8 @@ public class SampleController {
             MFile mFile = new MFile(fileMap.get(key).getOriginalFilename(),
                     "http://localhost:8080/files/test.png",
                     fileMap.get(key).getContentType(),
-                    fileMap.get(key).getSize());
+                    fileMap.get(key).getSize(),
+                    fileMap.get(key).getBytes());
             log.info("File : " + mFile);
             names.add(fileMap.get(key).getOriginalFilename());
         }

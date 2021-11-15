@@ -7,10 +7,17 @@
                type="com.mvsolutions.payus.model.rest.response.suphomepage.VendorReviewContentResponse">
         <result column="image_list" property="image_list" typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
     </resultMap>
-    <select id="VendorReviewContentResponse" resultType="VendorReviewContentResponse" resultMap="VendorReviewContentResponse">
-        select review_no, user_name, content, rate, reg_date
-        from review
+    <resultMap id="UserMyReviewResponse"
+               type="com.mvsolutions.payus.model.rest.response.usermypage.UserMyReviewResponse">
+        <result column="image_list" property="image_list" typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+    </resultMap>
+    <select id="VendorReviewContentResponse" resultType="VendorReviewContentResponse"
+            resultMap="VendorReviewContentResponse">
+        select review_no, user.nickname as user_name, content, rate, review.reg_date
+        from review,
+             user
         WHERE review_no = #{review_no}
+          AND user.user_no = review.user_no
           AND answer_status = false
     </select>
     <select id="checkReviewExists" resultType="_boolean">
@@ -28,4 +35,30 @@
             answer_date    = #{answer_date}
         WHERE review_no = #{review_no}
     </update>
+    <select id="getReviewContentFromPointList" resultType="UserMyReviewResponse" resultMap="UserMyReviewResponse">
+        select review_no,
+               store.name,
+               review.reg_date,
+               rate,
+               review.image_list,
+               answer_status,
+               answer_content,
+               answer_date
+        from review,
+             store
+        WHERE review.accumulate_no = #{accumulate_no}
+          AND store.store_no = review.store_no
+    </select>
+    <delete id="deleteReviewByUser">
+        delete
+        from review
+        WHERE review_no = #{review_no}
+    </delete>
+    <select id="getPreDataForReview" resultType="UserReviewPagePreDataResponse">
+        select point_accumulate.store_no, store.name as store_name
+        from point_accumulate,
+             store
+        WHERE point_accumulate.accumulate_no = #{accumulate_no}
+          AND store.store_no = point_accumulate.store_no
+    </select>
 </mapper>

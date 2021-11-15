@@ -3,7 +3,10 @@ package com.mvsolutions.payus.dao;
 import com.mvsolutions.payus.mapper.PointAccumulateMapper;
 import com.mvsolutions.payus.model.rest.basic.PointAccumulate;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
+import com.mvsolutions.payus.model.rest.request.usermypage.UserReviewDeleteRequest;
 import com.mvsolutions.payus.model.rest.response.suppointpage.VendorPointAccumulateListResponse;
+import com.mvsolutions.payus.model.rest.response.usermypage.UserPointAccumulateListResponse;
+import com.mvsolutions.payus.model.rest.response.usermypage.UserReviewPagePreDataResponse;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -53,6 +56,32 @@ public class PointAccumulateDao {
         PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
         mapper.requestPayback(request);
     }
+
+    public List<UserPointAccumulateListResponse> getUserPointAccumulateList(int user_no) {
+        PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
+        return mapper.getUserPointAccumulateList(user_no);
+    }
+
+    public void updateUserReadCheck(List<UserPointAccumulateListResponse> accumulateList) {
+        PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
+        mapper.updateUserReadCheck(accumulateList);
+    }
+
+    public List<UserPointAccumulateListResponse> getUserPointAccumulateListReload(int user_no, int last_index) {
+        PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
+        return mapper.getUserPointAccumulateListReload(user_no, last_index);
+    }
+
+    public void updateAccumulateByReviewDelete(UserReviewDeleteRequest request) {
+        PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
+        mapper.updateAccumulateByReviewDelete(request);
+    }
+
+    public UserReviewPagePreDataResponse getPreDataForReview(int accumulate_no) {
+        PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
+        return mapper.getPreDataForReview(accumulate_no);
+    }
+
 
 //    private PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
 }
