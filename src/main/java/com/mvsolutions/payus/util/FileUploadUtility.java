@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.UUID;
 
 @Log4j
@@ -64,6 +65,7 @@ public class FileUploadUtility {
             } else {
                 log.info("File AWS Upload Failed");
             }
+            Files.deleteIfExists(target.toPath());
         } else {
             log.info("other case");
         }

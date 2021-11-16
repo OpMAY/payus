@@ -10,7 +10,7 @@ public class PointAccumulate {
     private String store_name;
     private int point;
     private int status;
-    private boolean review_status;
+    private int review_status;
     private String reg_date;
     private boolean read_check;
 }

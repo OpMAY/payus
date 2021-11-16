@@ -57,7 +57,8 @@ public class CDNService {
      */
     public boolean upload(AWSModel awsModel) {
         try {
-            String awsCdnFilePath = awsModel.getUpload().getCdn_fpath();
+            String awsCdnFilePath = awsModel.getUpload().getCdn_fpath() + awsModel.getUpload().getFile().getName();
+            log.info(awsCdnFilePath);
             s3Client.putObject(pathModel.getBucketName(), awsCdnFilePath, awsModel.getUpload().getFile());
             return true;
         } catch (AmazonServiceException e) {

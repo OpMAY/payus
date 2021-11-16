@@ -64,10 +64,10 @@ public class VendorService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity getVendorHome(VendorHomeRequest request) throws JSONException {
+    public ResponseEntity getVendorHome(int vendor_no) throws JSONException {
         Message message = new Message();
         vendorDao.setSqlSession(sqlSession);
-        VendorHomeResponse response = vendorDao.getVendorHome(request);
+        VendorHomeResponse response = vendorDao.getVendorHome(vendor_no);
         if (response == null) {
             // 잘못 접근해서 vendor_no가 올바르지 않을 시
             return new ResponseEntity(StringRes.res(StatusCode.LOGIN_FAILED), HttpStatus.OK);

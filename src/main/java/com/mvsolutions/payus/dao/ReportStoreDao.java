@@ -15,5 +15,10 @@ public class ReportStoreDao {
         }
     }
 
+    public boolean checkReportAnswered(int user_no) {
+        ReportStoreMapper mapper = sqlSession.getMapper(ReportStoreMapper.class);
+        return mapper.checkReportAnswered(user_no);
+    }
+
 //    private ReportStoreMapper mapper = sqlSession.getMapper(ReportStoreMapper.class);
 }

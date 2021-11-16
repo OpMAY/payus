@@ -1,6 +1,7 @@
 package com.mvsolutions.payus.dao;
 
 import com.mvsolutions.payus.mapper.PointWithdrawRejectMapper;
+import com.mvsolutions.payus.model.rest.response.usermypage.UserWithdrawRejectReasonResponse;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +13,11 @@ public class PointWithdrawRejectDao {
         if (this.sqlSession == null) {
             this.sqlSession = sqlSession;
         }
+    }
+
+    public UserWithdrawRejectReasonResponse getWithdrawRejectReason(int withdraw_no) {
+        PointWithdrawRejectMapper mapper = sqlSession.getMapper(PointWithdrawRejectMapper.class);
+        return mapper.getWithdrawRejectReason(withdraw_no);
     }
 
 //    private PointWithdrawRejectMapper mapper = sqlSession.getMapper(PointWithdrawRejectMapper.class);

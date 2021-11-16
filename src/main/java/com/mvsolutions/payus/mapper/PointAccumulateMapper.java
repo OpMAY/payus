@@ -2,7 +2,10 @@ package com.mvsolutions.payus.mapper;
 
 import com.mvsolutions.payus.model.rest.basic.PointAccumulate;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
+import com.mvsolutions.payus.model.rest.request.usermypage.UserReviewDeleteRequest;
 import com.mvsolutions.payus.model.rest.response.suppointpage.VendorPointAccumulateListResponse;
+import com.mvsolutions.payus.model.rest.response.usermypage.UserPointAccumulateListResponse;
+import com.mvsolutions.payus.model.rest.response.usermypage.UserReviewPagePreDataResponse;
 
 import java.util.List;
 
@@ -20,4 +23,18 @@ public interface PointAccumulateMapper {
     void updateVendorReadCheck(List<VendorPointAccumulateListResponse> accumulateList);
 
     void requestPayback(PaybackRequest request);
+
+    List<UserPointAccumulateListResponse> getUserPointAccumulateList(int user_no);
+
+    void updateUserReadCheck(List<UserPointAccumulateListResponse> accumulateList);
+
+    List<UserPointAccumulateListResponse> getUserPointAccumulateListReload(int user_no, int last_index);
+
+    void updateAccumulateByReviewDelete(UserReviewDeleteRequest request);
+
+    UserReviewPagePreDataResponse getPreDataForReview(int accumulate_no);
+
+    boolean checkReviewWritten(int accumulate_no);
+
+    void updateAccumulateByUploadReview(int accumulate_no);
 }

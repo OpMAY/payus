@@ -111,9 +111,9 @@ public class MainPageService {
         // 받은 last_index, class_first 로 리로딩 작업
         double last_index_distance = storeDao.getDistanceOfLastIndex(x, y, request.getLast_index());
         List<MainPageStore> mainPageStoreList = storeDao.getStoreListForMainReload(request.getClass_first(), last_index_distance, request.getLast_index(), x, y);
-        message.put("store_list" + request.getClass_first(), mainPageStoreList);
+        message.put("store_list", mainPageStoreList);
         if (mainPageStoreList.size() > 0)
-            message.put("last_index" + request.getClass_first(), mainPageStoreList.get(mainPageStoreList.size() - 1).getStore_no());
+            message.put("last_index", mainPageStoreList.get(mainPageStoreList.size() - 1).getStore_no());
 
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getMainReload()")), HttpStatus.OK);
     }
