@@ -117,7 +117,7 @@ public class UserService {
         userDao.setSqlSession(sqlSession);
         UserMyPageResponse response = userDao.getUserMyPageData(user_no);
         if (response == null) {
-            // 유저 없을 때
+            // 유저 없을 때 U404
             return new ResponseEntity(StringRes.res(StatusCode.NO_USER_DETECTED), HttpStatus.OK);
         }
         // 유저 코드 서버에서 계산해서 반환
@@ -156,12 +156,15 @@ public class UserService {
     public ResponseEntity editUserPersonalData(UserPersonalDataEditRequest request) throws JSONException {
         Message message = new Message();
         userDao.setSqlSession(sqlSession);
-        if (userDao.checkUserExistsByUserNo(request.getUser_no())) {
+        if (!userDao.checkUserExistsByUserNo(request.getUser_no())) {
             return new ResponseEntity(StringRes.res(StatusCode.NO_USER_DETECTED), HttpStatus.OK);
         }
         switch (request.getType()) {
             case UserPersonalDataEditType
                     .NICKNAME:
+                if (userDao.checkUserNickNameExists(request.getData())) {
+                    return new ResponseEntity(StringRes.res(StatusCode.NICKNAME_EXISTS), HttpStatus.OK);
+                }
                 userDao.editUserNickName(request.getUser_no(), request.getData());
                 break;
             case UserPersonalDataEditType

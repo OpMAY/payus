@@ -34,4 +34,7 @@ public interface PointAccumulateMapper {
 
     UserReviewPagePreDataResponse getPreDataForReview(int accumulate_no);
 
+    boolean checkReviewWritten(int accumulate_no);
+
+    void updateAccumulateByUploadReview(int accumulate_no);
 }

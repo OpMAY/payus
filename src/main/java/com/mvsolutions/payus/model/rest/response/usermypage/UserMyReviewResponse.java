@@ -9,6 +9,7 @@ public class UserMyReviewResponse {
     private int review_no;
     private String store_name;
     private String reg_date;
+    private String content;
     private int rate;
     private List<String> image_list;
     private boolean answer_status;

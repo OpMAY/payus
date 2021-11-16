@@ -13,6 +13,7 @@ import com.mvsolutions.payus.response.IntegerRes;
 import com.mvsolutions.payus.response.Message;
 import com.mvsolutions.payus.response.StatusCode;
 import com.mvsolutions.payus.response.StringRes;
+import com.mvsolutions.payus.response.payus.user.ReviewListType;
 import com.mvsolutions.payus.util.Time;
 import lombok.extern.log4j.Log4j;
 import org.apache.ibatis.session.SqlSession;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Log4j
 @Service
@@ -111,7 +113,49 @@ public class ReviewService {
         Message message = new Message();
         reviewDao.setSqlSession(sqlSession);
         pointAccumulateDao.setSqlSession(sqlSession);
-
+        // 리뷰 전에 작성한 적이 있는지 확인
+        if(pointAccumulateDao.checkReviewWritten(reviewUploadRequest.getAccumulate_no())) {
+            return new ResponseEntity(StringRes.res(StatusCode.ALREADY_REVIEWED), HttpStatus.OK);
+        }
+        reviewUploadRequest.setReg_date(Time.TimeFormatHMS());
+        reviewDao.uploadReview(reviewUploadRequest);
+        pointAccumulateDao.updateAccumulateByUploadReview(reviewUploadRequest.getAccumulate_no());
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("uploadReview()")), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity getUserReviewList(int user_no) throws JSONException {
+        Message message = new Message();
+        reviewDao.setSqlSession(sqlSession);
+        // 전체, 응답, 미응답 순
+        List<UserMyReviewResponse> allReviewList = reviewDao.getUserMyReviewList(user_no, ReviewListType.ALL);
+        List<UserMyReviewResponse> answeredReviewList = reviewDao.getUserMyReviewList(user_no, ReviewListType.ANSWERED);
+        List<UserMyReviewResponse> notAnsweredReviewList = reviewDao.getUserMyReviewList(user_no, ReviewListType.NOT_ANSWERED);
+        message.put("review0", allReviewList);
+        message.put("review1", answeredReviewList);
+        message.put("review2", notAnsweredReviewList);
+        if(allReviewList.size() > 0)
+            message.put("last_index0", allReviewList.get(allReviewList.size() - 1).getReview_no());
+        if(answeredReviewList.size() > 0)
+            message.put("last_index1", answeredReviewList.get(answeredReviewList.size() - 1).getReview_no());
+        if(notAnsweredReviewList.size() > 0)
+            message.put("last_index2", notAnsweredReviewList.get(notAnsweredReviewList.size() - 1).getReview_no());
+
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getUserReviewList()")), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity getUserReviewListReload(int user_no, int review_type, int last_index) throws JSONException {
+        Message message = new Message();
+        reviewDao.setSqlSession(sqlSession);
+        if(!reviewDao.checkReviewExists(last_index)){
+            // 리로딩 last_index 에 해당하는 컨텐츠 없을 때 R400
+            return new ResponseEntity(StringRes.res(StatusCode.RELOAD_FAILED), HttpStatus.OK);
+        }
+        List<UserMyReviewResponse> reviewList = reviewDao.getUserMyReviewListReload(user_no, review_type, last_index);
+        message.put("review", reviewList);
+        if(reviewList.size() > 0)
+            message.put("last_index", reviewList.get(reviewList.size() - 1).getReview_no());
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getUserReviewListReload()")), HttpStatus.OK);
     }
 }

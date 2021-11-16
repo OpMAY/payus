@@ -63,4 +63,6 @@ public interface UserMapper {
     boolean updateUserReportPush(int user_no);
 
     boolean updateMarketingAgree(int user_no);
+
+    boolean checkUserNickNameExists(String nickname);
 }

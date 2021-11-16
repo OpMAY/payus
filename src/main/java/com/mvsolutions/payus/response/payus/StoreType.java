@@ -11,9 +11,10 @@ package com.mvsolutions.payus.response.payus;
     특이 사항 : 확장성을 염두, DB 내에서 FK로 연결하기 힘든 요소를 위해 StoreType 을 명시
 **/
 public class StoreType {
+    public static final int ALL = 0;
     public static final int LODGEMENT = 1;
     public static final int RESTAURANT = 2;
     public static final int HOSPITAL = 3;
-    public static final int SHOPPING = 4;
-    public static final int GROCERY = 5;
+    public static final int GROCERY = 4;
+    public static final int SHOPPING = 5;
 }

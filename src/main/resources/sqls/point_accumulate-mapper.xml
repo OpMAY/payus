@@ -128,4 +128,19 @@
         SET review_status = 2
         WHERE accumulate_no = @AccumulateNo
     </update>
+    <select id="checkReviewWritten" resultType="_boolean">
+        select IF(review_status != 0, true, false)
+        from point_accumulate
+        WHERE accumulate_no = #{accumulate_no}
+    </select>
+    <update id="updateAccumulateByUploadReview">
+        update point_accumulate
+        SET review_status = 1
+        WHERE accumulate_no = #{accumulate_no}
+    </update>
+    <select id="getPointAccumulateByAccumulateNo" resultType="PointAccumulate">
+        select *
+        from point_accumulate
+        WHERE accumulate_no = #{accumulate_no}
+    </select>
 </mapper>

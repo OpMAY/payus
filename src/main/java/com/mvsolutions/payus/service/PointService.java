@@ -105,15 +105,19 @@ public class PointService {
         pointAccumulateDao.setSqlSession(sqlSession);
         List<VendorPointAccumulateListResponse> accumulateList = pointAccumulateDao.getVendorAccumulateList(vendor_no);
         List<VendorPointChargeListResponse> chargeList = pointChargeDao.getVendorChargeList(vendor_no);
-        pointAccumulateDao.updateVendorReadCheck(accumulateList);
-        pointChargeDao.updateReadCheck(chargeList);
+
+
         message.put("accumulate", accumulateList);
         message.put("charge", chargeList);
         if (accumulateList.size() > 0) {
+            // 읽기 여부 적용
+            pointAccumulateDao.updateVendorReadCheck(accumulateList);
             // 적립 내역 last_index
             message.put("last_index1", accumulateList.get(accumulateList.size() - 1).getAccumulate_no());
         }
         if (chargeList.size() > 0) {
+            // 읽기 여부 적용
+            pointChargeDao.updateReadCheck(chargeList);
             // 충전 내역 last_index
             message.put("last_index2", chargeList.get(chargeList.size() - 1).getCharge_no());
         }
@@ -127,18 +131,18 @@ public class PointService {
             // 적립 내역 리로딩
             pointAccumulateDao.setSqlSession(sqlSession);
             List<VendorPointAccumulateListResponse> accumulateList = pointAccumulateDao.getVendorAccumulateListReload(vendor_no, last_index);
-            pointAccumulateDao.updateVendorReadCheck(accumulateList);
             message.put("accumulate", accumulateList);
             if (accumulateList.size() > 0) {
+                pointAccumulateDao.updateVendorReadCheck(accumulateList);
                 message.put("last_index", accumulateList.get(accumulateList.size() - 1).getAccumulate_no());
             }
         } else if (reload_type == 2) {
             // 충전 내역 리로딩
             pointChargeDao.setSqlSession(sqlSession);
             List<VendorPointChargeListResponse> chargeList = pointChargeDao.getVendorChargeListReload(vendor_no, last_index);
-            pointChargeDao.updateReadCheck(chargeList);
             message.put("charge", chargeList);
             if (chargeList.size() > 0) {
+                pointChargeDao.updateReadCheck(chargeList);
                 message.put("last_index", chargeList.get(chargeList.size() - 1).getCharge_no());
             }
         }
@@ -337,15 +341,18 @@ public class PointService {
         // 적립 리스트, 인출 리스트
         List<UserPointAccumulateListResponse> accumulateList = pointAccumulateDao.getUserPointAccumulateList(user_no);
         List<UserPointWithdrawListResponse> withdrawList = pointWithdrawDao.getUserPointWithdrawList(user_no);
-        // 해당 데이터들 읽기 여부 업데이트 - 후처리
-        pointAccumulateDao.updateUserReadCheck(accumulateList);
-        pointWithdrawDao.updateUserReadCheck(withdrawList);
         message.put("accumulate", accumulateList);
         message.put("withdraw", withdrawList);
-        if (accumulateList.size() > 0)
+        if (accumulateList.size() > 0) {
+            // 해당 데이터들 읽기 여부 업데이트 - 후처리
+            pointAccumulateDao.updateUserReadCheck(accumulateList);
             message.put("last_index1", accumulateList.get(accumulateList.size() - 1).getAccumulate_no());
-        if (withdrawList.size() > 0)
+        }
+        if (withdrawList.size() > 0) {
+            // 해당 데이터들 읽기 여부 업데이트 - 후처리
+            pointWithdrawDao.updateUserReadCheck(withdrawList);
             message.put("last_index2", withdrawList.get(withdrawList.size() - 1).getWithdraw_no());
+        }
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("GetUserPointListPage()")), HttpStatus.OK);
     }
 
@@ -357,17 +364,19 @@ public class PointService {
         if (reload_type == 1) {
             List<UserPointAccumulateListResponse> accumulateList = pointAccumulateDao.getUserPointAccumulateListReload(user_no, last_index);
             // 읽기 여부 후처리
-            pointAccumulateDao.updateUserReadCheck(accumulateList);
             message.put("accumulate", accumulateList);
-            if (accumulateList.size() > 0)
+            if (accumulateList.size() > 0) {
+                pointAccumulateDao.updateUserReadCheck(accumulateList);
                 message.put("last_index", accumulateList.get(accumulateList.size() - 1).getAccumulate_no());
+            }
         } else if (reload_type == 2) {
             List<UserPointWithdrawListResponse> withdrawList = pointWithdrawDao.getUserPointWithdrawListReload(user_no, last_index);
             // 읽기 여부 후처리
-            pointWithdrawDao.updateUserReadCheck(withdrawList);
             message.put("withdraw", withdrawList);
-            if (withdrawList.size() > 0)
+            if (withdrawList.size() > 0) {
+                pointWithdrawDao.updateUserReadCheck(withdrawList);
                 message.put("last_index", withdrawList.get(withdrawList.size() - 1).getWithdraw_no());
+            }
         }
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getUserPointListPageReload()")), HttpStatus.OK);
     }

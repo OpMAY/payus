@@ -42,9 +42,9 @@ public class VendorDao {
         return mapper.getVendorName(vendor_no);
     }
 
-    public VendorHomeResponse getVendorHome(VendorHomeRequest request) {
+    public VendorHomeResponse getVendorHome(int vendor_no) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
-        return mapper.getVendorHome(request);
+        return mapper.getVendorHome(vendor_no);
     }
 
     public SupPointChargeDataResponse getVendorPoint(int vendor_no) {

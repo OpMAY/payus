@@ -152,4 +152,9 @@ public class UserDao {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         return mapper.updateMarketingAgree(user_no);
     }
+
+    public boolean checkUserNickNameExists(String nickname) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.checkUserNickNameExists(nickname);
+    }
 }

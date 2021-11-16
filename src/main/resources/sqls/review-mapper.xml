@@ -11,7 +11,7 @@
                type="com.mvsolutions.payus.model.rest.response.usermypage.UserMyReviewResponse">
         <result column="image_list" property="image_list" typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
     </resultMap>
-    <select id="VendorReviewContentResponse" resultType="VendorReviewContentResponse"
+    <select id="getReviewContentFromNotification" resultType="VendorReviewContentResponse"
             resultMap="VendorReviewContentResponse">
         select review_no, user.nickname as user_name, content, rate, review.reg_date
         from review,
@@ -39,6 +39,7 @@
         select review_no,
                store.name,
                review.reg_date,
+               review.content,
                rate,
                review.image_list,
                answer_status,
@@ -60,5 +61,65 @@
              store
         WHERE point_accumulate.accumulate_no = #{accumulate_no}
           AND store.store_no = point_accumulate.store_no
+    </select>
+    <insert id="uploadReview" keyProperty="review_no" useGeneratedKeys="true">
+        SET @StoreNo = (select store_no
+                        from point_accumulate
+                        WHERE accumulate_no = #{accumulate_no});
+        insert into review (store_no, user_no, accumulate_no, content, rate, reg_date, image_list)
+        VALUES (@StoreNo, #{user_no}, #{accumulate_no}, #{content}, #{rate}, #{reg_date}, #{image_list})
+    </insert>
+    <select id="getUserMyReviewList" resultType="UserMyReviewResponse" resultMap="UserMyReviewResponse">
+        select review_no,
+        store.name,
+        review.reg_date,
+        review.content,
+        rate,
+        review.image_list,
+        answer_status,
+        answer_content,
+        answer_date
+        from review,
+        store
+        WHERE review.user_no = #{user_no}
+        AND store.store_no = review.store_no
+        <choose>
+            <when test="review_type == 1">
+                AND answer_status = true
+            </when>
+            <when test="review_type == 2">
+                AND answer_status = false;
+            </when>
+        </choose>
+        ORDER BY review.reg_date DESC, review.review_no DESC
+        LIMIT 10
+    </select>
+    <select id="getUserMyReviewListReload" resultType="UserMyReviewResponse" resultMap="UserMyReviewResponse">
+        SET @RegDate = (select reg_date from review WHERE review_no = #{last_index});
+        select review_no,
+        store.name,
+        review.reg_date,
+        review.content,
+        rate,
+        review.image_list,
+        answer_status,
+        answer_content,
+        answer_date
+        from review,
+        store
+        WHERE review.user_no = #{user_no}
+        AND store.store_no = review.store_no
+        AND (review.reg_date <![CDATA[<]]> @RegDate
+        OR (review.reg_date <![CDATA[=]]> @RegDate AND review.review_no <![CDATA[<]]> #{last_index}))
+        <choose>
+            <when test="review_type == 1">
+                AND answer_status = true
+            </when>
+            <when test="review_type == 2">
+                AND answer_status = false;
+            </when>
+        </choose>
+        ORDER BY review.reg_date DESC, review.review_no DESC
+        LIMIT 10
     </select>
 </mapper>

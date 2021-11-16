@@ -14,16 +14,14 @@ import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorChargeCancelRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorPointCancelRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorPointChargeRequest;
-import com.mvsolutions.payus.model.rest.request.usermypage.ReviewUploadRequest;
-import com.mvsolutions.payus.model.rest.request.usermypage.UserPersonalDataEditRequest;
-import com.mvsolutions.payus.model.rest.request.usermypage.UserPointWithdrawRequest;
-import com.mvsolutions.payus.model.rest.request.usermypage.UserReviewDeleteRequest;
+import com.mvsolutions.payus.model.rest.request.usermypage.*;
 import com.mvsolutions.payus.model.rest.response.mainpage.GeoCodeCoordinateRequest;
 import com.mvsolutions.payus.service.*;
 import com.mvsolutions.payus.util.Constant;
 import com.mvsolutions.payus.util.FileUploadUtility;
 import com.mvsolutions.payus.util.Time;
 import lombok.extern.log4j.Log4j;
+import org.apache.commons.collections4.queue.PredicatedQueue;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -60,6 +58,9 @@ public class PayUsRestController {
 
     @Autowired
     private PointService pointService;
+
+    @Autowired
+    private StoreService storeService;
 
     @Autowired
     private FileUploadUtility fileUploadUtility;
@@ -126,8 +127,7 @@ public class PayUsRestController {
      **/
     @RequestMapping(value = "/api/vendor/home", method = RequestMethod.GET)
     public ResponseEntity VendorHome(@RequestParam("vendor_no") int vendor_no) throws JSONException {
-        VendorHomeRequest request = new VendorHomeRequest(vendor_no);
-        return vendorService.getVendorHome(request);
+        return vendorService.getVendorHome(vendor_no);
     }
 
     /**
@@ -366,6 +366,62 @@ public class PayUsRestController {
         UserReviewDeleteRequest request = new Gson().fromJson(body, UserReviewDeleteRequest.class);
         return reviewService.deleteReviewByUser(request);
     }
+
+    /**
+     * UserLikePage#001
+     **/
+    @RequestMapping(value = "/api/user/favorite", method = RequestMethod.GET)
+    public ResponseEntity UserFavoritePage(@RequestParam("user_no") int user_no) throws JSONException {
+        return storeService.getUserFavoritePage(user_no);
+    }
+
+    /**
+     * UserLikePage#002
+     **/
+    @RequestMapping(value = "/api/user/favorite/reload", method = RequestMethod.GET)
+    public ResponseEntity UserFavoritePageReload(@RequestParam("user_no") int user_no,
+                                                 @RequestParam("class_first") int class_first,
+                                                 @RequestParam("last_index") int last_index) throws JSONException {
+        return storeService.getUserFavoritePageReload(user_no, class_first, last_index);
+    }
+
+    /**
+     * UserLikePage#003
+     **/
+    @RequestMapping(value = "/api/user/favorite/delete", method = RequestMethod.POST)
+    public ResponseEntity DeleteUserFavorite(@RequestBody String body) {
+        UserFavoriteDeleteRequest request = new Gson().fromJson(body, UserFavoriteDeleteRequest.class);
+        return storeService.deleteUserFavorite(request);
+    }
+
+    /**
+     * UserReviewListPage#001
+     **/
+    @RequestMapping(value = "/api/user/review/list", method = RequestMethod.GET)
+    public ResponseEntity GetUserReviewList(@RequestParam("user_no") int user_no) throws JSONException {
+        return reviewService.getUserReviewList(user_no);
+    }
+
+    /**
+     * UserReviewListPage#002
+     **/
+    @RequestMapping(value = "/api/user/review/list/reload", method = RequestMethod.GET)
+    public ResponseEntity GetUserReviewListReload(@RequestParam("user_no") int user_no,
+                                                  @RequestParam("review_type") int review_type,
+                                                  @RequestParam("last_index") int last_index) throws JSONException {
+        return reviewService.getUserReviewListReload(user_no, review_type, last_index);
+    }
+
+    /**
+     * UserReviewListPage#003
+     **/
+    @RequestMapping(value = "/api/user/review/list/delete", method = RequestMethod.POST)
+    public ResponseEntity DeleteUserReview(@RequestBody String body) {
+        // UserReviewCheckPage#002 와 동일
+        UserReviewDeleteRequest request = new Gson().fromJson(body, UserReviewDeleteRequest.class);
+        return reviewService.deleteReviewByUser(request);
+    }
+
 
     /**
      * UserCustomCenter#001

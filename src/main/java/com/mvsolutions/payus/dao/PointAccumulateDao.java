@@ -82,6 +82,16 @@ public class PointAccumulateDao {
         return mapper.getPreDataForReview(accumulate_no);
     }
 
+    public boolean checkReviewWritten(int accumulate_no) {
+        PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
+        return mapper.checkReviewWritten(accumulate_no);
+    }
+
+    public void updateAccumulateByUploadReview(int accumulate_no) {
+        PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
+        mapper.updateAccumulateByUploadReview(accumulate_no);
+    }
+
 
 //    private PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
 }

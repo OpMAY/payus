@@ -17,7 +17,7 @@ public interface VendorMapper {
 
     String getVendorName(int vendor_no);
 
-    VendorHomeResponse getVendorHome(VendorHomeRequest request);
+    VendorHomeResponse getVendorHome(int vendor_no);
 
     SupPointChargeDataResponse getVendorPoint(int vendor_no);
 

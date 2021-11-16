@@ -11,6 +11,7 @@ public class StatusCode {
 
     /** User / Vendor Acess **/
     public static final String LOGIN_FAILED = "L401";
+    public static final String NICKNAME_EXISTS = "U402";
     public static final String REGISTER_REQUIRED = "L404";
     public static final String USER_EDIT_TYPE_ERROR = "U400";
     public static final String NO_USER_DETECTED = "U404";
@@ -38,7 +39,6 @@ public class StatusCode {
     public static final String TIME_EXPIRED = "T401";
     // 답변을 작성할 수 있는 컨텐츠 중 이미 답변이 존재하는 컨텐츠에 답변을 작성하려고 할 때
     public static final String ALREADY_ANSWERED = "A400";
-
-
-
+    // 리뷰를 이미 작성한 경우 or 작성했다가 삭제한 경우
+    public static final String ALREADY_REVIEWED = "R401";
 }
