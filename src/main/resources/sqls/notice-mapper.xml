@@ -9,4 +9,18 @@
         ORDER BY reg_date DESC
         LIMIT 1
     </select>
+    <select id="checkNoticeExists" resultType="_boolean">
+        select EXISTS(select * from notice WHERE notice_no = #{last_index})
+    </select>
+    <select id="getNoticeList" resultType="NoticeResponse">
+        <if test="last_index != 0">
+            SET @RegDate = (select reg_date from notice WHERE notice_no = #{last_index});
+        </if>
+        select * from notice
+        <if test="last_index != 0">
+            WHERE (reg_date <![CDATA[<]]> @RegDate
+            OR (reg_date <![CDATA[=]]> @RegDate AND notice_no <![CDATA[<]]> #{last_index}))
+        </if>
+        ORDER BY reg_date DESC, notice_no DESC LIMIT 10
+    </select>
 </mapper>
