@@ -9,7 +9,7 @@
                         WHERE vendor_no = #{vendor_no});
         select point_accumulate.accumulate_no,
                point_accumulate.user_no,
-               user.nickname,
+               user.nickname as user_name,
                point_accumulate.point,
                status,
                point_accumulate.reg_date,

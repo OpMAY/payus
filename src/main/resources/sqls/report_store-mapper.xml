@@ -3,7 +3,84 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mvsolutions.payus.mapper.ReportStoreMapper">
+    <resultMap id="UserReportStoreResponse"
+               type="com.mvsolutions.payus.model.rest.response.usercustomcenterpage.UserReportStoreResponse">
+        <result column="img_list" property="img_list" typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+    </resultMap>
     <select id="checkReportAnswered" resultType="_boolean">
         select EXISTS(select * from report_store WHERE read_check = false)
+    </select>
+    <select id="getReportList" resultType="UserReportStoreResponse" resultMap="UserReportStoreResponse">
+        select report_no,
+        report_store.user_no,
+        report_store.store_no,
+        store.name,
+        title,
+        content,
+        img_list,
+        report_store.reg_date,
+        answer_status,
+        answer_content,
+        answer_date,
+        read_check
+        from report_store,
+        store
+        WHERE report_store.user_no
+        AND store.store_no = report_store.store_no
+        <choose>
+            <when test="report_status = 1">
+                AND answer_status = true
+            </when>
+            <when test="report_status = 2">
+                AND answer_status = false
+            </when>
+        </choose>
+        ORDER BY report_store.reg_date DESC, report_no DESC
+        LIMIT 10
+    </select>
+    <select id="getReportListReload" resultType="UserReportStoreResponse" resultMap="UserReportStoreResponse">
+        SET @RegDate = (select reg_date from report_store WHERE report_no = #{last_index});
+        select report_no,
+        report_store.user_no,
+        report_store.store_no,
+        store.name,
+        title,
+        content,
+        img_list,
+        report_store.reg_date,
+        answer_status,
+        answer_content,
+        answer_date,
+        read_check
+        from report_store,
+        store
+        WHERE report_store.user_no
+        AND store.store_no = report_store.store_no
+        AND (report_store.reg_date <![CDATA[<]]> @RegDate
+        OR (report_store.reg_date <![CDATA[=]]> @RegDate AND report_no <![CDATA[<]]> #{last_index}))
+        <choose>
+            <when test="report_status = 1">
+                AND answer_status = true
+            </when>
+            <when test="report_status = 2">
+                AND answer_status = false
+            </when>
+        </choose>
+        ORDER BY report_store.reg_date DESC, report_no DESC
+        LIMIT 10
+    </select>
+    <update id="updateReadCheck">
+        update report_store SET read_check = true WHERE
+        <choose>
+            <when test="reportList.size != 0">
+                report_store.report_no in
+                <foreach collection="reportList" item="item" index="index" open="(" separator="OR" close=")">
+                    #{item.report_no}
+                </foreach>
+            </when>
+        </choose>
+    </update>
+    <select id="checkReportExists" resultType="_boolean">
+        select EXISTS(select * from report_store WHERE report_no = #{last_index})
     </select>
 </mapper>
