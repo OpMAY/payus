@@ -40,6 +40,11 @@ public class Time {
         return dateFormat.format(date);
     }
 
+    public static String TimeFormatterHMS(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        return dateFormat.format(date);
+    }
+
     public static String TimeFormatterDay(Date date) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(date);
@@ -151,7 +156,7 @@ public class Time {
         c.add(Calendar.SECOND, 0);
         // convert calendar to date
         Date currentDatePlusOne = c.getTime();
-        return TimeFormatterDay(currentDatePlusOne);
+        return TimeFormatterHMS(currentDatePlusOne);
     }
 
     public static String DatePlusOneDay(String dateString) throws ParseException {

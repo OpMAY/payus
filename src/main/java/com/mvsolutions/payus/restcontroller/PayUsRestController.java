@@ -431,4 +431,64 @@ public class PayUsRestController {
         return userService.getCustomCenterData(user_no);
     }
 
+    /**
+     * PayusHome#001
+     **/
+    @RequestMapping(value = "/api/submain/event", method = RequestMethod.GET)
+    public ResponseEntity GetSubMainPageEvents(@RequestParam("address") String address,
+                                               @RequestParam("class_first") int class_first) throws IOException, URISyntaxException, JSONException {
+        return mainPageService.getSubMainPageEvents(address, class_first);
+    }
+
+    /**
+     * PayusHome#002
+     **/
+    @RequestMapping(value = "/api/submain/store", method = RequestMethod.GET)
+    public ResponseEntity GetSubMainPageStoreList(@RequestParam("address") String address,
+                                                  @RequestParam("class_first") int class_first,
+                                                  @RequestParam("order_type") int order_type) throws IOException, URISyntaxException, JSONException {
+        return mainPageService.getSubMainPageStoreList(address, class_first, order_type);
+    }
+
+    /**
+     * PayusHome#003
+     **/
+    @RequestMapping(value = "/api/submain/store/reload", method = RequestMethod.GET)
+    public ResponseEntity GetSubMainPageStoreListReload(@RequestParam("address") String address,
+                                                        @RequestParam("class_first") int class_first,
+                                                        @RequestParam("class_second") int class_second,
+                                                        @RequestParam("order_type") int order_type,
+                                                        @RequestParam("last_index") int last_index) throws IOException, URISyntaxException, JSONException {
+        return mainPageService.getSubMainPageStoreListReload(address, class_first, class_second, order_type, last_index);
+    }
+
+    /**
+     * PayusSearchPage#001
+     **/
+    @RequestMapping(value = "/api/search/keywords", method = RequestMethod.GET)
+    public ResponseEntity GetSearchByKeywords(@RequestParam("address") String address,
+                                              @RequestParam("keyword") String keyword,
+                                              @RequestParam("last_index") int last_index) throws IOException, URISyntaxException, JSONException {
+        return mainPageService.searchByKeywords(address, keyword, last_index);
+    }
+
+    /**
+     * PayusSearchMap#001
+     **/
+    @RequestMapping(value = "/api/search/map", method = RequestMethod.GET)
+    public ResponseEntity GetSearchByMap(@RequestParam("x") double x,
+                                         @RequestParam("y") double y) throws JSONException {
+        return mainPageService.searchByMap(x, y);
+    }
+
+    /** PayusEventPage#001 **/
+    @RequestMapping(value = "/api/submain/event", method = RequestMethod.GET)
+    public ResponseEntity GetEventPage(@RequestParam("address") String address,
+                                       @RequestParam("order_type") int order_type,
+                                       @RequestParam("last_index") int last_index,
+                                       @RequestParam("class_first") int class_first) throws JSONException, IOException, URISyntaxException {
+        return mainPageService.getEventPage(address, order_type, last_index, class_first);
+    }
+
+
 }

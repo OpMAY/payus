@@ -5,12 +5,18 @@ import com.mvsolutions.payus.dao.*;
 import com.mvsolutions.payus.model.rest.request.mainpage.MainPageReloadingRequest;
 import com.mvsolutions.payus.model.rest.request.mainpage.MainPageRequest;
 import com.mvsolutions.payus.model.rest.response.mainpage.*;
+import com.mvsolutions.payus.model.rest.response.payushome.PayusHomeEventResponse;
+import com.mvsolutions.payus.model.rest.response.payushome.StoreKeywordSearchResponse;
+import com.mvsolutions.payus.model.rest.response.payushome.StoreMapSearchResponse;
+import com.mvsolutions.payus.model.rest.response.payushome.SubMainPageStoreResponse;
 import com.mvsolutions.payus.model.utility.kakaolocation.KakaoLocationResponse;
 import com.mvsolutions.payus.response.IntegerRes;
 import com.mvsolutions.payus.response.Message;
 import com.mvsolutions.payus.response.StatusCode;
 import com.mvsolutions.payus.response.StringRes;
+import com.mvsolutions.payus.response.payus.LodgementType;
 import com.mvsolutions.payus.response.payus.StoreType;
+import com.mvsolutions.payus.response.payus.SubMainStoreType;
 import com.mvsolutions.payus.util.KakaoLocationService;
 import lombok.extern.log4j.Log4j;
 import org.apache.ibatis.session.SqlSession;
@@ -42,6 +48,9 @@ public class MainPageService {
 
     @Autowired
     private AdvertisementBannerDao advertisementBannerDao;
+
+    @Autowired
+    private AdvertisementStoreDao advertisementStoreDao;
 
     @Autowired
     private StoreDao storeDao;
@@ -135,5 +144,173 @@ public class MainPageService {
             return new ResponseEntity(StringRes.res(StatusCode.COORDINATE_ERROR), HttpStatus.OK);
         }
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity getSubMainPageEvents(String address, int class_first) throws IOException, URISyntaxException, JSONException {
+        Message message = new Message();
+        advertisementStoreDao.setSqlSession(sqlSession);
+
+        // 받은 주소로 좌표 확인
+        String result = kakaoLocationService.getLocationCoordinates(address);
+        KakaoLocationResponse kakaoLocationResponse = new Gson().fromJson(result, KakaoLocationResponse.class);
+        double x = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getX());
+        double y = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getY());
+
+        // 100KM 내의 숙소 중 이벤트를 진행 중인 숙소 목록을 받아옴
+        List<PayusHomeEventResponse> eventList = advertisementStoreDao.getEventStoreList(x, y, class_first);
+        message.put("event", eventList);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getSubMainPageEvents()")), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity getSubMainPageStoreList(String address, int class_first, int order_type) throws IOException, URISyntaxException, JSONException {
+        Message message = new Message();
+        storeDao.setSqlSession(sqlSession);
+        advertisementStoreDao.setSqlSession(sqlSession);
+
+        // 받은 주소로 좌표 확인
+        String result = kakaoLocationService.getLocationCoordinates(address);
+        KakaoLocationResponse kakaoLocationResponse = new Gson().fromJson(result, KakaoLocationResponse.class);
+        double x = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getX());
+        double y = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getY());
+
+        // class_first = 1 -> 숙박
+        List<SubMainPageStoreResponse> allStoreList = storeDao.getStoreListForSubMain(x, y, class_first, order_type, SubMainStoreType.ALL);
+        List<SubMainPageStoreResponse> motelStoreList = storeDao.getStoreListForSubMain(x, y, class_first, order_type, SubMainStoreType.LODGEMENT_MOTEL);
+        List<SubMainPageStoreResponse> hotelStoreList = storeDao.getStoreListForSubMain(x, y, class_first, order_type, SubMainStoreType.LODGEMENT_HOTEL);
+        List<SubMainPageStoreResponse> pensionStoreList = storeDao.getStoreListForSubMain(x, y, class_first, order_type, SubMainStoreType.LODGEMENT_PENSION);
+        List<SubMainPageStoreResponse> guestHouseStoreList = storeDao.getStoreListForSubMain(x, y, class_first, order_type, SubMainStoreType.LODGEMENT_GUESTHOUSE);
+        List<SubMainPageStoreResponse> glampingStoreList = storeDao.getStoreListForSubMain(x, y, class_first, order_type, SubMainStoreType.LODGEMENT_GLAMPING);
+        List<SubMainPageStoreResponse> etcStoreList = storeDao.getStoreListForSubMain(x, y, class_first, order_type, SubMainStoreType.LODGEMENT_ETC);
+
+        // 페이백 이벤트 있을 경우 페이백률 반영
+        for (SubMainPageStoreResponse response : allStoreList) {
+            int paybackRate = advertisementStoreDao.checkStoreOnEvent(response.getStore_no());
+            if (paybackRate != response.getPayback_rate())
+                response.setPayback_rate(paybackRate);
+        }
+        for (SubMainPageStoreResponse response : motelStoreList) {
+            int paybackRate = advertisementStoreDao.checkStoreOnEvent(response.getStore_no());
+            if (paybackRate != response.getPayback_rate())
+                response.setPayback_rate(paybackRate);
+        }
+        for (SubMainPageStoreResponse response : hotelStoreList) {
+            int paybackRate = advertisementStoreDao.checkStoreOnEvent(response.getStore_no());
+            if (paybackRate != response.getPayback_rate())
+                response.setPayback_rate(paybackRate);
+        }
+        for (SubMainPageStoreResponse response : pensionStoreList) {
+            int paybackRate = advertisementStoreDao.checkStoreOnEvent(response.getStore_no());
+            if (paybackRate != response.getPayback_rate())
+                response.setPayback_rate(paybackRate);
+        }
+        for (SubMainPageStoreResponse response : guestHouseStoreList) {
+            int paybackRate = advertisementStoreDao.checkStoreOnEvent(response.getStore_no());
+            if (paybackRate != response.getPayback_rate())
+                response.setPayback_rate(paybackRate);
+        }
+        for (SubMainPageStoreResponse response : glampingStoreList) {
+            int paybackRate = advertisementStoreDao.checkStoreOnEvent(response.getStore_no());
+            if (paybackRate != response.getPayback_rate())
+                response.setPayback_rate(paybackRate);
+        }
+        for (SubMainPageStoreResponse response : etcStoreList) {
+            int paybackRate = advertisementStoreDao.checkStoreOnEvent(response.getStore_no());
+            if (paybackRate != response.getPayback_rate())
+                response.setPayback_rate(paybackRate);
+        }
+
+        message.put("store0", allStoreList);
+        message.put("store1", motelStoreList);
+        message.put("store2", hotelStoreList);
+        message.put("store3", pensionStoreList);
+        message.put("store4", guestHouseStoreList);
+        message.put("store5", glampingStoreList);
+        message.put("store6", etcStoreList);
+        message.put("order_type", order_type);
+        // last_index 설정
+        if(allStoreList.size() > 0)
+            message.put("last_index0", allStoreList.get(allStoreList.size() - 1).getStore_no());
+        if(motelStoreList.size() > 0)
+            message.put("last_index1", motelStoreList.get(motelStoreList.size() - 1).getStore_no());
+        if(hotelStoreList.size() > 0)
+            message.put("last_index2", hotelStoreList.get(hotelStoreList.size() - 1).getStore_no());
+        if(pensionStoreList.size() > 0)
+            message.put("last_index3", pensionStoreList.get(pensionStoreList.size() - 1).getStore_no());
+        if(guestHouseStoreList.size() > 0)
+            message.put("last_index4", guestHouseStoreList.get(guestHouseStoreList.size() - 1).getStore_no());
+        if(glampingStoreList.size() > 0)
+            message.put("last_index5", glampingStoreList.get(glampingStoreList.size() - 1).getStore_no());
+        if(etcStoreList.size() > 0)
+            message.put("last_index6", etcStoreList.get(etcStoreList.size() - 1).getStore_no());
+
+
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getSubMainPageStoreList()")), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity getSubMainPageStoreListReload(String address, int class_first, int class_second, int order_type, int last_index) throws JSONException, IOException, URISyntaxException {
+        Message message = new Message();
+        storeDao.setSqlSession(sqlSession);
+        advertisementStoreDao.setSqlSession(sqlSession);
+        if(!storeDao.checkStoreExists(last_index)){
+            // 리로딩 문제 : last_index에 해당하는 데이터 없음
+            return new ResponseEntity(StringRes.res(StatusCode.RELOAD_FAILED), HttpStatus.OK);
+        }
+
+        // 받은 주소로 좌표 확인
+        String result = kakaoLocationService.getLocationCoordinates(address);
+        KakaoLocationResponse kakaoLocationResponse = new Gson().fromJson(result, KakaoLocationResponse.class);
+        double x = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getX());
+        double y = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getY());
+
+        List<SubMainPageStoreResponse> storeList = storeDao.getStoreListForSubMainReload(x, y, class_first, class_second, order_type);
+
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getSubMainPageStoreListReload()")), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity searchByKeywords(String address, String keyword, int last_index) throws IOException, URISyntaxException, JSONException {
+        Message message = new Message();
+        storeDao.setSqlSession(sqlSession);
+
+        // 받은 주소로 좌표 확인
+        String result = kakaoLocationService.getLocationCoordinates(address);
+        KakaoLocationResponse kakaoLocationResponse = new Gson().fromJson(result, KakaoLocationResponse.class);
+        double x = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getX());
+        double y = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getY());
+
+        // 검색 결과
+        List<StoreKeywordSearchResponse> searchList = storeDao.searchByKeywords(x, y, keyword, last_index);
+        message.put("result", searchList);
+        if(searchList.size() > 0)
+            message.put("last_index", searchList.get(searchList.size() - 1).getStore_no());
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("searchByKeywords(" + keyword + ")")), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity searchByMap(double x, double y) throws JSONException {
+        Message message = new Message();
+        storeDao.setSqlSession(sqlSession);
+        List<StoreMapSearchResponse> searchList = storeDao.searchByMap(x, y);
+        if(searchList.size() == 0){
+            return new ResponseEntity(StringRes.res(StatusCode.NO_STORE_FOUND_ON_MAP), HttpStatus.OK);
+        }
+        message.put("result", searchList);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("searchByMap()")), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity getEventPage(String address, int order_type, int last_index, int class_first) throws IOException, URISyntaxException, JSONException {
+        Message message = new Message();
+
+        // 받은 주소로 좌표 확인
+        String result = kakaoLocationService.getLocationCoordinates(address);
+        KakaoLocationResponse kakaoLocationResponse = new Gson().fromJson(result, KakaoLocationResponse.class);
+        double x = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getX());
+        double y = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getY());
+
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getEventPage()")), HttpStatus.OK);
     }
 }

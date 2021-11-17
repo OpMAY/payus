@@ -1,8 +1,11 @@
 package com.mvsolutions.payus.service;
 
+import com.google.gson.Gson;
 import com.mvsolutions.payus.dao.*;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserFavoriteDeleteRequest;
+import com.mvsolutions.payus.model.rest.response.payushome.StoreKeywordSearchResponse;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserFavoriteListPageResponse;
+import com.mvsolutions.payus.model.utility.kakaolocation.KakaoLocationResponse;
 import com.mvsolutions.payus.response.IntegerRes;
 import com.mvsolutions.payus.response.Message;
 import com.mvsolutions.payus.response.StatusCode;
@@ -105,4 +108,6 @@ public class StoreService {
         favoriteDao.deleteUserFavorite(request);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
     }
+
+
 }

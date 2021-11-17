@@ -62,7 +62,7 @@
         WHERE point_accumulate.accumulate_no = #{accumulate_no}
           AND store.store_no = point_accumulate.store_no
     </select>
-    <insert id="uploadReview" keyProperty="review_no" useGeneratedKeys="true">
+    <insert id="uploadReview">
         SET @StoreNo = (select store_no
                         from point_accumulate
                         WHERE accumulate_no = #{accumulate_no});
