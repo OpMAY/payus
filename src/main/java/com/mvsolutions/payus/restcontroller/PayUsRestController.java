@@ -7,7 +7,6 @@ import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequ
 import com.mvsolutions.payus.model.rest.request.mainpage.MainPageReloadingRequest;
 import com.mvsolutions.payus.model.rest.request.mainpage.MainPageRequest;
 import com.mvsolutions.payus.model.rest.request.suphomepage.VendorAnswerReviewRequest;
-import com.mvsolutions.payus.model.rest.request.suphomepage.VendorHomeRequest;
 import com.mvsolutions.payus.model.rest.request.suphomepage.VendorNotificationDeleteRequest;
 import com.mvsolutions.payus.model.rest.request.suphomepage.VendorNotificationRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
@@ -21,7 +20,6 @@ import com.mvsolutions.payus.util.Constant;
 import com.mvsolutions.payus.util.FileUploadUtility;
 import com.mvsolutions.payus.util.Time;
 import lombok.extern.log4j.Log4j;
-import org.apache.commons.collections4.queue.PredicatedQueue;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -481,7 +479,9 @@ public class PayUsRestController {
         return mainPageService.searchByMap(x, y);
     }
 
-    /** PayusEventPage#001 **/
+    /**
+     * PayusEventPage#001
+     **/
     @RequestMapping(value = "/api/submain/event", method = RequestMethod.GET)
     public ResponseEntity GetEventPage(@RequestParam("address") String address,
                                        @RequestParam("order_type") int order_type,

@@ -28,5 +28,10 @@ public class AdvertisementStoreDao {
         return mapper.checkStoreOnEvent(store_no);
     }
 
+    public List<PayusHomeEventResponse> getEventStorePageList(double x, double y, int order_type, int last_index, int class_first) {
+        AdvertisementStoreMapper mapper = sqlSession.getMapper(AdvertisementStoreMapper.class);
+        return mapper.getEventStorePageList(x, y, order_type, last_index, class_first);
+    }
+
 //    private AdvertisementStoreMapper mapper = sqlSession.getMapper(AdvertisementStoreMapper.class);
 }

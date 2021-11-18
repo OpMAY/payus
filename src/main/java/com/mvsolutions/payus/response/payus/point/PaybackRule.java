@@ -7,13 +7,13 @@ public class PaybackRule {
     public static final int USER_CODE_CALCULATION_AMOUNT = 10000000;
 
     public static boolean CalculatePoint(int price, int payback_rate, int point) {
-        return price == payback_rate / 100 * point;
+        return point == payback_rate / 100 * price;
     }
 
     public static int UserCodeCalculation(int value, boolean returnCode) {
         // result_type == true -> 유저 코드 반환, value = user_no
         // result_type == false -> user_no 반환, value = 유저 코드
-        if(returnCode)
+        if (returnCode)
             return value + USER_CODE_CALCULATION_AMOUNT;
         return value - USER_CODE_CALCULATION_AMOUNT;
     }
