@@ -63,6 +63,9 @@ public class PayUsRestController {
     @Autowired
     private FileUploadUtility fileUploadUtility;
 
+    @Autowired
+    private CustomerService customerService;
+
     /**
      * PreHome#001
      **/
@@ -490,5 +493,37 @@ public class PayUsRestController {
         return mainPageService.getEventPage(address, order_type, last_index, class_first);
     }
 
+    /**
+     * Notice#001
+     **/
+    @RequestMapping(value = "/api/notice", method = RequestMethod.GET)
+    public ResponseEntity GetNoticeList(@RequestParam("last_index") int last_index) throws JSONException {
+        return customerService.getNoticeList(last_index);
+    }
 
+    /**
+     * FAQ#001
+     **/
+    @RequestMapping(value = "/api/faq", method = RequestMethod.GET)
+    public ResponseEntity GetFAQList() throws JSONException {
+        return customerService.getFAQList();
+    }
+
+    /**
+     * UserReportPage#001
+     **/
+    @RequestMapping(value = "/api/report/list", method = RequestMethod.GET)
+    public ResponseEntity GetReportListPage(@RequestParam("user_no") int user_no) throws JSONException {
+        return customerService.getReportListPage(user_no);
+    }
+
+    /**
+     * UserReportPage#002
+     **/
+    @RequestMapping(value = "/api/report/list/reload", method = RequestMethod.GET)
+    public ResponseEntity GetReportListPageReload(@RequestParam("user_no") int user_no,
+                                                  @RequestParam("report_status") int report_status,
+                                                  @RequestParam("last_index") int last_index) throws JSONException {
+        return customerService.getReportListPageReload(user_no, report_status, last_index);
+    }
 }
