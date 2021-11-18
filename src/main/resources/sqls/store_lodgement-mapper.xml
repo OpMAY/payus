@@ -3,8 +3,22 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mvsolutions.payus.mapper.StoreLodgementMapper">
+    <resultMap id="StoreDetailLodgementResponse"
+               type="com.mvsolutions.payus.model.rest.response.storedetailpage.StoreDetailLodgementResponse">
+        <result column="service_list" property="service_list"
+                typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+        <result column="information" property="information"
+                typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+        <result column="room_options" property="room_options"
+                typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+    </resultMap>
     <insert id="insertLodgement" keyProperty="lodgement_no" useGeneratedKeys="true">
         insert into store_lodgement(store_no, service_list, information, room_options)
         VALUES (#{store_no}, #{service_list}, #{information}, #{room_options})
     </insert>
+    <select id="getLodgementData" resultType="StoreDetailLodgementResponse" resultMap="StoreDetailLodgementResponse">
+        select service_list, information, room_options
+        from store_lodgement
+        WHERE store_no = #{store_no}
+    </select>
 </mapper>

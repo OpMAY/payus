@@ -11,6 +11,10 @@
                type="com.mvsolutions.payus.model.rest.response.usermypage.UserMyReviewResponse">
         <result column="image_list" property="image_list" typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
     </resultMap>
+    <resultMap id="StoreReviewPageResponse"
+               type="com.mvsolutions.payus.model.rest.response.storedetailpage.StoreReviewPageResponse">
+        <result column="image_list" property="image_list" typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+    </resultMap>
     <select id="getReviewContentFromNotification" resultType="VendorReviewContentResponse"
             resultMap="VendorReviewContentResponse">
         select review_no, user.nickname as user_name, content, rate, review.reg_date
@@ -121,5 +125,44 @@
         </choose>
         ORDER BY review.reg_date DESC, review.review_no DESC
         LIMIT 10
+    </select>
+    <select id="getStoreReviewNum" resultType="int">
+        select COUNT(*)
+        from review
+        WHERE store_no = #{store_no}
+    </select>
+    <select id="getStoreReviewList" resultType="StoreReviewPageResponse" resultMap="StoreReviewPageResponse">
+        <if test="last_index != 0">
+            SET @RegDate = (select reg_date from review WHERE review_no = #{last_index});
+        </if>
+        select review_no,
+        store.name,
+        user.nickname,
+        review.reg_date,
+        review.content,
+        rate,
+        review.image_list,
+        answer_status,
+        answer_content,
+        answer_date
+        from review,
+        store,
+        user
+        WHERE review.store_no = #{store_no}
+        <if test="last_index != 0">
+            AND review.reg_date <![CDATA[<]]> @RegDate OR (review.reg_date <![CDATA[=]]>
+            AND review_no <![CDATA[<]]> #{last_index})
+        </if>
+        ORDER BY review.reg_date DESC, review_no DESC LIMIT 10
+    </select>
+    <select id="getReviewRateSum" resultType="int">
+        select SUM(rate)
+        from review
+        WHERE store_no = #{store_no}
+    </select>
+    <select id="getStoreNoByReviewNo" resultType="int">
+        select store_no
+        from review
+        WHERE review_no = #{review_no}
     </select>
 </mapper>

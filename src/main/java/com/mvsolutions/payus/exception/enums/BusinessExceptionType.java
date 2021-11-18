@@ -2,7 +2,8 @@ package com.mvsolutions.payus.exception.enums;
 
 public enum BusinessExceptionType implements BaseExceptionType {
     GRANT_EXCEPTION(1001, 200, "1001, You do not have permission."),
-    AUTHORIZATION_TOKEN_EXCEPTION(1002,200,"1002, You do not have permission.");
+    AUTHORIZATION_TOKEN_EXCEPTION(1002,200,"1002, You do not have permission."),
+    NOT_ALLOWED_STORE(1003, 200, "1003, Not Allowed Store Type.");
     private int errorCode;
     private int httpStatus;
     private String errorMessage;

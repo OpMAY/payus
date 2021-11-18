@@ -2,6 +2,7 @@ package com.mvsolutions.payus.dao;
 
 import com.mvsolutions.payus.mapper.ReportStoreMapper;
 import com.mvsolutions.payus.mapper.UserMapper;
+import com.mvsolutions.payus.model.rest.request.storedetailpage.StoreReportRequest;
 import com.mvsolutions.payus.model.rest.response.usercustomcenterpage.UserReportStoreResponse;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -41,6 +42,11 @@ public class ReportStoreDao {
     public boolean checkReportExists(int last_index) {
         ReportStoreMapper mapper = sqlSession.getMapper(ReportStoreMapper.class);
         return mapper.checkReportExists(last_index);
+    }
+
+    public void reportStore(StoreReportRequest reportRequest) {
+        ReportStoreMapper mapper = sqlSession.getMapper(ReportStoreMapper.class);
+        mapper.reportStore(reportRequest);
     }
 
 //    private ReportStoreMapper mapper = sqlSession.getMapper(ReportStoreMapper.class);

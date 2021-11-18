@@ -1,6 +1,7 @@
 package com.mvsolutions.payus.dao;
 
 import com.mvsolutions.payus.mapper.FavoriteMapper;
+import com.mvsolutions.payus.model.rest.request.storedetailpage.UserInsertStoreFavoriteRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserFavoriteDeleteRequest;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserFavoriteListPageResponse;
 import org.apache.ibatis.session.SqlSession;
@@ -36,6 +37,21 @@ public class FavoriteDao {
     public void deleteUserFavorite(UserFavoriteDeleteRequest request) {
         FavoriteMapper mapper = sqlSession.getMapper(FavoriteMapper.class);
         mapper.deleteUserFavorite(request);
+    }
+
+    public boolean checkUserFavoriteStatus(int user_no, int store_no) {
+        FavoriteMapper mapper = sqlSession.getMapper(FavoriteMapper.class);
+        return mapper.checkUserFavoriteStatus(user_no, store_no);
+    }
+
+    public void userInsertStoreFavorite(UserInsertStoreFavoriteRequest request) {
+        FavoriteMapper mapper = sqlSession.getMapper(FavoriteMapper.class);
+        mapper.userInsertStoreFavorite(request);
+    }
+
+    public void deleteUserFavoriteByUserAndStoreNo(int user_no, int store_no) {
+        FavoriteMapper mapper = sqlSession.getMapper(FavoriteMapper.class);
+        mapper.deleteUserFavoriteByUserAndStoreNo(user_no, store_no);
     }
 
 //    private FavoriteMapper mapper = sqlSession.getMapper(FavoriteMapper.class);

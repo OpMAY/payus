@@ -83,4 +83,8 @@
     <select id="checkReportExists" resultType="_boolean">
         select EXISTS(select * from report_store WHERE report_no = #{last_index})
     </select>
+    <insert id="reportStore">
+        insert into report_store(user_no, store_no, title, content, img_list, reg_date)
+        VALUES (#{user_no}, #{store_no}, #{title}, #{content}, #{img_list}, #{reg_date})
+    </insert>
 </mapper>

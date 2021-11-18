@@ -143,4 +143,18 @@
         from point_accumulate
         WHERE accumulate_no = #{accumulate_no}
     </select>
+    <select id="checkUserAccumulate" resultType="UserAccumulateCheckResponse">
+        select user_no, store.name, point_accumulate.reg_date, point_accumulate.point
+        from point_accumulate,
+             store
+        WHERE status = 1
+          AND point_accumulate.reg_date <![CDATA[>]]> DATE_ADD(now(), INTERVAL -1 DAY)
+        ORDER BY reg_date DESC
+        LIMIT 1
+    </select>
+    <select id="getStoreNoFromAccumulate" resultType="int">
+        select store_no
+        from point_accumulate
+        WHERE accumulate_no = #{accumulate_no}
+    </select>
 </mapper>

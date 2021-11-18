@@ -1,9 +1,11 @@
 package com.mvsolutions.payus.dao;
 
 import com.mvsolutions.payus.mapper.ReviewMapper;
+import com.mvsolutions.payus.model.rest.basic.ReviewUpdateModel;
 import com.mvsolutions.payus.model.rest.request.suphomepage.VendorAnswerReviewRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.ReviewUploadRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserReviewDeleteRequest;
+import com.mvsolutions.payus.model.rest.response.storedetailpage.StoreReviewPageResponse;
 import com.mvsolutions.payus.model.rest.response.suphomepage.VendorReviewContentResponse;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserMyReviewResponse;
 import org.apache.ibatis.session.SqlSession;
@@ -65,6 +67,26 @@ public class ReviewDao {
     public List<UserMyReviewResponse> getUserMyReviewListReload(int user_no, int review_type, int last_index) {
         ReviewMapper mapper = sqlSession.getMapper(ReviewMapper.class);
         return mapper.getUserMyReviewListReload(user_no, review_type, last_index);
+    }
+
+    public int getStoreReviewNum(int store_no) {
+        ReviewMapper mapper = sqlSession.getMapper(ReviewMapper.class);
+        return mapper.getStoreReviewNum(store_no);
+    }
+
+    public List<StoreReviewPageResponse> getStoreReviewList(int store_no, int last_index) {
+        ReviewMapper mapper = sqlSession.getMapper(ReviewMapper.class);
+        return mapper.getStoreReviewList(store_no, last_index);
+    }
+
+    public int getReviewRateSum(int store_no) {
+        ReviewMapper mapper = sqlSession.getMapper(ReviewMapper.class);
+        return mapper.getReviewRateSum(store_no);
+    }
+
+    public int getStoreNoByReviewNo(int review_no) {
+        ReviewMapper mapper = sqlSession.getMapper(ReviewMapper.class);
+        return mapper.getStoreNoByReviewNo(review_no);
     }
 
 //    private ReviewMapper mapper = sqlSession.getMapper(ReviewMapper.class);

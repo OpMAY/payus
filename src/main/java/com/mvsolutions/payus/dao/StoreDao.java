@@ -7,6 +7,7 @@ import com.mvsolutions.payus.model.rest.response.mainpage.MainPageStore;
 import com.mvsolutions.payus.model.rest.response.payushome.StoreKeywordSearchResponse;
 import com.mvsolutions.payus.model.rest.response.payushome.StoreMapSearchResponse;
 import com.mvsolutions.payus.model.rest.response.payushome.SubMainPageStoreResponse;
+import com.mvsolutions.payus.model.rest.response.storedetailpage.StoreDetailPageResponse;
 import com.mvsolutions.payus.model.rest.response.suppointpage.PointStoreDataResponse;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -71,5 +72,15 @@ public class StoreDao {
     public List<StoreMapSearchResponse> searchByMap(double x, double y) {
         StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
         return mapper.searchByMap(x, y);
+    }
+
+    public StoreDetailPageResponse getStoreDetailPage(int store_no, double x, double y) {
+        StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
+        return mapper.getStoreDetailPage(store_no, x, y);
+    }
+
+    public void updateStoreByReview(int store_no, int review_num, float star_rate) {
+        StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
+        mapper.updateStoreByReview(store_no, review_num, star_rate);
     }
 }

@@ -9,6 +9,6 @@ public class PayusHomeEventResponse {
     private String address_short;
     private float star_rate;
     private int review_num;
-    private int advertise_payback;
+    private int payback_rate;
     private String thumbnail;
 }

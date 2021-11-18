@@ -3,6 +3,7 @@ package com.mvsolutions.payus.mapper;
 import com.mvsolutions.payus.model.rest.basic.PointAccumulate;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserReviewDeleteRequest;
+import com.mvsolutions.payus.model.rest.response.storedetailpage.UserAccumulateCheckResponse;
 import com.mvsolutions.payus.model.rest.response.suppointpage.VendorPointAccumulateListResponse;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserPointAccumulateListResponse;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserReviewPagePreDataResponse;
@@ -37,4 +38,8 @@ public interface PointAccumulateMapper {
     boolean checkReviewWritten(int accumulate_no);
 
     void updateAccumulateByUploadReview(int accumulate_no);
+
+    UserAccumulateCheckResponse checkUserAccumulate(int user_code);
+
+    int getStoreNoFromAccumulate(int accumulate_no);
 }

@@ -183,42 +183,6 @@ public class MainPageService {
         List<SubMainPageStoreResponse> glampingStoreList = storeDao.getStoreListForSubMain(x, y, class_first, order_type, SubMainStoreType.LODGEMENT_GLAMPING);
         List<SubMainPageStoreResponse> etcStoreList = storeDao.getStoreListForSubMain(x, y, class_first, order_type, SubMainStoreType.LODGEMENT_ETC);
 
-        // 페이백 이벤트 있을 경우 페이백률 반영
-        for (SubMainPageStoreResponse response : allStoreList) {
-            int paybackRate = advertisementStoreDao.checkStoreOnEvent(response.getStore_no());
-            if (paybackRate != response.getPayback_rate())
-                response.setPayback_rate(paybackRate);
-        }
-        for (SubMainPageStoreResponse response : motelStoreList) {
-            int paybackRate = advertisementStoreDao.checkStoreOnEvent(response.getStore_no());
-            if (paybackRate != response.getPayback_rate())
-                response.setPayback_rate(paybackRate);
-        }
-        for (SubMainPageStoreResponse response : hotelStoreList) {
-            int paybackRate = advertisementStoreDao.checkStoreOnEvent(response.getStore_no());
-            if (paybackRate != response.getPayback_rate())
-                response.setPayback_rate(paybackRate);
-        }
-        for (SubMainPageStoreResponse response : pensionStoreList) {
-            int paybackRate = advertisementStoreDao.checkStoreOnEvent(response.getStore_no());
-            if (paybackRate != response.getPayback_rate())
-                response.setPayback_rate(paybackRate);
-        }
-        for (SubMainPageStoreResponse response : guestHouseStoreList) {
-            int paybackRate = advertisementStoreDao.checkStoreOnEvent(response.getStore_no());
-            if (paybackRate != response.getPayback_rate())
-                response.setPayback_rate(paybackRate);
-        }
-        for (SubMainPageStoreResponse response : glampingStoreList) {
-            int paybackRate = advertisementStoreDao.checkStoreOnEvent(response.getStore_no());
-            if (paybackRate != response.getPayback_rate())
-                response.setPayback_rate(paybackRate);
-        }
-        for (SubMainPageStoreResponse response : etcStoreList) {
-            int paybackRate = advertisementStoreDao.checkStoreOnEvent(response.getStore_no());
-            if (paybackRate != response.getPayback_rate())
-                response.setPayback_rate(paybackRate);
-        }
 
         message.put("store0", allStoreList);
         message.put("store1", motelStoreList);
@@ -267,7 +231,7 @@ public class MainPageService {
         // 페이백률 정렬에 따른 데이터 설정 따로 필요
         List<SubMainPageStoreResponse> storeList = storeDao.getStoreListForSubMainReload(x, y, class_first, class_second, order_type);
         message.put("store", storeList);
-        if(storeList.size() > 0)
+        if (storeList.size() > 0)
             message.put("last_index", storeList.get(storeList.size() - 1).getStore_no());
 
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getSubMainPageStoreListReload()")), HttpStatus.OK);

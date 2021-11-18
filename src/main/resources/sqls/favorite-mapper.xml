@@ -52,4 +52,14 @@
         from favorite
         WHERE favorite_no = #{favorite_no}
     </delete>
+    <select id="checkUserFavoriteStatus" resultType="_boolean">
+        select EXISTS(select * from favorite WHERE store_no = #{store_no} AND user_no = #{user_no})
+    </select>
+    <insert id="userInsertStoreFavorite">
+        insert into favorite(store_no, user_no, reg_date)
+        VALUES (#{store_no}, #{user_no}, #{reg_date})
+    </insert>
+    <delete id="deleteUserFavoriteByUserAndStoreNo">
+        delete from favorite WHERE user_no = #{user_no} AND store_no = #{store_no}
+    </delete>
 </mapper>
