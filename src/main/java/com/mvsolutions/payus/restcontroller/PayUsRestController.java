@@ -487,7 +487,7 @@ public class PayUsRestController {
     /**
      * PayusEventPage#001
      **/
-    @RequestMapping(value = "/api/submain/event", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/store/event", method = RequestMethod.GET)
     public ResponseEntity GetEventPage(@RequestParam("address") String address,
                                        @RequestParam("order_type") int order_type,
                                        @RequestParam("last_index") int last_index,
@@ -529,7 +529,9 @@ public class PayUsRestController {
         return customerService.getReportListPageReload(user_no, report_status, last_index);
     }
 
-    /** ShopDetailPage#001 **/
+    /**
+     * ShopDetailPage#001
+     **/
     @RequestMapping(value = "/api/store/detail", method = RequestMethod.GET)
     public ResponseEntity GetStoreDetailPage(@RequestParam("store_no") int store_no,
                                              @RequestParam("user_no") int user_no,
@@ -537,14 +539,18 @@ public class PayUsRestController {
         return storeService.getStoreDetailPage(store_no, user_no, address);
     }
 
-    /** ShopDetailPage#002 **/
+    /**
+     * ShopDetailPage#002
+     **/
     @RequestMapping(value = "/api/store/favorite", method = RequestMethod.POST)
     public ResponseEntity UserSetStoreFavorite(@RequestBody String body) {
         UserInsertStoreFavoriteRequest request = new Gson().fromJson(body, UserInsertStoreFavoriteRequest.class);
         return storeService.userInsertStoreFavorite(request);
     }
 
-    /** ShopReportPage#001 **/
+    /**
+     * ShopReportPage#001
+     **/
     @RequestMapping(value = "/api/store/report", method = RequestMethod.POST)
     public ResponseEntity ReportStore(HttpServletRequest request, @RequestParam("report") String body) throws IOException {
         StoreReportRequest reportRequest = new Gson().fromJson(body, StoreReportRequest.class);
@@ -566,14 +572,18 @@ public class PayUsRestController {
         return storeService.reportStore(reportRequest);
     }
 
-    /** ShopReviewList#001 **/
+    /**
+     * ShopReviewList#001
+     **/
     @RequestMapping(value = "/api/store/review", method = RequestMethod.GET)
     public ResponseEntity GetStoreReviewListPage(@RequestParam("store_no") int store_no,
                                                  @RequestParam("last_index") int last_index) throws JSONException {
         return reviewService.getStoreReviewListPage(store_no, last_index);
     }
 
-    /** PayusQRPage#001 **/
+    /**
+     * PayusQRPage#001
+     **/
     @RequestMapping(value = "/api/user/check/accumulate", method = RequestMethod.GET)
     public ResponseEntity UserAccumulateCheck(@RequestParam("user_code") int user_code) throws JSONException {
         return pointService.checkUserAccumulate(user_code);
