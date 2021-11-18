@@ -1,5 +1,6 @@
 package com.mvsolutions.payus.mapper;
 
+import com.mvsolutions.payus.model.rest.request.storedetailpage.StoreReportRequest;
 import com.mvsolutions.payus.model.rest.response.usercustomcenterpage.UserReportStoreResponse;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface ReportStoreMapper {
 
     void updateReadCheck(List<UserReportStoreResponse> reportList);
 
+    void reportStore(StoreReportRequest reportRequest);
 }

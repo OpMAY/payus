@@ -21,6 +21,7 @@ public class StatusCode {
     public static final String RELOAD_FAILED = "R400";
     public static final String DELETED_CONTENT = "D404";
     public static final String DENIED_CONTENT = "D501";
+    public static final String NO_STORE_FOUND = "S404";
 
     /** Point **/
     public static final String CAN_NOT_CANCEL_POINT = "P401";

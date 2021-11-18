@@ -2,8 +2,13 @@ package com.mvsolutions.payus.service;
 
 import com.google.gson.Gson;
 import com.mvsolutions.payus.dao.*;
+import com.mvsolutions.payus.exception.enums.BusinessExceptionType;
+import com.mvsolutions.payus.exception.rest.GrantAccessDeniedException;
+import com.mvsolutions.payus.model.rest.request.storedetailpage.StoreReportRequest;
+import com.mvsolutions.payus.model.rest.request.storedetailpage.UserInsertStoreFavoriteRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserFavoriteDeleteRequest;
-import com.mvsolutions.payus.model.rest.response.payushome.StoreKeywordSearchResponse;
+import com.mvsolutions.payus.model.rest.response.storedetailpage.StoreDetailLodgementResponse;
+import com.mvsolutions.payus.model.rest.response.storedetailpage.StoreDetailPageResponse;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserFavoriteListPageResponse;
 import com.mvsolutions.payus.model.utility.kakaolocation.KakaoLocationResponse;
 import com.mvsolutions.payus.response.IntegerRes;
@@ -11,6 +16,8 @@ import com.mvsolutions.payus.response.Message;
 import com.mvsolutions.payus.response.StatusCode;
 import com.mvsolutions.payus.response.StringRes;
 import com.mvsolutions.payus.response.payus.StoreType;
+import com.mvsolutions.payus.util.KakaoLocationService;
+import com.mvsolutions.payus.util.Time;
 import lombok.extern.log4j.Log4j;
 import org.apache.ibatis.session.SqlSession;
 import org.json.JSONException;
@@ -21,6 +28,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Log4j
@@ -46,6 +55,15 @@ public class StoreService {
 
     @Autowired
     private StoreLodgementDao storeLodgementDao;
+
+    @Autowired
+    private KakaoLocationService kakaoLocationService;
+
+    @Autowired
+    private AdvertisementStoreDao advertisementStoreDao;
+
+    @Autowired
+    private ReportStoreDao reportStoreDao;
 
 
     @Transactional(readOnly = true)
@@ -109,5 +127,75 @@ public class StoreService {
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
     }
 
+
+    @Transactional(readOnly = true)
+    public ResponseEntity getStoreDetailPage(int store_no, int user_no, String address) throws JSONException, IOException, URISyntaxException {
+        Message message = new Message();
+        storeDao.setSqlSession(sqlSession);
+        favoriteDao.setSqlSession(sqlSession);
+        advertisementStoreDao.setSqlSession(sqlSession);
+
+        if (!storeDao.checkStoreExists(store_no)) {
+            // 해당 상점 없을 때 S404
+            return new ResponseEntity(StringRes.res(StatusCode.NO_STORE_FOUND), HttpStatus.OK);
+        }
+
+        // 받은 주소로 좌표 확인
+        String result = kakaoLocationService.getLocationCoordinates(address);
+        KakaoLocationResponse kakaoLocationResponse = new Gson().fromJson(result, KakaoLocationResponse.class);
+        double x = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getX());
+        double y = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getY());
+
+        StoreDetailPageResponse storeDetail = storeDao.getStoreDetailPage(store_no, x, y);
+        switch (storeDetail.getClass_first()) {
+            case StoreType.LODGEMENT:
+                storeLodgementDao.setSqlSession(sqlSession);
+                StoreDetailLodgementResponse lodgementDetail = storeLodgementDao.getLodgementData(store_no);
+                message.put("lodgement", lodgementDetail);
+                break;
+            case StoreType.RESTAURANT:
+                // 미개발 상점들
+                throw new GrantAccessDeniedException(BusinessExceptionType.NOT_ALLOWED_STORE);
+            case StoreType.HOSPITAL:
+                throw new GrantAccessDeniedException(BusinessExceptionType.NOT_ALLOWED_STORE);
+            case StoreType.GROCERY:
+                throw new GrantAccessDeniedException(BusinessExceptionType.NOT_ALLOWED_STORE);
+            case StoreType.SHOPPING:
+                throw new GrantAccessDeniedException(BusinessExceptionType.NOT_ALLOWED_STORE);
+            default:
+                throw new GrantAccessDeniedException(BusinessExceptionType.NOT_ALLOWED_STORE);
+        }
+        if (user_no != 0)
+            message.put("favorite", favoriteDao.checkUserFavoriteStatus(user_no, store_no));
+
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getStoreDetailPage()")), HttpStatus.OK);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ResponseEntity userInsertStoreFavorite(UserInsertStoreFavoriteRequest request) {
+        favoriteDao.setSqlSession(sqlSession);
+        request.setReg_date(Time.TimeFormatHMS());
+        if (!storeDao.checkStoreExists(request.getStore_no())) {
+            // 상점 없을 때
+            return new ResponseEntity(StringRes.res(StatusCode.NO_STORE_FOUND), HttpStatus.OK);
+        }
+        if (favoriteDao.checkUserFavoriteStatus(request.getUser_no(), request.getStore_no())) {
+            // 즐겨찾기 했을 때
+            favoriteDao.deleteUserFavoriteByUserAndStoreNo(request.getUser_no(), request.getStore_no());
+        } else // 즐겨찾기 안했을 때
+            favoriteDao.userInsertStoreFavorite(request);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ResponseEntity reportStore(StoreReportRequest reportRequest) {
+        reportStoreDao.setSqlSession(sqlSession);
+        storeDao.setSqlSession(sqlSession);
+        if (!storeDao.checkStoreExists(reportRequest.getStore_no())) {
+            return new ResponseEntity(StringRes.res(StatusCode.NO_STORE_FOUND), HttpStatus.OK);
+        }
+        reportStoreDao.reportStore(reportRequest);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
+    }
 
 }

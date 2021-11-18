@@ -7,6 +7,7 @@ public class StoreMapSearchResponse {
     private int store_no;
     private String name;
     private int class_first;
+    private int payback_rate;
     private String address_short;
     private String thumbnail;
     private float star_rate;

@@ -3,37 +3,51 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mvsolutions.payus.mapper.StoreMapper">
+    <resultMap id="StoreDetailPageResponse"
+               type="com.mvsolutions.payus.model.rest.response.storedetailpage.StoreDetailPageResponse">
+        <result column="image_list" property="image_list" typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+    </resultMap>
     <select id="getStoreListForMain" resultType="MainPageStore">
-        select store_no,
+        select store.store_no,
                class_first,
                name,
-               payback_rate,
+               IF(EXISTS(select *
+                         from advertisement_store
+                         WHERE advertisement_store.store_no = store.store_no
+                           AND status = true), advertise_payback,
+                  payback_rate) as payback_rate,
                thumbnail,
                star_rate,
                review_num,
                (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
                             sin(radians(#{y})) * sin(radians(address_y))))
-                   AS dist
+                                AS dist
         from store
+                 left join advertisement_store on store.store_no = advertisement_store.store_no
         HAVING dist <![CDATA[<=]]> 100
            AND class_first = #{class_first}
         ORDER BY dist
         LIMIT 10
     </select>
     <select id="getStoreListForMainReload" resultType="MainPageStore">
-        select store_no,
+        select store.store_no,
                class_first,
                name,
-               payback_rate,
+               IF(EXISTS(select *
+                         from advertisement_store
+                         WHERE advertisement_store.store_no = store.store_no
+                           AND status = true), advertise_payback,
+                  payback_rate) as payback_rate,
                thumbnail,
                star_rate,
                review_num,
                (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
                             sin(radians(#{y})) * sin(radians(address_y))))
-                   AS dist
+                                AS dist
         from store
+                 left join advertisement_store on store.store_no = advertisement_store.store_no
         HAVING ((dist <![CDATA[>]]> #{distance} AND dist <![CDATA[<=]]> 100 AND class_first = #{class_first})
-            OR (store_no <![CDATA[<]]> #{last_index} AND (dist <![CDATA[>]]> #{distance} AND dist <![CDATA[<=]]> 100) AND
+            OR (store.store_no <![CDATA[<]]> #{last_index} AND (dist <![CDATA[>]]> #{distance} AND dist <![CDATA[<=]]> 100) AND
                 class_first = #{class_first}))
         ORDER BY dist
         LIMIT 10
@@ -66,17 +80,20 @@
         WHERE vendor_no = #{vendor_no}
     </select>
     <select id="getStoreListForSubMain" resultType="SubMainPageStoreResponse">
-        select store_no,
+        select store.store_no,
         class_first,
         class_second,
         name,
-        payback_rate,
+        IF(EXISTS(select *
+        from advertisement_store
+        WHERE advertisement_store.store_no = store.store_no AND status = true), advertise_payback,
+        payback_rate) as payback_rate,
         address_short,
         payback_rate,
         star_rate,
         review_num,
         thumbnail
-        from store
+        from store left join advertisement_store on store.store_no = advertisement_store.store_no
         WHERE (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
         sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[<=]]> 100
         AND class_first = #{class_first}
@@ -86,7 +103,7 @@
                 ORDER BY store.star_rate DESC, store_no DESC, reg_date DESC
             </when>
             <when test="order_type = 2">
-                ORDER BY store.payback_rate DESC, store_no DESC, reg_date DESC
+                ORDER BY payback_rate DESC, store_no DESC, reg_date DESC
             </when>
             <when test="order_type = 3">
                 ORDER BY store.review_num DESC, store_no DESC, reg_date DESC
@@ -95,17 +112,20 @@
         LIMIT 10
     </select>
     <select id="getStoreListForSubMainReload" resultType="SubMainPageStoreResponse">
-        select store_no,
+        select store.store_no,
         class_first,
         class_second,
         name,
-        payback_rate,
+        IF(EXISTS(select *
+        from advertisement_store
+        WHERE advertisement_store.store_no = store.store_no AND status = true), advertise_payback,
+        payback_rate) as payback_rate,
         address_short,
         payback_rate,
         star_rate,
         review_num,
         thumbnail
-        from store
+        from store left join advertisement_store on store.store_no = advertisement_store.store_no
         WHERE (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
         sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[<=]]> 100
         AND class_first = #{class_first}
@@ -115,7 +135,7 @@
                 ORDER BY store.star_rate DESC, store_no DESC, reg_date DESC
             </when>
             <when test="order_type = 2">
-                ORDER BY store.payback_rate DESC, store_no DESC, reg_date DESC
+                ORDER BY payback_rate DESC, store_no DESC, reg_date DESC
             </when>
             <when test="order_type = 3">
                 ORDER BY store.review_num DESC, store_no DESC, reg_date DESC
@@ -129,9 +149,12 @@
             radians(#{x})) +
             sin(radians(#{y})) * sin(radians(address_y)))) as dist from store WHERE store_no = #{last_index});
         </if>
-        select store_no,
+        select store.store_no,
         name,
-        payback_rate,
+        IF(EXISTS(select *
+        from advertisement_store
+        WHERE advertisement_store.store_no = store.store_no AND status = true), advertise_payback,
+        payback_rate) as payback_rate,
         thumbnail,
         address_short,
         star_rate,
@@ -139,7 +162,7 @@
         class_first,
         (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
         sin(radians(#{y})) * sin(radians(address_y)))) as dist
-        from store
+        from store left join advertisement_store on store.store_no = advertisement_store.store_no
         WHERE name like #{keyword}
         OR address like #{keyword}
         OR address_road like #{keyword}
@@ -154,10 +177,15 @@
         LIMIT 10
     </select>
     <select id="searchByMap" resultType="StoreMapSearchResponse">
-        select store_no,
+        select store.store_no,
                name,
                class_first,
                address_short,
+               IF(EXISTS(select *
+                         from advertisement_store
+                         WHERE advertisement_store.store_no = store.store_no
+                           AND status = true), advertise_payback,
+                  payback_rate)                                            as payback_rate,
                thumbnail,
                star_rate,
                review_num,
@@ -166,8 +194,37 @@
                (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
                             sin(radians(#{y})) * sin(radians(address_y)))) as dist
         from store
+                 left join advertisement_store on store.store_no = advertisement_store.store_no
         WHERE (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
                            sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[<=]]> 10
         ORDER BY dist
     </select>
+    <select id="getStoreDetailPage" resultType="StoreDetailPageResponse" resultMap="StoreDetailPageResponse">
+        select store.store_no,
+               class_first,
+               class_second,
+               IF(EXISTS(select *
+                         from advertisement_store
+                         WHERE advertisement_store.store_no = store.store_no
+                           AND status = true), advertise_payback,
+                  payback_rate)                                            as payback_rate,
+               name,
+               star_rate,
+               `explain`,
+               phone,
+               address,
+               address_road,
+               address_x,
+               address_y,
+               review_num,
+               image_list,
+               (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+                            sin(radians(#{y})) * sin(radians(address_y)))) as distance
+        from store
+                 left join advertisement_store on store.store_no = advertisement_store.store_no
+        WHERE store.store_no = #{store_no}
+    </select>
+    <update id="updateStoreByReview">
+
+    </update>
 </mapper>

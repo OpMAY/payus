@@ -4,6 +4,7 @@ import com.mvsolutions.payus.mapper.PointAccumulateMapper;
 import com.mvsolutions.payus.model.rest.basic.PointAccumulate;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserReviewDeleteRequest;
+import com.mvsolutions.payus.model.rest.response.storedetailpage.UserAccumulateCheckResponse;
 import com.mvsolutions.payus.model.rest.response.suppointpage.VendorPointAccumulateListResponse;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserPointAccumulateListResponse;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserReviewPagePreDataResponse;
@@ -90,6 +91,16 @@ public class PointAccumulateDao {
     public void updateAccumulateByUploadReview(int accumulate_no) {
         PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
         mapper.updateAccumulateByUploadReview(accumulate_no);
+    }
+
+    public UserAccumulateCheckResponse checkUserAccumulate(int user_code) {
+        PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
+        return mapper.checkUserAccumulate(user_code);
+    }
+
+    public int getStoreNoFromAccumulate(int accumulate_no) {
+        PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
+        return mapper.getStoreNoFromAccumulate(accumulate_no);
     }
 
 

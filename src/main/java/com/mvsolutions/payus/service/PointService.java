@@ -8,6 +8,7 @@ import com.mvsolutions.payus.model.rest.request.suppointpage.VendorChargeCancelR
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorPointCancelRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorPointChargeRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserPointWithdrawRequest;
+import com.mvsolutions.payus.model.rest.response.storedetailpage.UserAccumulateCheckResponse;
 import com.mvsolutions.payus.model.rest.response.suppointpage.*;
 import com.mvsolutions.payus.model.rest.response.usermypage.*;
 import com.mvsolutions.payus.response.IntegerRes;
@@ -392,5 +393,14 @@ public class PointService {
         UserWithdrawRejectReasonResponse response = pointWithdrawRejectDao.getWithdrawRejectReason(withdraw_no);
         message.put("reason", response);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getUserPointWithdrawRejectReason()")), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity checkUserAccumulate(int user_code) throws JSONException {
+        Message message = new Message();
+        pointAccumulateDao.setSqlSession(sqlSession);
+        UserAccumulateCheckResponse response = pointAccumulateDao.checkUserAccumulate(user_code);
+        message.put("accumulate", response);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("checkUserAccumulate()")), HttpStatus.OK);
     }
 }

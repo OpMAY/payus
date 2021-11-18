@@ -6,6 +6,8 @@ import com.mvsolutions.payus.model.rest.request.loginpage.user.UserRegisterReque
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.request.mainpage.MainPageReloadingRequest;
 import com.mvsolutions.payus.model.rest.request.mainpage.MainPageRequest;
+import com.mvsolutions.payus.model.rest.request.storedetailpage.StoreReportRequest;
+import com.mvsolutions.payus.model.rest.request.storedetailpage.UserInsertStoreFavoriteRequest;
 import com.mvsolutions.payus.model.rest.request.suphomepage.VendorAnswerReviewRequest;
 import com.mvsolutions.payus.model.rest.request.suphomepage.VendorNotificationDeleteRequest;
 import com.mvsolutions.payus.model.rest.request.suphomepage.VendorNotificationRequest;
@@ -525,5 +527,55 @@ public class PayUsRestController {
                                                   @RequestParam("report_status") int report_status,
                                                   @RequestParam("last_index") int last_index) throws JSONException {
         return customerService.getReportListPageReload(user_no, report_status, last_index);
+    }
+
+    /** ShopDetailPage#001 **/
+    @RequestMapping(value = "/api/store/detail", method = RequestMethod.GET)
+    public ResponseEntity GetStoreDetailPage(@RequestParam("store_no") int store_no,
+                                             @RequestParam("user_no") int user_no,
+                                             @RequestParam("address") String address) throws IOException, JSONException, URISyntaxException {
+        return storeService.getStoreDetailPage(store_no, user_no, address);
+    }
+
+    /** ShopDetailPage#002 **/
+    @RequestMapping(value = "/api/store/favorite", method = RequestMethod.POST)
+    public ResponseEntity UserSetStoreFavorite(@RequestBody String body) {
+        UserInsertStoreFavoriteRequest request = new Gson().fromJson(body, UserInsertStoreFavoriteRequest.class);
+        return storeService.userInsertStoreFavorite(request);
+    }
+
+    /** ShopReportPage#001 **/
+    @RequestMapping(value = "/api/store/report", method = RequestMethod.POST)
+    public ResponseEntity ReportStore(HttpServletRequest request, @RequestParam("report") String body) throws IOException {
+        StoreReportRequest reportRequest = new Gson().fromJson(body, StoreReportRequest.class);
+        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
+        Map<String, MultipartFile> fileMap = multipartHttpServletRequest.getFileMap();
+        Iterator<String> keys = fileMap.keySet().iterator();
+        ArrayList<String> imageList = new ArrayList<>();
+        String time = Time.TimeForFile();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            if (key.contains("image")) {
+                String path = fileUploadUtility.uploadFile("api/images/report/store/" + reportRequest.getStore_no() + "/" + time + "/", fileMap.get(key).getOriginalFilename(), fileMap.get(key).getBytes(), Constant.AWS_SAVE);
+                imageList.add(path);
+            }
+        }
+        // 이미지, 등록일자 설정
+        reportRequest.setImg_list(new Gson().toJson(imageList));
+        reportRequest.setReg_date(Time.TimeFormatHMS());
+        return storeService.reportStore(reportRequest);
+    }
+
+    /** ShopReviewList#001 **/
+    @RequestMapping(value = "/api/store/review", method = RequestMethod.GET)
+    public ResponseEntity GetStoreReviewListPage(@RequestParam("store_no") int store_no,
+                                                 @RequestParam("last_index") int last_index) throws JSONException {
+        return reviewService.getStoreReviewListPage(store_no, last_index);
+    }
+
+    /** PayusQRPage#001 **/
+    @RequestMapping(value = "/api/user/check/accumulate", method = RequestMethod.GET)
+    public ResponseEntity UserAccumulateCheck(@RequestParam("user_code") int user_code) throws JSONException {
+        return pointService.checkUserAccumulate(user_code);
     }
 }
