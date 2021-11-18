@@ -170,7 +170,7 @@
             AND ((6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
             sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[>]]> @LastDist OR ((6371 * acos(cos(radians(#{y})) *
             cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
-            sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[=]]> @LastDist AND store_no <![CDATA[<]]>
+            sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[=]]> @LastDist AND store.store_no <![CDATA[<]]>
             #{last_index}))
         </if>
         ORDER BY dist, store_no DESC
@@ -225,6 +225,14 @@
         WHERE store.store_no = #{store_no}
     </select>
     <update id="updateStoreByReview">
-
+        update store
+        SET review_num = #{review_num},
+            star_rate  = #{star_rate}
+        WHERE store_no = #{store_no}
     </update>
+    <select id="checkPrivate" resultType="_boolean">
+        select store_private
+        from store
+        WHERE store_no = #{store_no}
+    </select>
 </mapper>

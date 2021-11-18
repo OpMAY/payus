@@ -242,6 +242,11 @@ public class MainPageService {
         Message message = new Message();
         storeDao.setSqlSession(sqlSession);
 
+        if(last_index != 0 && storeDao.checkStoreExists(last_index)) {
+            // 리로딩 문제 : last_index에 해당하는 데이터 없음
+            return new ResponseEntity(StringRes.res(StatusCode.RELOAD_FAILED), HttpStatus.OK);
+        }
+
         // 받은 주소로 좌표 확인
         String result = kakaoLocationService.getLocationCoordinates(address);
         KakaoLocationResponse kakaoLocationResponse = new Gson().fromJson(result, KakaoLocationResponse.class);
@@ -249,6 +254,7 @@ public class MainPageService {
         double y = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getY());
 
         // 검색 결과
+        message.put("keyword", keyword);
         List<StoreKeywordSearchResponse> searchList = storeDao.searchByKeywords(x, y, keyword, last_index);
         message.put("result", searchList);
         if (searchList.size() > 0)

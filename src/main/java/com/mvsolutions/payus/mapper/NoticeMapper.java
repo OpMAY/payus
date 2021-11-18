@@ -5,7 +5,7 @@ import com.mvsolutions.payus.model.rest.response.usercustomcenterpage.NoticeResp
 import java.util.List;
 
 public interface NoticeMapper {
-    int getLatestNoticeNo();
+    Integer getLatestNoticeNo();
 
     boolean checkNoticeExists(int last_index);
 

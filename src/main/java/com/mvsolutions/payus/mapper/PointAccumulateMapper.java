@@ -39,7 +39,7 @@ public interface PointAccumulateMapper {
 
     void updateAccumulateByUploadReview(int accumulate_no);
 
-    UserAccumulateCheckResponse checkUserAccumulate(int user_code);
+    UserAccumulateCheckResponse checkUserAccumulate(int user_no);
 
     int getStoreNoFromAccumulate(int accumulate_no);
 }

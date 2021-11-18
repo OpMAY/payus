@@ -35,4 +35,6 @@ public interface StoreMapper {
     StoreDetailPageResponse getStoreDetailPage(int store_no, double x, double y);
 
     void updateStoreByReview(int store_no, int review_num, float star_rate);
+
+    boolean checkPrivate(int store_no);
 }

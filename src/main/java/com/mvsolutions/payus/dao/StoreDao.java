@@ -83,4 +83,9 @@ public class StoreDao {
         StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
         mapper.updateStoreByReview(store_no, review_num, star_rate);
     }
+
+    public boolean checkPrivate(int store_no) {
+        StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
+        return mapper.checkPrivate(store_no);
+    }
 }

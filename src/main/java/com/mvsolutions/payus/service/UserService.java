@@ -131,7 +131,7 @@ public class UserService {
         Message message = new Message();
         reportStoreDao.setSqlSession(sqlSession);
         noticeDao.setSqlSession(sqlSession);
-        int recent_no = noticeDao.getLatestNoticeNo();
+        Integer recent_no = noticeDao.getLatestNoticeNo();
         // 가장 최신 공지사항의 notice_no
         message.put("latest_notice", recent_no);
         if (user_no != 0) {

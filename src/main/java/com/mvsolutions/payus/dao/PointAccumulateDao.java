@@ -93,9 +93,9 @@ public class PointAccumulateDao {
         mapper.updateAccumulateByUploadReview(accumulate_no);
     }
 
-    public UserAccumulateCheckResponse checkUserAccumulate(int user_code) {
+    public UserAccumulateCheckResponse checkUserAccumulate(int user_no) {
         PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
-        return mapper.checkUserAccumulate(user_code);
+        return mapper.checkUserAccumulate(user_no);
     }
 
     public int getStoreNoFromAccumulate(int accumulate_no) {

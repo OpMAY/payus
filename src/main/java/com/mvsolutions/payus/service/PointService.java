@@ -399,7 +399,8 @@ public class PointService {
     public ResponseEntity checkUserAccumulate(int user_code) throws JSONException {
         Message message = new Message();
         pointAccumulateDao.setSqlSession(sqlSession);
-        UserAccumulateCheckResponse response = pointAccumulateDao.checkUserAccumulate(user_code);
+        int user_no = PaybackRule.UserCodeCalculation(user_code, false);
+        UserAccumulateCheckResponse response = pointAccumulateDao.checkUserAccumulate(user_no);
         message.put("accumulate", response);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("checkUserAccumulate()")), HttpStatus.OK);
     }

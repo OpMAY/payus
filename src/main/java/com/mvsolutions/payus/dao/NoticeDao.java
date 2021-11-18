@@ -18,7 +18,7 @@ public class NoticeDao {
         }
     }
 
-    public int getLatestNoticeNo() {
+    public Integer getLatestNoticeNo() {
         NoticeMapper mapper = sqlSession.getMapper(NoticeMapper.class);
         return mapper.getLatestNoticeNo();
     }

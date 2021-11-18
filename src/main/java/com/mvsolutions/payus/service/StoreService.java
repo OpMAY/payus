@@ -139,6 +139,10 @@ public class StoreService {
             // 해당 상점 없을 때 S404
             return new ResponseEntity(StringRes.res(StatusCode.NO_STORE_FOUND), HttpStatus.OK);
         }
+        if(storeDao.checkPrivate(store_no)) {
+            // 정지된 상점일 때 D501
+            return new ResponseEntity(StringRes.res(StatusCode.DENIED_CONTENT), HttpStatus.OK);
+        }
 
         // 받은 주소로 좌표 확인
         String result = kakaoLocationService.getLocationCoordinates(address);
@@ -147,6 +151,7 @@ public class StoreService {
         double y = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getY());
 
         StoreDetailPageResponse storeDetail = storeDao.getStoreDetailPage(store_no, x, y);
+        message.put("store", storeDetail);
         switch (storeDetail.getClass_first()) {
             case StoreType.LODGEMENT:
                 storeLodgementDao.setSqlSession(sqlSession);
