@@ -4,6 +4,9 @@ package com.mvsolutions.payus.dao;
 import com.mvsolutions.payus.mapper.StoreMapper;
 import com.mvsolutions.payus.model.rest.basic.Store;
 import com.mvsolutions.payus.model.rest.response.mainpage.MainPageStore;
+import com.mvsolutions.payus.model.rest.response.payushome.StoreKeywordSearchResponse;
+import com.mvsolutions.payus.model.rest.response.payushome.StoreMapSearchResponse;
+import com.mvsolutions.payus.model.rest.response.payushome.SubMainPageStoreResponse;
 import com.mvsolutions.payus.model.rest.response.suppointpage.PointStoreDataResponse;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -48,5 +51,25 @@ public class StoreDao {
     public PointStoreDataResponse getStorePaybackData(int vendor_no) {
         StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
         return mapper.getStorePaybackData(vendor_no);
+    }
+
+    public List<SubMainPageStoreResponse> getStoreListForSubMain(double x, double y, int class_first, int order_type, int class_second) {
+        StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
+        return mapper.getStoreListForSubMain(x, y, class_first, order_type, class_second);
+    }
+
+    public List<SubMainPageStoreResponse> getStoreListForSubMainReload(double x, double y, int class_first, int class_second, int order_type) {
+        StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
+        return mapper.getStoreListForSubMainReload(x, y, class_first, order_type, class_second);
+    }
+
+    public List<StoreKeywordSearchResponse> searchByKeywords(double x, double y, String keyword, int last_index) {
+        StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
+        return mapper.searchByKeywords(x, y, keyword, last_index);
+    }
+
+    public List<StoreMapSearchResponse> searchByMap(double x, double y) {
+        StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
+        return mapper.searchByMap(x, y);
     }
 }

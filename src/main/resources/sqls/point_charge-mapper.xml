@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mvsolutions.payus.mapper.PointChargeMapper">
-    <insert id="insertNewPointChargeRequest" keyProperty="charge_no" useGeneratedKeys="true">
+    <insert id="insertNewPointChargeRequest">
         insert into point_charge (vendor_no, point, reg_date)
         VALUES (#{request.vendor_no}, #{request.point}, #{now})
     </insert>

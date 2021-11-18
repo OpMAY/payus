@@ -41,4 +41,6 @@ public class StatusCode {
     public static final String ALREADY_ANSWERED = "A400";
     // 리뷰를 이미 작성한 경우 or 작성했다가 삭제한 경우
     public static final String ALREADY_REVIEWED = "R401";
+    // 좌표 기준 10KM 내의 상점이 없는 경우
+    public static final String NO_STORE_FOUND_ON_MAP = "M404";
 }

@@ -30,7 +30,7 @@
                         WHERE accumulate_no = #{last_index});
         select point_accumulate.accumulate_no,
                point_accumulate.user_no,
-               user.nickname,
+               user.nickname as user_name,
                point_accumulate.point,
                status,
                point_accumulate.reg_date,
@@ -65,7 +65,7 @@
             </when>
         </choose>
     </update>
-    <insert id="requestPayback" useGeneratedKeys="true" keyProperty="accumulate_no">
+    <insert id="requestPayback">
         SET @StoreNo = (select store_no
                         from store
                         WHERE vendor_no = #{vendor_no});

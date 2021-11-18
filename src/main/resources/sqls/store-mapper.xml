@@ -65,4 +65,109 @@
         from store
         WHERE vendor_no = #{vendor_no}
     </select>
+    <select id="getStoreListForSubMain" resultType="SubMainPageStoreResponse">
+        select store_no,
+        class_first,
+        class_second,
+        name,
+        payback_rate,
+        address_short,
+        payback_rate,
+        star_rate,
+        review_num,
+        thumbnail
+        from store
+        WHERE (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+        sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[<=]]> 100
+        AND class_first = #{class_first}
+        <if test="class_second != 0">AND class_second = #{class_second}</if>
+        <choose>
+            <when test="order_type = 1">
+                ORDER BY store.star_rate DESC, store_no DESC, reg_date DESC
+            </when>
+            <when test="order_type = 2">
+                ORDER BY store.payback_rate DESC, store_no DESC, reg_date DESC
+            </when>
+            <when test="order_type = 3">
+                ORDER BY store.review_num DESC, store_no DESC, reg_date DESC
+            </when>
+        </choose>
+        LIMIT 10
+    </select>
+    <select id="getStoreListForSubMainReload" resultType="SubMainPageStoreResponse">
+        select store_no,
+        class_first,
+        class_second,
+        name,
+        payback_rate,
+        address_short,
+        payback_rate,
+        star_rate,
+        review_num,
+        thumbnail
+        from store
+        WHERE (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+        sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[<=]]> 100
+        AND class_first = #{class_first}
+        <if test="class_second != 0">AND class_second = #{class_second}</if>
+        <choose>
+            <when test="order_type = 1">
+                ORDER BY store.star_rate DESC, store_no DESC, reg_date DESC
+            </when>
+            <when test="order_type = 2">
+                ORDER BY store.payback_rate DESC, store_no DESC, reg_date DESC
+            </when>
+            <when test="order_type = 3">
+                ORDER BY store.review_num DESC, store_no DESC, reg_date DESC
+            </when>
+        </choose>
+        LIMIT 10
+    </select>
+    <select id="searchByKeywords" resultType="StoreKeywordSearchResponse">
+        <if test="last_index != 0">
+            SET @LastDist = (select (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) -
+            radians(#{x})) +
+            sin(radians(#{y})) * sin(radians(address_y)))) as dist from store WHERE store_no = #{last_index});
+        </if>
+        select store_no,
+        name,
+        payback_rate,
+        thumbnail,
+        address_short,
+        star_rate,
+        review_num,
+        class_first,
+        (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+        sin(radians(#{y})) * sin(radians(address_y)))) as dist
+        from store
+        WHERE name like #{keyword}
+        OR address like #{keyword}
+        OR address_road like #{keyword}
+        <if test="last_index != 0">
+            AND ((6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+            sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[>]]> @LastDist OR ((6371 * acos(cos(radians(#{y})) *
+            cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+            sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[=]]> @LastDist AND store_no <![CDATA[<]]>
+            #{last_index}))
+        </if>
+        ORDER BY dist, store_no DESC
+        LIMIT 10
+    </select>
+    <select id="searchByMap" resultType="StoreMapSearchResponse">
+        select store_no,
+               name,
+               class_first,
+               address_short,
+               thumbnail,
+               star_rate,
+               review_num,
+               address_x,
+               address_y,
+               (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+                            sin(radians(#{y})) * sin(radians(address_y)))) as dist
+        from store
+        WHERE (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+                           sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[<=]]> 10
+        ORDER BY dist
+    </select>
 </mapper>

@@ -197,7 +197,7 @@ public class PointService {
         pointAccumulateCancelDao.setSqlSession(sqlSession);
         pointAccumulateDao.setSqlSession(sqlSession);
         PointAccumulate pointAccumulate = pointAccumulateDao.getPointAccumulateByAccumulateNo(request.getAccumulate_no());
-        if (Time.DateCompare(Time.DatePlusDays(pointAccumulate.getReg_date(), 3), Time.TimeFormatHMS()) == 1) {
+        if (Time.DateCompare(Time.DatePlusDays(pointAccumulate.getReg_date(), 3), Time.TimeFormatHMS()) == 0) {
             // 취소 요청 가능 기간 지났을 때
             return new ResponseEntity(StringRes.res(StatusCode.TIME_EXPIRED), HttpStatus.OK);
         } else if (pointAccumulateDao.checkPointAbleToCancel(request.getAccumulate_no())) {
