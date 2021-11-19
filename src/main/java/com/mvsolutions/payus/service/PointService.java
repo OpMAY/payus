@@ -1,7 +1,10 @@
 package com.mvsolutions.payus.service;
 
+import com.google.gson.Gson;
 import com.mvsolutions.payus.dao.*;
+import com.mvsolutions.payus.model.rest.basic.NotificationJson;
 import com.mvsolutions.payus.model.rest.basic.NotificationUser;
+import com.mvsolutions.payus.model.rest.basic.NotificationVendor;
 import com.mvsolutions.payus.model.rest.basic.PointAccumulate;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorChargeCancelRequest;
@@ -15,7 +18,9 @@ import com.mvsolutions.payus.response.IntegerRes;
 import com.mvsolutions.payus.response.Message;
 import com.mvsolutions.payus.response.StatusCode;
 import com.mvsolutions.payus.response.StringRes;
-import com.mvsolutions.payus.response.payus.notification.NotificationType;
+import com.mvsolutions.payus.response.payus.notification.NotificationContentType;
+import com.mvsolutions.payus.response.payus.notification.NotificationMessage;
+import com.mvsolutions.payus.response.payus.notification.NotificationUserType;
 import com.mvsolutions.payus.response.payus.point.PaybackRule;
 import com.mvsolutions.payus.response.payus.point.PointAccumulateType;
 import com.mvsolutions.payus.response.payus.point.PointChargeType;
@@ -46,12 +51,6 @@ public class PointService {
     private StoreDao storeDao;
 
     @Autowired
-    private NotificationUserDao notificationUserDao;
-
-    @Autowired
-    private NotificationVendorDao notificationVendorDao;
-
-    @Autowired
     private ReviewDao reviewDao;
 
     @Autowired
@@ -80,6 +79,9 @@ public class PointService {
 
     @Autowired
     private PointWithdrawRejectDao pointWithdrawRejectDao;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @Transactional(readOnly = true)
     public ResponseEntity getDataForPointCharge(int vendor_no) throws JSONException {
@@ -250,8 +252,6 @@ public class PointService {
     public ResponseEntity requestPayback(PaybackRequest request) throws JSONException {
         Message message = new Message();
         pointAccumulateDao.setSqlSession(sqlSession);
-        notificationUserDao.setSqlSession(sqlSession);
-        notificationVendorDao.setSqlSession(sqlSession);
         userDao.setSqlSession(sqlSession);
         vendorDao.setSqlSession(sqlSession);
         storeDao.setSqlSession(sqlSession);
@@ -284,12 +284,14 @@ public class PointService {
         userDao.requestPayback(request);
         vendorDao.requestPayback(request);
         // 유저에게 알림 전송
-        NotificationUser notificationUser = new NotificationUser();
-        notificationUser.setUser_no(request.getUser_no());
-//        notificationUser.setContent(NotificationMessage.PointPayback());
-        notificationUser.setReg_date(time);
-        notificationUser.setType(NotificationType.PAYBACK);
-        // 공급자에게 알림 전송
+        // 이동 관련 Json 설정
+        NotificationJson notificationJson = new NotificationJson(NotificationUserType.PAYBACK, NotificationContentType.NO_TYPE, request.getAccumulate_no(), null);
+        // 알림 데이터 설정
+        String username = userDao.getUserName(request.getUser_no());
+        String storeName = storeDao.getStoreNameByAccumulateNo(request.getAccumulate_no());
+        NotificationUser notificationUser = new NotificationUser(request.getUser_no(), NotificationUserType.PAYBACK, NotificationMessage.PointPayback(username, storeName, request.getPoint(), true), time, new Gson().toJson(notificationJson));
+        NotificationVendor notificationVendor = new NotificationVendor(request.getVendor_no(), NotificationUserType.PAYBACK, NotificationMessage.PointPayback(username, storeName, request.getPoint(), false), time, new Gson().toJson(notificationJson));
+        notificationService.sendNotification(notificationUser, notificationVendor);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
     }
 

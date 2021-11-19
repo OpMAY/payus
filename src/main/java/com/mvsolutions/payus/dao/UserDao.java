@@ -157,4 +157,9 @@ public class UserDao {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         return mapper.checkUserNickNameExists(nickname);
     }
+
+    public String getUserFCMToken(int user_no) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.getUserFCMToken(user_no);
+    }
 }

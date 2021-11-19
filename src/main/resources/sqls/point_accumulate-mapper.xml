@@ -13,7 +13,7 @@
                point_accumulate.point,
                status,
                point_accumulate.reg_date,
-               user_read_check
+               vendor_read_check as read_check
         from point_accumulate,
              user
         WHERE point_accumulate.store_no = @StoreNo
@@ -34,7 +34,7 @@
                point_accumulate.point,
                status,
                point_accumulate.reg_date,
-               user_read_check
+               vendor_read_check as read_check
         from point_accumulate,
              user
         WHERE point_accumulate.store_no = @StoreNo
@@ -65,7 +65,7 @@
             </when>
         </choose>
     </update>
-    <insert id="requestPayback">
+    <insert id="requestPayback" useGeneratedKeys="true" keyProperty="accumulate_no">
         SET @StoreNo = (select store_no
                         from store
                         WHERE vendor_no = #{vendor_no});
@@ -75,7 +75,7 @@
     <select id="getUserPointAccumulateList" resultType="UserPointAccumulateListResponse">
         select accumulate_no,
                point_accumulate.store_no,
-               store.name,
+               store.name as store_name,
                point_accumulate.reg_date,
                point,
                status,
@@ -94,7 +94,7 @@
                         WHERE accumulate_no = #{last_index});
         select accumulate_no,
                point_accumulate.store_no,
-               store.name,
+               store.name as store_name,
                point_accumulate.reg_date,
                point,
                status,

@@ -65,4 +65,6 @@ public interface UserMapper {
     boolean updateMarketingAgree(int user_no);
 
     boolean checkUserNickNameExists(String nickname);
+
+    String getUserFCMToken(int user_no);
 }

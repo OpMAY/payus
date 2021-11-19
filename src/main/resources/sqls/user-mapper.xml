@@ -175,4 +175,9 @@
     <select id="checkUserNickNameExists" resultType="_boolean">
         select EXISTS(select nickname from user WHERE nickname = #{nickname})
     </select>
+    <select id="getUserFCMToken" resultType="string">
+        select fcm_token
+        from user
+        WHERE user_no = #{user_no}
+    </select>
 </mapper>

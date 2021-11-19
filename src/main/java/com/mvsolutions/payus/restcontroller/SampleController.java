@@ -5,11 +5,9 @@ import com.mvsolutions.payus.exception.rest.AuthorizationTokenException;
 import com.mvsolutions.payus.model.Test;
 import com.mvsolutions.payus.model.file.MFile;
 import com.mvsolutions.payus.model.rest.basic.NotificationUser;
-import com.mvsolutions.payus.model.utility.fcm.Notification;
 import com.mvsolutions.payus.response.IntegerRes;
 import com.mvsolutions.payus.response.Message;
 import com.mvsolutions.payus.response.StatusCode;
-import com.mvsolutions.payus.response.payus.notification.NotificationType;
 import com.mvsolutions.payus.service.HomeService;
 import com.mvsolutions.payus.util.Constant;
 import com.mvsolutions.payus.util.Decoder;
@@ -90,21 +88,6 @@ public class SampleController {
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/test/notification", method = RequestMethod.GET)
-    public ResponseEntity notificationTest() throws JSONException {
-        Message message = new Message();
-        List<NotificationUser> notificationList = new ArrayList<>();
-        for (int i = 1; i <= 6; i++) {
-            NotificationUser notificationUser = new NotificationUser();
-            notificationUser.setType(i);
-            notificationUser.setContent("테스트 데이터");
-            notificationUser.setRead_check(false);
-            notificationUser.setReg_date(Time.TimeFormatHMS());
-            notificationList.add(notificationUser);
-        }
-        message.put("notification", notificationList);
-        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("notificationTest()")), HttpStatus.OK);
-    }
 
     /**
      * Test Method GET Decoding AES

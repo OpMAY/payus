@@ -20,9 +20,9 @@ public class FirebaseMessaging {
     public void initFirebase() {
         try {
             // Remote
-            //FileInputStream refreshToken = new FileInputStream("/www/weart-page_com/ROOT/resources/weart-ucc-firebase-adminsdk-3e85h-646607f007.json");
+            FileInputStream refreshToken = new FileInputStream("/var/lib/tomcat8/webapps/ROOT/WEB-INF/classes/private/payus-307315-firebase-adminsdk-e98c2-9b9f5c5d52.json");
             // Local
-            FileInputStream refreshToken = new FileInputStream("E:/Projects/payus/src/main/resources/private/payus-307315-firebase-adminsdk-e98c2-9b9f5c5d52.json");
+            //FileInputStream refreshToken = new FileInputStream("E:/Projects/payus/src/main/resources/private/payus-307315-firebase-adminsdk-e98c2-9b9f5c5d52.json");
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(refreshToken))
                     .build();

@@ -39,4 +39,14 @@
         SET point = point - #{point}
         WHERE vendor_no = #{vendor_no}
     </update>
+    <select id="getVendorFCMToken">
+        select fcm_token
+        from vendor
+        WHERE vendor_no = #{vendor_no}
+    </select>
+    <update id="updateVendorFcmToken">
+        update vendor
+        SET fcm_token = #{fcm_token}
+        WHERE vendor_no = #{vendor_no}
+    </update>
 </mapper>

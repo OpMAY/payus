@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class PaybackRequest {
+    private int accumulate_no;
     private int vendor_no;
     private int user_code;
     private int user_no;

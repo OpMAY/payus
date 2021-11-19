@@ -242,7 +242,7 @@ public class MainPageService {
         Message message = new Message();
         storeDao.setSqlSession(sqlSession);
 
-        if(last_index != 0 && storeDao.checkStoreExists(last_index)) {
+        if(last_index != 0 && !storeDao.checkStoreExists(last_index)) {
             // 리로딩 문제 : last_index에 해당하는 데이터 없음
             return new ResponseEntity(StringRes.res(StatusCode.RELOAD_FAILED), HttpStatus.OK);
         }

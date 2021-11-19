@@ -57,5 +57,10 @@ public class VendorDao {
         mapper.requestPayback(request);
     }
 
+    public String getVendorFCMToken(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorFCMToken(vendor_no);
+    }
+
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
 }

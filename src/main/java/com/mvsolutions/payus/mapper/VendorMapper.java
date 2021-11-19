@@ -22,4 +22,6 @@ public interface VendorMapper {
     SupPointChargeDataResponse getVendorPoint(int vendor_no);
 
     void requestPayback(PaybackRequest request);
+
+    String getVendorFCMToken(int vendor_no);
 }

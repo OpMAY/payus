@@ -235,4 +235,12 @@
         from store
         WHERE store_no = #{store_no}
     </select>
+    <select id="getStoreNameByAccumulateNo" resultType="string">
+        SET @StoreNo = (select store_no
+                        from point_accumulate
+                        WHERE accumulate_no = #{accumulate_no});
+        select name
+        from store
+        WHERE store_no = @StoreNo
+    </select>
 </mapper>
