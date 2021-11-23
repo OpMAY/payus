@@ -12,6 +12,8 @@ import java.util.Properties;
 @Configuration
 @PropertySource("classpath:mail.properties")
 public class EmailConfiguration {
+    @Value("${mail.smtp.host}")
+    private String host;
     @Value("${mail.smtp.port}")
     private int port;
     @Value("${mail.smtp.socketFactory.port}")
@@ -24,6 +26,8 @@ public class EmailConfiguration {
     private boolean startlls_required;
     @Value("${mail.smtp.socketFactory.fallback}")
     private boolean fallback;
+    @Value("${mail.smtp.socketFactory.class}")
+    private String socketFactoryClass;
     @Value("${admin.mail.id}")
     private String id;
     @Value("${admin.mail.password}")
@@ -32,10 +36,8 @@ public class EmailConfiguration {
     @Bean
     public JavaMailSender mailSender(){
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-        javaMailSender.setHost("smtp.gmail.com");
         javaMailSender.setUsername(id);
         javaMailSender.setPassword(password);
-        javaMailSender.setPort(port);
         javaMailSender.setJavaMailProperties(getMailProperties());
         javaMailSender.setDefaultEncoding("UTF-8");
         return javaMailSender;
@@ -43,12 +45,11 @@ public class EmailConfiguration {
 
     private Properties getMailProperties(){
         Properties properties = new Properties();
-        properties.put("mail.smtp.socketFactory.port", socketPort);
+        properties.put("mail.smtp.host", host);
+        properties.put("mail.smtp.port", port);
         properties.put("mail.smtp.auth", auth);
-        properties.put("mail.smtp.starttls.enable", starttls);
-        properties.put("mail.smtp.starttls.required", startlls_required);
-        properties.put("mail.smtp.socketFactory.fallback",fallback);
-        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.ssl.enable", true);
+        properties.put("mail.smtp.ssl.trust", host);
         return properties;
     }
 }

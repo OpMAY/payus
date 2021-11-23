@@ -92,7 +92,7 @@
                 AND answer_status = true
             </when>
             <when test="review_type == 2">
-                AND answer_status = false;
+                AND answer_status = false
             </when>
         </choose>
         ORDER BY review.reg_date DESC, review.review_no DESC
@@ -120,7 +120,7 @@
                 AND answer_status = true
             </when>
             <when test="review_type == 2">
-                AND answer_status = false;
+                AND answer_status = false
             </when>
         </choose>
         ORDER BY review.reg_date DESC, review.review_no DESC

@@ -14,7 +14,7 @@
         select report_no,
         report_store.user_no,
         report_store.store_no,
-        store.name,
+        store.name as store_name,
         title,
         content,
         img_list,
@@ -25,14 +25,14 @@
         read_check
         from report_store,
         store
-        WHERE report_store.user_no
+        WHERE report_store.user_no = #{user_no}
         AND store.store_no = report_store.store_no
         <choose>
-            <when test="report_status = 1">
-                AND answer_status = true
+            <when test="report_status == 1">
+                AND report_store.answer_status = true
             </when>
-            <when test="report_status = 2">
-                AND answer_status = false
+            <when test="report_status == 2">
+                AND report_store.answer_status = false
             </when>
         </choose>
         ORDER BY report_store.reg_date DESC, report_no DESC
@@ -43,7 +43,7 @@
         select report_no,
         report_store.user_no,
         report_store.store_no,
-        store.name,
+        store.name as store_name,
         title,
         content,
         img_list,
@@ -59,10 +59,10 @@
         AND (report_store.reg_date <![CDATA[<]]> @RegDate
         OR (report_store.reg_date <![CDATA[=]]> @RegDate AND report_no <![CDATA[<]]> #{last_index}))
         <choose>
-            <when test="report_status = 1">
+            <when test="report_status == 1">
                 AND answer_status = true
             </when>
-            <when test="report_status = 2">
+            <when test="report_status == 2">
                 AND answer_status = false
             </when>
         </choose>

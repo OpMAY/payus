@@ -57,16 +57,18 @@
                                                    onfocus="checkEmailValue(false)"
                                                    style="height: 60px">
                                             <span class="vendor-input-warning" id="warning-email"
-                                                style="margin-top: 10px;max-inline-size: max-content;">
+                                                  style="margin-top: 10px;max-inline-size: max-content;">
                                                 이메일을 형식에 맞게 입력하세요.</span>
                                             <button type="button" class="btn btn-password-find-button"
-                                                    id="password-verification-button" onclick="validationEmail()" style="word-break: keep-all">
+                                                    id="password-verification-button" onclick="validationEmail()"
+                                                    style="word-break: keep-all">
                                                 인증
                                             </button>
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <div class="form-group" style="display: none; position: relative" id="email-validation-div">
+                                        <div class="form-group" style="display: none; position: relative"
+                                             id="email-validation-div">
                                             <label for="vendor-find-password-email-validation-code">인증코드</label>
                                             <input class="form-control" id="vendor-find-password-email-validation-code"
                                                    placeholder="인증 코드"
@@ -97,28 +99,28 @@
 <script>
     let setTime = 299;
     let timeInstance;
-    function timer(){
+
+    function timer() {
         let minute = Math.floor(setTime / 60);
         let second = setTime % 60;
         let m;
-        if(second > 9){
+        if (second > 9) {
             m = minute + " : " + second;
         } else {
             m = minute + " : 0" + second;
         }
         document.getElementById("timer").innerText = "인증 만료 시간 - " + m;
         setTime--;
-        if(setTime < 0){
+        if (setTime < 0) {
             document.getElementById("timer").innerText = "인증이 만료되었습니다.";
             clearInterval(timerInstance);
         }
     }
 
-    function validationResend(){
+    function validationResend() {
         setTime = 300;
         clearInterval(timerInstance);
-        timerInstance = setInterval(timer, 1000);
-        alert('인증코드가 재전송되었습니다.');
+        validationEmail();
     }
 
     function validationEmail() {
@@ -126,13 +128,38 @@
         if (!checkValueEmpty(email))
             alert("입력 값을 먼저 입력해주세요.");
         else {
-            alert("인증 메일이 발송되었습니다.");
-            email.disabled = true;
-            document.getElementById("email-validation-div").setAttribute("style", "display : block; position : relative");
-            document.getElementById("email-verification-button").setAttribute("style", "display :block");
-            document.getElementById("password-verification-button").setAttribute("disabled", "disabled");
-            timerInstance = setInterval(timer, 1000);
+            let data = {"id": email.value};
+            $.ajax({
+                type: 'POST',
+                url: '/vendor/find/password/email/validate',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (result) {
+                if (result.id_exist) {
+                    alert("인증 메일이 발송되었습니다.");
+                    setCookie("find_password_no", result.vendor_no, 1000);
+                    setCookie("validation_code", result.validation_code, 310);
+                    email.disabled = true;
+                    document.getElementById("email-validation-div").setAttribute("style", "display : block; position : relative");
+                    document.getElementById("email-verification-button").setAttribute("style", "display :block");
+                    document.getElementById("password-verification-button").setAttribute("disabled", "disabled");
+                    timerInstance = setInterval(timer, 1000);
+                } else {
+                    alert("공급자로 등록된 이메일이 아닙니다.");
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
         }
+    }
+
+    function setCookie(cookie_name, value, seconds) {
+        let exdate = new Date();
+        exdate.setDate(exdate.getSeconds() + seconds);
+
+        let cookie_value = escape(value) + ((seconds == null) ? '' : '; expires=' + exdate.toUTCString());
+        document.cookie = cookie_name + '=' + cookie_value;
     }
 
     function validationCode() {
@@ -140,9 +167,30 @@
         if (!checkValueEmpty(validationCode)) {
             alert("인증 번호를 먼저 입력해주세요.");
         } else {
-            alert("인증이 완료되었습니다.\n비밀번호 재설정 페이지로 이동합니다.");
-            window.location.href = "/vendor/find/password/result.do";
+            checkValidationCode(validationCode.value);
         }
+    }
+
+    function checkValidationCode(validationCode) {
+        let data = {"validation_code": validationCode};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/find/password/validate/cookie',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            if (result === 0) {
+                alert("인증이 완료되었습니다.\n비밀번호 재설정 페이지로 이동합니다.");
+                window.location.href = "/vendor/find/password/result.do";
+            } else if (result === 1) {
+                alert("인증 번호가 일치하지 않습니다.");
+            } else {
+                alert("인증 시간이 만료되었습니다.\n다시 시도해주세요.");
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
     }
 
     function checkEmailValue(send) {

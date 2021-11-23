@@ -103,6 +103,11 @@ public class PointAccumulateDao {
         return mapper.getStoreNoFromAccumulate(accumulate_no);
     }
 
+    public boolean checkAccumulateCanceled(int content_no) {
+        PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
+        return mapper.checkAccumulateCanceled(content_no);
+    }
+
 
 //    private PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
 }

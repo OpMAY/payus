@@ -1,7 +1,7 @@
 package com.mvsolutions.payus.mapper;
 
-import com.mvsolutions.payus.model.rest.response.usermypage.UserWithdrawRejectReasonResponse;
+import com.mvsolutions.payus.model.rest.response.usermypage.UserPointRejectReasonResponse;
 
 public interface PointWithdrawRejectMapper {
-    UserWithdrawRejectReasonResponse getWithdrawRejectReason(int withdraw_no);
+    UserPointRejectReasonResponse getWithdrawRejectReason(int withdraw_no);
 }

@@ -344,10 +344,12 @@ public class PayUsRestController {
     /**
      * UserPointReject#001
      **/
-    @RequestMapping(value = "/api/user/point/withdraw/reject/reason", method = RequestMethod.GET)
-    public ResponseEntity UserPointWithdrawRejectReason(@RequestParam("withdraw_no") int withdraw_no) throws JSONException {
-        return pointService.getUserPointWithdrawRejectReason(withdraw_no);
+    @RequestMapping(value = "/api/user/point/reject/reason", method = RequestMethod.GET)
+    public ResponseEntity UserPointRejectReason(@RequestParam("content_type") int content_type,
+                                                        @RequestParam("content_no") int content_no) throws JSONException {
+        return pointService.getUserPointRejectReason(content_type, content_no);
     }
+
 
     /**
      * UserReviewPage#001

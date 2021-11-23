@@ -12,8 +12,6 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.List;
 
 @Log4j
 public class JsonObjectTypeHandler<T> extends BaseTypeHandler<T> {
@@ -38,11 +36,11 @@ public class JsonObjectTypeHandler<T> extends BaseTypeHandler<T> {
         return convertToObject(callableStatement.getString(i));
     }
 
-    private T convertToObject(String jsonString){
-        try{
+    private T convertToObject(String jsonString) {
+        try {
             return new ObjectMapper().readValue(jsonString, new TypeReference<T>() {
             });
-        } catch (IOException e){
+        } catch (IOException e) {
             log.error("JSONTypeHandler failed to convert jsonString to list, JSON String : " + jsonString, e);
         }
         return null;

@@ -26,6 +26,7 @@ public class ReportStoreDao {
 
     public List<UserReportStoreResponse> getReportList(int user_no, int report_status) {
         ReportStoreMapper mapper = sqlSession.getMapper(ReportStoreMapper.class);
+        System.out.println("status" + report_status);
         return mapper.getReportList(user_no, report_status);
     }
 

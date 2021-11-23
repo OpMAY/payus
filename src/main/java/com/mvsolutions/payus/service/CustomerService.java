@@ -88,8 +88,11 @@ public class CustomerService {
         reportStoreDao.setSqlSession(sqlSession);
         // 전체, 답변, 미답변
         List<UserReportStoreResponse> allReportList = reportStoreDao.getReportList(user_no, ReportStoreStatus.ALL);
+        log.info(1);
         List<UserReportStoreResponse> answeredReportList = reportStoreDao.getReportList(user_no, ReportStoreStatus.ANSWERED);
+        log.info(2);
         List<UserReportStoreResponse> notAnsweredReportList = reportStoreDao.getReportList(user_no, ReportStoreStatus.NOT_ANSWERED);
+        log.info(3);
         message.put("report0", allReportList);
         message.put("report1", answeredReportList);
         message.put("report2", notAnsweredReportList);

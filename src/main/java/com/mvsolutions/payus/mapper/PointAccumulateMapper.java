@@ -42,4 +42,6 @@ public interface PointAccumulateMapper {
     UserAccumulateCheckResponse checkUserAccumulate(int user_no);
 
     int getStoreNoFromAccumulate(int accumulate_no);
+
+    boolean checkAccumulateCanceled(int content_no);
 }

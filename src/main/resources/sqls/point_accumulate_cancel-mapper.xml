@@ -12,4 +12,9 @@
         from point_accumulate_cancel
         WHERE accumulate_no = #{content_no}
     </select>
+    <select id="getUserPointAccumulateCancelReason" resultType="UserPointRejectReasonResponse">
+        select reason, reg_date
+        from point_accumulate_cancel
+        WHERE accumulate_no = #{content_no}
+    </select>
 </mapper>

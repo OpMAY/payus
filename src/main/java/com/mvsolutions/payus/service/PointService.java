@@ -385,15 +385,29 @@ public class PointService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity getUserPointWithdrawRejectReason(int withdraw_no) throws JSONException {
+    public ResponseEntity getUserPointRejectReason(int content_type, int content_no) throws JSONException {
         Message message = new Message();
-        pointWithdrawRejectDao.setSqlSession(sqlSession);
-        if (!pointWithdrawDao.checkWithdrawRejected(withdraw_no)) {
-            // 반려된 내역이 아닌데 반려사유 요청한 경우
+        if(content_type == 1) {
+            pointAccumulateDao.setSqlSession(sqlSession);
+            pointAccumulateCancelDao.setSqlSession(sqlSession);
+            if (!pointAccumulateDao.checkAccumulateCanceled(content_no)) {
+                // 반려된 내역이 아닌데 반려사유 요청한 경우
+                return new ResponseEntity(IntegerRes.res(StatusCode.BAD_REQUEST), HttpStatus.OK);
+            }
+            UserPointRejectReasonResponse response = pointAccumulateCancelDao.getUserPointAccumulateCancelReason(content_no);
+            message.put("reason", response);
+        } else if (content_type == 2) {
+            pointWithdrawRejectDao.setSqlSession(sqlSession);
+            pointWithdrawDao.setSqlSession(sqlSession);
+            if (!pointWithdrawDao.checkWithdrawRejected(content_no)) {
+                // 반려된 내역이 아닌데 반려사유 요청한 경우
+                return new ResponseEntity(IntegerRes.res(StatusCode.BAD_REQUEST), HttpStatus.OK);
+            }
+            UserPointRejectReasonResponse response = pointWithdrawRejectDao.getWithdrawRejectReason(content_no);
+            message.put("reason", response);
+        } else {
             return new ResponseEntity(IntegerRes.res(StatusCode.BAD_REQUEST), HttpStatus.OK);
         }
-        UserWithdrawRejectReasonResponse response = pointWithdrawRejectDao.getWithdrawRejectReason(withdraw_no);
-        message.put("reason", response);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getUserPointWithdrawRejectReason()")), HttpStatus.OK);
     }
 
