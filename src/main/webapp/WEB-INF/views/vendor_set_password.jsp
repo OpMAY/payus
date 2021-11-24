@@ -52,7 +52,8 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="vendor-reset-password-id">아이디</label>
-                                            <input class="form-control" id="vendor-reset-password-id" value="${ID}" disabled
+                                            <input class="form-control" id="vendor-reset-password-id" value="${id}"
+                                                   disabled
                                                    style="height: 15%">
                                         </div>
                                     </div>
@@ -60,7 +61,7 @@
                                         <div class="form-group">
                                             <label for="vendor-reset-password">새 비밀번호</label>
                                             <input class="form-control" id="vendor-reset-password"
-                                                   placeholder="새로운 비밀번호를 입력하세요."
+                                                   placeholder="새로운 비밀번호를 입력하세요." type="password"
                                                    style="height: 15%">
                                         </div>
                                     </div>
@@ -68,7 +69,7 @@
                                         <div class="form-group">
                                             <label for="vendor-reset-password-check">새 비밀번호 확인</label>
                                             <input class="form-control" id="vendor-reset-password-check"
-                                                   placeholder="새로운 비밀번호를 입력하세요."
+                                                   placeholder="새로운 비밀번호를 입력하세요." type="password"
                                                    style="height: 15%">
                                         </div>
                                     </div>
@@ -89,7 +90,38 @@
     </div>
 </div>
 <script>
-
+    $("#email-verification-button").on("click", function () {
+        changePassword();
+    })
+    function changePassword() {
+        let vendor_no = ${vendor_no};
+        let newPW = $("#vendor-reset-password").val();
+        let newPWCheck = $("#vendor-reset-password-check").val();
+        if (newPW === '' || newPW === undefined || newPWCheck === '' || newPWCheck === undefined) {
+            alert("입력 값을 입력해주세요.");
+        }
+        if (newPW !== newPWCheck) {
+            alert("새 비밀번호를 확인해주세요.");
+            return false;
+        }
+        let data = {"vendor_no": vendor_no, "password": newPW};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/find/password/reset',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            if (result === 0) {
+                alert("비밀번호 변경이 완료되었습니다.");
+                window.location.href = "/vendor/login.do";
+            } else if (result === 1) {
+                alert("이미 사용중인 비밀번호입니다.");
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
+    }
 </script>
 </body>
 </html>

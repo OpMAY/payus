@@ -37,4 +37,6 @@ public interface StoreMapper {
     void updateStoreByReview(int store_no, int review_num, float star_rate);
 
     boolean checkPrivate(int store_no);
+
+    String getStoreNameByAccumulateNo(int accumulate_no);
 }

@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class UserReviewPagePreDataResponse {
     private int store_no;
-    private int store_name;
+    private String store_name;
 }

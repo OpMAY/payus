@@ -88,4 +88,9 @@ public class StoreDao {
         StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
         return mapper.checkPrivate(store_no);
     }
+
+    public String getStoreNameByAccumulateNo(int accumulate_no) {
+        StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
+        return mapper.getStoreNameByAccumulateNo(accumulate_no);
+    }
 }

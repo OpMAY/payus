@@ -53,7 +53,7 @@
                                         <div class="form-group" style="position: relative">
                                             <label for="vendor-result-id">아이디</label>
                                             <input class="form-control" id="vendor-result-id"
-                                                   value="SampleId1234"
+                                                   value="${id}"
                                                    placeholder="이름을 입력해주세요."
                                                    style="height: 15%;" disabled>
                                             <button type="button" class="btn btn-id-copy" style="word-break: keep-all"
@@ -85,6 +85,16 @@
     </div>
 </div>
 <script>
+    $(document).ready(function () {
+        if(!checkValue()){
+            alert("잘못된 접근입니다.")
+        }
+    });
+
+    function checkValue() {
+        let id = '${id}';
+        return id !== '';
+    }
     function copyID() {
         let id = document.getElementById("vendor-result-id");
         navigator.clipboard.writeText(id.value);

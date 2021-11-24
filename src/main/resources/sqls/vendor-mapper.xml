@@ -39,4 +39,47 @@
         SET point = point - #{point}
         WHERE vendor_no = #{vendor_no}
     </update>
+    <select id="getVendorFCMToken" resultType="string">
+        select fcm_token
+        from vendor
+        WHERE vendor_no = #{vendor_no}
+    </select>
+    <update id="updateVendorFcmToken">
+        update vendor
+        SET fcm_token = #{fcm_token}
+        WHERE vendor_no = #{vendor_no}
+    </update>
+    <select id="findIdVendor" resultType="string">
+        select id
+        from vendor
+        WHERE vendor_no = #{vendor_no}
+    </select>
+    <select id="vendorFindIdPost" resultType="VendorFindIdResponse">
+        select vendor_no
+        from vendor
+        WHERE vendor_name = #{name}
+          AND phone = #{phone}
+    </select>
+    <select id="findPassword" resultType="VendorPasswordFindResponse">
+        SET @Vendor_NO = (select vendor_no
+                          from vendor
+                          WHERE id = #{id});
+        select EXISTS(select * from vendor WHERE id = #{id})                    as id_exist,
+               IF(EXISTS(select * from vendor WHERE id = #{id}), @Vendor_NO, 0) as vendor_no
+    </select>
+    <select id="getPasswordFindResult" resultType="VendorPasswordFindResultData">
+        select vendor_no, id
+        from vendor
+        WHERE vendor_no = #{vendor_no}
+    </select>
+    <select id="checkVendorCurrentPassword" resultType="_boolean">
+        select IF(password = #{password}, TRUE, FALSE)
+        from vendor
+        WHERE vendor_no = #{vendor_no}
+    </select>
+    <update id="resetPassword">
+        update vendor
+        SET password = #{password}
+        WHERE vendor_no = #{vendor_no}
+    </update>
 </mapper>

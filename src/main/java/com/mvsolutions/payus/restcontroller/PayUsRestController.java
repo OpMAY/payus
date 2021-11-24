@@ -10,7 +10,6 @@ import com.mvsolutions.payus.model.rest.request.storedetailpage.StoreReportReque
 import com.mvsolutions.payus.model.rest.request.storedetailpage.UserInsertStoreFavoriteRequest;
 import com.mvsolutions.payus.model.rest.request.suphomepage.VendorAnswerReviewRequest;
 import com.mvsolutions.payus.model.rest.request.suphomepage.VendorNotificationDeleteRequest;
-import com.mvsolutions.payus.model.rest.request.suphomepage.VendorNotificationRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorChargeCancelRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorPointCancelRequest;
@@ -117,6 +116,24 @@ public class PayUsRestController {
     }
 
     /**
+     * UserNotification#001
+     **/
+    @RequestMapping(value = "/api/user/notification", method = RequestMethod.GET)
+    public ResponseEntity UserNotification(@RequestParam("user_no") int user_no) throws JSONException {
+        return notificationService.getUserNotification(user_no);
+    }
+
+    /**
+     * UserNotification#002
+     **/
+    @RequestMapping(value = "/api/user/notification/reload", method = RequestMethod.GET)
+    public ResponseEntity UserNotificationReload(@RequestParam("user_no") int user_no,
+                                                 @RequestParam("type") int type,
+                                                 @RequestParam("last_index") int last_index) throws JSONException {
+        return notificationService.getUserNotificationReload(user_no, type, last_index);
+    }
+
+    /**
      * SupLoginPage#001
      **/
     @RequestMapping(value = "/api/vendor/login", method = RequestMethod.POST)
@@ -136,14 +153,23 @@ public class PayUsRestController {
     /**
      * SupNotification#001
      **/
-    @RequestMapping(value = "/api/vendor/notification", method = RequestMethod.POST)
-    public ResponseEntity VendorNotification(@RequestBody String body) throws JSONException {
-        VendorNotificationRequest request = new Gson().fromJson(body, VendorNotificationRequest.class);
-        return notificationService.getVendorNotification(request);
+    @RequestMapping(value = "/api/vendor/notification", method = RequestMethod.GET)
+    public ResponseEntity VendorNotification(@RequestParam("vendor_no") int vendor_no) throws JSONException {
+        return notificationService.getVendorNotification(vendor_no);
     }
 
     /**
      * SupNotification#002
+     **/
+    @RequestMapping(value = "/api/vendor/notification/reload", method = RequestMethod.GET)
+    public ResponseEntity VendorNotificationReload(@RequestParam("vendor_no") int vendor_no,
+                                                   @RequestParam("type") int type,
+                                                   @RequestParam("last_index") int last_index) throws JSONException {
+        return notificationService.getVendorNotificationReload(vendor_no, type, last_index);
+    }
+
+    /**
+     * SupNotification#003
      **/
     @RequestMapping(value = "/api/vendor/notification/delete", method = RequestMethod.POST)
     public ResponseEntity DeleteVendorNotification(@RequestBody String body) {
@@ -318,10 +344,12 @@ public class PayUsRestController {
     /**
      * UserPointReject#001
      **/
-    @RequestMapping(value = "/api/user/point/withdraw/reject/reason", method = RequestMethod.GET)
-    public ResponseEntity UserPointWithdrawRejectReason(@RequestParam("withdraw_no") int withdraw_no) throws JSONException {
-        return pointService.getUserPointWithdrawRejectReason(withdraw_no);
+    @RequestMapping(value = "/api/user/point/reject/reason", method = RequestMethod.GET)
+    public ResponseEntity UserPointRejectReason(@RequestParam("content_type") int content_type,
+                                                        @RequestParam("content_no") int content_no) throws JSONException {
+        return pointService.getUserPointRejectReason(content_type, content_no);
     }
+
 
     /**
      * UserReviewPage#001
@@ -346,7 +374,7 @@ public class PayUsRestController {
             String key = keys.next();
             if (key.contains("image")) {
                 String path = fileUploadUtility.uploadFile("api/images/review/" + time + "/", fileMap.get(key).getOriginalFilename(), fileMap.get(key).getBytes(), Constant.AWS_SAVE);
-                imageList.add(path);
+                imageList.add("api/images/review/" + time + "/" + path);
             }
         }
         reviewUploadRequest.setImage_list(new Gson().toJson(imageList));

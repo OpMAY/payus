@@ -31,7 +31,8 @@
 <body>
 <div class="main-wrapper">
     <div class="page-wrapper full-page">
-        <div class="page-content d-flex align-items-center justify-content-center page-content-border" style="flex-direction: column;">
+        <div class="page-content d-flex align-items-center justify-content-center page-content-border"
+             style="flex-direction: column;">
             <div class="row">
                 <div class="col-md-12 col-xl-8 d-flex"
                      style="margin-bottom: 20px; flex-direction: row; align-items: center">
@@ -47,22 +48,12 @@
                                 <div class="row justify-content-center">
                                     <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0">공급자 로그인 페이지</h3>
                                 </div>
-                                <%
-                                    String cookie = "";
-                                    Cookie[] cookies = request.getCookies(); //쿠키생성
-                                    if (cookies != null && cookies.length > 0)
-                                        for (Cookie value : cookies) {
-                                            if (value.getName().equals("userId")) { // 내가 원하는 쿠키명 찾아서 값 저장
-                                                cookie = value.getValue();
-                                            }
-                                        }
-                                %>
                                 <form class="forms-sample noto-font">
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="adminInputId" class="noto-font">아이디</label>
                                             <input class="form-control noto-font" id="adminInputId"
-                                                   placeholder="아이디를 입력하세요." value="<%=cookie%>"
+                                                   placeholder="아이디를 입력하세요."
                                                    style="height: 10%">
                                         </div>
                                     </div>
@@ -77,16 +68,19 @@
                                     <div class="row mx-auto">
                                         <div class="col-12" style="display: flex; justify-content: flex-end">
                                             <a href="/vendor/find/identification.do"
-                                               class="d-block noto-font vendor-identification-find" style="word-break: keep-all">아이디
+                                               class="d-block noto-font vendor-identification-find"
+                                               style="word-break: keep-all">아이디
                                                 찾기</a>
-                                            <a href="/vendor/find/password.do" class="d-block noto-font vendor-identification-find"
+                                            <a href="/vendor/find/password.do"
+                                               class="d-block noto-font vendor-identification-find"
                                                style="margin-left: 5px; word-break: keep-all">비밀번호 찾기</a>
                                         </div>
                                     </div>
                                     <hr/>
                                     <div class="mt-3">
                                         <div class="col-12">
-                                            <button type="button" class="btn btn-auth-sign-in d-block">
+                                            <button type="button" class="btn btn-auth-sign-in d-block"
+                                                    id="login_btn">
                                                 로그인
                                             </button>
                                             <button type="button" class="btn btn-auth-sign-up d-block"
@@ -108,6 +102,57 @@
         <!-- partial -->
     </div>
 </div>
+<script>
+    $('#adminInputId').keypress(function (e) {
+        if (e.which === 13) {
+            loginVendor();
+        }
+    });
+    $('#adminInputPassword').keypress(function (e) {
+        if (e.which === 13) {
+            loginVendor();
+        }
+    });
+    $('#login_btn').click(function () {
+        loginVendor();
+    });
+
+    function loginVendor() {
+        const id = $("#adminInputId").val();
+        const password = $("#adminInputPassword").val();
+        if (id === '' || password === '') {
+            alert('입력 값을 먼저 입력해주세요.');
+            return false;
+        }
+        let data = {"id": id, "password": password};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/login',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            if (result.vendor_no === 0) {
+                alert("로그인에 실패했습니다.\n로그인 정보를 확인해주세요.")
+            } else {
+                if (result.valid_vendor && !result.vendor_penalty) {
+                    // 세션에 vendor_no 값 저장
+                    sessionStorage.setItem("vendor_no", result.vendor_no);
+                    console.log(sessionStorage.getItem("vendor_no"));
+                    alert("공급자 넘버 " + sessionStorage.getItem("vendor_no"));
+                } else if (!result.valid_vendor) {
+                    alert("아직 승인되지 않은 공급자입니다.");
+                    // TODO 미승인 페이지 이동
+                } else if (result.vendor_penalty) {
+                    alert("정지된 공급자 입니다.");
+                    // TODO 정지 내역 표시
+                } // TODO 반려된 공급자 페이지 이동
+            }
+        }).fail(function (error) {
+            console.log(error);
+        })
+    }
+</script>
 <!-- core:js -->
 <script src="/vendors/core/core.js"></script>
 <!-- endinject -->

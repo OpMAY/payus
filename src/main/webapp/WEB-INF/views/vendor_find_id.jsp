@@ -97,8 +97,7 @@
                                     </div>
                                     <div class="mt-3">
                                         <div class="col-12">
-                                            <button type="button" class="btn btn-auth-sign-in d-block"
-                                                    onclick="window.location.href='/vendor/find/identification/result.do'">
+                                            <button type="button" class="btn btn-auth-sign-in d-block" id="find_id_btn">
                                                 아이디 찾기
                                             </button>
                                         </div>
@@ -114,6 +113,40 @@
     </div>
 </div>
 <script>
+    $("#find_id_btn").on("click", function () {
+        findID();
+    });
+
+    function findID() {
+        if (!checkNameValue(true)) {
+            alert("올바른 이름을 입력해주세요.");
+            return false;
+        } else if (!checkPhoneValue(true)) {
+            alert("올바른 전화번호를 입력해주세요.");
+            return false;
+        }
+        let name = $("#vendor-find-id-name").val();
+        let phone = $("#vendor-find-id-phone-1").val() + $("#vendor-find-id-phone-2").val() + $("#vendor-find-id-phone-3").val();
+        let data = {"name": name, "phone": phone};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/find/id',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            if(result.vendor_no === 0) {
+                alert("입력하신 회원정보에 일치하는 아이디가 존재하지 않습니다.");
+            } else {
+                console.log(result.vendor_no);
+                document.cookie = "vendor_find_no" + '=' + result.vendor_no;
+                window.location.href = "/vendor/find/identification/result.do";
+            }
+        }).fail(function (error) {
+            console.log(error);
+        })
+    }
+
     function checkNameValue(send) {
         let name = document.getElementById('vendor-find-id-name');
         let nameRegex = /^[가-힣a-zA-Z\s]{2,30}$/;

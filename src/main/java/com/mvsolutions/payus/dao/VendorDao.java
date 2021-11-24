@@ -8,6 +8,12 @@ import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
 import com.mvsolutions.payus.model.rest.response.suphomepage.VendorHomeResponse;
 import com.mvsolutions.payus.model.rest.response.suppointpage.SupPointChargeDataResponse;
+import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindIdRequest;
+import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindPasswordRequest;
+import com.mvsolutions.payus.model.web.vendor.request.auth.VendorPasswordResetRequest;
+import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
+import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
+import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 import sun.misc.VM;
@@ -55,6 +61,41 @@ public class VendorDao {
     public void requestPayback(PaybackRequest request) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         mapper.requestPayback(request);
+    }
+
+    public String getVendorFCMToken(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorFCMToken(vendor_no);
+    }
+
+    public String findIdVendor(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.findIdVendor(vendor_no);
+    }
+
+    public VendorFindIdResponse vendorFindIdPost(VendorFindIdRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.vendorFindIdPost(request);
+    }
+
+    public VendorPasswordFindResponse findPassword(VendorFindPasswordRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.findPassword(request);
+    }
+
+    public VendorPasswordFindResultData getPasswordFindResult(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getPasswordFindResult(vendor_no);
+    }
+
+    public boolean checkVendorCurrentPassword(VendorPasswordResetRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.checkVendorCurrentPassword(request);
+    }
+
+    public void resetPassword(VendorPasswordResetRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.resetPassword(request);
     }
 
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);

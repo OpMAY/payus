@@ -184,7 +184,7 @@ public class ReviewService {
     public ResponseEntity getStoreReviewListPage(int store_no, int last_index) throws JSONException {
         Message message = new Message();
         reviewDao.setSqlSession(sqlSession);
-        if (last_index != 0 && reviewDao.checkReviewExists(last_index)) {
+        if (last_index != 0 && !reviewDao.checkReviewExists(last_index)) {
             return new ResponseEntity(StringRes.res(StatusCode.RELOAD_FAILED), HttpStatus.OK);
         }
         int review_num = reviewDao.getStoreReviewNum(store_no);

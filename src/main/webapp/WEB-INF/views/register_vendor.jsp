@@ -68,8 +68,8 @@
                                     <div class="col-12">
                                         <div class="form-group" style="display: none; position: relative"
                                              id="email-validation-div">
-                                            <label for="vendor-find-password-email-validation-code">인증코드</label>
-                                            <input class="form-control" id="vendor-find-password-email-validation-code"
+                                            <label for="vendor-register-email-validation-code">인증코드</label>
+                                            <input class="form-control" id="vendor-register-email-validation-code"
                                                    placeholder="인증 코드"
                                                    style="height: 60px">
                                             <button type="button" class="btn btn-email-validation-resend"
@@ -166,7 +166,8 @@
                                                 <span class="checkmark"></span>
                                             </label>
                                             <label class="container">
-                                                <a onclick="alert('A 태그')" class="noto-font payus-atag"><u>개인정보 처리 방침</u></a>
+                                                <a onclick="alert('A 태그')" class="noto-font payus-atag"><u>개인정보 처리
+                                                    방침</u></a>
                                                 <input type="checkbox" id="personal-agree"/>
                                                 <span class="checkmark"></span>
                                             </label>
@@ -196,7 +197,7 @@
     </div>
 </div>
 <script>
-
+    let validated = false;
     let setTime = 299;
     let timeInstance;
 
@@ -224,18 +225,61 @@
         alert('인증코드가 재전송되었습니다.');
     }
 
+    function validationCode() {
+        let validationCode = document.getElementById("vendor-register-email-validation-code");
+        if (!checkValueEmpty(validationCode)) {
+            alert("인증 번호를 먼저 입력해주세요.");
+        } else {
+            checkValidationCode(validationCode.value);
+        }
+    }
+
     function validationEmail() {
         let email = document.getElementById("vendor-register-email");
         if (!checkValueEmpty(email))
             alert("입력 값을 먼저 입력해주세요.");
         else {
-            alert("인증 메일이 발송되었습니다.");
-            email.disabled = true;
-            document.getElementById("email-validation-div").setAttribute("style", "display : block; position : relative");
-            document.getElementById("email-verification-button").setAttribute("style", "display :block");
-            document.getElementById("password-verification-button").setAttribute("disabled", "disabled");
-            timerInstance = setInterval(timer, 1000);
+            let data = {"email": email.value};
+            $.ajax({
+                type: 'POST',
+                url: '/vendor/register/email/validate',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (result) {
+                alert("인증 메일이 발송되었습니다.");
+                setCookie("validation_code", result.validation_code, 310);
+                email.disabled = true;
+                document.getElementById("email-validation-div").setAttribute("style", "display : block; position : relative");
+                document.getElementById("email-verification-button").setAttribute("style", "display :block");
+                document.getElementById("password-verification-button").setAttribute("disabled", "disabled");
+                timerInstance = setInterval(timer, 1000);
+            }).fail(function (error) {
+                console.log(error);
+            });
         }
+    }
+
+    function checkValidationCode(validationCode) {
+        let data = {"validation_code": validationCode};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/validate/cookie',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            if (result === 0) {
+                alert("인증이 완료되었습니다.");
+                validated = true;
+            } else if (result === 1) {
+                alert("인증 번호가 일치하지 않습니다.");
+            } else {
+                alert("인증 시간이 만료되었습니다.\n다시 시도해주세요.");
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
     }
 
     function checkValueEmpty(element) {

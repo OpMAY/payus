@@ -2,6 +2,7 @@ package com.mvsolutions.payus.dao;
 
 import com.mvsolutions.payus.mapper.PointAccumulateCancelMapper;
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorPointCancelRequest;
+import com.mvsolutions.payus.model.rest.response.usermypage.UserPointRejectReasonResponse;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -23,6 +24,11 @@ public class PointAccumulateCancelDao {
     public String getPointAccumulateCancelReason(int content_no) {
         PointAccumulateCancelMapper mapper = sqlSession.getMapper(PointAccumulateCancelMapper.class);
         return mapper.getPointAccumulateCancelReason(content_no);
+    }
+
+    public UserPointRejectReasonResponse getUserPointAccumulateCancelReason(int content_no) {
+        PointAccumulateCancelMapper mapper = sqlSession.getMapper(PointAccumulateCancelMapper.class);
+        return mapper.getUserPointAccumulateCancelReason(content_no);
     }
 
 

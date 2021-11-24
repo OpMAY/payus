@@ -9,11 +9,11 @@
                         WHERE vendor_no = #{vendor_no});
         select point_accumulate.accumulate_no,
                point_accumulate.user_no,
-               user.nickname as user_name,
+               user.nickname     as user_name,
                point_accumulate.point,
                status,
                point_accumulate.reg_date,
-               user_read_check
+               vendor_read_check as read_check
         from point_accumulate,
              user
         WHERE point_accumulate.store_no = @StoreNo
@@ -30,11 +30,11 @@
                         WHERE accumulate_no = #{last_index});
         select point_accumulate.accumulate_no,
                point_accumulate.user_no,
-               user.nickname as user_name,
+               user.nickname     as user_name,
                point_accumulate.point,
                status,
                point_accumulate.reg_date,
-               user_read_check
+               vendor_read_check as read_check
         from point_accumulate,
              user
         WHERE point_accumulate.store_no = @StoreNo
@@ -65,7 +65,7 @@
             </when>
         </choose>
     </update>
-    <insert id="requestPayback">
+    <insert id="requestPayback" useGeneratedKeys="true" keyProperty="accumulate_no">
         SET @StoreNo = (select store_no
                         from store
                         WHERE vendor_no = #{vendor_no});
@@ -75,7 +75,7 @@
     <select id="getUserPointAccumulateList" resultType="UserPointAccumulateListResponse">
         select accumulate_no,
                point_accumulate.store_no,
-               store.name,
+               store.name as store_name,
                point_accumulate.reg_date,
                point,
                status,
@@ -94,7 +94,7 @@
                         WHERE accumulate_no = #{last_index});
         select accumulate_no,
                point_accumulate.store_no,
-               store.name,
+               store.name as store_name,
                point_accumulate.reg_date,
                point,
                status,
@@ -128,6 +128,13 @@
         SET review_status = 2
         WHERE accumulate_no = @AccumulateNo
     </update>
+    <select id="getPreDataForReview" resultType="UserReviewPagePreDataResponse">
+        select point_accumulate.store_no, store.name as store_name
+        from point_accumulate,
+             store
+        WHERE accumulate_no = #{accumulate_no}
+          AND store.store_no = point_accumulate.store_no
+    </select>
     <select id="checkReviewWritten" resultType="_boolean">
         select IF(review_status != 0, true, false)
         from point_accumulate
@@ -157,5 +164,10 @@
         select store_no
         from point_accumulate
         WHERE accumulate_no = #{accumulate_no}
+    </select>
+    <select id="checkAccumulateCanceled" resultType="_boolean">
+        select IF(status = 4, TRUE, FALSE)
+        from point_accumulate
+        WHERE accumulate_no = #{content_no}
     </select>
 </mapper>
