@@ -4,4 +4,17 @@ import lombok.Data;
 
 @Data
 public class UserNotificationJson {
+    private int type;
+    private int content_type;
+    private int content_no;
+    private String content;
+
+    public UserNotificationJson(){}
+
+    public UserNotificationJson(int type, int content_type, int content_no, String content) {
+        this.type = type;
+        this.content_type = content_type;
+        this.content_no = content_no;
+        this.content = content;
+    }
 }

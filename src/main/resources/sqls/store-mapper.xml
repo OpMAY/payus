@@ -100,13 +100,13 @@
         <if test="class_second != 0">AND class_second = #{class_second}</if>
         <choose>
             <when test="order_type = 1">
-                ORDER BY store.star_rate DESC, store_no DESC, reg_date DESC
+                ORDER BY store.star_rate DESC, store_no DESC, store.reg_date DESC
             </when>
             <when test="order_type = 2">
-                ORDER BY payback_rate DESC, store_no DESC, reg_date DESC
+                ORDER BY payback_rate DESC, store_no DESC, store.reg_date DESC
             </when>
             <when test="order_type = 3">
-                ORDER BY store.review_num DESC, store_no DESC, reg_date DESC
+                ORDER BY store.review_num DESC, store_no DESC, store.reg_date DESC
             </when>
         </choose>
         LIMIT 10
@@ -132,13 +132,13 @@
         <if test="class_second != 0">AND class_second = #{class_second}</if>
         <choose>
             <when test="order_type = 1">
-                ORDER BY store.star_rate DESC, store_no DESC, reg_date DESC
+                ORDER BY store.star_rate DESC, store_no DESC, store.reg_date DESC
             </when>
             <when test="order_type = 2">
-                ORDER BY payback_rate DESC, store_no DESC, reg_date DESC
+                ORDER BY payback_rate DESC, store_no DESC, store.reg_date DESC
             </when>
             <when test="order_type = 3">
-                ORDER BY store.review_num DESC, store_no DESC, reg_date DESC
+                ORDER BY store.review_num DESC, store_no DESC, store.reg_date DESC
             </when>
         </choose>
         LIMIT 10

@@ -89,12 +89,12 @@
                                         <div class="form-group">
                                             <label for="vendor-register-store-bank-account">계좌</label>
                                             <input class="form-control" id="vendor-register-store-bank-account" oninput="this.value = this.value.replace(/[^0-9.-]/g, '').replace(/(\..*)\./g, '$1');"
-                                                   style="color: black;height: 70px" placeholder="계좌 번호를 입력하세요." />
+                                                   style="color: black;height: 70px" placeholder="계좌 번호를 입력하세요." autocomplete="off"/>
                                         </div>
                                         <div class="form-group">
                                             <label for="vendor-register-store-bank-owner">예금주</label>
                                             <input class="form-control" id="vendor-register-store-bank-owner"
-                                                   style="color: black;height: 70px" placeholder="예금주를 입력하세요."/>
+                                                   style="color: black;height: 70px" placeholder="예금주를 입력하세요." autocomplete="off"/>
                                         </div>
                                     </div>
                                     <div class="mt-3">

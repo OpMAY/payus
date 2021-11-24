@@ -42,4 +42,6 @@ public interface VendorMapper {
     boolean checkVendorCurrentPassword(VendorPasswordResetRequest request);
 
     void resetPassword(VendorPasswordResetRequest request);
+
+    boolean checkVendorExistsByEmail(String email);
 }

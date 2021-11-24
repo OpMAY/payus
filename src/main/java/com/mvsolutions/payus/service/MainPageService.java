@@ -195,18 +195,32 @@ public class MainPageService {
         // last_index 설정
         if (allStoreList.size() > 0)
             message.put("last_index0", allStoreList.get(allStoreList.size() - 1).getStore_no());
+        else
+            message.put("last_index0", 0);
         if (motelStoreList.size() > 0)
             message.put("last_index1", motelStoreList.get(motelStoreList.size() - 1).getStore_no());
+        else
+            message.put("last_index1", 0);
         if (hotelStoreList.size() > 0)
             message.put("last_index2", hotelStoreList.get(hotelStoreList.size() - 1).getStore_no());
+        else
+            message.put("last_index2", 0);
         if (pensionStoreList.size() > 0)
             message.put("last_index3", pensionStoreList.get(pensionStoreList.size() - 1).getStore_no());
+        else
+            message.put("last_index3", 0);
         if (guestHouseStoreList.size() > 0)
             message.put("last_index4", guestHouseStoreList.get(guestHouseStoreList.size() - 1).getStore_no());
+        else
+            message.put("last_index4", 0);
         if (glampingStoreList.size() > 0)
             message.put("last_index5", glampingStoreList.get(glampingStoreList.size() - 1).getStore_no());
+        else
+            message.put("last_index5", 0);
         if (etcStoreList.size() > 0)
             message.put("last_index6", etcStoreList.get(etcStoreList.size() - 1).getStore_no());
+        else
+            message.put("last_index6", 0);
 
 
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getSubMainPageStoreList()")), HttpStatus.OK);
@@ -233,6 +247,8 @@ public class MainPageService {
         message.put("store", storeList);
         if (storeList.size() > 0)
             message.put("last_index", storeList.get(storeList.size() - 1).getStore_no());
+        else
+            message.put("last_index", 0);
 
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getSubMainPageStoreListReload()")), HttpStatus.OK);
     }
@@ -242,7 +258,7 @@ public class MainPageService {
         Message message = new Message();
         storeDao.setSqlSession(sqlSession);
 
-        if(last_index != 0 && !storeDao.checkStoreExists(last_index)) {
+        if (last_index != 0 && !storeDao.checkStoreExists(last_index)) {
             // 리로딩 문제 : last_index에 해당하는 데이터 없음
             return new ResponseEntity(StringRes.res(StatusCode.RELOAD_FAILED), HttpStatus.OK);
         }
