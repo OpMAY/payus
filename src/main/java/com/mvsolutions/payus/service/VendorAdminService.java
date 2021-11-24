@@ -6,9 +6,11 @@ import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginRes
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindIdRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindPasswordRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorPasswordResetRequest;
+import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterEmailRequest;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
+import com.mvsolutions.payus.model.web.vendor.response.auth.VendorRegisterEmailResponse;
 import com.mvsolutions.payus.util.EmailSendService;
 import lombok.extern.log4j.Log4j;
 import org.apache.ibatis.session.SqlSession;
@@ -82,5 +84,10 @@ public class VendorAdminService {
         }
         vendorDao.resetPassword(request);
         return 0;
+    }
+
+    public VendorRegisterEmailResponse validateEmail(VendorRegisterEmailRequest request) {
+        String validationCode = emailSendService.sendEmailForValidation(request.getEmail());
+        return new VendorRegisterEmailResponse(validationCode);
     }
 }

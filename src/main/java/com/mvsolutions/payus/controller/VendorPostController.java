@@ -3,12 +3,10 @@ package com.mvsolutions.payus.controller;
 import com.google.gson.Gson;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
-import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindIdRequest;
-import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindPasswordRequest;
-import com.mvsolutions.payus.model.web.vendor.request.auth.VendorPasswordResetRequest;
-import com.mvsolutions.payus.model.web.vendor.request.auth.VendorValidationCodeRequest;
+import com.mvsolutions.payus.model.web.vendor.request.auth.*;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
+import com.mvsolutions.payus.model.web.vendor.response.auth.VendorRegisterEmailResponse;
 import com.mvsolutions.payus.service.VendorAdminService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +44,7 @@ public class VendorPostController {
         return vendorAdminService.findPassword(servletResponse, request);
     }
 
-    @RequestMapping("/find/password/validate/cookie")
+    @RequestMapping("/validate/cookie")
     public int ValidateCodeFromCookie(HttpServletRequest servletRequest, @RequestBody String body) {
         VendorValidationCodeRequest request = new Gson().fromJson(body, VendorValidationCodeRequest.class);
         for(Cookie cookie : servletRequest.getCookies()) {
@@ -65,5 +63,11 @@ public class VendorPostController {
     public int VendorResetPassword(@RequestBody String body) {
         VendorPasswordResetRequest request = new Gson().fromJson(body, VendorPasswordResetRequest.class);
         return vendorAdminService.resetPassword(request);
+    }
+
+    @RequestMapping("/register/email/validate")
+    public VendorRegisterEmailResponse VendorValidateEmail(@RequestBody String body) {
+        VendorRegisterEmailRequest request = new Gson().fromJson(body, VendorRegisterEmailRequest.class);
+        return vendorAdminService.validateEmail(request);
     }
 }

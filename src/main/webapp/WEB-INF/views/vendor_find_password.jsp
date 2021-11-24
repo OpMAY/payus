@@ -175,7 +175,7 @@
         let data = {"validation_code": validationCode};
         $.ajax({
             type: 'POST',
-            url: '/vendor/find/password/validate/cookie',
+            url: '/vendor/validate/cookie',
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)

@@ -128,6 +128,13 @@
         SET review_status = 2
         WHERE accumulate_no = @AccumulateNo
     </update>
+    <select id="getPreDataForReview" resultType="UserReviewPagePreDataResponse">
+        select point_accumulate.store_no, store.name as store_name
+        from point_accumulate,
+             store
+        WHERE accumulate_no = #{accumulate_no}
+          AND store.store_no = point_accumulate.store_no
+    </select>
     <select id="checkReviewWritten" resultType="_boolean">
         select IF(review_status != 0, true, false)
         from point_accumulate

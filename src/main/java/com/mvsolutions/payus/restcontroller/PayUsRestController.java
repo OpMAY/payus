@@ -374,7 +374,7 @@ public class PayUsRestController {
             String key = keys.next();
             if (key.contains("image")) {
                 String path = fileUploadUtility.uploadFile("api/images/review/" + time + "/", fileMap.get(key).getOriginalFilename(), fileMap.get(key).getBytes(), Constant.AWS_SAVE);
-                imageList.add(path);
+                imageList.add("api/images/review/" + time + "/" + path);
             }
         }
         reviewUploadRequest.setImage_list(new Gson().toJson(imageList));
