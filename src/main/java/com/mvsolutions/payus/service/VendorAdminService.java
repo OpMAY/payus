@@ -87,7 +87,12 @@ public class VendorAdminService {
     }
 
     public VendorRegisterEmailResponse validateEmail(VendorRegisterEmailRequest request) {
-        String validationCode = emailSendService.sendEmailForValidation(request.getEmail());
-        return new VendorRegisterEmailResponse(validationCode);
+        vendorDao.setSqlSession(sqlSession);
+//        if(vendorDao.checkVendorExistsByEmail(request.getEmail())) {
+//            return new VendorRegisterEmailResponse("");
+//        } else {
+            String validationCode = emailSendService.sendEmailForValidation(request.getEmail());
+            return new VendorRegisterEmailResponse(validationCode);
+//        }
     }
 }

@@ -98,5 +98,10 @@ public class VendorDao {
         mapper.resetPassword(request);
     }
 
+    public boolean checkVendorExistsByEmail(String email) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.checkVendorExistsByEmail(email);
+    }
+
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
 }

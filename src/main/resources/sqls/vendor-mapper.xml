@@ -82,4 +82,7 @@
         SET password = #{password}
         WHERE vendor_no = #{vendor_no}
     </update>
+    <select id="checkVendorExistsByEmail" resultType="_boolean">
+        select EXISTS(select * from vendor WHERE id = #{email})
+    </select>
 </mapper>

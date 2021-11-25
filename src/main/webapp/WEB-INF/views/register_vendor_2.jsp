@@ -55,7 +55,7 @@
                                         <div class="form-group">
                                             <label for="vendor-register-store-bank-name">은행</label>
                                             <select class="form-control" id="vendor-register-store-bank-name"
-                                                   style="color: black;height: 70px">
+                                                    style="color: black;height: 70px">
                                                 <option disabled selected style="display: none">선택</option>
                                                 <option>한국은행</option>
                                                 <option>한국수출입은행</option>
@@ -88,19 +88,22 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="vendor-register-store-bank-account">계좌</label>
-                                            <input class="form-control" id="vendor-register-store-bank-account" oninput="this.value = this.value.replace(/[^0-9.-]/g, '').replace(/(\..*)\./g, '$1');"
-                                                   style="color: black;height: 70px" placeholder="계좌 번호를 입력하세요." />
+                                            <input class="form-control" id="vendor-register-store-bank-account"
+                                                   oninput="this.value = this.value.replace(/[^0-9.-]/g, '').replace(/(\..*)\./g, '$1');"
+                                                   style="color: black;height: 70px" placeholder="계좌 번호를 입력하세요."
+                                                   autocomplete="off"/>
                                         </div>
                                         <div class="form-group">
                                             <label for="vendor-register-store-bank-owner">예금주</label>
                                             <input class="form-control" id="vendor-register-store-bank-owner"
-                                                   style="color: black;height: 70px" placeholder="예금주를 입력하세요."/>
+                                                   style="color: black;height: 70px" placeholder="예금주를 입력하세요."
+                                                   autocomplete="off"/>
                                         </div>
                                     </div>
                                     <div class="mt-3">
                                         <div class="col-12">
                                             <button type="button" class="btn btn-auth-sign-in d-block"
-                                                    onclick="window.location.href = '/vendor/register/business.do'">
+                                                    onclick="submit()">
                                                 다음
                                             </button>
                                         </div>
@@ -121,6 +124,35 @@
             if (e.keyCode === 32)
                 e.preventDefault();
     });
+
+    function getCookie(name) {
+        let nameOfCookie = name + "=";
+        let x = 0;
+        while (x <= document.cookie.length) {
+            let y = (x + nameOfCookie.length);
+            if (document.cookie.substring(x, y) === nameOfCookie) {
+                if ((endOfCookie = document.cookie.indexOf(";", y)) === -1)
+                    endOfCookie = document.cookie.length;
+                return unescape(document.cookie.substring(y, endOfCookie));
+            }
+            x = document.cookie.indexOf(" ", x) + 1;
+            if (x === 0)
+                break;
+        }
+        return "";
+    }
+
+    function submit() {
+        let cookie = getCookie('first_step');
+        if (cookie === "") {
+            alert("잘못된 접근입니다.");
+            return false;
+        }
+        console.log(cookie);
+        let bankSelect = $("#vendor-register-store-bank-name option:selected").val();
+        console.log(bankSelect);
+
+    }
 
     function checkValueEmpty(element) {
         if (element !== undefined) {

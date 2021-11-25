@@ -71,7 +71,7 @@
                                             <label for="vendor-register-email-validation-code">인증코드</label>
                                             <input class="form-control" id="vendor-register-email-validation-code"
                                                    placeholder="인증 코드"
-                                                   style="height: 60px">
+                                                   style="height: 60px" autocomplete="off">
                                             <button type="button" class="btn btn-email-validation-resend"
                                                     style="word-break: keep-all"
                                                     id="email-verification-resend" onclick="validationResend()">
@@ -118,7 +118,7 @@
                                                    onkeyup="checkNameValue(false)"
                                                    onfocus="checkNameValue(false)"
                                                    placeholder="이름을 입력해주세요."
-                                                   style="height: 8%">
+                                                   style="height: 8%" autocomplete="off">
                                             <span class="vendor-input-warning" id="warning-name"
                                                   style="margin-top: 10px">
                                                 이름은 2자 이상 30자 이하로
@@ -134,7 +134,7 @@
                                                            onkeyup="checkPhoneValue(false)"
                                                            onfocus="checkPhoneValue(false)"
                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-                                                           style="height: 150%">
+                                                           style="height: 150%" autocomplete="off">
                                                     <h3 style="color: black; position: absolute; top: 0; left: 100%; transform: translate(-45%, 35%)">
                                                         -</h3>
                                                 </div>
@@ -143,7 +143,7 @@
                                                            onkeyup="checkPhoneValue(false)"
                                                            onfocus="checkPhoneValue(false)"
                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-                                                           style="height: 150%">
+                                                           style="height: 150%" autocomplete="off">
                                                     <h3 style="color: black; position: absolute; top: 0; left: 100%; transform: translate(-45%, 35%)">
                                                         -</h3>
                                                 </div>
@@ -152,7 +152,7 @@
                                                            onkeyup="checkPhoneValue(false)"
                                                            onfocus="checkPhoneValue(false)"
                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
-                                                           style="height: 150%">
+                                                           style="height: 150%" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
@@ -161,12 +161,12 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="container" style="margin-bottom: 15px">
-                                                <a onclick="alert('A 태그')" class="noto-font payus-atag"><u>서비스 이용약관</u></a>
+                                                <a onclick="alert('A 태그')" class="noto-font payus-atag"><u>[필수] 서비스 이용약관</u></a>
                                                 <input type="checkbox" id="service-agree"/>
                                                 <span class="checkmark"></span>
                                             </label>
                                             <label class="container">
-                                                <a onclick="alert('A 태그')" class="noto-font payus-atag"><u>개인정보 처리
+                                                <a onclick="alert('A 태그')" class="noto-font payus-atag"><u>[필수] 개인정보 처리
                                                     방침</u></a>
                                                 <input type="checkbox" id="personal-agree"/>
                                                 <span class="checkmark"></span>
@@ -176,8 +176,7 @@
                                     <div class="mt-3">
                                         <div class="col-12">
                                             <button type="button" class="btn btn-auth-sign-in d-block"
-                                            <%--                                                    onclick="submitRegister()">--%>
-                                                    onclick="window.location.href = '/vendor/register/bank.do'">
+                                                    onclick="submitRegister()">
                                                 다음
                                             </button>
                                             <button type="button" class="btn btn-back d-block"
@@ -196,10 +195,13 @@
         </div>
     </div>
 </div>
+<script src="/js/common.js"></script>
 <script>
     let validated = false;
     let setTime = 299;
     let timeInstance;
+
+
 
     function timer() {
         let minute = Math.floor(setTime / 60);
@@ -221,8 +223,7 @@
     function validationResend() {
         setTime = 300;
         clearInterval(timerInstance);
-        timerInstance = setInterval(timer, 1000);
-        alert('인증코드가 재전송되었습니다.');
+        validationEmail();
     }
 
     function validationCode() {
@@ -247,17 +248,30 @@
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(data)
             }).done(function (result) {
-                alert("인증 메일이 발송되었습니다.");
-                setCookie("validation_code", result.validation_code, 310);
-                email.disabled = true;
-                document.getElementById("email-validation-div").setAttribute("style", "display : block; position : relative");
-                document.getElementById("email-verification-button").setAttribute("style", "display :block");
-                document.getElementById("password-verification-button").setAttribute("disabled", "disabled");
-                timerInstance = setInterval(timer, 1000);
+                // if(result.validation_code !== ""){
+                    alert("인증 메일이 발송되었습니다.");
+                    setCookie("validation_code", result.validation_code, 310);
+                    email.disabled = true;
+                    document.getElementById("email-validation-div").setAttribute("style", "display : block; position : relative");
+                    document.getElementById("email-verification-button").setAttribute("style", "display :block");
+                    document.getElementById("password-verification-button").setAttribute("disabled", "disabled");
+                    timerInstance = setInterval(timer, 1000);
+                // } else {
+                //     alert("이미 등록된 이메일입니다.");
+                //     return false;
+                // }
             }).fail(function (error) {
                 console.log(error);
             });
         }
+    }
+
+    function setCookie(cookie_name, value, seconds) {
+        let exdate = new Date();
+        exdate.setDate(exdate.getSeconds() + seconds);
+
+        let cookie_value = escape(value) + ((seconds == null) ? '' : '; expires=' + exdate.toUTCString());
+        document.cookie = cookie_name + '=' + cookie_value;
     }
 
     function checkValidationCode(validationCode) {
@@ -272,6 +286,8 @@
             if (result === 0) {
                 alert("인증이 완료되었습니다.");
                 validated = true;
+                document.getElementById("email-validation-div").setAttribute("style", "display : none");
+                document.getElementById("email-verification-button").setAttribute("style", "display :none");
             } else if (result === 1) {
                 alert("인증 번호가 일치하지 않습니다.");
             } else {
@@ -297,23 +313,20 @@
     //     return 0;
     // };
 
-    $(":input").keypress(function (e) {
-        if (this.value === '')
-            if (e.keyCode === 32)
-                e.preventDefault();
-    }).on('paste', function (e) {
-        e.preventDefault();
-    });
 
     function submitRegister() {
-        if (!checkNameValue(true)) {
-            alert("이름을 확인해주세요.");
+        console.log($("#personal-agree").is(":checked"));
+        if (!checkEmailValue(true)) {
+            alert("이메일을 인증을 먼저 해주세요.");
+            return false;
+        } else if (!validated) {
+            alert("이메일 인증을 먼저 해주세요.");
             return false;
         } else if (!checkPhoneValue(true)) {
             alert("연락처를 확인해주세요.");
             return false;
-        } else if (!checkEmailValue(true)) {
-            alert("이메일을 확인해주세요.");
+        } else if (!checkNameValue(true)) {
+            alert("이름을 확인해주세요.");
             return false;
         } else if (!checkPasswordValue(true)) {
             alert("비밀번호를 확인해주세요.");
@@ -321,8 +334,20 @@
         } else if (!checkPasswordMatches(true)) {
             alert("비밀번호을 확인해주세요.");
             return false;
+        } else if (!$("#service-agree").is(":checked")) {
+            alert("서비스 이용약관에 동의해주세요.");
+            return false;
+        } else if (!$("#personal-agree").is(":checked")) {
+            alert("개인정보 처리 방침에 동의해주세요.");
+            return false;
         }
-        window.location.href = "/vendor/register/business.do";
+        let email = $("#vendor-register-email").val();
+        let password = $("#vendor-register-password").val();
+        let name = $("#vendor-register-name").val();
+        let phone = $("#vendor-register-phone-1").val() + $("#vendor-register-phone-2").val() + $("#vendor-register-phone-3").val();
+        let data = {"email": email, "password": password, "name": name, "phone": phone};
+        setCookie("first_step", JSON.stringify(data), 1000);
+        window.location.href = "/vendor/register/bank.do";
     }
 
     function checkNameValue(send) {
