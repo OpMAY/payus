@@ -41,7 +41,7 @@
     </update>
     <select id="getReviewContentFromPointList" resultType="UserMyReviewResponse" resultMap="UserMyReviewResponse">
         select review_no,
-               store.name,
+               store.name as store_name,
                review.reg_date,
                review.content,
                rate,
@@ -75,7 +75,7 @@
     </insert>
     <select id="getUserMyReviewList" resultType="UserMyReviewResponse" resultMap="UserMyReviewResponse">
         select review_no,
-        store.name,
+        store.name as store_name,
         review.reg_date,
         review.content,
         rate,
@@ -101,7 +101,7 @@
     <select id="getUserMyReviewListReload" resultType="UserMyReviewResponse" resultMap="UserMyReviewResponse">
         SET @RegDate = (select reg_date from review WHERE review_no = #{last_index});
         select review_no,
-        store.name,
+        store.name as store_name,
         review.reg_date,
         review.content,
         rate,
@@ -136,7 +136,7 @@
             SET @RegDate = (select reg_date from review WHERE review_no = #{last_index});
         </if>
         select review_no,
-        store.name,
+        store.name as store_name,
         user.nickname,
         review.reg_date,
         review.content,

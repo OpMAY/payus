@@ -3,6 +3,7 @@ package com.mvsolutions.payus.handler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.mvsolutions.payus.model.rest.basic.UserNotificationJson;
 import lombok.extern.log4j.Log4j;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
@@ -38,8 +39,7 @@ public class JsonObjectTypeHandler<T> extends BaseTypeHandler<T> {
 
     private T convertToObject(String jsonString) {
         try {
-            return new ObjectMapper().readValue(jsonString, new TypeReference<T>() {
-            });
+            return (T) new ObjectMapper().readValue(jsonString, UserNotificationJson.class);
         } catch (IOException e) {
             log.error("JSONTypeHandler failed to convert jsonString to list, JSON String : " + jsonString, e);
         }
