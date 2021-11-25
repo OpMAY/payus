@@ -5,7 +5,7 @@
 <mapper namespace="com.mvsolutions.payus.mapper.NotificationUserMapper">
     <resultMap id="UserNotificationResponse"
                type="com.mvsolutions.payus.model.rest.response.mainpage.UserNotificationResponse">
-        <result property="notification_json" column="notification_json"
+        <result property="notification_json" column="notification_json" javaType="com.mvsolutions.payus.model.rest.basic.UserNotificationJson"
                 typeHandler="com.mvsolutions.payus.handler.JsonObjectTypeHandler"/>
     </resultMap>
     <select id="checkUserNotificationUnread" resultType="_boolean">
