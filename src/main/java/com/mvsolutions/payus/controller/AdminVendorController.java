@@ -46,6 +46,12 @@ public class AdminVendorController {
         return VIEW;
     }
 
+    @RequestMapping("/register/store.do")
+    public ModelAndView VendorStorePage(){
+        VIEW = new ModelAndView("register_vendor_4");
+        return VIEW;
+    }
+
     @RequestMapping("/find/identification.do")
     public ModelAndView VendorFindIdPage() {
         VIEW = new ModelAndView("vendor_find_id");

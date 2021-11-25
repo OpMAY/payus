@@ -11,4 +11,6 @@ public class PayusHomeEventResponse {
     private int review_num;
     private int payback_rate;
     private String thumbnail;
+    private String start_date;
+    private String end_date;
 }
