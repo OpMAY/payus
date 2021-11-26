@@ -52,30 +52,8 @@
                                 <form class="forms-sample noto-font">
                                     <div class="col-12">
                                         <div class="row row-cols-3" id="image-container">
-                                            <div class="col image-div">
-                                                <div class="img-container">
-                                                    <img src="/images/sample_hotel_img_1.jpg" alt width="100%"
-                                                         height="100%">
-                                                </div>
-                                            </div>
-                                            <%--                                            <div class="col image-div">--%>
-                                            <%--                                                <div class="img-container">--%>
-                                            <%--                                                    <img src="/images/sample_hotel_img_1.jpg" alt width="100%"--%>
-                                            <%--                                                         height="100%">--%>
-                                            <%--                                                </div>--%>
-                                            <%--                                            </div>--%>
-                                            <%--                                            <div class="col image-div">--%>
-                                            <%--                                                <div class="img-container">--%>
-                                            <%--                                                    <img src="/images/sample_hotel_img_1.jpg" alt width="100%"--%>
-                                            <%--                                                         height="100%">--%>
-                                            <%--                                                </div>--%>
-                                            <%--                                            </div>--%>
-                                            <%--                                            <div class="col image-div">--%>
-                                            <%--                                                <div class="img-container">--%>
-                                            <%--                                                    <img src="/images/sample_hotel_img_1.jpg" alt width="100%"--%>
-                                            <%--                                                         height="100%">--%>
-                                            <%--                                                </div>--%>
-                                            <%--                                            </div>--%>
+                                            <input type="file" id="image-add-input-1" name="img" accept="image/*"
+                                                   hidden>
                                             <div class="col image-div" id="img-add-div">
                                                 <div class="img-add" id="img-add-btn">
                                                     <img src="/images/plus-btn.svg" alt width="100%" height="100%"
@@ -167,11 +145,11 @@
                                     <div class="mt-3">
                                         <div class="col-12">
                                             <button type="button" class="btn btn-grey d-block"
-                                                    onclick="addressButton()">
+                                                    onclick="alert('다음에 하기')">
                                                 다음에 하기
                                             </button>
                                             <button type="button" class="btn btn-auth-sign-in d-block"
-                                                    onclick="addressButton()">
+                                                    onclick="alert('회원가입 요청')">
                                                 회원가입 요청
                                             </button>
                                         </div>
@@ -190,6 +168,7 @@
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b4cf906c03295c29420721a730a4ef0b&libraries=services"></script>
 <script>
+    let imageIndex = 1;
     let mapContainer = document.getElementById("map"),
         mapOption = {
             center: new daum.maps.LatLng(37.537187, 127.005476),
@@ -350,13 +329,57 @@
         }).open();
     }
 
+    function submitRegister() {
+        console.log("이미지 index : " + imageIndex);
+    }
+
+    function checkIt()
+    {
+        if($("#image-add-input-" + imageIndex).val().length)
+            alert('Files Loaded');
+        else
+            alert('Cancel clicked');
+        document.body.onfocus = null;
+        console.log('checked');
+    }
+
+
+
     $("#img-add-btn").on("click", function () {
-        $('<div class="col image-div">\n' +
-            '                                                <div class="img-container">\n' +
-            '                                                    <img src="/images/sample_hotel_img_1.jpg" alt width="100%" height="100%">\n' +
-            '                                                </div>\n' +
-            '                                            </div>').insertBefore("#img-add-div");
+        console.log(imageIndex);
+
+        $("#image-add-input-" + imageIndex).click();
+
+        $("#image-add-input-" + imageIndex).on("input", function () {
+            if (this.files && this.files[0]) {
+                console.log("ImageIndex before Upload : " + imageIndex);
+                let reader = new FileReader();
+                reader.onload = function (data) {
+                    console.log(data);
+                    $('<div class="col image-div">\n' +
+                        '<div class="img-container">\n' +
+                        '<img src="' + data.target.result + '" alt style="width: 100%;height:150px;object-fit: contain">\n' +
+                        '</div>\n' +
+                        '</div>').insertBefore("#img-add-div");
+                    $('<input type="file" id="image-add-input-' + imageIndex + '" name="img" accept="image/*" hidden>').insertBefore("#img-add-div");
+                };
+                reader.readAsDataURL(this.files[0]);
+                imageIndex++;
+                console.log("ImageIndex After Upload : " + imageIndex);
+            }
+        });
+
+        // // $("#image-add-input-" + imageIndex).on("click", function () {
+        // //
+        // // });
+        //
+        //
+        //
+        // document.body.onfocus = checkIt;
     });
+
+
+
 
     function checkValueEmpty(element) {
         if (element !== undefined) {
