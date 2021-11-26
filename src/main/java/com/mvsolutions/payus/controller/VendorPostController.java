@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Log4j
 @RestController
@@ -69,5 +70,11 @@ public class VendorPostController {
     public VendorRegisterEmailResponse VendorValidateEmail(@RequestBody String body) {
         VendorRegisterEmailRequest request = new Gson().fromJson(body, VendorRegisterEmailRequest.class);
         return vendorAdminService.validateEmail(request);
+    }
+
+    @RequestMapping("/register/business/validate")
+    public int VendorValidateBusinessNumber(@RequestBody String body) throws IOException {
+        VendorBusinessValidateRequest request = new Gson().fromJson(body, VendorBusinessValidateRequest.class);
+        return vendorAdminService.validateBusinessNumber(request);
     }
 }
