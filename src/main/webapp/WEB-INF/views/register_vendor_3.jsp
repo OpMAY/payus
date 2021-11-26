@@ -53,7 +53,7 @@
                                 </div>
                                 <form class="forms-sample noto-font">
                                     <div class="col-12">
-                                        <div class="form-group">
+                                        <div class="form-group" style="position: relative">
                                             <label for="vendor-register-business-number">사업자 등록 번호</label>
                                             <input class="form-control" id="vendor-register-business-number"
                                                    placeholder="사업자 등록 번호를 입력해주세요."
@@ -62,36 +62,16 @@
                                                    onfocus="checkCorporateRegiNumber(this.value)"
                                                    style="height: 70px">
                                             <button type="button" class="btn btn-business-verify-text"
-                                                    id="password-verification-button" onclick="validationEmail()"
+                                                    id="business-verification-button"
+                                                    onclick="checkBusinessNumberValidate()"
                                                     style="word-break: keep-all">
                                                 인증
                                             </button>
-                                            <h6 class="vendor-input-warning" id="warning-business-text"
-                                                style="margin-top: 10px">
-                                                올바른 사업자 등록 번호를 입력해주세요.</h6>
                                         </div>
+                                        <span class="vendor-input-warning" id="warning-business-text">
+                                                올바른 사업자 등록 번호를 입력해주세요.</span>
                                     </div>
-                                    <div class="col-12" style="display: flex;">
-                                        <div class="form-group" style="width: 45%; margin-right: 10%">
-                                            <label for="vendor-register-store-category-1">업종 상위 카테고리</label>
-                                            <select class="form-control" id="vendor-register-store-category-1"
-                                                    style="color: black; height: 60px" onchange="checkSelectedValue()">
-                                                <option selected disabled style="display: none">선택</option>
-                                                <option id="category-lodgement">숙박</option>
-                                                <option disabled id="category-restaurant">식당</option>
-                                                <option disabled id="category-hospital">병원</option>
-                                                <option disabled id="category-shopping">쇼핑</option>
-                                                <option disabled id="category-grocery">식료품</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group" style="width: 45%">
-                                            <label for="vendor-register-store-category-2">업종 하위 카테고리</label>
-                                            <select class="form-control" id="vendor-register-store-category-2"
-                                                    style="color: black; height: 60px" disabled>
-                                                <option selected disabled>상위 카테고리 선택 필요</option>
-                                            </select>
-                                        </div>
-                                    </div>
+
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label for="vendor-register-store-name">상호 명</label>
@@ -103,13 +83,14 @@
                                         <div class="form-group">
                                             <label for="vendor-register-store-owner">대표자 명</label>
                                             <input class="form-control" id="vendor-register-store-owner"
-                                                   style="color: black;height: 70px" placeholder="대표자 명을 입력해주세요."/>
+                                                   style="color: black;height: 70px" placeholder="대표자 명을 입력해주세요."
+                                                   readonly/>
                                         </div>
                                     </div>
                                     <div class="mt-3">
                                         <div class="col-12">
                                             <button type="button" class="btn btn-auth-sign-in d-block"
-                                                    onclick="addressButton()">
+                                                    onclick="submitBusiness()">
                                                 다음
                                             </button>
                                         </div>
@@ -131,88 +112,58 @@
                 e.preventDefault();
     });
 
-
-    function checkSelectedValue() {
-        let category1 = document.getElementById("vendor-register-store-category-1");
-        let category2 = $("#vendor-register-store-category-2");
-        let indx = category1.selectedIndex;
-        let value = $("#vendor-register-store-category-1 option:selected").val();
-        let cate2option = $("#vendor-register-store-category-2 option");
-        console.log(value);
-        switch (indx) {
-            case 1:
-                category2.attr("disabled", false);
-                cate2option.remove();
-                category2.append("<option selected>모텔</option>");
-                category2.append("<option>호텔</option>");
-                category2.append("<option>펜션</option>");
-                category2.append("<option>게스트하우스</option>");
-                category2.append("<option>글램핑</option>");
-                break;
-            case 2:
-                category2.attr("disabled", false);
-                cate2option.remove();
-                category2.append("<option selected>한식</option>");
-                category2.append("<option>고기류</option>");
-                category2.append("<option>찜/탕</option>");
-                category2.append("<option>중식</option>");
-                category2.append("<option>일식</option>");
-                category2.append("<option>양식</option>");
-                category2.append("<option>분식</option>");
-                category2.append("<option>카페</option>");
-                break;
-            case 3:
-                category2.attr("disabled", false);
-                cate2option.remove();
-                category2.append("<option selected>내과</option>");
-                category2.append("<option>피부과</option>");
-                category2.append("<option>산부인과</option>");
-                category2.append("<option>가정의학과</option>");
-                category2.append("<option>이비인후과</option>");
-                category2.append("<option>비뇨의학과</option>");
-                category2.append("<option>소아청소년과</option>");
-                category2.append("<option>신경과</option>");
-                category2.append("<option>정형외과</option>");
-                category2.append("<option>치과</option>");
-                category2.append("<option>성형외과</option>");
-                category2.append("<option>응급의학과</option>");
-                category2.append("<option>한방의학과</option>");
-                break;
-            case 4:
-                category2.attr("disabled", false);
-                cate2option.remove();
-                category2.append("<option>출산유아동</option>");
-                category2.append("<option>의류</option>");
-                category2.append("<option>스포츠</option>");
-                category2.append("<option>뷰티</option>");
-                category2.append("<option>식품</option>");
-                category2.append("<option>생활/주방</option>");
-                category2.append("<option>DIY</option>");
-                category2.append("<option>도서/문구</option>");
-                category2.append("<option>가전/디지털</option>");
-                break;
-            case 5:
-                category2.attr("disabled", false);
-                cate2option.remove();
-                category2.append("<option>과일</option>");
-                category2.append("<option>채소</option>");
-                category2.append("<option>쌀/잡곡/견과</option>");
-                category2.append("<option>정육&계란</option>");
-                category2.append("<option>수산물</option>");
-                category2.append("<option>밀키트</option>");
-                category2.append("<option>베이커리</option>");
-                category2.append("<option>기타</option>");
-                break;
-            default:
-                alert("잘못된 접근입니다.");
+    function getCookie(name) {
+        let nameOfCookie = name + "=";
+        let x = 0;
+        while (x <= document.cookie.length) {
+            let y = (x + nameOfCookie.length);
+            if (document.cookie.substring(x, y) === nameOfCookie) {
+                if ((endOfCookie = document.cookie.indexOf(";", y)) === -1)
+                    endOfCookie = document.cookie.length;
+                return unescape(document.cookie.substring(y, endOfCookie));
+            }
+            x = document.cookie.indexOf(" ", x) + 1;
+            if (x === 0)
                 break;
         }
+        return "";
     }
 
+    function setCookie(cookie_name, value, seconds) {
+        let exdate = new Date();
+        exdate.setDate(exdate.getSeconds() + seconds);
+
+        let cookie_value = escape(value) + ((seconds == null) ? '' : '; expires=' + exdate.toUTCString());
+        document.cookie = cookie_name + '=' + cookie_value;
+    }
+
+    function submitBusiness() {
+        let businessNum = $("#vendor-register-business-number").val();
+        // let categoryFirst = $("#vendor-register-store-category-1 option:selected");
+        // let categorySecond = $("#vendor-register-store-category-2 option:selected");
+        let storeName = $("#vendor-register-store-name").val();
+        console.log(businessNum);
+        // console.log("first : " + categoryFirst.val() + " text : " + categoryFirst.text());
+        // console.log("second : " + categorySecond.val() + " text : " + categorySecond.text());
+        console.log(storeName);
+        let data = {"business_number" : businessNum, "store_name" : storeName};
+        setCookie("third_step", JSON.stringify(data), 9999);
+        window.location.href = "/vendor/register/store.do";
+    }
+
+    $(document).ready(function () {
+        let firstCookie = getCookie("first_step");
+        if (firstCookie === "") {
+            alert("올바르지 않은 접근입니다.");
+        }
+        let obj = JSON.parse(firstCookie);
+        console.log(obj.name);
+        $("#vendor-register-store-owner").val(obj.name);
+    });
 
     function checkBusinessNumberValidate() {
-        let number = document.getElementById("vendor-register-business-number");
-        let numberMap = number.value.replace(/-/gi, '').split('').map(function (d) {
+        let business_number = $("#vendor-register-business-number");
+        let numberMap = business_number.val().replace(/-/gi, '').split('').map(function (d) {
             return parseInt(d, 10);
         });
 
@@ -227,10 +178,31 @@
             chk += parseInt((keyArr[8] * numberMap[8]) / 10, 10);
 
             if (Math.floor(numberMap[9]) === ((10 - (chk % 10)) % 10)) {
-                alert("인증이 완료되었습니다.");
-                number.setAttribute("disabled", true);
-                document.getElementById("business-text-button").setAttribute("disabled", true);
-                business_number_validation = true;
+                let data = {"business_number": business_number.val()};
+                $.ajax({
+                    type: 'POST',
+                    url: '/vendor/register/business/validate',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(data)
+                }).done(function (result) {
+                    if (result === 1) {
+                        alert("인증이 완료되었습니다.");
+                        business_number.attr("readonly", true);
+                        $("#business-verification-button").css("display", "none");
+                        business_number_validation = true;
+                    } else if (result === 2) {
+                        alert("휴업 상태의 상점은 등록할 수 없습니다.\n사업자 등록번호를 확인해주세요.");
+                    } else if (result === 3) {
+                        alert("폐업 상태의 상점은 등록할 수 없습니다.\n사업자 등록번호를 확인해주세요.");
+                    } else if (result === 4) {
+                        alert("국세청에 등록되지 않은 사업자등록번호입니다.\n사업자 등록번호를 확인해주세요.");
+                    } else {
+                        alert("사업자 등록번호 확인 API 에러입니다.\n잠시 후 다시 시도해주세요.");
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                });
             } else {
                 alert("올바른 사업자 등록번호가 아닙니다.\n사업자 등록번호를 확인해주세요.");
             }
@@ -291,9 +263,6 @@
         }
     }
 
-    function registerDone() {
-        let b_number = document.getElementById("vendor-register-business-number");
-    }
 
     function checkValueEmpty(element) {
         if (element !== undefined) {

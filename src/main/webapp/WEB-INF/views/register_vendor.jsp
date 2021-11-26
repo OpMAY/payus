@@ -346,7 +346,7 @@
         let name = $("#vendor-register-name").val();
         let phone = $("#vendor-register-phone-1").val() + $("#vendor-register-phone-2").val() + $("#vendor-register-phone-3").val();
         let data = {"email": email, "password": password, "name": name, "phone": phone};
-        setCookie("first_step", JSON.stringify(data), 1000);
+        setCookie("first_step", JSON.stringify(data), 9999);
         window.location.href = "/vendor/register/bank.do";
     }
 

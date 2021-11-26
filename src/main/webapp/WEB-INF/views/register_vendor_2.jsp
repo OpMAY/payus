@@ -103,7 +103,7 @@
                                     <div class="mt-3">
                                         <div class="col-12">
                                             <button type="button" class="btn btn-auth-sign-in d-block"
-                                                    onclick="submit()">
+                                                    onclick="bankCheck()">
                                                 다음
                                             </button>
                                         </div>
@@ -142,16 +142,33 @@
         return "";
     }
 
-    function submit() {
-        let cookie = getCookie('first_step');
-        if (cookie === "") {
+    function bankCheck() {
+        let first_cookie = getCookie('first_step');
+        if (first_cookie === "") {
             alert("잘못된 접근입니다.");
             return false;
         }
-        console.log(cookie);
+        console.log(first_cookie);
         let bankSelect = $("#vendor-register-store-bank-name option:selected").val();
-        console.log(bankSelect);
+        let bankAccount = $("#vendor-register-store-bank-account").val();
+        let bankOwner = $("#vendor-register-store-bank-owner").val();
+        let data = {"bank_name": bankSelect, "bank_account": bankAccount, "bank_owner": bankOwner};
+        setCookie("second_step", JSON.stringify(data), 99999);
+        let second_cookie = getCookie("second_step");
+        if(second_cookie === ""){
+            alert("오류가 발생했습니다.");
+            return false;
+        }
+        console.log(second_cookie);
+        window.location.href = "/vendor/register/business.do";
+    }
 
+    function setCookie(cookie_name, value, seconds) {
+        let exdate = new Date();
+        exdate.setDate(exdate.getSeconds() + seconds);
+
+        let cookie_value = escape(value) + ((seconds == null) ? '' : '; expires=' + exdate.toUTCString());
+        document.cookie = cookie_name + '=' + cookie_value;
     }
 
     function checkValueEmpty(element) {

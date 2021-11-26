@@ -123,7 +123,7 @@ public class HomeController {
         HomeController();
         log.info("business");
         ArrayList<String> businessNoArr = new ArrayList<>();
-        businessNoArr.add("0000000000");
+        businessNoArr.add("2262097634");
         BusinessStatusRequest request = new BusinessStatusRequest(businessNoArr);
         String status = businessValidationService.statusVerify(request);
         BusinessValidation validation = new BusinessValidation();

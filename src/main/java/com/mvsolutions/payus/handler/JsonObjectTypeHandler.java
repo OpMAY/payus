@@ -1,6 +1,5 @@
 package com.mvsolutions.payus.handler;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.mvsolutions.payus.model.rest.basic.UserNotificationJson;
@@ -12,14 +11,13 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 @Log4j
 public class JsonObjectTypeHandler<T extends Object> extends BaseTypeHandler<T> {
     private Class<T> tClass;
 
     public JsonObjectTypeHandler(Class<T> tClass) {
-        if(tClass == null) throw new IllegalArgumentException("Type argument cannot be null");
+        if (tClass == null) throw new IllegalArgumentException("Type argument cannot be null");
         this.tClass = tClass;
     }
 
