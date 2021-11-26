@@ -142,6 +142,7 @@
                     alert("공급자 넘버 " + sessionStorage.getItem("vendor_no"));
                 } else if (!result.valid_vendor) {
                     alert("아직 승인되지 않은 공급자입니다.");
+                    window.location.href = "/vendor/login/fail/validation.do"
                     // TODO 미승인 페이지 이동
                 } else if (result.vendor_penalty) {
                     alert("정지된 공급자 입니다.");

@@ -44,4 +44,6 @@ public interface PointAccumulateMapper {
     int getStoreNoFromAccumulate(int accumulate_no);
 
     boolean checkAccumulateCanceled(int content_no);
+
+    boolean checkUserUnreadExists(int user_no);
 }

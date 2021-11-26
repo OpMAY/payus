@@ -118,11 +118,21 @@
         </div>
     </div>
 </div>
+<script src="/js/common.js"></script>
 <script>
     $(":input").keypress(function (e) {
         if (this.value === '')
             if (e.keyCode === 32)
                 e.preventDefault();
+    });
+
+    $(document).ready(function () {
+        let firstCookie = getCookie("first_step");
+        if (firstCookie === "") {
+            alert("올바르지 않은 접근입니다.\n로그인 페이지로 이동합니다.");
+            window.location.href = '/vendor/login.do';
+            return false;
+        }
     });
 
     function getCookie(name) {
@@ -141,6 +151,10 @@
         }
         return "";
     }
+
+    let deleteCookie = function (name) {
+        document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
+    };
 
     function bankCheck() {
         let first_cookie = getCookie('first_step');

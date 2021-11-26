@@ -8,6 +8,7 @@ import com.mvsolutions.payus.model.rest.response.payushome.StoreMapSearchRespons
 import com.mvsolutions.payus.model.rest.response.payushome.SubMainPageStoreResponse;
 import com.mvsolutions.payus.model.rest.response.storedetailpage.StoreDetailPageResponse;
 import com.mvsolutions.payus.model.rest.response.suppointpage.PointStoreDataResponse;
+import com.mvsolutions.payus.model.web.vendor.request.auth.StoreRegisterRequest;
 
 import java.util.List;
 
@@ -39,4 +40,6 @@ public interface StoreMapper {
     boolean checkPrivate(int store_no);
 
     String getStoreNameByAccumulateNo(int accumulate_no);
+
+    void registerStore(StoreRegisterRequest storeRegisterRequest);
 }

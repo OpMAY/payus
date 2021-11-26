@@ -108,6 +108,11 @@ public class PointAccumulateDao {
         return mapper.checkAccumulateCanceled(content_no);
     }
 
+    public boolean checkUserUnreadExists(int user_no) {
+        PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
+        return mapper.checkUserUnreadExists(user_no);
+    }
+
 
 //    private PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
 }

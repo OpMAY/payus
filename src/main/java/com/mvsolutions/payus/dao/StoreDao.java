@@ -9,6 +9,7 @@ import com.mvsolutions.payus.model.rest.response.payushome.StoreMapSearchRespons
 import com.mvsolutions.payus.model.rest.response.payushome.SubMainPageStoreResponse;
 import com.mvsolutions.payus.model.rest.response.storedetailpage.StoreDetailPageResponse;
 import com.mvsolutions.payus.model.rest.response.suppointpage.PointStoreDataResponse;
+import com.mvsolutions.payus.model.web.vendor.request.auth.StoreRegisterRequest;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -92,5 +93,10 @@ public class StoreDao {
     public String getStoreNameByAccumulateNo(int accumulate_no) {
         StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
         return mapper.getStoreNameByAccumulateNo(accumulate_no);
+    }
+
+    public void registerStore(StoreRegisterRequest storeRegisterRequest) {
+        StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
+        mapper.registerStore(storeRegisterRequest);
     }
 }

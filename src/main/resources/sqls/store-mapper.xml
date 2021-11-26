@@ -99,13 +99,13 @@
         AND class_first = #{class_first}
         <if test="class_second != 0">AND class_second = #{class_second}</if>
         <choose>
-            <when test="order_type = 1">
+            <when test="order_type == 1">
                 ORDER BY store.star_rate DESC, store_no DESC, store.reg_date DESC
             </when>
-            <when test="order_type = 2">
+            <when test="order_type == 2">
                 ORDER BY payback_rate DESC, store_no DESC, store.reg_date DESC
             </when>
-            <when test="order_type = 3">
+            <when test="order_type == 3">
                 ORDER BY store.review_num DESC, store_no DESC, store.reg_date DESC
             </when>
         </choose>
@@ -131,13 +131,13 @@
         AND class_first = #{class_first}
         <if test="class_second != 0">AND class_second = #{class_second}</if>
         <choose>
-            <when test="order_type = 1">
+            <when test="order_type == 1">
                 ORDER BY store.star_rate DESC, store_no DESC, store.reg_date DESC
             </when>
-            <when test="order_type = 2">
+            <when test="order_type == 2">
                 ORDER BY payback_rate DESC, store_no DESC, store.reg_date DESC
             </when>
-            <when test="order_type = 3">
+            <when test="order_type == 3">
                 ORDER BY store.review_num DESC, store_no DESC, store.reg_date DESC
             </when>
         </choose>
@@ -243,4 +243,14 @@
         from store
         WHERE store_no = @StoreNo
     </select>
+    <insert id="registerStore">
+        insert into store(vendor_no, class_first, class_second, name, phone, payback_rate, address, address_x,
+                          address_y,
+                          address_1depth, address_2depth, address_3depth, address_short, address_road, thumbnail,
+                          image_list, reg_date)
+        VALUES (#{vendor_no}, #{class_first}, #{class_second}, #{name}, #{phone}, #{payback_rate}, #{address},
+                #{address_x},
+                #{address_y}, #{address_1depth}, #{address_2depth}, #{address_3depth}, #{address_short},
+                #{address_road}, #{thumbnail}, #{image_list}, #{reg_date})
+    </insert>
 </mapper>

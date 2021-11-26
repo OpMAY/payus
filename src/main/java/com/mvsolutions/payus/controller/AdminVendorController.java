@@ -101,4 +101,10 @@ public class AdminVendorController {
         }
         return VIEW;
     }
+
+    @RequestMapping("/login/fail/validation.do")
+    public ModelAndView VendorNotValidatedPage() {
+        VIEW = new ModelAndView("vendor_not_valid");
+        return VIEW;
+    }
 }

@@ -85,4 +85,10 @@
     <select id="checkVendorExistsByEmail" resultType="_boolean">
         select EXISTS(select * from vendor WHERE id = #{email})
     </select>
+    <insert id="insertVendor" useGeneratedKeys="true" keyProperty="vendor_no">
+        insert into vendor(id, password, vendor_name, business_code, phone, bank_name, bank_account, bank_owner,
+                           reg_date)
+        VALUES (#{id}, #{password}, #{vendor_name}, #{business_code}, #{phone}, #{bank_name}, #{bank_account},
+                #{bank_owner}, #{reg_date})
+    </insert>
 </mapper>

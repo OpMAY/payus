@@ -1,9 +1,7 @@
 package com.mvsolutions.payus.dao;
 
 import com.mvsolutions.payus.mapper.VendorMapper;
-import com.mvsolutions.payus.model.rest.basic.Vendor;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
-import com.mvsolutions.payus.model.rest.request.suphomepage.VendorHomeRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
 import com.mvsolutions.payus.model.rest.response.suphomepage.VendorHomeResponse;
@@ -11,12 +9,12 @@ import com.mvsolutions.payus.model.rest.response.suppointpage.SupPointChargeData
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindIdRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindPasswordRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorPasswordResetRequest;
+import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
-import sun.misc.VM;
 
 @Repository
 public class VendorDao {
@@ -101,6 +99,11 @@ public class VendorDao {
     public boolean checkVendorExistsByEmail(String email) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         return mapper.checkVendorExistsByEmail(email);
+    }
+
+    public void insertVendor(VendorRegisterRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.insertVendor(request);
     }
 
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);

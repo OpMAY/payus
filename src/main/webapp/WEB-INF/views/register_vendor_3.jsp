@@ -60,7 +60,7 @@
                                                    oninput="this.value = this.value.replace(/[^0-9.-]/g, '').replace(/(\..*)\./g, '$1');"
                                                    onkeyup="checkCorporateRegiNumber(this.value)"
                                                    onfocus="checkCorporateRegiNumber(this.value)"
-                                                   style="height: 70px">
+                                                   style="height: 70px" autocomplete="off">
                                             <button type="button" class="btn btn-business-verify-text"
                                                     id="business-verification-button"
                                                     onclick="checkBusinessNumberValidate()"
@@ -76,7 +76,7 @@
                                         <div class="form-group">
                                             <label for="vendor-register-store-name">상호 명</label>
                                             <input class="form-control" id="vendor-register-store-name"
-                                                   style="color: black;height: 70px" placeholder="상호 명을 입력해주세요."/>
+                                                   style="color: black;height: 70px" placeholder="상호 명을 입력해주세요." autocomplete="off"/>
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -105,6 +105,7 @@
         </div>
     </div>
 </div>
+<script src="/js/common.js"></script>
 <script>
     $(":input").keypress(function (e) {
         if (this.value === '')
@@ -153,13 +154,22 @@
 
     $(document).ready(function () {
         let firstCookie = getCookie("first_step");
-        if (firstCookie === "") {
-            alert("올바르지 않은 접근입니다.");
+        let secondCookie = getCookie("second_step");
+        if (firstCookie === "" || secondCookie === "") {
+            alert("올바르지 않은 접근입니다.\n로그인 페이지로 이동합니다.");
+            deleteCookie("first_step");
+            deleteCookie("second_step");
+            window.location.href = '/vendor/login.do';
+            return false;
         }
         let obj = JSON.parse(firstCookie);
         console.log(obj.name);
         $("#vendor-register-store-owner").val(obj.name);
     });
+
+    let deleteCookie = function (name) {
+        document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
+    };
 
     function checkBusinessNumberValidate() {
         let business_number = $("#vendor-register-business-number");

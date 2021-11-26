@@ -425,9 +425,24 @@ select {
     margin-left: 80px;
 }
 
+.validation-fail-message {
+    font-size: 1.875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    word-break: keep-all;
+}
+
 @media (max-width: 668px) {
     .vendor-select-menu {
         display: block !important;
+    }
+}
+
+@media (max-width: 921px) {
+    .validation-fail-message {
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.2;
     }
 }
 
@@ -439,19 +454,32 @@ select {
     .appstore-btn {
         width: 80% !important;
     }
+
+    .validation-fail-message {
+        font-size: 1.185rem;
+        font-weight: 600;
+        line-height: 1.2;
+    }
+}
+
+@media (min-width: 1800px) {
+    .validation-fail-message {
+        font-size: 1.875rem;
+        font-weight: 600;
+        line-height: 1.2;
+    }
 }
 
 @media (max-width: 1199px) {
     .footer-bottom {
         justify-content: center !important;
     }
-}
 
-@media (max-width: 1199px) {
     .vendor-application-buttons {
         justify-content: center !important;
     }
 }
+
 
 /* Customize the label (the container) */
 .container {

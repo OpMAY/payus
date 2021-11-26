@@ -127,7 +127,7 @@
         LIMIT 10
     </select>
     <select id="getStoreReviewNum" resultType="int">
-        select COUNT(*)
+        select IFNULL(COUNT(*), 0)
         from review
         WHERE store_no = #{store_no}
     </select>
@@ -156,7 +156,7 @@
         ORDER BY review.reg_date DESC, review_no DESC LIMIT 10
     </select>
     <select id="getReviewRateSum" resultType="int">
-        select SUM(rate)
+        select IFNULL(SUM(rate), 0)
         from review
         WHERE store_no = #{store_no}
     </select>

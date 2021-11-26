@@ -15,4 +15,6 @@ public interface PointWithdrawMapper {
     List<UserPointWithdrawListResponse> getUserPointWithdrawListReload(int user_no, int last_index);
 
     boolean checkWithdrawRejected(int withdraw_no);
+
+    boolean checkUserUnreadExists(int user_no);
 }
