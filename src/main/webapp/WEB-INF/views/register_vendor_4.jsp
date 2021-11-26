@@ -45,35 +45,38 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="auth-form-wrapper px-4 py-5">
-                                <div class="row" style="justify-content: center">
+                                <div class="row" style="display: flex; align-content: center; flex-direction: column">
                                     <h3 class="d-block mb-2 noto-font" style="color: #8668d0">공급자 정보 등록</h3>
-                                    <h6 class="noto-font" style="margin-bottom: 30px;word-break: keep-all">공급자 등록 심사를 위해
-                                        모든 정보를 알맞게 기입해주세요.</h6>
+                                    <span class="noto-font sub-title">상점 정보 (4 / 4)</span>
                                 </div>
                                 <form class="forms-sample noto-font">
                                     <div class="col-12">
                                         <div class="row row-cols-3" id="image-container">
-                                            <%--                                            <div class="col image-div">--%>
-                                            <%--                                                <div class="img-container">--%>
-                                            <%--                                                    <img src="/images/sample_hotel_img_1.jpg" alt width="100%" height="100%">--%>
-                                            <%--                                                </div>--%>
-                                            <%--                                            </div>--%>
-                                            <%--                                            <div class="col image-div">--%>
-                                            <%--                                                <div class="img-container">--%>
-                                            <%--                                                    <img src="/images/sample_hotel_img_1.jpg" alt width="100%" height="100%">--%>
-                                            <%--                                                </div>--%>
-                                            <%--                                            </div>--%>
-                                            <%--                                            <div class="col image-div">--%>
-                                            <%--                                                <div class="img-container">--%>
-                                            <%--                                                    <img src="/images/sample_hotel_img_1.jpg" alt width="100%" height="100%">--%>
-                                            <%--                                                </div>--%>
-                                            <%--                                            </div>--%>
-                                            <%--                                            <div class="col image-div">--%>
-                                            <%--                                                <div class="img-container">--%>
-                                            <%--                                                    <img src="/images/sample_hotel_img_1.jpg" alt width="100%" height="100%">--%>
-                                            <%--                                                </div>--%>
-                                            <%--                                            </div>--%>
                                             <div class="col image-div">
+                                                <div class="img-container">
+                                                    <img src="/images/sample_hotel_img_1.jpg" alt width="100%"
+                                                         height="100%">
+                                                </div>
+                                            </div>
+                                            <%--                                            <div class="col image-div">--%>
+                                            <%--                                                <div class="img-container">--%>
+                                            <%--                                                    <img src="/images/sample_hotel_img_1.jpg" alt width="100%"--%>
+                                            <%--                                                         height="100%">--%>
+                                            <%--                                                </div>--%>
+                                            <%--                                            </div>--%>
+                                            <%--                                            <div class="col image-div">--%>
+                                            <%--                                                <div class="img-container">--%>
+                                            <%--                                                    <img src="/images/sample_hotel_img_1.jpg" alt width="100%"--%>
+                                            <%--                                                         height="100%">--%>
+                                            <%--                                                </div>--%>
+                                            <%--                                            </div>--%>
+                                            <%--                                            <div class="col image-div">--%>
+                                            <%--                                                <div class="img-container">--%>
+                                            <%--                                                    <img src="/images/sample_hotel_img_1.jpg" alt width="100%"--%>
+                                            <%--                                                         height="100%">--%>
+                                            <%--                                                </div>--%>
+                                            <%--                                            </div>--%>
+                                            <div class="col image-div" id="img-add-div">
                                                 <div class="img-add" id="img-add-btn">
                                                     <img src="/images/plus-btn.svg" alt width="100%" height="100%"
                                                          style="transform: scale(0.3)">
@@ -138,6 +141,29 @@
                                                    style="color: black;height: 70px;" placeholder="세부 주소를 입력해주세요."/>
                                         </div>
                                     </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="vendor-register-payback-rate">페이백률 지정</label>
+                                            <select class="form-control" id="vendor-register-payback-rate"
+                                                    style="color: black; height: 60px">
+                                                <option selected disabled>선택</option>
+                                                <option>5%</option>
+                                                <option>10%</option>
+                                                <option>15%</option>
+                                                <option>20%</option>
+                                                <option>25%</option>
+                                                <option>30%</option>
+                                                <option>35%</option>
+                                                <option>40%</option>
+                                                <option>45%</option>
+                                                <option>50%</option>
+                                                <option>55%</option>
+                                                <option>60%</option>
+                                                <option>65%</option>
+                                                <option>70%</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="mt-3">
                                         <div class="col-12">
                                             <button type="button" class="btn btn-grey d-block"
@@ -167,7 +193,7 @@
     let mapContainer = document.getElementById("map"),
         mapOption = {
             center: new daum.maps.LatLng(37.537187, 127.005476),
-            level: 5
+            level: 2
         };
 
     // 지도를 미리 생성
@@ -188,6 +214,31 @@
                 e.preventDefault();
     });
 
+    $(document).ready(function () {
+        let thirdCookie = getCookie("third_step");
+        if (thirdCookie === "") {
+            alert("올바르지 않은 접근입니다.");
+        }
+        let obj = JSON.parse(thirdCookie);
+        $("#vendor-register-store-name").val(obj.store_name);
+    })
+
+    function getCookie(name) {
+        let nameOfCookie = name + "=";
+        let x = 0;
+        while (x <= document.cookie.length) {
+            let y = (x + nameOfCookie.length);
+            if (document.cookie.substring(x, y) === nameOfCookie) {
+                if ((endOfCookie = document.cookie.indexOf(";", y)) === -1)
+                    endOfCookie = document.cookie.length;
+                return unescape(document.cookie.substring(y, endOfCookie));
+            }
+            x = document.cookie.indexOf(" ", x) + 1;
+            if (x === 0)
+                break;
+        }
+        return "";
+    }
 
     function checkSelectedValue() {
         let category1 = document.getElementById("vendor-register-store-category-1");
@@ -300,11 +351,11 @@
     }
 
     $("#img-add-btn").on("click", function () {
-        $("#image-container").prepend('<div class="col image-div">\n' +
+        $('<div class="col image-div">\n' +
             '                                                <div class="img-container">\n' +
             '                                                    <img src="/images/sample_hotel_img_1.jpg" alt width="100%" height="100%">\n' +
             '                                                </div>\n' +
-            '                                            </div>');
+            '                                            </div>').insertBefore("#img-add-div");
     });
 
     function checkValueEmpty(element) {

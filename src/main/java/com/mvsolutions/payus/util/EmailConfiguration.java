@@ -34,7 +34,7 @@ public class EmailConfiguration {
     private String password;
 
     @Bean
-    public JavaMailSender mailSender(){
+    public JavaMailSender mailSender() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setUsername(id);
         javaMailSender.setPassword(password);
@@ -43,13 +43,14 @@ public class EmailConfiguration {
         return javaMailSender;
     }
 
-    private Properties getMailProperties(){
+    private Properties getMailProperties() {
         Properties properties = new Properties();
         properties.put("mail.smtp.host", host);
         properties.put("mail.smtp.port", port);
         properties.put("mail.smtp.auth", auth);
         properties.put("mail.smtp.ssl.enable", true);
         properties.put("mail.smtp.ssl.trust", host);
+        properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
         return properties;
     }
 }
