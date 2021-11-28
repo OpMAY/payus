@@ -7,7 +7,6 @@ import java.util.List;
 @Data
 public class StoreReviewPageResponse {
     private int review_no;
-    private String store_name;
     private String user_name;
     private String reg_date;
     private String content;

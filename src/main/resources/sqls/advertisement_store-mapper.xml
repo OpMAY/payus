@@ -77,17 +77,17 @@
             <choose>
                 <when test="order_type == 1">
                     AND (star_rate <![CDATA[<]]> @StarRate OR (star_rate <![CDATA[=]]> @StarRate AND store.store_no
-                    <![CDATA[<]]> #{last_index})
+                    <![CDATA[<]]> #{last_index}))
                 </when>
                 <when test="order_type == 2">
                     AND (advertisement_store.advertise_payback <![CDATA[<]]> @PayBackRate OR
                     (advertisement_store.advertise_payback <![CDATA[=]]> @PayBackRate AND store.store_no
-                    <![CDATA[<]]> #{last_index})
+                    <![CDATA[<]]> #{last_index}))
                 </when>
                 <when test="order_type == 3">
                     AND (store.review_num <![CDATA[<]]> @ReviewNum OR (store.review_num <![CDATA[=]]> @ReviewNum AND
                     store.store_no
-                    <![CDATA[<]]> #{last_index})
+                    <![CDATA[<]]> #{last_index}))
                 </when>
             </choose>
         </if>

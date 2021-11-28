@@ -136,8 +136,7 @@
             SET @RegDate = (select reg_date from review WHERE review_no = #{last_index});
         </if>
         select review_no,
-        store.name as store_name,
-        user.nickname,
+        user.nickname as user_name,
         review.reg_date,
         review.content,
         rate,
@@ -146,9 +145,8 @@
         answer_content,
         answer_date
         from review,
-        store,
         user
-        WHERE review.store_no = #{store_no}
+        WHERE review.store_no = #{store_no} AND user.user_no = review.user_no
         <if test="last_index != 0">
             AND review.reg_date <![CDATA[<]]> @RegDate OR (review.reg_date <![CDATA[=]]>
             AND review_no <![CDATA[<]]> #{last_index})
