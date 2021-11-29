@@ -92,8 +92,15 @@
                 #{bank_owner}, #{reg_date})
     </insert>
     <select id="getVendorInfoForMyPage" resultType="VendorMyPageInfo">
-        select id, vendor_name as name, phone, bank_name, bank_account, bank_account
+        select id, vendor_name as name, phone, bank_name, bank_account, bank_owner
         from vendor
         WHERE vendor_no = #{vendor_no}
+    </select>
+    <select id="getVendorBusinessInfoForMyPage" resultType="VendorMyPageBusinessInfo">
+        select store.name as store_name, vendor.business_code, vendor.vendor_name
+        from store,
+             vendor
+        WHERE vendor.vendor_no = #{vendor_no}
+          AND store.vendor_no = #{vendor_no}
     </select>
 </mapper>

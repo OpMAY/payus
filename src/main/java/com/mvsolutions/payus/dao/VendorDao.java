@@ -13,6 +13,7 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
+import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -110,6 +111,11 @@ public class VendorDao {
     public VendorMyPageInfo getVendorInfoForMyPage(Integer vendor_no) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         return mapper.getVendorInfoForMyPage(vendor_no);
+    }
+
+    public VendorMyPageBusinessInfo getVendorBusinessInfoForMyPage(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorBusinessInfoForMyPage(vendor_no);
     }
 
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);

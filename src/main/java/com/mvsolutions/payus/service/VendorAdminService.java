@@ -14,6 +14,7 @@ import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorRegisterEmailResponse;
+import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 import com.mvsolutions.payus.util.BusinessValidationService;
 import com.mvsolutions.payus.util.EmailSendService;
@@ -180,5 +181,11 @@ public class VendorAdminService {
     public VendorMyPageInfo getVendorInfoForMyPage(int vendor_no) {
         vendorDao.setSqlSession(sqlSession);
         return vendorDao.getVendorInfoForMyPage(vendor_no);
+    }
+
+    @Transactional(readOnly = true)
+    public VendorMyPageBusinessInfo getVendorBusinessInfoForMyPage(int vendor_no) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorBusinessInfoForMyPage(vendor_no);
     }
 }

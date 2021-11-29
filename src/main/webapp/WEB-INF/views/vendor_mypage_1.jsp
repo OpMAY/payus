@@ -38,59 +38,84 @@
     <div class="page-wrapper full-page">
 
         <div class="page-content d-flex align-items-center justify-content-center" style="flex-direction: column">
-            <div class="row">
-                <div class="col-md-12 col-xl-8 d-flex"
-                     style="margin-bottom: 20px; flex-direction: row; align-items: center">
-                    <img src="/images/payus_logo.png" width="64px" height="64px" style="margin-right: 8px" alt=""/>
-                    <h1 class="hanna-font">PAYUS</h1>
+            <div class="row" style="width: 100%; margin-top: 3rem">
+                <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12">
+                    <div class="row" style="margin-bottom: 1rem">
+                        <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0; padding-left: 10px">회원 정보</h3>
+                    </div>
                 </div>
-            </div>
-            <div class="row" style="width: 100%">
-                <div class="col-xl-4 offset-xl-4 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12">
-                    <div class="row">
+                <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12"
+                     style="margin-bottom: 20px; flex-direction: row; align-items: center">
+                    <div class="row noto-font">
                         <div class="col-12">
-                            <div class="auth-form-wrapper px-4 py-5">
-                                <div class="row justify-content-center" style="margin-bottom: 3rem">
-                                    <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0">비밀번호 재설정</h3>
-                                </div>
-                                <form class="forms-sample noto-font">
-                                    <div class="col-12" style="margin-bottom: 2rem">
-                                        <div class="form-group">
-                                            <label for="vendor-reset-password-id">아이디</label>
-                                            <input class="form-control" id="vendor-reset-password-id" value="${id}"
-                                                   disabled
-                                                   style="height: 15%">
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group" style="margin-bottom: 2rem">
-                                            <label for="vendor-reset-password">새 비밀번호</label>
-                                            <input class="form-control" id="vendor-reset-password"
-                                                   placeholder="새로운 비밀번호를 입력하세요." type="password"
-                                                   style="height: 15%">
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group" style="margin-bottom: 2rem">
-                                            <label for="vendor-reset-password-check">새 비밀번호 확인</label>
-                                            <input class="form-control" id="vendor-reset-password-check"
-                                                   placeholder="새로운 비밀번호를 입력하세요." type="password"
-                                                   style="height: 15%">
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <button type="button" class="btn btn-payus"
-                                                id="email-verification-button">
-                                            확인
-                                        </button>
-                                    </div>
-                                </form>
+                            <div class="form-group" style="margin-bottom: 2rem">
+                                <label for="vendor-reset-password-id">이메일 (ID)</label>
+                                <textarea class="payus-textarea" id="vendor-reset-password-id" rows="1"
+                                          disabled>${vendor.id}</textarea>
                             </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group" style="margin-bottom: 2rem">
+                                <label for="vendor-reset-password">이름</label>
+                                <textarea class="payus-textarea" id="vendor-reset-password" rows="1" disabled>${vendor.name}</textarea>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group" style="margin-bottom: 2rem">
+                                <label for="vendor-reset-password-check">연락처</label>
+                                <textarea class="payus-textarea" id="vendor-reset-password-check" rows="1" disabled>${vendor.phone}</textarea>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="button" class="btn btn-payus"
+                                    id="password-change-btn">
+                                비밀번호 변경
+                            </button>
+                            <button type="button" class="btn btn-payus"
+                                    id="personal-edit-btn">
+                                수정
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <div class="row" style="width: 100%">
+                <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12">
+                    <div class="row" style="margin-bottom: 1rem">
+                        <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0; padding-left: 10px">계좌 정보</h3>
+                    </div>
+                </div>
+                <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12"
+                     style="margin-bottom: 20px; flex-direction: row; align-items: center">
+                    <div class="row noto-font">
+                        <div class="col-12">
+                            <div class="form-group" style="margin-bottom: 2rem">
+                                <label for="vendor-bank-name">은행 명</label>
+                                <textarea class="payus-textarea" id="vendor-bank-name" rows="1" disabled>${vendor.bank_name}</textarea>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group" style="margin-bottom: 2rem">
+                                <label for="vendor-bank-account">계좌 번호</label>
+                                <textarea class="payus-textarea" id="vendor-bank-account" rows="1" disabled>${vendor.bank_account}</textarea>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group" style="margin-bottom: 2rem">
+                                <label for="vendor-bank-owner">예금주 명</label>
+                                <textarea class="payus-textarea" id="vendor-bank-owner" rows="1" disabled>${vendor.bank_owner}</textarea>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="button" class="btn btn-payus"
+                                    id="bank-edit-btn">
+                                수정
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

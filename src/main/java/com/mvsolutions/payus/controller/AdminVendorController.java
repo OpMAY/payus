@@ -1,6 +1,7 @@
 package com.mvsolutions.payus.controller;
 
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
+import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 import com.mvsolutions.payus.service.VendorAdminService;
 import lombok.extern.log4j.Log4j;
@@ -133,6 +134,15 @@ public class AdminVendorController {
         VIEW = new ModelAndView("vendor_mypage_1");
         Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
         VendorMyPageInfo info = vendorAdminService.getVendorInfoForMyPage(vendor_no);
+        VIEW.addObject("vendor", info);
+        return VIEW;
+    }
+
+    @RequestMapping("/mypage/business.do")
+    public ModelAndView MyPageBusinessPage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_mypage_2");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        VendorMyPageBusinessInfo info = vendorAdminService.getVendorBusinessInfoForMyPage(vendor_no);
         VIEW.addObject("vendor", info);
         return VIEW;
     }
