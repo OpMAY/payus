@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>공급자 아이디 찾기 결과</title>
+    <title>공급자 회원 정보</title>
     <!-- core:css -->
     <link rel="stylesheet" href="/vendors/core/core.css">
     <!-- endinject -->
@@ -27,11 +27,16 @@
     <link rel="shortcut icon" href="/images/payus_logo.png"/>
     <!-- Custom layout style for vendor -->
     <link rel="stylesheet" href="/css/vendor_style.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
     <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<div class="main-wrapper">
+<!-- partial:partials/_footer.jsp -->
+<jsp:include page="partials/vendor_sidebar.jsp" flush="true"></jsp:include>
+<!-- partial -->
+<div class="main-wrapper sidemain">
     <div class="page-wrapper full-page">
+
         <div class="page-content d-flex align-items-center justify-content-center" style="flex-direction: column">
             <div class="row">
                 <div class="col-md-12 col-xl-8 d-flex"
@@ -46,33 +51,38 @@
                         <div class="col-12">
                             <div class="auth-form-wrapper px-4 py-5">
                                 <div class="row justify-content-center" style="margin-bottom: 3rem">
-                                    <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0">아이디 찾기 결과</h3>
+                                    <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0">비밀번호 재설정</h3>
                                 </div>
                                 <form class="forms-sample noto-font">
-                                    <div class="col-12">
-                                        <div class="form-group" style="position: relative; margin-bottom: 4rem">
-                                            <label for="vendor-result-id">아이디</label>
-                                            <input class="form-control" id="vendor-result-id"
-                                                   value="${id}"
-                                                   placeholder="이름을 입력해주세요."
-                                                   style="height: 15%;" disabled>
-                                            <button type="button" class="btn btn-id-copy" style="word-break: keep-all"
-                                                    onclick="copyID()">
-                                                복사
-                                            </button>
+                                    <div class="col-12" style="margin-bottom: 2rem">
+                                        <div class="form-group">
+                                            <label for="vendor-reset-password-id">아이디</label>
+                                            <input class="form-control" id="vendor-reset-password-id" value="${id}"
+                                                   disabled
+                                                   style="height: 15%">
                                         </div>
                                     </div>
-                                    <div class="mt-3">
-                                        <div class="col-12">
-                                            <button type="button" class="btn btn-auth-sign-in d-block" style="margin-bottom: 1rem"
-                                                    onclick="window.location.href = '/vendor/login.do';">
-                                                로그인 하러가기
-                                            </button>
-                                            <button type="button" class="btn btn-auth-sign-in d-block"
-                                                    onclick="window.location.href = '/vendor/find/password.do';">
-                                                비밀번호 찾기
-                                            </button>
+                                    <div class="col-12">
+                                        <div class="form-group" style="margin-bottom: 2rem">
+                                            <label for="vendor-reset-password">새 비밀번호</label>
+                                            <input class="form-control" id="vendor-reset-password"
+                                                   placeholder="새로운 비밀번호를 입력하세요." type="password"
+                                                   style="height: 15%">
                                         </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group" style="margin-bottom: 2rem">
+                                            <label for="vendor-reset-password-check">새 비밀번호 확인</label>
+                                            <input class="form-control" id="vendor-reset-password-check"
+                                                   placeholder="새로운 비밀번호를 입력하세요." type="password"
+                                                   style="height: 15%">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-payus"
+                                                id="email-verification-button">
+                                            확인
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -84,22 +94,5 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function () {
-        if(!checkValue()){
-            alert("잘못된 접근입니다.")
-        }
-    });
-
-    function checkValue() {
-        let id = '${id}';
-        return id !== '';
-    }
-    function copyID() {
-        let id = document.getElementById("vendor-result-id");
-        navigator.clipboard.writeText(id.value);
-        alert("복사되었습니다.");
-    }
-</script>
 </body>
 </html>

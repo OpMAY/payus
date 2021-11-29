@@ -47,12 +47,12 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="auth-form-wrapper px-4 py-5">
-                                <div class="row" style="display: flex; align-content: center; flex-direction: column">
+                                <div class="row" style="display: flex; align-content: center; flex-direction: column; margin-bottom: 3rem">
                                     <h3 class="d-block mb-2 noto-font" style="color: #8668d0">공급자 정보 등록</h3>
                                     <span class="noto-font sub-title">사업자 정보 (3 / 4)</span>
                                 </div>
                                 <form class="forms-sample noto-font">
-                                    <div class="col-12">
+                                    <div class="col-12" style="margin-bottom: 2rem">
                                         <div class="form-group" style="position: relative">
                                             <label for="vendor-register-business-number">사업자 등록 번호</label>
                                             <input class="form-control" id="vendor-register-business-number"
@@ -72,14 +72,14 @@
                                                 올바른 사업자 등록 번호를 입력해주세요.</span>
                                     </div>
 
-                                    <div class="col-12">
+                                    <div class="col-12" style="margin-bottom: 2rem">
                                         <div class="form-group">
                                             <label for="vendor-register-store-name">상호 명</label>
                                             <input class="form-control" id="vendor-register-store-name"
                                                    style="color: black;height: 70px" placeholder="상호 명을 입력해주세요." autocomplete="off"/>
                                         </div>
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-12" style="margin-bottom: 4rem">
                                         <div class="form-group">
                                             <label for="vendor-register-store-owner">대표자 명</label>
                                             <input class="form-control" id="vendor-register-store-owner"

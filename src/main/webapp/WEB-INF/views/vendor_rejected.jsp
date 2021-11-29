@@ -45,12 +45,15 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="auth-form-wrapper px-4 py-5">
-                                <div class="row d-flex" style="align-content: center; flex-direction: row; justify-content: center">
-                                    <span class="validation-fail-message d-block mb-2 noto-font" style="color: black">관리자가 공급자 가입 심사를 진행중입니다.</span>
-                                    <span class="validation-fail-message d-block mb-2 noto-font" style="color: black">평균 3~5일의 시간이 소요됩니다.</span>
+                                <div class="row d-flex" style="align-content: center; flex-direction: row; justify-content: center; margin-bottom: 3rem">
+                                    <span class="validation-fail-message d-block mb-2 noto-font" style="color: black">회원가입이 반려되었습니다.</span>
                                 </div>
-                                <div class="row d-flex" style="justify-content: center; margin-top: 1.5rem">
-                                    <button type="button" class="btn" onclick="alert('준비 중입니다.')"><img src="/images/question_large_yellow_mobile.png" width="100%" height="100%" style="transform: scale(0.75);object-fit: cover"></button>
+                                <div class="row d-flex" style="margin-top: 1.5rem">
+                                    <label for="vendor-reject-reason" class="noto-font" style="font-size: 18px">반려 사유</label>
+                                    <input class="form-control noto-font" id="vendor-reject-reason" disabled value="${reject}" style="font-size: 20px; margin-bottom: 2rem">
+                                </div>
+                                <div class="row d-flex" style="margin-top: 1.5rem">
+                                    <button class="btn btn-payus d-block" onclick="alert('준비중 입니다.')">수정하러 가기</button>
                                 </div>
                             </div>
                         </div>

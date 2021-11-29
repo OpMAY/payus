@@ -180,4 +180,9 @@
         from user
         WHERE user_no = #{user_no}
     </select>
+    <delete id="resignUser">
+        delete
+        from user
+        WHERE user_no = #{user_no}
+    </delete>
 </mapper>

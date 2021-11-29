@@ -161,13 +161,13 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="container" style="margin-bottom: 15px">
-                                                <a onclick="alert('A 태그')" class="noto-font payus-atag"><u>[필수] 서비스
+                                                <a href="/vendor/terms/service.do" target="_blank" class="noto-font payus-atag"><u>[필수] 서비스
                                                     이용약관</u></a>
                                                 <input type="checkbox" id="service-agree"/>
                                                 <span class="checkmark"></span>
                                             </label>
                                             <label class="container">
-                                                <a onclick="alert('A 태그')" class="noto-font payus-atag"><u>[필수] 개인정보 처리
+                                                <a href="/vendor/terms/personal.do" target="_blank" class="noto-font payus-atag"><u>[필수] 개인정보 처리
                                                     방침</u></a>
                                                 <input type="checkbox" id="personal-agree"/>
                                                 <span class="checkmark"></span>
@@ -180,7 +180,7 @@
                                                     onclick="if(confirm('다음 페이지로 넘어가시겠습니까?')){submitRegister()} else {return false;}">
                                                 다음
                                             </button>
-                                            <button type="button" class="btn btn-back d-block"
+                                            <button type="button" class="btn btn-grey d-block"
                                                     onclick="window.location.href = '/vendor/login.do'">
                                                 뒤로 가기
                                             </button>
@@ -270,7 +270,7 @@
         let exdate = new Date();
         exdate.setDate(exdate.getSeconds() + seconds);
 
-        let cookie_value = escape(value) + ((seconds == null) ? '' : '; expires=' + exdate.toUTCString());
+        let cookie_value = escape(value) + ((seconds == null) ? '' : '; expires=' + exdate.toUTCString()) + ';path=/';
         document.cookie = cookie_name + '=' + cookie_value;
     }
 

@@ -158,7 +158,7 @@
         let exdate = new Date();
         exdate.setDate(exdate.getSeconds() + seconds);
 
-        let cookie_value = escape(value) + ((seconds == null) ? '' : '; expires=' + exdate.toUTCString());
+        let cookie_value = escape(value) + ((seconds == null) ? '' : '; expires=' + exdate.toUTCString()) + ';path=/';
         document.cookie = cookie_name + '=' + cookie_value;
     }
 

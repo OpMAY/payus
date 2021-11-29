@@ -45,11 +45,11 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="auth-form-wrapper px-4 py-5">
-                                <div class="row justify-content-center">
+                                <div class="row justify-content-center" style="margin-bottom: 2rem">
                                     <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0">공급자 로그인 페이지</h3>
                                 </div>
                                 <form class="forms-sample noto-font">
-                                    <div class="col-12">
+                                    <div class="col-12" style="margin-bottom: 2rem">
                                         <div class="form-group">
                                             <label for="adminInputId" class="noto-font">아이디</label>
                                             <input class="form-control noto-font" id="adminInputId"
@@ -57,7 +57,7 @@
                                                    style="height: 10%">
                                         </div>
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-12" style="margin-bottom: 2rem">
                                         <div class="form-group">
                                             <label for="adminInputPassword" class="noto-font">비밀번호</label>
                                             <input type="password" class="form-control" id="adminInputPassword"
@@ -66,7 +66,7 @@
                                         </div>
                                     </div>
                                     <div class="row mx-auto">
-                                        <div class="col-12" style="display: flex; justify-content: flex-end">
+                                        <div class="col-12" style="display: flex; justify-content: flex-end; margin-bottom: 2rem">
                                             <a href="/vendor/find/identification.do"
                                                class="d-block noto-font vendor-identification-find"
                                                style="word-break: keep-all">아이디
@@ -76,11 +76,10 @@
                                                style="margin-left: 5px; word-break: keep-all">비밀번호 찾기</a>
                                         </div>
                                     </div>
-                                    <hr/>
-                                    <div class="mt-3">
+                                    <div class="row">
                                         <div class="col-12">
                                             <button type="button" class="btn btn-auth-sign-in d-block"
-                                                    id="login_btn">
+                                                    id="login_btn" style="margin-bottom: 1rem">
                                                 로그인
                                             </button>
                                             <button type="button" class="btn btn-auth-sign-up d-block"
@@ -140,6 +139,7 @@
                     sessionStorage.setItem("vendor_no", result.vendor_no);
                     console.log(sessionStorage.getItem("vendor_no"));
                     alert("공급자 넘버 " + sessionStorage.getItem("vendor_no"));
+                    window.location.href = "/vendor/mypage/vendor.do"
                 } else if (!result.valid_vendor) {
                     alert("아직 승인되지 않은 공급자입니다.");
                     window.location.href = "/vendor/login/fail/validation.do"

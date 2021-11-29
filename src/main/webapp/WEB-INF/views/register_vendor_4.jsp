@@ -44,12 +44,12 @@
                 <div class="col-xl-4 offset-xl-4 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12">
                     <div class="row">
                         <div class="col-12">
-                            <div class="auth-form-wrapper px-4 py-5  noto-font">
-                                <div class="row" style="display: flex; align-content: center; flex-direction: column">
-                                    <h3 class="d-block mb-2 noto-font" style="color: #8668d0">공급자 정보 등록</h3>
+                            <div class="auth-form-wrapper px-4 py-5 noto-font">
+                                <div class="row" style="display: flex; align-content: center; flex-direction: column; margin-bottom: 4rem">
+                                    <h3 class="d-block mb-2 noto-font" style="color: #6D29D0">공급자 정보 등록</h3>
                                     <span class="noto-font sub-title">상점 정보 (4 / 4)</span>
                                 </div>
-                                <form class="forms-sample" id="image-form">
+                                <form class="forms-sample" id="image-form" style="margin-top: 1.5rem; margin-bottom: 2rem">
                                     <div class="col-12">
                                         <div class="row row-cols-3" id="image-container">
                                             <input type="file" id="image-add-input-1" name="img1" accept="image/*"
@@ -63,7 +63,7 @@
                                         </div>
                                     </div>
                                 </form>
-                                <div class="col-12" style="display: flex;">
+                                <div class="col-12" style="display: flex; margin-bottom: 2rem">
                                     <div class="form-group" style="width: 45%; margin-right: 10%">
                                         <label for="vendor-register-store-category-1">업종 상위 카테고리</label>
                                         <select class="form-control" id="vendor-register-store-category-1"
@@ -84,7 +84,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-12" style="margin-bottom: 2rem">
                                     <div class="form-group">
                                         <label for="vendor-register-store-name">상호 명</label>
                                         <input class="form-control" id="vendor-register-store-name"
@@ -93,7 +93,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div class="form-group" style="position: relative">
+                                    <div class="form-group" style="position: relative; margin-bottom: 2rem">
                                         <label for="vendor-register-store-address">업체 지번 주소</label>
                                         <input class="form-control" id="vendor-register-store-address" disabled
                                                style="color: black;height: 70px" placeholder="주소 찾기로 정보를 입력해주세요."/>
@@ -103,24 +103,24 @@
                                             주소 찾기
                                         </button>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" style="margin-bottom: 2rem">
                                         <label for="vendor-register-store-road-address">업체 도로명 주소</label>
                                         <input class="form-control" id="vendor-register-store-road-address" disabled
                                                style="color: black;height: 70px" placeholder="주소 찾기로 정보를 입력해주세요."/>
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-12" style="margin-bottom: 2rem">
                                     <div id="map"
                                          style="width:100%;height:300px;margin-top:10px;display:none"></div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-12" style="margin-bottom: 2rem">
                                     <div class="form-group" style="display: none" id="rest-address-form">
                                         <label for="vendor-register-store-rest-address">업체 세부 주소</label>
                                         <input class="form-control" id="vendor-register-store-rest-address" disabled
                                                style="color: black;height: 70px;" placeholder="세부 주소를 입력해주세요."/>
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-12" style="margin-bottom: 4rem">
                                     <div class="form-group">
                                         <label for="vendor-register-payback-rate">페이백률 지정</label>
                                         <select class="form-control" id="vendor-register-payback-rate"
@@ -145,7 +145,7 @@
                                 </div>
                                 <div class="mt-3">
                                     <div class="col-12">
-                                        <button type="button" class="btn btn-grey d-block"
+                                        <button type="button" class="btn btn-grey d-block" style="margin-bottom: 1rem"
                                                 onclick="if(confirm('상점 정보를 추후에 작성하는 것을 선택하셨습니다.\n일부 내용은 재작성이 필요할 수 있습니다.\n정말로 진행하시겠습니까?')){submitRegister(true);} else {return false;}">
                                             다음에 하기
                                         </button>

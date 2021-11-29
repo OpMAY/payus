@@ -3,6 +3,7 @@ package com.mvsolutions.payus.mapper;
 import com.mvsolutions.payus.model.rest.basic.User;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserPointWithdrawRequest;
+import com.mvsolutions.payus.model.rest.request.usermypage.UserResignRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.user.UserLoginResponse;
 import com.mvsolutions.payus.model.rest.response.mainpage.MainPageUser;
 import com.mvsolutions.payus.model.rest.response.suppointpage.PaybackUserDataResponse;
@@ -67,4 +68,6 @@ public interface UserMapper {
     boolean checkUserNickNameExists(String nickname);
 
     String getUserFCMToken(int user_no);
+
+    void resignUser(UserResignRequest request);
 }

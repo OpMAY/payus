@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -37,9 +38,9 @@ public class VendorPostController {
     private FileUploadUtility fileUploadUtility;
 
     @RequestMapping("/login")
-    public VendorLoginResponse VendorLogin(@RequestBody String body) {
+    public VendorLoginResponse VendorLogin(@RequestBody String body, HttpSession session) {
         VendorLoginRequest request = new Gson().fromJson(body, VendorLoginRequest.class);
-        return vendorAdminService.loginVendor(request);
+        return vendorAdminService.loginVendor(request, session);
     }
 
     @RequestMapping("/find/id")
@@ -57,9 +58,11 @@ public class VendorPostController {
     @RequestMapping("/validate/cookie")
     public int ValidateCodeFromCookie(HttpServletRequest servletRequest, @RequestBody String body) {
         VendorValidationCodeRequest request = new Gson().fromJson(body, VendorValidationCodeRequest.class);
-        for(Cookie cookie : servletRequest.getCookies()) {
-            if(cookie.getName().equals("validation_code")){
-                if(request.getValidation_code().equals(cookie.getValue())){
+        for (Cookie cookie : servletRequest.getCookies()) {
+            log.info("name : " + cookie.getName());
+            log.info("value : " + cookie.getValue());
+            if (cookie.getName().equals("validation_code")) {
+                if (request.getValidation_code().equals(cookie.getValue())) {
                     return 0;
                 } else {
                     return 1;
@@ -106,8 +109,8 @@ public class VendorPostController {
         String timeForDB = Time.TimeFormatHMS();
         while (keys.hasNext()) {
             String key = keys.next();
-            if(key.contains("img")) {
-                if(!fileMap.get(key).isEmpty()){
+            if (key.contains("img")) {
+                if (!fileMap.get(key).isEmpty()) {
                     String path = fileUploadUtility.uploadFile("api/images/store/init/" + time + "/", fileMap.get(key).getOriginalFilename(), fileMap.get(key).getBytes(), Constant.AWS_SAVE);
                     imageList.add("api/images/store/init/" + time + "/" + path);
                 }
@@ -116,7 +119,7 @@ public class VendorPostController {
         VendorRegisterRequest vendorRegisterRequest = new Gson().fromJson(vendor_data, VendorRegisterRequest.class);
         vendorRegisterRequest.setReg_date(timeForDB);
         StoreRegisterRequest storeRegisterRequest = new Gson().fromJson(store_data, StoreRegisterRequest.class);
-        if(imageList.size() > 0) {
+        if (imageList.size() > 0) {
             storeRegisterRequest.setThumbnail(imageList.get(0));
             storeRegisterRequest.setImage_list(new Gson().toJson(imageList));
             storeRegisterRequest.setReg_date(timeForDB);

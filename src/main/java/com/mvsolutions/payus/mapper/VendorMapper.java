@@ -13,6 +13,7 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
+import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 
 public interface VendorMapper {
     boolean checkVendorExists(VendorLoginRequest request);
@@ -46,4 +47,6 @@ public interface VendorMapper {
     boolean checkVendorExistsByEmail(String email);
 
     void insertVendor(VendorRegisterRequest request);
+
+    VendorMyPageInfo getVendorInfoForMyPage(Integer vendor_no);
 }

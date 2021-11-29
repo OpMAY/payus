@@ -1,6 +1,7 @@
 package com.mvsolutions.payus.controller;
 
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
+import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 import com.mvsolutions.payus.service.VendorAdminService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,4 +108,33 @@ public class AdminVendorController {
         VIEW = new ModelAndView("vendor_not_valid");
         return VIEW;
     }
+
+    @RequestMapping("/login/fail/rejected.do")
+    public ModelAndView VendorRejectedPage() {
+        VIEW = new ModelAndView("vendor_rejected");
+        VIEW.addObject("reject", "반려 사유");
+        return VIEW;
+    }
+
+    @RequestMapping("/terms/personal.do")
+    public ModelAndView PersonalTermsPage() {
+        VIEW = new ModelAndView("personal_term");
+        return VIEW;
+    }
+
+    @RequestMapping("/terms/service.do")
+    public ModelAndView ServiceTermsPage() {
+        VIEW = new ModelAndView("service_term");
+        return VIEW;
+    }
+
+    @RequestMapping("/mypage/vendor.do")
+    public ModelAndView MyPageVendorPage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_mypage_1");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        VendorMyPageInfo info = vendorAdminService.getVendorInfoForMyPage(vendor_no);
+        VIEW.addObject("vendor", info);
+        return VIEW;
+    }
+
 }

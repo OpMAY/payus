@@ -91,4 +91,9 @@
         VALUES (#{id}, #{password}, #{vendor_name}, #{business_code}, #{phone}, #{bank_name}, #{bank_account},
                 #{bank_owner}, #{reg_date})
     </insert>
+    <select id="getVendorInfoForMyPage" resultType="VendorMyPageInfo">
+        select id, vendor_name as name, phone, bank_name, bank_account, bank_account
+        from vendor
+        WHERE vendor_no = #{vendor_no}
+    </select>
 </mapper>

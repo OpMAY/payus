@@ -14,6 +14,7 @@ import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorRegisterEmailResponse;
+import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 import com.mvsolutions.payus.util.BusinessValidationService;
 import com.mvsolutions.payus.util.EmailSendService;
 import com.mvsolutions.payus.util.KakaoLocationService;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -52,10 +54,12 @@ public class VendorAdminService {
     private StoreDao storeDao;
 
     @Transactional(readOnly = true)
-    public VendorLoginResponse loginVendor(VendorLoginRequest request) {
+    public VendorLoginResponse loginVendor(VendorLoginRequest request, HttpSession session) {
         vendorDao.setSqlSession(sqlSession);
         if (vendorDao.checkVendorExists(request)) {
-            return vendorDao.loginVendor(request);
+            VendorLoginResponse response = vendorDao.loginVendor(request);
+            session.setAttribute("vendor_no", response.getVendor_no());
+            return response;
         } else {
             return new VendorLoginResponse(0);
         }
@@ -170,5 +174,11 @@ public class VendorAdminService {
         }
         storeDao.registerStore(storeRegisterRequest);
         return 0;
+    }
+
+    @Transactional(readOnly = true)
+    public VendorMyPageInfo getVendorInfoForMyPage(int vendor_no) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorInfoForMyPage(vendor_no);
     }
 }
