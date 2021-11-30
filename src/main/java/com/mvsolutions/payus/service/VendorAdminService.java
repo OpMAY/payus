@@ -16,6 +16,9 @@ import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindRe
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorRegisterEmailResponse;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreDetailInfo;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreInfo;
 import com.mvsolutions.payus.util.BusinessValidationService;
 import com.mvsolutions.payus.util.EmailSendService;
 import com.mvsolutions.payus.util.KakaoLocationService;
@@ -32,6 +35,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Log4j
 @Service
@@ -187,5 +191,23 @@ public class VendorAdminService {
     public VendorMyPageBusinessInfo getVendorBusinessInfoForMyPage(int vendor_no) {
         vendorDao.setSqlSession(sqlSession);
         return vendorDao.getVendorBusinessInfoForMyPage(vendor_no);
+    }
+
+    @Transactional(readOnly = true)
+    public VendorStoreManagementStoreInfo getVendorStoreInfoForStoreManagement(int vendor_no) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorStoreInfoForStoreManagement(vendor_no);
+    }
+
+    @Transactional(readOnly = true)
+    public VendorStoreManagementStoreDetailInfo getVendorStoreDetailForStoreManagement(int vendor_no) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorStoreDetailForStoreManagement(vendor_no);
+    }
+
+    @Transactional(readOnly = true)
+    public List<VendorStoreManagementReviewInfo> getVendorReviewListForStoreManagement(int vendor_no) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorReviewListForStoreManagement(vendor_no);
     }
 }

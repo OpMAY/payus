@@ -15,6 +15,11 @@ import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindRe
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreDetailInfo;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreInfo;
+
+import java.util.List;
 
 public interface VendorMapper {
     boolean checkVendorExists(VendorLoginRequest request);
@@ -49,7 +54,13 @@ public interface VendorMapper {
 
     void insertVendor(VendorRegisterRequest request);
 
-    VendorMyPageInfo getVendorInfoForMyPage(Integer vendor_no);
+    VendorMyPageInfo getVendorInfoForMyPage(int vendor_no);
 
     VendorMyPageBusinessInfo getVendorBusinessInfoForMyPage(int vendor_no);
+
+    VendorStoreManagementStoreInfo getVendorStoreInfoForStoreManagement(int vendor_no);
+
+    VendorStoreManagementStoreDetailInfo getVendorStoreDetailForStoreManagement(int vendor_no);
+
+    List<VendorStoreManagementReviewInfo> getVendorReviewListForStoreManagement(int vendor_no);
 }

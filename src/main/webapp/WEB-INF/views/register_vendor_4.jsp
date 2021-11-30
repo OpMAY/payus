@@ -49,15 +49,15 @@
                                     <h3 class="d-block mb-2 noto-font" style="color: #6D29D0">공급자 정보 등록</h3>
                                     <span class="noto-font sub-title">상점 정보 (4 / 4)</span>
                                 </div>
-                                <form class="forms-sample" id="image-form" style="margin-top: 1.5rem; margin-bottom: 2rem">
+                                <form class="forms-sample" id="image-form" style="margin-top: 1.5rem; margin-bottom: 4rem">
                                     <div class="col-12">
                                         <div class="row row-cols-3" id="image-container">
                                             <input type="file" id="image-add-input-1" name="img1" accept="image/*"
                                                    hidden>
                                             <div class="col image-div" id="img-add-div">
                                                 <div class="img-add" id="img-add-btn">
-                                                    <img src="/images/plus-btn.svg" alt width="100%" height="100%"
-                                                         style="transform: scale(0.3)">
+                                                    <img src="/images/Group%20334.svg" alt width="100%" height="100%"
+                                                         style="transform: scale(0.45)">
                                                 </div>
                                             </div>
                                         </div>
@@ -145,13 +145,13 @@
                                 </div>
                                 <div class="mt-3">
                                     <div class="col-12">
-                                        <button type="button" class="btn btn-grey d-block" style="margin-bottom: 1rem"
-                                                onclick="if(confirm('상점 정보를 추후에 작성하는 것을 선택하셨습니다.\n일부 내용은 재작성이 필요할 수 있습니다.\n정말로 진행하시겠습니까?')){submitRegister(true);} else {return false;}">
-                                            다음에 하기
-                                        </button>
                                         <button type="button" class="btn btn-auth-sign-in d-block"
                                                 onclick="submitRegister(false)">
                                             회원가입 요청
+                                        </button>
+                                        <button type="button" class="btn btn-grey d-block" style="margin-bottom: 1rem"
+                                                onclick="if(confirm('상점 정보를 추후에 작성하는 것을 선택하셨습니다.\n일부 내용은 재작성이 필요할 수 있습니다.\n정말로 진행하시겠습니까?')){submitRegister(true);} else {return false;}">
+                                            다음에 하기
                                         </button>
                                     </div>
                                 </div>
@@ -195,21 +195,21 @@
                 e.preventDefault();
     });
 
-    $(document).ready(function () {
-        let firstCookie = getCookie("first_step");
-        let secondCookie = getCookie("second_step");
-        let thirdCookie = getCookie("third_step");
-        if (firstCookie === "" || secondCookie === "" || thirdCookie === "") {
-            alert("올바르지 않은 접근입니다.\n로그인 페이지로 이동합니다.");
-            deleteCookie("first_cookie");
-            deleteCookie("second_cookie");
-            deleteCookie("third_cookie");
-            window.location.href = '/vendor/login.do';
-            return false;
-        }
-        let obj = JSON.parse(thirdCookie);
-        $("#vendor-register-store-name").val(obj.store_name);
-    });
+    // $(document).ready(function () {
+    //     let firstCookie = getCookie("first_step");
+    //     let secondCookie = getCookie("second_step");
+    //     let thirdCookie = getCookie("third_step");
+    //     if (firstCookie === "" || secondCookie === "" || thirdCookie === "") {
+    //         alert("올바르지 않은 접근입니다.\n로그인 페이지로 이동합니다.");
+    //         deleteCookie("first_cookie");
+    //         deleteCookie("second_cookie");
+    //         deleteCookie("third_cookie");
+    //         window.location.href = '/vendor/login.do';
+    //         return false;
+    //     }
+    //     let obj = JSON.parse(thirdCookie);
+    //     $("#vendor-register-store-name").val(obj.store_name);
+    // });
 
     function getCookie(name) {
         let nameOfCookie = name + "=";
@@ -470,7 +470,7 @@
                     if (fileName !== "") {
                         $('<div class="col image-div">\n' +
                             '<div class="img-container">\n' +
-                            '<img src="' + data.target.result + '" alt style="width: 100%;height:150px;object-fit: contain">\n' +
+                            '<img src="' + data.target.result + '" alt style="width: 100%;height:150px;object-fit: fill">\n' +
                             '</div>\n' +
                             '</div>').insertBefore("#img-add-div");
                         imageIndex++;

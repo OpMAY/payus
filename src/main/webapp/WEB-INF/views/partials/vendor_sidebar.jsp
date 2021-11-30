@@ -15,9 +15,9 @@
     <i class="fa fa-caret-down"></i>
   </button>
   <div class="dropdown-container">
-    <a href="#">상점 정보</a>
-    <a href="#">상세 페이지</a>
-    <a href="#">상점 리뷰</a>
+    <a href="/vendor/store/manage/info.do">상점 정보</a>
+    <a href="/vendor/store/manage/detail.do">상세 페이지</a>
+    <a href="/vendor/store/manage/review.do">상점 리뷰</a>
   </div>
   <button class="dropdown-btn">상품 관리
     <i class="fa fa-caret-down"></i>
@@ -48,6 +48,8 @@
     <a href="#">문의 내역</a>
     <a href="#">문의 하기</a>
   </div>
+  <a href="#">회원탈퇴</a>
+  <a href="#">로그아웃</a>
 </div>
 <script type="text/javascript">
   $(function() {

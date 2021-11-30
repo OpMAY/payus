@@ -15,8 +15,13 @@ import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindRe
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreDetailInfo;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreInfo;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class VendorDao {
@@ -108,7 +113,7 @@ public class VendorDao {
         mapper.insertVendor(request);
     }
 
-    public VendorMyPageInfo getVendorInfoForMyPage(Integer vendor_no) {
+    public VendorMyPageInfo getVendorInfoForMyPage(int vendor_no) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         return mapper.getVendorInfoForMyPage(vendor_no);
     }
@@ -116,6 +121,21 @@ public class VendorDao {
     public VendorMyPageBusinessInfo getVendorBusinessInfoForMyPage(int vendor_no) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         return mapper.getVendorBusinessInfoForMyPage(vendor_no);
+    }
+
+    public VendorStoreManagementStoreInfo getVendorStoreInfoForStoreManagement(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorStoreInfoForStoreManagement(vendor_no);
+    }
+
+    public VendorStoreManagementStoreDetailInfo getVendorStoreDetailForStoreManagement(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorStoreDetailForStoreManagement(vendor_no);
+    }
+
+    public List<VendorStoreManagementReviewInfo> getVendorReviewListForStoreManagement(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorReviewListForStoreManagement(vendor_no);
     }
 
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);

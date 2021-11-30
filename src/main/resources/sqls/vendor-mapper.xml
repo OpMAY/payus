@@ -3,6 +3,17 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mvsolutions.payus.mapper.VendorMapper">
+    <resultMap id="VendorStoreManagementStoreInfo"
+               type="com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreInfo">
+        <result column="image_list" property="image_list" typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+    </resultMap>
+    <resultMap id="VendorStoreManagementStoreDetailInfo"
+               type="com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreDetailInfo">
+        <result column="service_list" property="service_list"
+                typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+        <result column="information" property="information"
+                typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+    </resultMap>
     <select id="checkVendorExists" resultType="_boolean">
         select EXISTS(select * from vendor WHERE id = #{id} AND password = #{password})
     </select>
@@ -102,5 +113,52 @@
              vendor
         WHERE vendor.vendor_no = #{vendor_no}
           AND store.vendor_no = #{vendor_no}
+    </select>
+    <select id="getVendorStoreInfoForStoreManagement" resultType="VendorStoreManagementStoreInfo"
+            resultMap="VendorStoreManagementStoreInfo">
+        select store.store_no,
+               store.image_list,
+               store.name       as store_name,
+               store.`explain`,
+               store.address,
+               store.address_x,
+               store.address_y,
+               store.address_road,
+               vendor.phone,
+               store.class_first,
+               store.class_second,
+               IF(EXISTS(select *
+                         from advertisement_store
+                         WHERE advertisement_store.store_no = store.store_no
+                           AND status = true), advertise_payback,
+                  payback_rate) as payback_rate
+        from vendor,
+             store
+                 left join advertisement_store on store.store_no = advertisement_store.store_no
+        WHERE vendor.vendor_no = #{vendor_no}
+          AND store.vendor_no = #{vendor_no}
+    </select>
+    <select id="getVendorStoreDetailForStoreManagement" resultType="VendorStoreManagementStoreDetailInfo"
+            resultMap="VendorStoreManagementStoreDetailInfo">
+        select store.store_no,
+               store.class_first,
+               store.class_second,
+               store.explain,
+               store_lodgement.service_list,
+               store_lodgement.information
+        from store,
+             store_lodgement
+        WHERE store.vendor_no = #{vendor_no}
+          AND store_lodgement.store_no = store.store_no
+    </select>
+    <select id="getVendorReviewListForStoreManagement" resultType="VendorStoreManagementReviewInfo">
+        SET @StoreNo = (select store_no
+                        from store
+                        WHERE vendor_no = #{vendor_no});
+        select review.review_no, review.content, review.rate, user.nickname, review.reg_date, review.answer_status
+        from review,
+             user
+        WHERE review.store_no = @StoreNo
+          AND user.user_no = review.user_no
     </select>
 </mapper>
