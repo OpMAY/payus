@@ -151,7 +151,7 @@
         WHERE accumulate_no = #{accumulate_no}
     </select>
     <select id="checkUserAccumulate" resultType="UserAccumulateCheckResponse">
-        select user_no, store.name, point_accumulate.reg_date, point_accumulate.point
+        select user_no, store.name as store_name, point_accumulate.reg_date, point_accumulate.point
         from point_accumulate,
              store
         WHERE status = 1

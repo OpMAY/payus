@@ -168,6 +168,8 @@
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b4cf906c03295c29420721a730a4ef0b&libraries=services"></script>
 <script>
+    import {image} from "../../../resources/static/vendors/feather-icons/feather";
+
     let imageIndex = 1;
     let mapContainer = document.getElementById("map"),
         mapOption = {
@@ -343,41 +345,127 @@
         console.log('checked');
     }
 
+    // $("#img-add-btn").on("click", function () {
+    //     console.log(imageIndex);
+    //     console.log($("#image-add-input-" + imageIndex))
+    //     $("#image-add-input-" + imageIndex).click();
+    //     //setImageFromFile("#image-add-input-" + imageIndex, "#image-add-input-" + imageIndex);
+    //
+    //     // $("#image-add-input-" + imageIndex).on("input", function () {
+    //     //     if (this.files && this.files[0]) {
+    //     //         console.log("ImageIndex before Upload : " + imageIndex);
+    //     //         let reader = new FileReader();
+    //     //         reader.onload = function (data) {
+    //     //             console.log(data);
+    //     //             $('<div class="col image-div">\n' +
+    //     //                 '<div class="img-container">\n' +
+    //     //                 '<img src="' + data.target.result + '" alt style="width: 100%;height:150px;object-fit: contain">\n' +
+    //     //                 '</div>\n' +
+    //     //                 '</div>').insertBefore("#img-add-div");
+    //     //             $('<input type="file" id="image-add-input-' + imageIndex + '" name="img" accept="image/*" hidden>').insertBefore("#img-add-div");
+    //     //         };
+    //     //         reader.readAsDataURL(this.files[0]);
+    //     //         imageIndex++;
+    //     //         console.log("ImageIndex After Upload : " + imageIndex);
+    //     //     }
+    //     // });
+    //
+    //     // // $("#image-add-input-" + imageIndex).on("click", function () {
+    //     // //
+    //     // // });
+    //     //
+    //     //
+    //     //
+    //     // document.body.onfocus = checkIt;
+    // });
 
+    console.log("#image-add-input-" + imageIndex)
 
-    $("#img-add-btn").on("click", function () {
-        console.log(imageIndex);
-
-        $("#image-add-input-" + imageIndex).click();
-
-        $("#image-add-input-" + imageIndex).on("input", function () {
-            if (this.files && this.files[0]) {
-                console.log("ImageIndex before Upload : " + imageIndex);
-                let reader = new FileReader();
-                reader.onload = function (data) {
-                    console.log(data);
-                    $('<div class="col image-div">\n' +
-                        '<div class="img-container">\n' +
-                        '<img src="' + data.target.result + '" alt style="width: 100%;height:150px;object-fit: contain">\n' +
-                        '</div>\n' +
-                        '</div>').insertBefore("#img-add-div");
-                    $('<input type="file" id="image-add-input-' + imageIndex + '" name="img" accept="image/*" hidden>').insertBefore("#img-add-div");
-                };
-                reader.readAsDataURL(this.files[0]);
-                imageIndex++;
-                console.log("ImageIndex After Upload : " + imageIndex);
-            }
-        });
-
-        // // $("#image-add-input-" + imageIndex).on("click", function () {
-        // //
-        // // });
-        //
-        //
-        //
-        // document.body.onfocus = checkIt;
-    });
-
+    $(document).on('click', "#img-add-btn", function () {
+        console.log("in")
+        $(document).on("click", "#image-add-input-"+imageIndex, function () {
+                $(document).on("change", "#image-add-input-" + imageIndex, function () {
+                    if (this.files && this.files[0]) {
+                        console.log("ImageIndex before Upload : " + imageIndex);
+                        let reader = new FileReader();
+                        reader.onload = function (data) {
+                            console.log(data);
+                            $('<div class="col image-div">\n' +
+                                '<div class="img-container">\n' +
+                                '<img src="' + data.target.result + '" alt style="width: 100%;height:150px;object-fit: contain">\n' +
+                                '</div>\n' +
+                                '</div>').insertBefore("#img-add-div");
+                            $('<input type="file" id="image-add-input-' + imageIndex + '" name="img" accept="image/*" hidden>').insertBefore("#img-add-div");
+                        };
+                        reader.readAsDataURL(this.files[0]);
+                        imageIndex++;
+                        console.log("ImageIndex After Upload : " + imageIndex);
+                    }
+                });
+        })
+    })
+    // $("#image-add-input-" + imageIndex).on("click", function () {
+    //     console.log(this)
+    //     setImageFromFile(this, "#image-add-input-" + imageIndex);
+    // });
+    // function setImageFromFile(input, expression) {
+    //     console.log(input)
+    //     console.log(expression)
+    //     if (input.files && input.files[0]) {
+    //         var reader = new FileReader();
+    //                 reader.onload = function (data) {
+    //                     console.log(data);
+    //                     $('<div class="col image-div">\n' +
+    //                         '<div class="img-container">\n' +
+    //                         '<img src="' + data.target.result + '" alt style="width: 100%;height:150px;object-fit: contain">\n' +
+    //                         '</div>\n' +
+    //                         '</div>').insertBefore("#img-add-div");
+    //
+    //                     $('<input type="file" id="image-add-input-' + imageIndex + '" name="img" accept="image/*" hidden>').insertBefore("#img-add-div");
+    //                 };
+    //         reader.readAsDataURL(input.files[0]);
+    //         imageIndex++;
+    //     }
+    // }
+    // $(document).on('click', '#img-add-btn', function () {
+    //     $("#image-add-input-" + imageIndex).click();
+    //     $("#image-add-input-" + imageIndex).on("input", function () {
+    //         if (this.files && this.files[0]) {
+    //             console.log("ImageIndex before Upload : " + imageIndex);
+    //             let reader = new FileReader();
+    //             reader.onload = function (data) {
+    //                 console.log(data);
+    //                 $('<div class="col image-div">\n' +
+    //                     '<div class="img-container">\n' +
+    //                     '<img src="' + data.target.result + '" alt style="width: 100%;height:150px;object-fit: contain">\n' +
+    //                     '</div>\n' +
+    //                     '</div>').insertBefore("#img-add-div");
+    //                 $('<input type="file" id="image-add-input-' + imageIndex + '" name="img" accept="image/*" hidden>').insertBefore("#img-add-div");
+    //             };
+    //             reader.readAsDataURL(this.files[0]);
+    //             imageIndex++;
+    //             console.log("ImageIndex After Upload : " + imageIndex);
+    //         }
+    //     });
+    // })
+    // $("#image-add-input-" + imageIndex).on("input", function () {
+    //     if (this.files && this.files[0]) {
+    //         console.log("ImageIndex before Upload : " + imageIndex);
+    //         let reader = new FileReader();
+    //         reader.onload = function (data) {
+    //             console.log(data);
+    //             $('<div class="col image-div">\n' +
+    //                 '<div class="img-container">\n' +
+    //                 '<img src="' + data.target.result + '" alt style="width: 100%;height:150px;object-fit: contain">\n' +
+    //                 '</div>\n' +
+    //                 '</div>').insertBefore("#img-add-div");
+    //             $('<input type="file" id="image-add-input-' + imageIndex + '" name="img" accept="image/*" hidden>').insertBefore("#img-add-div");
+    //         };
+    //         reader.readAsDataURL(this.files[0]);
+    //         imageIndex++;
+    //         console.log("ImageIndex After Upload : " + imageIndex);
+    //     }
+    // });
 
 
 
