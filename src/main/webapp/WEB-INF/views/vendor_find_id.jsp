@@ -45,12 +45,12 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="auth-form-wrapper px-4 py-5">
-                                <div class="row justify-content-center">
+                                <div class="row justify-content-center" style="margin-bottom: 3rem">
                                     <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0">아이디 찾기</h3>
                                 </div>
                                 <form class="forms-sample noto-font">
                                     <div class="col-12">
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin-bottom: 2rem">
                                             <label for="vendor-find-id-name">이름</label>
                                             <input class="form-control" id="vendor-find-id-name"
                                                    onkeyup="checkNameValue(false)"
@@ -63,7 +63,7 @@
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <div class="form-group" style="margin-bottom: 30px">
+                                        <div class="form-group">
                                             <label for="vendor-find-id-phone-1">연락처</label>
                                             <div class="row" style="display: flex;">
                                                 <div class="col-4" style="display: flex">
@@ -93,9 +93,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <h6 class="vendor-input-warning" id="warning-phone">연락처를 올바르게 입력해주세요.</h6>
+                                        <h6 class="vendor-input-warning" id="warning-phone" style="margin-top: 10px">연락처를 올바르게 입력해주세요.</h6>
                                     </div>
-                                    <div class="mt-3">
+                                    <div class="row" style="margin-top: 4rem">
                                         <div class="col-12">
                                             <button type="button" class="btn btn-auth-sign-in d-block" id="find_id_btn">
                                                 아이디 찾기

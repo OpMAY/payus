@@ -47,12 +47,12 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="auth-form-wrapper px-4 py-5">
-                                <div class="row" style="display: flex; align-content: center; flex-direction: column">
+                                <div class="row" style="display: flex; align-content: center; flex-direction: column; margin-bottom: 3rem">
                                     <h3 class="d-block mb-2 noto-font" style="color: #8668d0">공급자 정보 등록</h3>
                                     <span class="noto-font sub-title">사업자 정보 (3 / 4)</span>
                                 </div>
                                 <form class="forms-sample noto-font">
-                                    <div class="col-12">
+                                    <div class="col-12" style="margin-bottom: 2rem">
                                         <div class="form-group" style="position: relative">
                                             <label for="vendor-register-business-number">사업자 등록 번호</label>
                                             <input class="form-control" id="vendor-register-business-number"
@@ -60,7 +60,7 @@
                                                    oninput="this.value = this.value.replace(/[^0-9.-]/g, '').replace(/(\..*)\./g, '$1');"
                                                    onkeyup="checkCorporateRegiNumber(this.value)"
                                                    onfocus="checkCorporateRegiNumber(this.value)"
-                                                   style="height: 70px">
+                                                   style="height: 70px" autocomplete="off">
                                             <button type="button" class="btn btn-business-verify-text"
                                                     id="business-verification-button"
                                                     onclick="checkBusinessNumberValidate()"
@@ -72,14 +72,14 @@
                                                 올바른 사업자 등록 번호를 입력해주세요.</span>
                                     </div>
 
-                                    <div class="col-12">
+                                    <div class="col-12" style="margin-bottom: 2rem">
                                         <div class="form-group">
                                             <label for="vendor-register-store-name">상호 명</label>
                                             <input class="form-control" id="vendor-register-store-name"
-                                                   style="color: black;height: 70px" placeholder="상호 명을 입력해주세요."/>
+                                                   style="color: black;height: 70px" placeholder="상호 명을 입력해주세요." autocomplete="off"/>
                                         </div>
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-12" style="margin-bottom: 4rem">
                                         <div class="form-group">
                                             <label for="vendor-register-store-owner">대표자 명</label>
                                             <input class="form-control" id="vendor-register-store-owner"
@@ -105,6 +105,7 @@
         </div>
     </div>
 </div>
+<script src="/js/common.js"></script>
 <script>
     $(":input").keypress(function (e) {
         if (this.value === '')
@@ -153,13 +154,22 @@
 
     $(document).ready(function () {
         let firstCookie = getCookie("first_step");
-        if (firstCookie === "") {
-            alert("올바르지 않은 접근입니다.");
+        let secondCookie = getCookie("second_step");
+        if (firstCookie === "" || secondCookie === "") {
+            alert("올바르지 않은 접근입니다.\n로그인 페이지로 이동합니다.");
+            deleteCookie("first_step");
+            deleteCookie("second_step");
+            window.location.href = '/vendor/login.do';
+            return false;
         }
         let obj = JSON.parse(firstCookie);
         console.log(obj.name);
         $("#vendor-register-store-owner").val(obj.name);
     });
+
+    let deleteCookie = function (name) {
+        document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
+    };
 
     function checkBusinessNumberValidate() {
         let business_number = $("#vendor-register-business-number");

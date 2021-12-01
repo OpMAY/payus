@@ -46,13 +46,13 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="auth-form-wrapper px-4 py-5">
-                                <div class="row" style="display: flex; align-content: center; flex-direction: column">
+                                <div class="row" style="display: flex; align-content: center; flex-direction: column; margin-bottom: 3rem">
                                     <h3 class="d-block mb-2 noto-font" style="color: #8668d0">공급자 정보 등록</h3>
                                     <span class="noto-font sub-title"><strong>계좌 정보 (2 / 4)</strong></span>
                                 </div>
                                 <form class="forms-sample noto-font">
                                     <div class="col-12">
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin-bottom: 2rem">
                                             <label for="vendor-register-store-bank-name">은행</label>
                                             <select class="form-control" id="vendor-register-store-bank-name"
                                                     style="color: black;height: 70px">
@@ -86,14 +86,14 @@
                                                 <option>한국증권금융</option>
                                             </select>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin-bottom: 2rem">
                                             <label for="vendor-register-store-bank-account">계좌</label>
                                             <input class="form-control" id="vendor-register-store-bank-account"
                                                    oninput="this.value = this.value.replace(/[^0-9.-]/g, '').replace(/(\..*)\./g, '$1');"
                                                    style="color: black;height: 70px" placeholder="계좌 번호를 입력하세요."
                                                    autocomplete="off"/>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin-bottom: 4rem">
                                             <label for="vendor-register-store-bank-owner">예금주</label>
                                             <input class="form-control" id="vendor-register-store-bank-owner"
                                                    style="color: black;height: 70px" placeholder="예금주를 입력하세요."
@@ -118,11 +118,21 @@
         </div>
     </div>
 </div>
+<script src="/js/common.js"></script>
 <script>
     $(":input").keypress(function (e) {
         if (this.value === '')
             if (e.keyCode === 32)
                 e.preventDefault();
+    });
+
+    $(document).ready(function () {
+        let firstCookie = getCookie("first_step");
+        if (firstCookie === "") {
+            alert("올바르지 않은 접근입니다.\n로그인 페이지로 이동합니다.");
+            window.location.href = '/vendor/login.do';
+            return false;
+        }
     });
 
     function getCookie(name) {
@@ -141,6 +151,10 @@
         }
         return "";
     }
+
+    let deleteCookie = function (name) {
+        document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
+    };
 
     function bankCheck() {
         let first_cookie = getCookie('first_step');

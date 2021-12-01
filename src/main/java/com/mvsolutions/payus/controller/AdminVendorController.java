@@ -1,6 +1,11 @@
 package com.mvsolutions.payus.controller;
 
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
+import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
+import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreDetailInfo;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreInfo;
 import com.mvsolutions.payus.service.VendorAdminService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Controller
 @Log4j
@@ -101,4 +107,75 @@ public class AdminVendorController {
         }
         return VIEW;
     }
+
+    @RequestMapping("/login/fail/validation.do")
+    public ModelAndView VendorNotValidatedPage() {
+        VIEW = new ModelAndView("vendor_not_valid");
+        return VIEW;
+    }
+
+    @RequestMapping("/login/fail/rejected.do")
+    public ModelAndView VendorRejectedPage() {
+        VIEW = new ModelAndView("vendor_rejected");
+        VIEW.addObject("reject", "반려 사유");
+        return VIEW;
+    }
+
+    @RequestMapping("/terms/personal.do")
+    public ModelAndView PersonalTermsPage() {
+        VIEW = new ModelAndView("personal_term");
+        return VIEW;
+    }
+
+    @RequestMapping("/terms/service.do")
+    public ModelAndView ServiceTermsPage() {
+        VIEW = new ModelAndView("service_term");
+        return VIEW;
+    }
+
+    @RequestMapping("/mypage/vendor.do")
+    public ModelAndView MyPageVendorPage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_mypage_1");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        VendorMyPageInfo info = vendorAdminService.getVendorInfoForMyPage(vendor_no);
+        VIEW.addObject("vendor", info);
+        return VIEW;
+    }
+
+    @RequestMapping("/mypage/business.do")
+    public ModelAndView MyPageBusinessPage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_mypage_2");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        VendorMyPageBusinessInfo info = vendorAdminService.getVendorBusinessInfoForMyPage(vendor_no);
+        VIEW.addObject("vendor", info);
+        return VIEW;
+    }
+
+    @RequestMapping("/store/manage/info.do")
+    public ModelAndView StoreManagementInformationPage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_store_management_1");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        VendorStoreManagementStoreInfo info = vendorAdminService.getVendorStoreInfoForStoreManagement(vendor_no);
+        VIEW.addObject("store", info);
+        return VIEW;
+    }
+
+    @RequestMapping("/store/manage/detail.do")
+    public ModelAndView StoreManagementDetailPage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_store_management_2");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        VendorStoreManagementStoreDetailInfo info = vendorAdminService.getVendorStoreDetailForStoreManagement(vendor_no);
+        VIEW.addObject("store", info);
+        return VIEW;
+    }
+
+    @RequestMapping("/store/manage/review.do")
+    public ModelAndView StoreManagementReviewListPage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_store_management_3");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        List<VendorStoreManagementReviewInfo> reviewList = vendorAdminService.getVendorReviewListForStoreManagement(vendor_no);
+        VIEW.addObject("review", reviewList);
+        return VIEW;
+    }
+
 }

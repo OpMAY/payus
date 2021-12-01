@@ -45,11 +45,11 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="auth-form-wrapper px-4 py-5">
-                                <div class="row justify-content-center">
+                                <div class="row justify-content-center" style="margin-bottom: 3rem">
                                     <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0">비밀번호 재설정</h3>
                                 </div>
                                 <form class="forms-sample noto-font">
-                                    <div class="col-12">
+                                    <div class="col-12" style="margin-bottom: 2rem">
                                         <div class="form-group">
                                             <label for="vendor-reset-password-id">아이디</label>
                                             <input class="form-control" id="vendor-reset-password-id" value="${id}"
@@ -58,7 +58,7 @@
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin-bottom: 2rem">
                                             <label for="vendor-reset-password">새 비밀번호</label>
                                             <input class="form-control" id="vendor-reset-password"
                                                    placeholder="새로운 비밀번호를 입력하세요." type="password"
@@ -66,7 +66,7 @@
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <div class="form-group">
+                                        <div class="form-group" style="margin-bottom: 2rem">
                                             <label for="vendor-reset-password-check">새 비밀번호 확인</label>
                                             <input class="form-control" id="vendor-reset-password-check"
                                                    placeholder="새로운 비밀번호를 입력하세요." type="password"

@@ -45,12 +45,12 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="auth-form-wrapper px-4 py-5">
-                                <div class="row justify-content-center">
+                                <div class="row justify-content-center" style="margin-bottom: 3rem">
                                     <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0">아이디 찾기 결과</h3>
                                 </div>
                                 <form class="forms-sample noto-font">
                                     <div class="col-12">
-                                        <div class="form-group" style="position: relative">
+                                        <div class="form-group" style="position: relative; margin-bottom: 4rem">
                                             <label for="vendor-result-id">아이디</label>
                                             <input class="form-control" id="vendor-result-id"
                                                    value="${id}"
@@ -64,7 +64,7 @@
                                     </div>
                                     <div class="mt-3">
                                         <div class="col-12">
-                                            <button type="button" class="btn btn-auth-sign-in d-block"
+                                            <button type="button" class="btn btn-auth-sign-in d-block" style="margin-bottom: 1rem"
                                                     onclick="window.location.href = '/vendor/login.do';">
                                                 로그인 하러가기
                                             </button>

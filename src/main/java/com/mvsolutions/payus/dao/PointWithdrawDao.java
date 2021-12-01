@@ -43,5 +43,10 @@ public class PointWithdrawDao {
         return mapper.checkWithdrawRejected(withdraw_no);
     }
 
+    public boolean checkUserUnreadExists(int user_no) {
+        PointWithdrawMapper mapper = sqlSession.getMapper(PointWithdrawMapper.class);
+        return mapper.checkUserUnreadExists(user_no);
+    }
+
 //    private PointWithdrawMapper mapper = sqlSession.getMapper(PointWithdrawMapper.class);
 }

@@ -99,19 +99,26 @@
         AND class_first = #{class_first}
         <if test="class_second != 0">AND class_second = #{class_second}</if>
         <choose>
-            <when test="order_type = 1">
-                ORDER BY store.star_rate DESC, store_no DESC, store.reg_date DESC
+            <when test="order_type == 1">
+                ORDER BY store.star_rate DESC, store_no DESC
             </when>
-            <when test="order_type = 2">
-                ORDER BY payback_rate DESC, store_no DESC, store.reg_date DESC
+            <when test="order_type == 2">
+                ORDER BY payback_rate DESC, store_no DESC
             </when>
-            <when test="order_type = 3">
-                ORDER BY store.review_num DESC, store_no DESC, store.reg_date DESC
+            <when test="order_type == 3">
+                ORDER BY store.review_num DESC, store_no DESC
             </when>
         </choose>
         LIMIT 10
     </select>
     <select id="getStoreListForSubMainReload" resultType="SubMainPageStoreResponse">
+        SET @StarRate = (select star_rate from store WHERE store_no = #{last_index});
+        SET @PaybackRate = (select IF(EXISTS(select *
+        from advertisement_store
+        WHERE advertisement_store.store_no = #{last_index} AND status = true), advertise_payback,
+        payback_rate) as payback_rate from store left join advertisement_store on store.store_no =
+        advertisement_store.store_no WHERE store.store_no = #{last_index});
+        SET @ReviewNum = (select review_num from store WHERE store_no = #{last_index});
         select store.store_no,
         class_first,
         class_second,
@@ -129,16 +136,38 @@
         WHERE (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
         sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[<=]]> 100
         AND class_first = #{class_first}
+        <choose>
+            <when test="order_type == 1">
+                AND (store.star_rate <![CDATA[<]]> @StarRate OR (store.star_rate <![CDATA[=]]> @StarRate AND
+                store.store_no
+                <![CDATA[<]]> #{last_index}))
+            </when>
+            <when test="order_type == 2">
+                AND (IF(EXISTS(select *
+                from advertisement_store
+                WHERE advertisement_store.store_no = store.store_no AND status = true), advertise_payback,
+                payback_rate) <![CDATA[<]]> @PaybackRate OR (IF(EXISTS(select *
+                from advertisement_store
+                WHERE advertisement_store.store_no = store.store_no AND status = true), advertise_payback,
+                payback_rate) <![CDATA[=]]> @PaybackRate AND store.store_no
+                <![CDATA[<]]> #{last_index}))
+            </when>
+            <when test="order_type == 3">
+                AND (store.review_num <![CDATA[<]]> @ReviewNum OR (store.review_num <![CDATA[=]]> @ReviewNum AND
+                store.store_no
+                <![CDATA[<]]> #{last_index}))
+            </when>
+        </choose>
         <if test="class_second != 0">AND class_second = #{class_second}</if>
         <choose>
-            <when test="order_type = 1">
-                ORDER BY store.star_rate DESC, store_no DESC, store.reg_date DESC
+            <when test="order_type == 1">
+                ORDER BY store.star_rate DESC, store_no DESC
             </when>
-            <when test="order_type = 2">
-                ORDER BY payback_rate DESC, store_no DESC, store.reg_date DESC
+            <when test="order_type == 2">
+                ORDER BY payback_rate DESC, store_no DESC
             </when>
-            <when test="order_type = 3">
-                ORDER BY store.review_num DESC, store_no DESC, store.reg_date DESC
+            <when test="order_type == 3">
+                ORDER BY store.review_num DESC, store_no DESC
             </when>
         </choose>
         LIMIT 10
@@ -243,4 +272,14 @@
         from store
         WHERE store_no = @StoreNo
     </select>
+    <insert id="registerStore">
+        insert into store(vendor_no, class_first, class_second, name, phone, payback_rate, address, address_x,
+                          address_y,
+                          address_1depth, address_2depth, address_3depth, address_short, address_road, thumbnail,
+                          image_list, reg_date)
+        VALUES (#{vendor_no}, #{class_first}, #{class_second}, #{name}, #{phone}, #{payback_rate}, #{address},
+                #{address_x},
+                #{address_y}, #{address_1depth}, #{address_2depth}, #{address_3depth}, #{address_short},
+                #{address_road}, #{thumbnail}, #{image_list}, #{reg_date})
+    </insert>
 </mapper>

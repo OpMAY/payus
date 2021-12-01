@@ -4,6 +4,7 @@ import com.mvsolutions.payus.mapper.UserMapper;
 import com.mvsolutions.payus.model.rest.basic.User;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserPointWithdrawRequest;
+import com.mvsolutions.payus.model.rest.request.usermypage.UserResignRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.user.UserLoginResponse;
 import com.mvsolutions.payus.model.rest.response.mainpage.MainPageUser;
 import com.mvsolutions.payus.model.rest.response.suppointpage.PaybackUserDataResponse;
@@ -161,5 +162,10 @@ public class UserDao {
     public String getUserFCMToken(int user_no) {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         return mapper.getUserFCMToken(user_no);
+    }
+
+    public void resignUser(UserResignRequest request) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        mapper.resignUser(request);
     }
 }

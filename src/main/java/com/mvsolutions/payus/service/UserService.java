@@ -8,6 +8,7 @@ import com.mvsolutions.payus.model.rest.basic.User;
 import com.mvsolutions.payus.model.rest.request.loginpage.user.UserLoginRequest;
 import com.mvsolutions.payus.model.rest.request.loginpage.user.UserRegisterRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserPersonalDataEditRequest;
+import com.mvsolutions.payus.model.rest.request.usermypage.UserResignRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.user.UserLoginResponse;
 import com.mvsolutions.payus.model.rest.response.loginpage.user.UserPenaltyResponse;
 import com.mvsolutions.payus.model.rest.response.loginpage.user.UserRegisterResponse;
@@ -208,5 +209,12 @@ public class UserService {
                 return new ResponseEntity(StringRes.res(StatusCode.USER_EDIT_TYPE_ERROR), HttpStatus.OK);
         }
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("editUserPersonalData()")), HttpStatus.OK);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ResponseEntity resignUser(UserResignRequest request) {
+        userDao.setSqlSession(sqlSession);
+        userDao.resignUser(request);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
     }
 }

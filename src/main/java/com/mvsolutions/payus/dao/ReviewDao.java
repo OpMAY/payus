@@ -89,5 +89,10 @@ public class ReviewDao {
         return mapper.getStoreNoByReviewNo(review_no);
     }
 
+    public int getReviewNumByUserNo(int user_no) {
+        ReviewMapper mapper = sqlSession.getMapper(ReviewMapper.class);
+        return mapper.getReviewNumByUserNo(user_no);
+    }
+
 //    private ReviewMapper mapper = sqlSession.getMapper(ReviewMapper.class);
 }

@@ -123,7 +123,7 @@
         update user
         SET event_push = @EventPush
         WHERE user_no = #{user_no}
-        <selectKey keyColumn="event_push" resultType="_boolean" order="AFTER">
+        <selectKey keyColumn="event_push" resultType="_boolean" order="AFTER" statementType="CALLABLE">
             select event_push from user WHERE user_no = #{user_no}
         </selectKey>
     </update>
@@ -168,7 +168,7 @@
         SET marketing_agree = @MarketingAgree,
         event_push = @MarketingAgree
         WHERE user_no = #{user_no}
-        <selectKey keyColumn="marketing_agree" resultType="_boolean" order="AFTER">
+        <selectKey keyColumn="marketing_agree" resultType="java.lang.Boolean" order="AFTER">
             select marketing_agree from user WHERE user_no = #{user_no}
         </selectKey>
     </update>
@@ -180,4 +180,9 @@
         from user
         WHERE user_no = #{user_no}
     </select>
+    <delete id="resignUser">
+        delete
+        from user
+        WHERE user_no = #{user_no}
+    </delete>
 </mapper>

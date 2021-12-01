@@ -91,6 +91,7 @@ public class ReviewService {
     public ResponseEntity deleteReviewByUser(UserReviewDeleteRequest request) {
         reviewDao.setSqlSession(sqlSession);
         pointAccumulateDao.setSqlSession(sqlSession);
+        storeDao.setSqlSession(sqlSession);
         if (!reviewDao.checkReviewExists(request.getReview_no())) {
             // 이미 삭제된 리뷰를 삭제하려고 하는 경우 D404
             return new ResponseEntity(StringRes.res(StatusCode.DELETED_CONTENT), HttpStatus.OK);
@@ -105,7 +106,12 @@ public class ReviewService {
         // 별점 총합 / 리뷰 갯수 = 평균 별점
         int rateSum = reviewDao.getReviewRateSum(store_no);
         int reviewNum = reviewDao.getStoreReviewNum(store_no);
-        float rateAvg = (float) rateSum / reviewNum;
+        float rateAvg;
+        if (reviewNum != 0) {
+            rateAvg = (float) rateSum / reviewNum;
+        } else {
+            rateAvg = 0;
+        }
         // 리뷰 갯수 적용
         storeDao.updateStoreByReview(store_no, reviewNum, rateAvg);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
@@ -148,6 +154,10 @@ public class ReviewService {
     public ResponseEntity getUserReviewList(int user_no) throws JSONException {
         Message message = new Message();
         reviewDao.setSqlSession(sqlSession);
+        // 리뷰 총 갯수
+        int review_num = reviewDao.getReviewNumByUserNo(user_no);
+        message.put("review_num", review_num);
+
         // 전체, 응답, 미응답 순
         List<UserMyReviewResponse> allReviewList = reviewDao.getUserMyReviewList(user_no, ReviewListType.ALL);
         List<UserMyReviewResponse> answeredReviewList = reviewDao.getUserMyReviewList(user_no, ReviewListType.ANSWERED);

@@ -346,6 +346,11 @@ public class PointService {
         List<UserPointWithdrawListResponse> withdrawList = pointWithdrawDao.getUserPointWithdrawList(user_no);
         message.put("accumulate", accumulateList);
         message.put("withdraw", withdrawList);
+        if (pointAccumulateDao.checkUserUnreadExists(user_no) || pointWithdrawDao.checkUserUnreadExists(user_no)) {
+            message.put("read_check", true);
+        } else {
+            message.put("read_check", false);
+        }
         if (accumulateList.size() > 0) {
             // 해당 데이터들 읽기 여부 업데이트 - 후처리
             pointAccumulateDao.updateUserReadCheck(accumulateList);
@@ -356,6 +361,8 @@ public class PointService {
             pointWithdrawDao.updateUserReadCheck(withdrawList);
             message.put("last_index2", withdrawList.get(withdrawList.size() - 1).getWithdraw_no());
         }
+
+
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("GetUserPointListPage()")), HttpStatus.OK);
     }
 
@@ -364,6 +371,11 @@ public class PointService {
         Message message = new Message();
         pointAccumulateDao.setSqlSession(sqlSession);
         pointWithdrawDao.setSqlSession(sqlSession);
+        if (pointAccumulateDao.checkUserUnreadExists(user_no) || pointWithdrawDao.checkUserUnreadExists(user_no)) {
+            message.put("read_check", true);
+        } else {
+            message.put("read_check", false);
+        }
         if (reload_type == 1) {
             List<UserPointAccumulateListResponse> accumulateList = pointAccumulateDao.getUserPointAccumulateListReload(user_no, last_index);
             // 읽기 여부 후처리
@@ -387,7 +399,7 @@ public class PointService {
     @Transactional(readOnly = true)
     public ResponseEntity getUserPointRejectReason(int content_type, int content_no) throws JSONException {
         Message message = new Message();
-        if(content_type == 1) {
+        if (content_type == 1) {
             pointAccumulateDao.setSqlSession(sqlSession);
             pointAccumulateCancelDao.setSqlSession(sqlSession);
             if (!pointAccumulateDao.checkAccumulateCanceled(content_no)) {

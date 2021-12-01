@@ -9,6 +9,7 @@ import com.mvsolutions.payus.model.rest.response.payushome.StoreMapSearchRespons
 import com.mvsolutions.payus.model.rest.response.payushome.SubMainPageStoreResponse;
 import com.mvsolutions.payus.model.rest.response.storedetailpage.StoreDetailPageResponse;
 import com.mvsolutions.payus.model.rest.response.suppointpage.PointStoreDataResponse;
+import com.mvsolutions.payus.model.web.vendor.request.auth.StoreRegisterRequest;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -59,9 +60,9 @@ public class StoreDao {
         return mapper.getStoreListForSubMain(x, y, class_first, order_type, class_second);
     }
 
-    public List<SubMainPageStoreResponse> getStoreListForSubMainReload(double x, double y, int class_first, int class_second, int order_type) {
+    public List<SubMainPageStoreResponse> getStoreListForSubMainReload(double x, double y, int class_first, int class_second, int order_type, int last_index) {
         StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
-        return mapper.getStoreListForSubMainReload(x, y, class_first, order_type, class_second);
+        return mapper.getStoreListForSubMainReload(x, y, class_first, order_type, class_second, last_index);
     }
 
     public List<StoreKeywordSearchResponse> searchByKeywords(double x, double y, String keyword, int last_index) {
@@ -92,5 +93,10 @@ public class StoreDao {
     public String getStoreNameByAccumulateNo(int accumulate_no) {
         StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
         return mapper.getStoreNameByAccumulateNo(accumulate_no);
+    }
+
+    public void registerStore(StoreRegisterRequest storeRegisterRequest) {
+        StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
+        mapper.registerStore(storeRegisterRequest);
     }
 }

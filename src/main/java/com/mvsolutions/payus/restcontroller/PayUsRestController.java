@@ -323,6 +323,13 @@ public class PayUsRestController {
         return userService.editUserPersonalData(request);
     }
 
+    /** UserEditPage#003 **/
+    @RequestMapping(value = "/api/user/mypage/resign", method = RequestMethod.POST)
+    public ResponseEntity UserResign(@RequestBody String body) {
+        UserResignRequest request = new Gson().fromJson(body, UserResignRequest.class);
+        return userService.resignUser(request);
+    }
+
     /**
      * UserPointPage#001
      **/
@@ -580,9 +587,11 @@ public class PayUsRestController {
     /**
      * ShopReportPage#001
      **/
-    @RequestMapping(value = "/api/store/report", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/store/report", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity ReportStore(HttpServletRequest request, @RequestParam("report") String body) throws IOException {
         StoreReportRequest reportRequest = new Gson().fromJson(body, StoreReportRequest.class);
+        log.info(body);
+        log.info(reportRequest);
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
         Map<String, MultipartFile> fileMap = multipartHttpServletRequest.getFileMap();
         Iterator<String> keys = fileMap.keySet().iterator();
@@ -591,6 +600,7 @@ public class PayUsRestController {
         while (keys.hasNext()) {
             String key = keys.next();
             if (key.contains("image")) {
+                log.info("file : " + fileMap.get(key));
                 String path = fileUploadUtility.uploadFile("api/images/report/store/" + reportRequest.getStore_no() + "/" + time + "/", fileMap.get(key).getOriginalFilename(), fileMap.get(key).getBytes(), Constant.AWS_SAVE);
                 imageList.add(path);
             }

@@ -161,12 +161,13 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label class="container" style="margin-bottom: 15px">
-                                                <a onclick="alert('A 태그')" class="noto-font payus-atag"><u>[필수] 서비스 이용약관</u></a>
+                                                <a href="/vendor/terms/service.do" target="_blank" class="noto-font payus-atag"><u>[필수] 서비스
+                                                    이용약관</u></a>
                                                 <input type="checkbox" id="service-agree"/>
                                                 <span class="checkmark"></span>
                                             </label>
                                             <label class="container">
-                                                <a onclick="alert('A 태그')" class="noto-font payus-atag"><u>[필수] 개인정보 처리
+                                                <a href="/vendor/terms/personal.do" target="_blank" class="noto-font payus-atag"><u>[필수] 개인정보 처리
                                                     방침</u></a>
                                                 <input type="checkbox" id="personal-agree"/>
                                                 <span class="checkmark"></span>
@@ -176,10 +177,10 @@
                                     <div class="mt-3">
                                         <div class="col-12">
                                             <button type="button" class="btn btn-auth-sign-in d-block"
-                                                    onclick="submitRegister()">
+                                                    onclick="if(confirm('다음 페이지로 넘어가시겠습니까?')){submitRegister()} else {return false;}">
                                                 다음
                                             </button>
-                                            <button type="button" class="btn btn-back d-block"
+                                            <button type="button" class="btn btn-grey d-block"
                                                     onclick="window.location.href = '/vendor/login.do'">
                                                 뒤로 가기
                                             </button>
@@ -200,7 +201,6 @@
     let validated = false;
     let setTime = 299;
     let timeInstance;
-
 
 
     function timer() {
@@ -248,7 +248,7 @@
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(data)
             }).done(function (result) {
-                // if(result.validation_code !== ""){
+                if (result.validation_code !== "") {
                     alert("인증 메일이 발송되었습니다.");
                     setCookie("validation_code", result.validation_code, 310);
                     email.disabled = true;
@@ -256,10 +256,10 @@
                     document.getElementById("email-verification-button").setAttribute("style", "display :block");
                     document.getElementById("password-verification-button").setAttribute("disabled", "disabled");
                     timerInstance = setInterval(timer, 1000);
-                // } else {
-                //     alert("이미 등록된 이메일입니다.");
-                //     return false;
-                // }
+                } else {
+                    alert("이미 등록된 이메일입니다.");
+                    return false;
+                }
             }).fail(function (error) {
                 console.log(error);
             });
@@ -270,7 +270,7 @@
         let exdate = new Date();
         exdate.setDate(exdate.getSeconds() + seconds);
 
-        let cookie_value = escape(value) + ((seconds == null) ? '' : '; expires=' + exdate.toUTCString());
+        let cookie_value = escape(value) + ((seconds == null) ? '' : '; expires=' + exdate.toUTCString()) + ';path=/';
         document.cookie = cookie_name + '=' + cookie_value;
     }
 
@@ -306,12 +306,13 @@
     }
 
     $(document).ready(function () {
-
+        console.log("Vendor Register First Step");
     });
 
-    // window.onbeforeunload = function (e) {
-    //     return 0;
-    // };
+    window.onbeforeunload = function (e) {
+        deleteCookie("validation_code");
+        return 0;
+    };
 
 
     function submitRegister() {
@@ -347,8 +348,13 @@
         let phone = $("#vendor-register-phone-1").val() + $("#vendor-register-phone-2").val() + $("#vendor-register-phone-3").val();
         let data = {"email": email, "password": password, "name": name, "phone": phone};
         setCookie("first_step", JSON.stringify(data), 9999);
+        deleteCookie("validation_code");
         window.location.href = "/vendor/register/bank.do";
     }
+
+    let deleteCookie = function (name) {
+        document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
+    };
 
     function checkNameValue(send) {
         let name = document.getElementById('vendor-register-name');

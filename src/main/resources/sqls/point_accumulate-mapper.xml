@@ -170,4 +170,7 @@
         from point_accumulate
         WHERE accumulate_no = #{content_no}
     </select>
+    <select id="checkUserUnreadExists" resultType="_boolean">
+        select IF(EXISTS(select * from point_accumulate WHERE user_no = #{user_no} AND user_read_check = false), TRUE, FALSE);
+    </select>
 </mapper>

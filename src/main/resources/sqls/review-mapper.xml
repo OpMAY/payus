@@ -127,7 +127,7 @@
         LIMIT 10
     </select>
     <select id="getStoreReviewNum" resultType="int">
-        select COUNT(*)
+        select IFNULL(COUNT(*), 0)
         from review
         WHERE store_no = #{store_no}
     </select>
@@ -136,8 +136,7 @@
             SET @RegDate = (select reg_date from review WHERE review_no = #{last_index});
         </if>
         select review_no,
-        store.name as store_name,
-        user.nickname,
+        user.nickname as user_name,
         review.reg_date,
         review.content,
         rate,
@@ -146,17 +145,16 @@
         answer_content,
         answer_date
         from review,
-        store,
         user
-        WHERE review.store_no = #{store_no}
+        WHERE review.store_no = #{store_no} AND user.user_no = review.user_no
         <if test="last_index != 0">
-            AND review.reg_date <![CDATA[<]]> @RegDate OR (review.reg_date <![CDATA[=]]>
-            AND review_no <![CDATA[<]]> #{last_index})
+            AND (review.reg_date <![CDATA[<]]> @RegDate OR (review.reg_date <![CDATA[=]]> @RegDate
+            AND review_no <![CDATA[<]]> #{last_index}))
         </if>
         ORDER BY review.reg_date DESC, review_no DESC LIMIT 10
     </select>
     <select id="getReviewRateSum" resultType="int">
-        select SUM(rate)
+        select IFNULL(SUM(rate), 0)
         from review
         WHERE store_no = #{store_no}
     </select>
@@ -164,5 +162,10 @@
         select store_no
         from review
         WHERE review_no = #{review_no}
+    </select>
+    <select id="getReviewNumByUserNo" resultType="int">
+        select COUNT(*)
+        from review
+        WHERE user_no = #{user_no}
     </select>
 </mapper>
