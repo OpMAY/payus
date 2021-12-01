@@ -243,7 +243,7 @@ public class MainPageService {
         double y = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getY());
 
         // 페이백률 정렬에 따른 데이터 설정 따로 필요
-        List<SubMainPageStoreResponse> storeList = storeDao.getStoreListForSubMainReload(x, y, class_first, class_second, order_type);
+        List<SubMainPageStoreResponse> storeList = storeDao.getStoreListForSubMainReload(x, y, class_first, class_second, order_type, last_index);
         message.put("store", storeList);
         if (storeList.size() > 0)
             message.put("last_index", storeList.get(storeList.size() - 1).getStore_no());

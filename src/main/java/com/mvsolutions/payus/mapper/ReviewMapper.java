@@ -36,4 +36,6 @@ public interface ReviewMapper {
     int getReviewRateSum(int store_no);
 
     int getStoreNoByReviewNo(int review_no);
+
+    int getReviewNumByUserNo(int user_no);
 }

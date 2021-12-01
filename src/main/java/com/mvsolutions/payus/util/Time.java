@@ -5,11 +5,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Time에 관련된 Class
  */
 public class Time {
+
+    public static TimeZone timeZone = TimeZone.getTimeZone("Asia/Seoul");
 
     /**
      * @return 현재 시간 FORM에 맞춰 리턴
@@ -20,39 +23,46 @@ public class Time {
     public static String TimeFormatHMS() {
         Date now = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        dateFormat.setTimeZone(timeZone);
         return dateFormat.format(now);
     }
 
     public static String TimeForFile() {
         Date now = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        dateFormat.setTimeZone(timeZone);
         return dateFormat.format(now);
     }
 
     public static String TimeFormatNoSpecialCharacter() {
         Date now = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss");
+        dateFormat.setTimeZone(timeZone);
         return dateFormat.format(now);
     }
 
     public static String TimeFormatter(Date date) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat.setTimeZone(timeZone);
         return dateFormat.format(date);
     }
 
     public static String TimeFormatterHMS(Date date) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        dateFormat.setTimeZone(timeZone);
         return dateFormat.format(date);
     }
 
     public static String TimeFormatterDay(Date date) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setTimeZone(timeZone);
         return dateFormat.format(date);
     }
 
     public static String TimeFormatDay() {
         Date now = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setTimeZone(timeZone);
         return dateFormat.format(now);
     }
 

@@ -7,49 +7,49 @@
     font-family: 'SCDream';
     font-style: normal;
     font-weight: 300;
-    src: local('SCDream'), url('../resources/static/fonts/scdream/SCDream3.otf') format('truetype');
+    src: local('SCDream'), url('/fonts/scdream/SCDream3.otf') format('truetype');
 }
 
 @font-face {
     font-family: 'SCDream';
     font-style: normal;
     font-weight: normal;
-    src: local('SCDream'), url('../resources/static/fonts/scdream/SCDream4.otf') format('truetype');
+    src: local('SCDream'), url('/fonts/scdream/SCDream4.otf') format('truetype');
 }
 
 @font-face {
     font-family: 'SCDream';
     font-style: normal;
     font-weight: 500;
-    src: local('SCDream'), url('../resources/static/fonts/scdream/SCDream5.otf') format('truetype');
+    src: local('SCDream'), url('/fonts/scdream/SCDream5.otf') format('truetype');
 }
 
 @font-face {
     font-family: 'SCDream';
     font-style: normal;
     font-weight: bold;
-    src: local('SCDream'), url('../resources/static/fonts/scdream/SCDream6.otf') format('truetype');
+    src: local('SCDream'), url('/fonts/scdream/SCDream6.otf') format('truetype');
 }
 
 @font-face {
     font-family: 'SCDream';
     font-style: normal;
     font-weight: 700;
-    src: local('SCDream'), url('../resources/static/fonts/scdream/SCDream7.otf') format('truetype');
+    src: local('SCDream'), url('/fonts/scdream/SCDream7.otf') format('truetype');
 }
 
 @font-face {
     font-family: 'SCDream';
     font-style: normal;
     font-weight: 800;
-    src: local('SCDream'), url('../resources/static/fonts/scdream/SCDream8.otf') format('truetype');
+    src: local('SCDream'), url('/fonts/scdream/SCDream8.otf') format('truetype');
 }
 
 @font-face {
     font-family: 'SCDream';
     font-style: normal;
     font-weight: 900;
-    src: local('SCDream'), url('../resources/static/fonts/scdream/SCDream9.otf') format('truetype');
+    src: local('SCDream'), url('/fonts/scdream/SCDream9.otf') format('truetype');
 }
 
 /*SC Dream End*/
@@ -334,6 +334,40 @@ h1, h2, h3, h4, h5, h6, span, div, section, i, b, small, input, button {
     height: 30px;
 }
 
+.btn-payus-table {
+    color: rgba(109, 41, 208, 0.7);
+    font-family: 'SCDream', sans-serif;
+    /*background-color: rgba(109, 41, 208, 0.7);*/
+    /*border-color: transparent;*/
+    font-size: 1rem;
+    width: 100%;
+    padding: 10px 0;
+    font-weight: 500;
+    border: 2px solid rgba(109, 41, 208, 0.7);
+}
+
+.btn-payus-table:hover {
+    color: rgba(109, 41, 208, 0.7) !important;
+    opacity: 0.7;
+}
+
+.btn-payus-table-report:hover {
+    color: rgba(255, 56, 69, 0.8) !important;
+    opacity: 0.7;
+}
+
+.btn-payus-table-report {
+    color: rgba(255, 56, 69, 0.8);
+    font-family: 'SCDream', sans-serif;
+    /*background-color: rgba(255, 56, 69, 0.8);*/
+    /*border-color: transparent;*/
+    font-size: 1rem;
+    width: 100%;
+    padding: 10px 0;
+    font-weight: 500;
+    border: 2px solid rgba(255, 56, 69, 0.8);
+}
+
 .btn-payus {
     color: white;
     font-family: 'SCDream', sans-serif;
@@ -397,6 +431,21 @@ h1, h2, h3, h4, h5, h6, span, div, section, i, b, small, input, button {
     font-family: 'SCDream', sans-serif !important;
     border-color: transparent;
     border-radius: 5px;
+}
+
+.payus-modal-textarea {
+    display: block;
+    line-height: 150%;
+    padding: 15px;
+    width: 100%;
+    font-size: 15px;
+    font-family: 'SCDream', sans-serif !important;
+    border-radius: 5px;
+}
+
+.payus-modal-textarea-form {
+    padding: 0 1rem;
+    margin-bottom: 1rem;
 }
 
 .payus-terms-textarea {
@@ -481,31 +530,7 @@ h1, h2, h3, h4, h5, h6, span, div, section, i, b, small, input, button {
     color: #FAFAFA;
 }
 
-.payus-modal {
-    display: block;
-    position: relative;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    font-family: 'Noto Sans KR', sans-serif;
-    border-radius: 0;
-    box-shadow: 5px 10px 10px 1px rgba(0, 0, 0, .3);
-}
 
-.payus-modal .content {
-    width: 30%;
-    margin: 100px auto;
-    padding: 20px 10px;
-    background: #ffffff;
-    border: 1px solid black;
-}
-
-.payus-modal .content .header {
-    display: flex;
-    justify-content: center;
-    border-bottom: 1px solid grey;
-    margin-bottom: 10px;
-}
 
 input:disabled {
     background-color: #f6f7f7 !important;
@@ -517,66 +542,63 @@ input:read-only {
     border: transparent;
 }
 
-.payus-modal .content .header .title {
-    margin-bottom: 10px;
-    font-family: 'Do Hyeon', sans-serif;
-    font-weight: 400;
-    font-size: 30px;
-}
-
-.payus-modal .content .body .title {
-    margin-bottom: 10px;
-    display: block;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-weight: bold;
-    font-size: 15px;
-    text-align: center;
-}
-
-.payus-modal .content .body .service-options {
-    margin-left: 10px;
-}
-
-.payus-modal .content .body .service-options .option-list {
-    display: flex;
-}
-
-.payus-modal .content .body .service-options .option-list .service-option {
-    font-weight: bold;
-    word-break: keep-all;
-}
-
-.payus-modal .content .body .service-options .option-list .option-area {
-    flex: 0 0 25%;
-    max-width: 25%;
-}
-
-.payus-modal .content .body .service-options .service-topic {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-weight: bold;
-    font-size: 20px;
-}
-
-.payus-modal .content .body {
-}
-
-.payus-modal .content .payus-modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    border-top: 1px solid black;
-    padding-top: 10px;
-    margin-top: 10px;
-}
-
-.payus-modal .payus-modal-layer {
+.payus-modal {
     position: fixed;
     top: 0;
     left: 0;
+
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: -1;
+
+    display: none;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.4);
 }
+
+img {
+    cursor: pointer;
+}
+
+.payus-modal.show {
+    display: block !important;
+}
+
+.payus-modal .modal-body {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+
+    width: 50%;
+    height: 70%;
+
+    padding: 40px;
+
+    overflow-y: auto;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+    z-index: 1000;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+@media (min-width: 1400px) {
+    .payus-modal .modal-body {
+        width: 50%;
+    }
+}
+
+@media (max-width: 1399px) {
+    .payus-modal .modal-body {
+        width: 60%;
+    }
+}
+
+@media (max-width: 767px) {
+    .payus-modal .modal-body {
+        width: 80%;
+    }
+}
+
 
 .sub-title {
     display: flex;
@@ -786,7 +808,7 @@ select {
 }
 
 .payus-table thead {
-    border: 1px solid black;
+    background-color: rgba(247, 212, 141, 0.5);
 }
 
 .payus-table th {
@@ -800,5 +822,66 @@ select {
 }
 
 .payus-table tbody tr {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #c9c9c9;
+}
+
+.payus-table tbody tr td {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.payus-table tbody tr:hover {
+    background-color: rgba(201, 201, 201, 0.18);
+}
+
+.pagination {
+    display: inline-flex;
+    margin-top: 3rem;
+    justify-content: center;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+}
+
+.pagination a.active {
+    background-color: rgba(109, 41, 208, 0.8);
+    color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+
+.review-select {
+    width: 15%;
+    height: 40px;
+}
+
+.payus-table tbody tr .overflow {
+    display: flex;
+    flex: 1;
+}
+
+.payus-table tbody tr .overflow .overflow-space {
+    flex: 1;
+    width: 1px;
+}
+
+.payus-table tbody tr .overflow .overflow-space .overflow-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-break: break-all;
+}
+
+.btn-payus-modal {
+    color: white;
+    font-family: 'SCDream', sans-serif;
+    background-color: rgba(109, 41, 208, 0.8);
+    font-size: 1rem;
+    font-weight: 500;
 }

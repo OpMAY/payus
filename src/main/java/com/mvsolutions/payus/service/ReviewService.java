@@ -154,6 +154,10 @@ public class ReviewService {
     public ResponseEntity getUserReviewList(int user_no) throws JSONException {
         Message message = new Message();
         reviewDao.setSqlSession(sqlSession);
+        // 리뷰 총 갯수
+        int review_num = reviewDao.getReviewNumByUserNo(user_no);
+        message.put("review_num", review_num);
+
         // 전체, 응답, 미응답 순
         List<UserMyReviewResponse> allReviewList = reviewDao.getUserMyReviewList(user_no, ReviewListType.ALL);
         List<UserMyReviewResponse> answeredReviewList = reviewDao.getUserMyReviewList(user_no, ReviewListType.ANSWERED);

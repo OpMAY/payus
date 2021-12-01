@@ -27,7 +27,7 @@ public interface StoreMapper {
 
     List<SubMainPageStoreResponse> getStoreListForSubMain(double x, double y, int class_first, int order_type, int class_second);
 
-    List<SubMainPageStoreResponse> getStoreListForSubMainReload(double x, double y, int class_first, int order_type, int class_second);
+    List<SubMainPageStoreResponse> getStoreListForSubMainReload(double x, double y, int class_first, int order_type, int class_second, int last_index);
 
     List<StoreKeywordSearchResponse> searchByKeywords(double x, double y, String keyword, int last_index);
 

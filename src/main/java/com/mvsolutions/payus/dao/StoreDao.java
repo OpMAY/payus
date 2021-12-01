@@ -60,9 +60,9 @@ public class StoreDao {
         return mapper.getStoreListForSubMain(x, y, class_first, order_type, class_second);
     }
 
-    public List<SubMainPageStoreResponse> getStoreListForSubMainReload(double x, double y, int class_first, int class_second, int order_type) {
+    public List<SubMainPageStoreResponse> getStoreListForSubMainReload(double x, double y, int class_first, int class_second, int order_type, int last_index) {
         StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
-        return mapper.getStoreListForSubMainReload(x, y, class_first, order_type, class_second);
+        return mapper.getStoreListForSubMainReload(x, y, class_first, order_type, class_second, last_index);
     }
 
     public List<StoreKeywordSearchResponse> searchByKeywords(double x, double y, String keyword, int last_index) {
