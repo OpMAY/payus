@@ -46,4 +46,6 @@ public interface PointAccumulateMapper {
     boolean checkAccumulateCanceled(int content_no);
 
     boolean checkUserUnreadExists(int user_no);
+
+    void updateUserReadCheckByVendorReviewAnswer(int review_no);
 }

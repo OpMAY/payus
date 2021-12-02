@@ -15,16 +15,16 @@
     <i class="fa fa-caret-down"></i>
   </button>
   <div class="dropdown-container">
-    <a href="/vendor/store/manage/info.do">상점 정보</a>
-    <a href="/vendor/store/manage/detail.do">상세 페이지</a>
-    <a href="/vendor/store/manage/review.do">상점 리뷰</a>
+    <a href="/vendor/manage/store/info.do">상점 정보</a>
+    <a href="/vendor/manage/store/detail.do">상세 페이지</a>
+    <a href="/vendor/manage/store/review.do">상점 리뷰</a>
   </div>
   <button class="dropdown-btn">상품 관리
     <i class="fa fa-caret-down"></i>
   </button>
   <div class="dropdown-container">
-    <a href="#">상품 목록</a>
-    <a href="#">상점 등록</a>
+    <a href="/vendor/manage/goods/list.do">상품 목록</a>
+    <a href="#">상품 등록</a>
   </div>
   <button class="dropdown-btn">포인트 관리
     <i class="fa fa-caret-down"></i>

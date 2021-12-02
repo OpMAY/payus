@@ -1,11 +1,14 @@
 package com.mvsolutions.payus.controller;
 
+import com.mvsolutions.payus.model.rest.basic.Room;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
+import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreDetailInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreInfo;
+import com.mvsolutions.payus.response.payus.vendor.GoodsType;
 import com.mvsolutions.payus.service.VendorAdminService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,7 +154,7 @@ public class AdminVendorController {
         return VIEW;
     }
 
-    @RequestMapping("/store/manage/info.do")
+    @RequestMapping("/manage/store/info.do")
     public ModelAndView StoreManagementInformationPage(HttpServletRequest request) {
         VIEW = new ModelAndView("vendor_store_management_1");
         Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
@@ -160,7 +163,7 @@ public class AdminVendorController {
         return VIEW;
     }
 
-    @RequestMapping("/store/manage/detail.do")
+    @RequestMapping("/manage/store/detail.do")
     public ModelAndView StoreManagementDetailPage(HttpServletRequest request) {
         VIEW = new ModelAndView("vendor_store_management_2");
         Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
@@ -169,12 +172,21 @@ public class AdminVendorController {
         return VIEW;
     }
 
-    @RequestMapping("/store/manage/review.do")
+    @RequestMapping("/manage/store/review.do")
     public ModelAndView StoreManagementReviewListPage(HttpServletRequest request) {
         VIEW = new ModelAndView("vendor_store_management_3");
         Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
         List<VendorStoreManagementReviewInfo> reviewList = vendorAdminService.getVendorReviewListForStoreManagement(vendor_no);
         VIEW.addObject("review", reviewList);
+        return VIEW;
+    }
+    
+    @RequestMapping("/manage/goods/list.do")
+    public ModelAndView GoodsManagementListPage(HttpServletRequest request) {
+        VIEW = new ModelAndView ("vendor_goods_management_1");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        StoreGoods goods = vendorAdminService.getVendorStoreGoodsList(vendor_no, GoodsType.ROOMS);
+        VIEW.addObject("rooms", goods.getRoomList());
         return VIEW;
     }
 

@@ -420,6 +420,11 @@ h1, h2, h3, h4, h5, h6, span, div, section, i, b, small, input, button {
     font-size: 15px;
     text-align: center;
     border-color: transparent;
+    border-radius: 5px;
+}
+
+.payus-small-textarea:read-only {
+    background-color: #efefef;
 }
 
 .payus-textarea {
@@ -433,6 +438,11 @@ h1, h2, h3, h4, h5, h6, span, div, section, i, b, small, input, button {
     border-radius: 5px;
 }
 
+.payus-textarea:read-only {
+    background-color: #efefef;
+}
+
+
 .payus-modal-textarea {
     display: block;
     line-height: 150%;
@@ -441,6 +451,10 @@ h1, h2, h3, h4, h5, h6, span, div, section, i, b, small, input, button {
     font-size: 15px;
     font-family: 'SCDream', sans-serif !important;
     border-radius: 5px;
+}
+
+.payus-modal-textarea:read-only {
+    background-color: #efefef;
 }
 
 .payus-modal-textarea-form {
@@ -555,7 +569,7 @@ input:read-only {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-img {
+.clickable_img {
     cursor: pointer;
 }
 
@@ -577,7 +591,7 @@ img {
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
     box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-    z-index: 1000;
+    z-index: 2000;
     transform: translateX(-50%) translateY(-50%);
 }
 
@@ -839,6 +853,7 @@ select {
     display: inline-flex;
     margin-top: 3rem;
     justify-content: center;
+    margin-bottom: 3rem;
 }
 
 .pagination a {
@@ -857,7 +872,6 @@ select {
 .pagination a:hover:not(.active) {background-color: #ddd;}
 
 .review-select {
-    width: 15%;
     height: 40px;
 }
 
@@ -884,4 +898,35 @@ select {
     background-color: rgba(109, 41, 208, 0.8);
     font-size: 1rem;
     font-weight: 500;
+}
+
+.btn-payus-modal.submit {
+    width: 100%;
+    padding: 1rem 0;
+}
+
+.btn-payus-modal.cancel {
+    width: 100%;
+    background-color: rgba(221, 221, 221, 0.9);
+    color: #010101;
+    padding: 1rem 0;
+}
+
+.btn-payus-modal.cancel:hover {
+    color: #010101;
+    opacity: 0.7;
+}
+
+.modal-btn-div {
+    flex-direction: row;
+}
+
+@media (max-width: 991px) {
+    .modal-btn-div {
+        flex-direction: column-reverse;
+    }
+}
+
+.modal-image-div {
+    margin-bottom: 1rem;
 }

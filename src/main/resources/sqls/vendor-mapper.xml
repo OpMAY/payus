@@ -14,6 +14,10 @@
         <result column="information" property="information"
                 typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
     </resultMap>
+    <resultMap id="StoreGoods"
+               type="com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods">
+        <result column="room_options" property="roomList" typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+    </resultMap>
     <select id="checkVendorExists" resultType="_boolean">
         select EXISTS(select * from vendor WHERE id = #{id} AND password = #{password})
     </select>
@@ -160,5 +164,13 @@
              user
         WHERE review.store_no = @StoreNo
           AND user.user_no = review.user_no
+    </select>
+    <select id="getVendorStoreGoodsList" resultType="StoreGoods" resultMap="StoreGoods">
+        SET @StoreNo = (select store_no
+                        from store
+                        WHERE vendor_no = #{vendor_no});
+        select room_options
+        from store_lodgement
+        WHERE store_no = @StoreNo
     </select>
 </mapper>

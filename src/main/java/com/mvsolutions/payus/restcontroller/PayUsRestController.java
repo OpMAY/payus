@@ -602,7 +602,7 @@ public class PayUsRestController {
             if (key.contains("image")) {
                 log.info("file : " + fileMap.get(key));
                 String path = fileUploadUtility.uploadFile("api/images/report/store/" + reportRequest.getStore_no() + "/" + time + "/", fileMap.get(key).getOriginalFilename(), fileMap.get(key).getBytes(), Constant.AWS_SAVE);
-                imageList.add(path);
+                imageList.add("api/images/report/store/" + reportRequest.getStore_no() + "/" + time + "/" + path);
             }
         }
         // 이미지, 등록일자 설정
