@@ -39,140 +39,6 @@
 <div class="main-wrapper sidemain">
     <div class="page-wrapper full-page">
         <div class="page-content d-flex align-items-center justify-content-center" style="flex-direction: column">
-            <div class="payus-modal" id="modal-not-answered">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-12" style="display: flex; flex-direction: row; justify-content: space-between">
-                            <h3 style="color: #8668d0;">리뷰 내용</h3>
-                            <button type="button" class="btn btn-payus-modal" id="modal-close">
-                                닫기
-                            </button>
-                        </div>
-                    </div>
-                    <div class="row row-cols-1 row-cols-xl-4 row-cols-lg-2 row-cols-md-1 row-cols-sm-1"
-                         style="margin-top: 2rem">
-                        <div class="col payus-modal-textarea-form">
-                            <label for="review-writer">작성자</label>
-                            <textarea class="payus-modal-textarea" id="review-writer" rows="1" readonly>리뷰 내용</textarea>
-                        </div>
-                        <div class="col payus-modal-textarea-form">
-                            <label for="review-rate">별점</label>
-                            <textarea class="payus-modal-textarea" id="review-rate" rows="1" readonly>4</textarea>
-                        </div>
-                        <div class="col payus-modal-textarea-form">
-                            <label for="review-reg-date">생성 일자</label>
-                            <textarea class="payus-modal-textarea" id="review-reg-date" rows="1"
-                                      readonly>2021.01.12</textarea>
-                        </div>
-                        <div class="col payus-modal-textarea-form">
-                            <label for="review-answer-status">답변 여부</label>
-                            <textarea class="payus-modal-textarea" id="review-answer-status" rows="1"
-                                      readonly>답변 완료</textarea>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-bottom: 1rem">
-                        <div class="col-12">
-                            <label for="review-content">리뷰 내용</label>
-                            <textarea class="payus-modal-textarea" id="review-content" rows="5" readonly>리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용</textarea>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-bottom: 1rem">
-                        <div class="col-12">
-                            <label for="review-images">리뷰 이미지</label>
-                            <div class="row row-cols-1 row-cols-xl-5 row-cols-lg-3 row-cols-md-2 row-cols-sm-1"
-                                 id="review-images">
-                                <div class="col modal-image-div">
-                                    <div class="img-container">
-                                        <img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; height: 100%; object-fit: fill">
-                                    </div>
-                                </div>
-                                <div class="col modal-image-div">
-                                    <div class="img-container">
-                                        <img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; height: 100%; object-fit: fill">
-                                    </div>
-                                </div>
-                                <div class="col modal-image-div">
-                                    <div class="img-container">
-                                        <img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; height: 100%; object-fit: fill">
-                                    </div>
-                                </div>
-                                <div class="col modal-image-div">
-                                    <div class="img-container">
-                                        <img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; height: 100%; object-fit: fill">
-                                    </div>
-                                </div>
-                                <div class="col modal-image-div">
-                                    <div class="img-container">
-                                        <img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; height: 100%; object-fit: fill">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div data-type="not-answered">
-                        <div class="row modal-btn-div"
-                             style="margin-bottom: 1rem; display: flex; justify-content: flex-end;">
-                            <div class="col-12 col-xl-3 col-lg-4" style="margin-bottom: 1rem">
-                                <button type="button" class="btn btn-payus-modal cancel">
-                                    취소
-                                </button>
-                            </div>
-                            <div class="col-12 col-xl-3 col-lg-4" style="margin-bottom: 1rem">
-                                <button type="button" class="btn btn-payus-modal submit">
-                                    답변 하기
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div data-type="answer" style="display: none">
-                        <div class="row" style="margin-bottom: 1rem">
-                            <div class="col-12">
-                                <label for="review-answer">답변 내용</label>
-                                <textarea class="payus-modal-textarea" id="review-answer" rows="5"></textarea>
-                            </div>
-                        </div>
-                        <div class="row modal-btn-div"
-                             style="margin-bottom: 1rem; display: flex; justify-content: flex-end;">
-                            <div class="col-12 col-xl-3 col-lg-4" style="margin-bottom: 1rem">
-                                <button type="button" class="btn btn-payus-modal cancel">
-                                    취소
-                                </button>
-                            </div>
-                            <div class="col-12 col-xl-3 col-lg-4" style="margin-bottom: 1rem">
-                                <button type="button" class="btn btn-payus-modal submit">
-                                    답변 작성
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div data-type="answered" style="display: none">
-                        <div class="row" style="margin-bottom: 1rem">
-                            <div class="col-12">
-                                <label for="review-answered-content">답변 내용</label>
-                                <textarea class="payus-modal-textarea" id="review-answered-content" rows="5" readonly>답변 내용입니다.</textarea>
-                            </div>
-                        </div>
-                        <div class="row modal-btn-div"
-                             style="margin-bottom: 1rem; display: flex; justify-content: flex-end;">
-                            <div class="col-12 col-xl-3 col-lg-4" style="margin-bottom: 1rem">
-                                <button type="button" class="btn btn-payus-modal cancel">
-                                    닫기
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="row" style="width: 100%; margin-top: 3rem">
                 <div class="col-xl-8 offset-xl-2 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12">
                     <div class="row" style="margin-bottom: 1rem">
@@ -209,314 +75,44 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr room="11">
-                                    <td>1</td>
-                                    <td><img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; object-fit: fill"></td>
-                                    <td>패밀리 트윈</td>
-                                    <td>
-                                        <div class="overflow">
-                                            <div class="overflow-space">
-                                                <div class="overflow-text">기존 2인 / 최대 2인<br>체크인 15:00 - 체크아웃 11:00
+                                <c:forEach var="i" begin="1" end="${rooms.size()}">
+                                    <tr room="${rooms[i-1].room_no}">
+                                        <td>${i}</td>
+                                        <td><img class="clickable_img"
+                                                 src="https://payus.s3.ap-northeast-2.amazonaws.com/${rooms[i-1].room_img}"
+                                                 alt style="width: 100%; object-fit: fill"></td>
+                                        <td>
+                                            <div class="overflow">
+                                                <div class="overflow-space">
+                                                    <div class="overflow-text">${rooms[i-1].name}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>23,000원</td>
-                                    <td>2021.01.12</td>
-                                    <td>
-                                        <%--      TODO 신고하기 페이지 이동              --%>
-                                        <button type="button" class="btn btn-payus-table">
-                                            수정
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            삭제
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr room="11">
-                                    <td>1</td>
-                                    <td><img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; object-fit: fill"></td>
-                                    <td>패밀리 트윈</td>
-                                    <td>
-                                        <div class="overflow">
-                                            <div class="overflow-space">
-                                                <div class="overflow-text">기존 2인 / 최대 2인<br>체크인 15:00 - 체크아웃 11:00
+                                        </td>
+                                        <td>
+                                            <div class="overflow">
+                                                <div class="overflow-space">
+                                                    <div class="overflow-text">${rooms[i-1].room_explain}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>23,000원</td>
-                                    <td>2021.01.12</td>
-                                    <td>
-                                        <%--      TODO 신고하기 페이지 이동              --%>
-                                        <button type="button" class="btn btn-payus-table">
-                                            수정
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            삭제
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr room="11">
-                                    <td>1</td>
-                                    <td><img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; object-fit: fill"></td>
-                                    <td>패밀리 트윈</td>
-                                    <td>
-                                        <div class="overflow">
-                                            <div class="overflow-space">
-                                                <div class="overflow-text">기존 2인 / 최대 2인<br>체크인 15:00 - 체크아웃 11:00
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>23,000원</td>
-                                    <td>2021.01.12</td>
-                                    <td>
-                                        <%--      TODO 신고하기 페이지 이동              --%>
-                                        <button type="button" class="btn btn-payus-table">
-                                            수정
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            삭제
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr room="11">
-                                    <td>1</td>
-                                    <td><img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; object-fit: fill"></td>
-                                    <td>패밀리 트윈</td>
-                                    <td>
-                                        <div class="overflow">
-                                            <div class="overflow-space">
-                                                <div class="overflow-text">기존 2인 / 최대 2인<br>체크인 15:00 - 체크아웃 11:00
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>23,000원</td>
-                                    <td>2021.01.12</td>
-                                    <td>
-                                        <%--      TODO 신고하기 페이지 이동              --%>
-                                        <button type="button" class="btn btn-payus-table">
-                                            수정
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            삭제
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr room="11">
-                                    <td>1</td>
-                                    <td><img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; object-fit: fill"></td>
-                                    <td>패밀리 트윈</td>
-                                    <td>
-                                        <div class="overflow">
-                                            <div class="overflow-space">
-                                                <div class="overflow-text">기존 2인 / 최대 2인<br>체크인 15:00 - 체크아웃 11:00
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>23,000원</td>
-                                    <td>2021.01.12</td>
-                                    <td>
-                                        <%--      TODO 신고하기 페이지 이동              --%>
-                                        <button type="button" class="btn btn-payus-table">
-                                            수정
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            삭제
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr room="11">
-                                    <td>1</td>
-                                    <td><img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; object-fit: fill"></td>
-                                    <td>패밀리 트윈</td>
-                                    <td>
-                                        <div class="overflow">
-                                            <div class="overflow-space">
-                                                <div class="overflow-text">기존 2인 / 최대 2인<br>체크인 15:00 - 체크아웃 11:00
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>23,000원</td>
-                                    <td>2021.01.12</td>
-                                    <td>
-                                        <%--      TODO 신고하기 페이지 이동              --%>
-                                        <button type="button" class="btn btn-payus-table">
-                                            수정
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            삭제
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr room="11">
-                                    <td>1</td>
-                                    <td><img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; object-fit: fill"></td>
-                                    <td>패밀리 트윈</td>
-                                    <td>
-                                        <div class="overflow">
-                                            <div class="overflow-space">
-                                                <div class="overflow-text">기존 2인 / 최대 2인<br>체크인 15:00 - 체크아웃 11:00
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>23,000원</td>
-                                    <td>2021.01.12</td>
-                                    <td>
-                                        <%--      TODO 신고하기 페이지 이동              --%>
-                                        <button type="button" class="btn btn-payus-table">
-                                            수정
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            삭제
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr room="11">
-                                    <td>1</td>
-                                    <td><img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; object-fit: fill"></td>
-                                    <td>패밀리 트윈</td>
-                                    <td>
-                                        <div class="overflow">
-                                            <div class="overflow-space">
-                                                <div class="overflow-text">기존 2인 / 최대 2인<br>체크인 15:00 - 체크아웃 11:00
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>23,000원</td>
-                                    <td>2021.01.12</td>
-                                    <td>
-                                        <%--      TODO 신고하기 페이지 이동              --%>
-                                        <button type="button" class="btn btn-payus-table">
-                                            수정
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            삭제
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr room="11">
-                                    <td>1</td>
-                                    <td><img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; object-fit: fill"></td>
-                                    <td>패밀리 트윈</td>
-                                    <td>
-                                        <div class="overflow">
-                                            <div class="overflow-space">
-                                                <div class="overflow-text">기존 2인 / 최대 2인<br>체크인 15:00 - 체크아웃 11:00
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>23,000원</td>
-                                    <td>2021.01.12</td>
-                                    <td>
-                                        <%--      TODO 신고하기 페이지 이동              --%>
-                                        <button type="button" class="btn btn-payus-table">
-                                            수정
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            삭제
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr room="11">
-                                    <td>1</td>
-                                    <td><img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; object-fit: fill"></td>
-                                    <td>패밀리 트윈</td>
-                                    <td>
-                                        <div class="overflow">
-                                            <div class="overflow-space">
-                                                <div class="overflow-text">기존 2인 / 최대 2인<br>체크인 15:00 - 체크아웃 11:00
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>23,000원</td>
-                                    <td>2021.01.12</td>
-                                    <td>
-                                        <%--      TODO 신고하기 페이지 이동              --%>
-                                        <button type="button" class="btn btn-payus-table">
-                                            수정
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            삭제
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr room="11">
-                                    <td>1</td>
-                                    <td><img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; object-fit: fill"></td>
-                                    <td>패밀리 트윈</td>
-                                    <td>
-                                        <div class="overflow">
-                                            <div class="overflow-space">
-                                                <div class="overflow-text">기존 2인 / 최대 2인<br>체크인 15:00 - 체크아웃 11:00
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>23,000원</td>
-                                    <td>2021.01.12</td>
-                                    <td>
-                                        <%--      TODO 신고하기 페이지 이동              --%>
-                                        <button type="button" class="btn btn-payus-table">
-                                            수정
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            삭제
-                                        </button>
-                                    </td>
-                                </tr>
+                                        </td>
+                                        <td>${rooms[i-1].price}</td>
+                                        <td>${rooms[i-1].reg_date}</td>
+                                        <td>
+                                                <%--      TODO 수정하기 페이지 이동              --%>
+                                            <button type="button" class="btn btn-payus-table">
+                                                수정
+                                            </button>
+                                        </td>
+                                        <td>
+                                                <%--      TODO 삭제 AJAX                      --%>
+                                            <button type="button" class="btn btn-payus-table-report">
+                                                삭제
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                             <%--  TODO 전체 리뷰 갯수로 페이지네이션 리뷰 페이지당 10개씩   --%>
@@ -541,11 +137,12 @@
         </div>
     </div>
 </div>
+<script src="/js/date-formatter.js"></script>
 <script>
     $(".btn-payus-table-report").on("click", function () {
-        let review_no = $(this).parent().parent().attr('review');
-        console.log(review_no);
-        // TODO 해당 review_no 실어서 리뷰 신고 페이지 이동
+        let room_no = $(this).parent().parent().attr('room');
+        console.log(room_no);
+        // TODO 해당 room_no로 방 삭제
     });
 
 
@@ -572,27 +169,11 @@
     }
 </script>
 <script>
-    let body = $(document.body);
-    let modal = $(".payus-modal");
     $(".btn-payus-table").on("click", function () {
-        let review_no = $(this).parent().parent().attr('review');
-        console.log(review_no);
-        // TODO 해당 review_no로 리뷰 상세 내용 AJAX
-
-        modal.addClass('show');
-
-        if (modal.hasClass('show')) {
-            body.css("overflow", "hidden");
-            modal.focus();
-        }
-    });
-
-    $("#modal-close").on("click", function () {
-        modal.removeClass("show");
-
-        if (!modal.hasClass("show")) {
-            body.css("overflow", "auto");
-        }
+        let room_no = $(this).parent().parent().attr('room');
+        console.log(room_no);
+        // TODO 해당 room_no로 수정 페이지 이동
+        window.location.href = "/vendor/manage/goods/edit.do?goods_no=" + room_no;
     });
 
     $('.clickable_img').on("click", function () {
@@ -602,16 +183,14 @@
         } else {
             return false;
         }
-    })
-
-    $('.payus-modal').on("click", function (event) {
-        if (event.target.className === 'payus-modal show') {
-            modal.removeClass("show");
-
-            if (!modal.hasClass("show")) {
-                body.css("overflow", "auto");
-            }
-        }
+    });
+    $(document).ready(function () {
+       let table = $(".payus-table");
+       let body = table.children('tbody');
+       for(let i = 0; i < body.children().length; i++) {
+           let originalRegDate = body.children('tr:eq(' + i + ')').children('td:eq(5)').text();
+           body.children('tr:eq(' + i + ')').children('td:eq(5)').text(SplitDateFunction(originalRegDate));
+       }
     });
 </script>
 </body>

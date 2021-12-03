@@ -1,7 +1,6 @@
 package com.mvsolutions.payus.dao;
 
 import com.mvsolutions.payus.mapper.VendorMapper;
-import com.mvsolutions.payus.model.rest.basic.Room;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
@@ -29,8 +28,8 @@ import java.util.List;
 public class VendorDao {
     private SqlSession sqlSession;
 
-    public void setSqlSession(SqlSession sqlSession){
-        if(this.sqlSession==null){
+    public void setSqlSession(SqlSession sqlSession) {
+        if (this.sqlSession == null) {
             this.sqlSession = sqlSession;
         }
     }
@@ -143,6 +142,16 @@ public class VendorDao {
     public StoreGoods getVendorStoreGoodsList(int vendor_no, int goods_type) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         return mapper.getVendorStoreGoodsList(vendor_no, goods_type);
+    }
+
+    public int getPaybackRateForRegisterGoods(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getPaybackRateForRegisterGoods(vendor_no);
+    }
+
+    public void updateVendorFCMToken(int vendor_no, String fcm_token) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.updateVendorFCMToken(vendor_no, fcm_token);
     }
 
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);

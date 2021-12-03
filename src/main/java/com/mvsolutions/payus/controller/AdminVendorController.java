@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
@@ -56,7 +57,7 @@ public class AdminVendorController {
     }
 
     @RequestMapping("/register/store.do")
-    public ModelAndView VendorStorePage(){
+    public ModelAndView VendorStorePage() {
         VIEW = new ModelAndView("register_vendor_4");
         return VIEW;
     }
@@ -180,13 +181,42 @@ public class AdminVendorController {
         VIEW.addObject("review", reviewList);
         return VIEW;
     }
-    
+
     @RequestMapping("/manage/goods/list.do")
     public ModelAndView GoodsManagementListPage(HttpServletRequest request) {
-        VIEW = new ModelAndView ("vendor_goods_management_1");
+        VIEW = new ModelAndView("vendor_goods_management_1");
         Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
         StoreGoods goods = vendorAdminService.getVendorStoreGoodsList(vendor_no, GoodsType.ROOMS);
-        VIEW.addObject("rooms", goods.getRoomList());
+        VIEW.addObject("rooms", goods.getRoom_options());
+        return VIEW;
+    }
+
+    @RequestMapping("/manage/goods/register.do")
+    public ModelAndView GoodsManagementRegisterPage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_goods_management_2");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        int paybackRate = vendorAdminService.getPaybackRateForRegisterGoods(vendor_no);
+        VIEW.addObject("paybackRate", paybackRate);
+        return VIEW;
+    }
+
+    @RequestMapping("/manage/goods/edit.do")
+    public ModelAndView GoodsManagementEditPage(HttpServletRequest request,
+                                                @RequestParam("goods_no") int goods_no) {
+        VIEW = new ModelAndView("vendor_goods_management_3");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        int goodsIndex = 0;
+        StoreGoods goods = vendorAdminService.getVendorStoreGoodsList(vendor_no, GoodsType.ROOMS);
+        log.info(goods.getRoom_options());
+        for(int i = 0; i < goods.getRoom_options().size(); i++) {
+            if(goods.getRoom_options().get(i).getRoom_no() == goods_no){
+                goodsIndex = i;
+                break;
+            }
+        }
+        int paybackRate = vendorAdminService.getPaybackRateForRegisterGoods(vendor_no);
+        VIEW.addObject("paybackRate", paybackRate);
+        VIEW.addObject("room", goods.getRoom_options().get(goodsIndex));
         return VIEW;
     }
 

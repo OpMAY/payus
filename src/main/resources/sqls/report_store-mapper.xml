@@ -8,7 +8,7 @@
         <result column="img_list" property="img_list" typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
     </resultMap>
     <select id="checkReportAnswered" resultType="_boolean">
-        select EXISTS(select * from report_store WHERE read_check = false)
+        select EXISTS(select * from report_store WHERE user_no = #{user_no} and read_check = false)
     </select>
     <select id="getReportList" resultType="UserReportStoreResponse" resultMap="UserReportStoreResponse">
         select report_no,

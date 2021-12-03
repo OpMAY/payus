@@ -16,7 +16,7 @@
     </resultMap>
     <resultMap id="StoreGoods"
                type="com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods">
-        <result column="room_options" property="roomList" typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+        <result column="room_options" property="room_options" typeHandler="com.mvsolutions.payus.handler.JsonRoomTypeHandler"/>
     </resultMap>
     <select id="checkVendorExists" resultType="_boolean">
         select EXISTS(select * from vendor WHERE id = #{id} AND password = #{password})
@@ -173,4 +173,19 @@
         from store_lodgement
         WHERE store_no = @StoreNo
     </select>
+    <select id="getPaybackRateForRegisterGoods" resultType="int">
+        select IF(EXISTS(select *
+                         from advertisement_store
+                         WHERE advertisement_store.store_no = store.store_no
+                           AND status = true), advertise_payback,
+                  payback_rate) as payback_rate
+        from store
+                 left join advertisement_store on store.store_no = advertisement_store.store_no
+        WHERE store.vendor_no = #{vendor_no}
+    </select>
+    <update id="updateVendorFCMToken">
+        update vendor
+        SET fcm_token = #{fcm_token}
+        WHERE vendor_no = #{vendor_no}
+    </update>
 </mapper>
