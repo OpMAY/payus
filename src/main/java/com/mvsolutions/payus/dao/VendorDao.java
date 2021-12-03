@@ -1,6 +1,7 @@
 package com.mvsolutions.payus.dao;
 
 import com.mvsolutions.payus.mapper.VendorMapper;
+import com.mvsolutions.payus.model.rest.basic.Room;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
@@ -13,6 +14,7 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
+import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
@@ -136,6 +138,11 @@ public class VendorDao {
     public List<VendorStoreManagementReviewInfo> getVendorReviewListForStoreManagement(int vendor_no) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         return mapper.getVendorReviewListForStoreManagement(vendor_no);
+    }
+
+    public StoreGoods getVendorStoreGoodsList(int vendor_no, int goods_type) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorStoreGoodsList(vendor_no, goods_type);
     }
 
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);

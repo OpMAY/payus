@@ -1,6 +1,7 @@
 package com.mvsolutions.payus.mapper;
 
 
+import com.mvsolutions.payus.model.rest.basic.Room;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
@@ -13,6 +14,7 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
+import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
@@ -63,4 +65,6 @@ public interface VendorMapper {
     VendorStoreManagementStoreDetailInfo getVendorStoreDetailForStoreManagement(int vendor_no);
 
     List<VendorStoreManagementReviewInfo> getVendorReviewListForStoreManagement(int vendor_no);
+
+    StoreGoods getVendorStoreGoodsList(int vendor_no, int goods_type);
 }

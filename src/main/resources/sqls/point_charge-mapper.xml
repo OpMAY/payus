@@ -32,7 +32,7 @@
     </select>
     <update id="chargeCancelRequestUpdate">
         update point_charge
-        SET status = 3
+        SET status = 4
         WHERE charge_no = #{charge_no}
     </update>
     <update id="updateReadCheck">

@@ -171,6 +171,15 @@
         WHERE accumulate_no = #{content_no}
     </select>
     <select id="checkUserUnreadExists" resultType="_boolean">
-        select IF(EXISTS(select * from point_accumulate WHERE user_no = #{user_no} AND user_read_check = false), TRUE, FALSE);
+        select IF(EXISTS(select * from point_accumulate WHERE user_no = #{user_no} AND user_read_check = false), TRUE,
+                  FALSE);
     </select>
+    <update id="updateUserReadCheckByVendorReviewAnswer">
+        SET @AccumulateNo = (select accumulate_no
+                             from review
+                             WHERE review_no = #{review_no});
+        update point_accumulate
+        SET user_read_check = false
+        WHERE accumulate_no = @AccumulateNo
+    </update>
 </mapper>

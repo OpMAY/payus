@@ -42,7 +42,7 @@
             <div class="row" style="width: 100%; margin-top: 3rem">
                 <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12">
                     <div class="row" style="margin-bottom: 1rem">
-                        <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0; padding-left: 10px">상점 상세 페이지</h3>
+                        <h3 class="d-block mb-2" style="color: #8668d0; padding-left: 10px">상점 상세 페이지</h3>
                     </div>
                 </div>
                 <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12"
@@ -53,12 +53,12 @@
                                 <label for="vendor-store-category-first">카테고리</label>
                                 <div style="position: relative; display: flex">
                                     <textarea class="payus-small-textarea" style="margin-right: 15px; width: 80px" id="vendor-store-category-first" rows="1"
-                                              disabled>숙박</textarea>
+                                              readonly>숙박</textarea>
                                     <div>
-                                        <span><img src="/images/Chevron-Left.svg" alt width="100%" height="100%"></span>
+                                        <span><img src="/images/Chevron-Left.svg" alt width="100%" style="padding-top: 13px"></span>
                                     </div>
                                     <textarea class="payus-small-textarea" id="vendor-store-category-second" rows="1" style="margin-left: 15px"
-                                              disabled>게스트 하우스</textarea>
+                                              readonly>게스트 하우스</textarea>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="vendor-store-explain">상점 소개</label>
                                 <textarea class="payus-textarea" id="vendor-store-explain" rows="2"
-                                          disabled>${store.explain}</textarea>
+                                          readonly>${store.explain}</textarea>
                             </div>
                         </div>
                         <div class="col-12">
@@ -74,10 +74,12 @@
                                 <label for="vendor-store-explain">서비스</label>
                                 <div style="display: flex; align-content: center; flex-direction: column">
                                     <c:forEach var="service" items="${store.service_list}">
-                                        <textarea class="payus-textarea" rows="1" style="margin-bottom: 1rem"
-                                                  disabled>${service.title}</textarea>
-                                        <textarea class="payus-textarea" rows="2" style="margin-bottom: 1rem"
-                                                  disabled>${service.content}</textarea>
+                                        <div style="border: 1px solid black; border-collapse: collapse; margin-bottom: 10px;">
+                                            <textarea class="payus-textarea" rows="1" style="margin-bottom: 1rem"
+                                                      readonly>${service.title}</textarea>
+                                            <textarea class="payus-textarea" rows="2" style="margin-bottom: 1rem"
+                                                      readonly>${service.content}</textarea>
+                                        </div>
                                     </c:forEach>
                                 </div>
                             </div>
@@ -88,9 +90,9 @@
                                 <div style="display: flex; align-content: center; flex-direction: column">
                                     <c:forEach var="information" items="${store.information}">
                                         <textarea class="payus-textarea" rows="1" style="margin-bottom: 1rem"
-                                                  disabled>${information.title}</textarea>
+                                                  readonly>${information.title}</textarea>
                                         <textarea class="payus-textarea" rows="2" style="margin-bottom: 1rem"
-                                                  disabled>${information.content}</textarea>
+                                                  readonly>${information.content}</textarea>
                                     </c:forEach>
                                 </div>
                             </div>

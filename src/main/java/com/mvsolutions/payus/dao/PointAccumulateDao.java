@@ -2,6 +2,7 @@ package com.mvsolutions.payus.dao;
 
 import com.mvsolutions.payus.mapper.PointAccumulateMapper;
 import com.mvsolutions.payus.model.rest.basic.PointAccumulate;
+import com.mvsolutions.payus.model.rest.request.suphomepage.VendorAnswerReviewRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserReviewDeleteRequest;
 import com.mvsolutions.payus.model.rest.response.storedetailpage.UserAccumulateCheckResponse;
@@ -111,6 +112,11 @@ public class PointAccumulateDao {
     public boolean checkUserUnreadExists(int user_no) {
         PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
         return mapper.checkUserUnreadExists(user_no);
+    }
+
+    public void updateUserReadCheckByVendorReviewAnswer(int review_no) {
+        PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
+        mapper.updateUserReadCheckByVendorReviewAnswer(review_no);
     }
 
 

@@ -53,7 +53,7 @@
                                 <c:forEach var="url" items="${store.image_list}">
                                     <div class="col image-div">
                                         <div class="img-container">
-                                            <img src="https://payus.s3.ap-northeast-2.amazonaws.com/${url}" alt style="width: 100%; height: 100px; object-fit: fill">
+                                            <img class="clickable_img" src="https://payus.s3.ap-northeast-2.amazonaws.com/${url}" alt style="width: 100%; height: 100px; object-fit: fill">
                                         </div>
                                     </div>
                                 </c:forEach>
@@ -63,28 +63,28 @@
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="vendor-store-name">상호명</label>
                                 <textarea class="payus-textarea" id="vendor-store-name" rows="1"
-                                          disabled>${store.store_name}</textarea>
+                                          readonly>${store.store_name}</textarea>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="vendor-store-explain">상점 간단 설명</label>
                                 <textarea class="payus-textarea" id="vendor-store-explain" rows="2"
-                                          disabled>${store.explain}</textarea>
+                                          readonly>${store.explain}</textarea>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="vendor-jibun-address">상점 지번 주소</label>
                                 <textarea class="payus-textarea" id="vendor-jibun-address" rows="1"
-                                          disabled>${store.address}</textarea>
+                                          readonly>${store.address}</textarea>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="vendor-road-address">상점 도로명 주소</label>
                                 <textarea class="payus-textarea" id="vendor-road-address" rows="1"
-                                          disabled>${store.address_road}</textarea>
+                                          readonly>${store.address_road}</textarea>
                             </div>
                         </div>
                         <div class="col-12" style="margin-bottom: 2rem">
@@ -95,7 +95,7 @@
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="vendor-store-phone">상점 연락처</label>
                                 <textarea class="payus-textarea" id="vendor-store-phone" rows="1"
-                                          disabled>${store.phone}</textarea>
+                                          readonly>${store.phone}</textarea>
                             </div>
                         </div>
                         <div class="col-12">
@@ -103,12 +103,12 @@
                                 <label for="vendor-store-category-first">카테고리</label>
                                 <div style="display: flex">
                                     <textarea class="payus-small-textarea" style="margin-right: 15px; width: 80px" id="vendor-store-category-first" rows="1"
-                                              disabled>숙박</textarea>
+                                              readonly>숙박</textarea>
                                     <div>
-                                        <span><img src="/images/Chevron-Left.svg" alt width="100%" height="100%"></span>
+                                        <span><img src="/images/Chevron-Left.svg" alt width="100%" style="padding-top: 13px"></span>
                                     </div>
                                     <textarea class="payus-small-textarea" id="vendor-store-category-second" rows="1" style="margin-left: 15px"
-                                              disabled>게스트 하우스</textarea>
+                                              readonly>게스트 하우스</textarea>
                                 </div>
                             </div>
                         </div>
@@ -117,7 +117,7 @@
                                 <label for="vendor-store-payback-rate">페이백률</label>
                                 <div>
                                 <textarea class="payus-small-textarea" id="vendor-store-payback-rate" rows="1" style="width: 80px"
-                                          disabled>${store.payback_rate}%</textarea>
+                                          readonly>${store.payback_rate}%</textarea>
                                 </div>
                             </div>
                         </div>
@@ -167,6 +167,16 @@
         console.log(container.height);
         container.height((204 + 32));
     }
+
+    $('.clickable_img').on("click", function () {
+        if(confirm('해당 이미지를 보시겠습니까?')){
+            let imageUrl = $(this).attr("src");
+            window.open(imageUrl);
+        } else {
+            return false;
+        }
+    })
+
 </script>
 </body>
 </html>

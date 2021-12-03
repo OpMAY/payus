@@ -62,6 +62,7 @@ public class ReviewService {
     @Transactional(propagation = Propagation.REQUIRED)
     public ResponseEntity answerReview(VendorAnswerReviewRequest request) {
         reviewDao.setSqlSession(sqlSession);
+        pointAccumulateDao.setSqlSession(sqlSession);
         if (!reviewDao.checkReviewExists(request.getReview_no())) {
             // 삭제된 리뷰일 시
             return new ResponseEntity(StringRes.res(StatusCode.DELETED_CONTENT), HttpStatus.OK);
@@ -71,6 +72,8 @@ public class ReviewService {
         }
         request.setAnswer_date(Time.TimeFormatHMS());
         reviewDao.answerReview(request);
+        // 포인트 적립 내역의 유저 읽기 여부 false로 전환
+        pointAccumulateDao.updateUserReadCheckByVendorReviewAnswer(request.getReview_no());
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
     }
 

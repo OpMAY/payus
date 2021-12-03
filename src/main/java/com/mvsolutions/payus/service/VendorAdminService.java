@@ -3,6 +3,7 @@ package com.mvsolutions.payus.service;
 import com.google.gson.Gson;
 import com.mvsolutions.payus.dao.StoreDao;
 import com.mvsolutions.payus.dao.VendorDao;
+import com.mvsolutions.payus.model.rest.basic.Room;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
 import com.mvsolutions.payus.model.utility.businessvalidation.BusinessStatusRequest;
@@ -14,6 +15,7 @@ import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorRegisterEmailResponse;
+import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
@@ -106,8 +108,8 @@ public class VendorAdminService {
     @Transactional(propagation = Propagation.REQUIRED)
     public int resetPassword(VendorPasswordResetRequest request) {
         vendorDao.setSqlSession(sqlSession);
-        if(vendorDao.checkVendorCurrentPassword(request)) {
-           return 1;
+        if (vendorDao.checkVendorCurrentPassword(request)) {
+            return 1;
         }
         vendorDao.resetPassword(request);
         return 0;
@@ -115,7 +117,7 @@ public class VendorAdminService {
 
     public VendorRegisterEmailResponse validateEmail(VendorRegisterEmailRequest request) {
         vendorDao.setSqlSession(sqlSession);
-        if(vendorDao.checkVendorExistsByEmail(request.getEmail())) {
+        if (vendorDao.checkVendorExistsByEmail(request.getEmail())) {
             return new VendorRegisterEmailResponse("");
         } else {
             String validationCode = emailSendService.sendEmailForValidation(request.getEmail());
@@ -129,8 +131,8 @@ public class VendorAdminService {
         BusinessStatusRequest statusRequest = new BusinessStatusRequest(businessNumberList);
         String status = businessValidationService.statusVerify(statusRequest);
         BusinessStatusResponse statusResponse = new Gson().fromJson(status, BusinessStatusResponse.class);
-        if(statusResponse.getStatus_code().equals("OK")) {
-            if(statusResponse.getData().get(0).getB_stt().equals("계속사업자") || statusResponse.getData().get(0).getB_stt_cd().equals("01")) {
+        if (statusResponse.getStatus_code().equals("OK")) {
+            if (statusResponse.getData().get(0).getB_stt().equals("계속사업자") || statusResponse.getData().get(0).getB_stt_cd().equals("01")) {
                 return 1;
             } else if (statusResponse.getData().get(0).getB_stt().equals("휴업자") || statusResponse.getData().get(0).getB_stt_cd().equals("02")) {
                 return 2;
@@ -166,7 +168,7 @@ public class VendorAdminService {
         double y = Double.parseDouble(documents.getY());
         storeRegisterRequest.setAddress_x(x);
         storeRegisterRequest.setAddress_y(y);
-        if(documents.getAddress() != null) {
+        if (documents.getAddress() != null) {
             storeRegisterRequest.setAddress_1depth(documents.getAddress().getRegion_1depth_name());
             storeRegisterRequest.setAddress_2depth(documents.getAddress().getRegion_2depth_name());
             storeRegisterRequest.setAddress_3depth(documents.getAddress().getRegion_3depth_name());
@@ -209,5 +211,10 @@ public class VendorAdminService {
     public List<VendorStoreManagementReviewInfo> getVendorReviewListForStoreManagement(int vendor_no) {
         vendorDao.setSqlSession(sqlSession);
         return vendorDao.getVendorReviewListForStoreManagement(vendor_no);
+    }
+
+    public StoreGoods getVendorStoreGoodsList(int vendor_no, int goods_type) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorStoreGoodsList(vendor_no, goods_type);
     }
 }
