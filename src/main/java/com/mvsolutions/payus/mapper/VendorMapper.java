@@ -14,9 +14,12 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
+import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminNoticeList;
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
+import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointAccumulateList;
+import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointChargeList;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreDetailInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreInfo;
@@ -71,4 +74,12 @@ public interface VendorMapper {
     int getPaybackRateForRegisterGoods(int vendor_no);
 
     void updateVendorFCMToken(int vendor_no, String fcm_token);
+
+    List<VendorAdminPointChargeList> getVendorAdminPointChargeList(int vendor_no);
+
+    int getVendorPointValue(int vendor_no);
+
+    List<VendorAdminPointAccumulateList> getVendorAdminPointAccumulateList(int vendor_no);
+
+    List<VendorAdminNoticeList> getNoticeList();
 }

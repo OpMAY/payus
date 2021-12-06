@@ -30,20 +30,20 @@
     <i class="fa fa-caret-down"></i>
   </button>
   <div class="dropdown-container">
-    <a href="#">포인트 충전 내역</a>
-    <a href="#">포인트 적립 내역</a>
+    <a href="/vendor/manage/point/charge.do">포인트 충전 내역</a>
+    <a href="/vendor/manage/point/accumulate.do">포인트 적립 내역</a>
   </div>
   <button class="dropdown-btn">매출 관리
     <i class="fa fa-caret-down"></i>
   </button>
   <div class="dropdown-container">
-    <a href="#">매출 현황</a>
+    <a href="/vendor/manage/sales.do">매출 현황</a>
   </div>
   <button class="dropdown-btn">고객센터
     <i class="fa fa-caret-down"></i>
   </button>
   <div class="dropdown-container">
-    <a href="#">공지사항</a>
+    <a href="/vendor/manage/customer/notice.do">공지사항</a>
     <a href="#">FAQ</a>
     <a href="#">문의 내역</a>
     <a href="#">문의 하기</a>

@@ -16,7 +16,8 @@
     </resultMap>
     <resultMap id="StoreGoods"
                type="com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods">
-        <result column="room_options" property="room_options" typeHandler="com.mvsolutions.payus.handler.JsonRoomTypeHandler"/>
+        <result column="room_options" property="room_options"
+                typeHandler="com.mvsolutions.payus.handler.JsonRoomTypeHandler"/>
     </resultMap>
     <select id="checkVendorExists" resultType="_boolean">
         select EXISTS(select * from vendor WHERE id = #{id} AND password = #{password})
@@ -188,4 +189,37 @@
         SET fcm_token = #{fcm_token}
         WHERE vendor_no = #{vendor_no}
     </update>
+    <select id="getVendorAdminPointChargeList" resultType="VendorAdminPointChargeList">
+        select charge_no, point, reg_date, revise_date, status
+        from point_charge
+        WHERE vendor_no = #{vendor_no}
+        ORDER BY reg_date DESC
+    </select>
+    <select id="getVendorPointValue" resultType="int">
+        select point
+        from vendor
+        WHERE vendor_no = #{vendor_no}
+    </select>
+    <select id="getVendorAdminPointAccumulateList" resultType="VendorAdminPointAccumulateList">
+        SET @StoreNo = (select store_no
+                        from store
+                        WHERE vendor_no = #{vendor_no});
+        select accumulate_no,
+               user.nickname as user_name,
+               price,
+               payback_rate,
+               point_accumulate.point,
+               point_accumulate.reg_date,
+               status,
+               review_status
+        from point_accumulate,
+             user
+        WHERE point_accumulate.store_no = @StoreNo
+          AND user.user_no = point_accumulate.user_no
+    </select>
+    <select id="getNoticeList" resultType="VendorAdminNoticeList">
+        select notice_no, title, reg_date, view_num
+        from notice
+        ORDER BY reg_date DESC
+    </select>
 </mapper>
