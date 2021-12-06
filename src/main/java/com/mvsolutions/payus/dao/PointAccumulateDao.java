@@ -119,6 +119,15 @@ public class PointAccumulateDao {
         mapper.updateUserReadCheckByVendorReviewAnswer(review_no);
     }
 
+    public void updateUserReadCheckAccumulate(int accumulate_no) {
+        PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
+        mapper.updateUserReadCheckAccumulate(accumulate_no);
+    }
+
+    public void updateAnswerDate(VendorAnswerReviewRequest request) {
+        PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
+        mapper.updateAnswerDate(request);
+    }
 
 //    private PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
 }

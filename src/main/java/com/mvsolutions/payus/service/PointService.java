@@ -354,12 +354,13 @@ public class PointService {
         }
         if (accumulateList.size() > 0) {
             // 해당 데이터들 읽기 여부 업데이트 - 후처리
-            pointAccumulateDao.updateUserReadCheck(accumulateList);
+            //pointAccumulateDao.updateUserReadCheck(accumulateList);
             message.put("last_index1", accumulateList.get(accumulateList.size() - 1).getAccumulate_no());
         }
         if (withdrawList.size() > 0) {
             // 해당 데이터들 읽기 여부 업데이트 - 후처리
-            pointWithdrawDao.updateUserReadCheck(withdrawList);
+            // 포인트 인출의 경우에는 3일 확인만 함.
+            //pointWithdrawDao.updateUserReadCheck(withdrawList);
             message.put("last_index2", withdrawList.get(withdrawList.size() - 1).getWithdraw_no());
         }
 
