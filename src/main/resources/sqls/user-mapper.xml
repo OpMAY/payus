@@ -42,7 +42,7 @@
         WHERE user_no = #{user_no}
     </update>
     <select id="getUserDataForPayback" resultType="PaybackUserDataResponse">
-        select user_no, nickname as name
+        select user_no, nickname as name, user_penalty
         from user
         WHERE user_no = #{user_no}
     </select>

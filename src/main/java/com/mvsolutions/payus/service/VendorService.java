@@ -56,6 +56,7 @@ public class VendorService {
                 penaltyResponse.setName(name);
                 message.put("penalty", penaltyResponse);
             }
+
         } else {
             // 로그인 실패 시
             return new ResponseEntity(StringRes.res(StatusCode.LOGIN_FAILED), HttpStatus.OK);

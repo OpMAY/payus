@@ -8,6 +8,6 @@
         <if test="faq_type != 0">
             WHERE type = #{faq_type}
         </if>
-        ORDER BY reg_date
+        ORDER BY reg_date desc
     </select>
 </mapper>
