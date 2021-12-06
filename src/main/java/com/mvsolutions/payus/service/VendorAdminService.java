@@ -217,4 +217,9 @@ public class VendorAdminService {
         vendorDao.setSqlSession(sqlSession);
         return vendorDao.getVendorStoreGoodsList(vendor_no, goods_type);
     }
+
+    public int getPaybackRateForRegisterGoods(int vendor_no) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getPaybackRateForRegisterGoods(vendor_no);
+    }
 }

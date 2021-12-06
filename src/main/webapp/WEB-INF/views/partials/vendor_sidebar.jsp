@@ -24,7 +24,7 @@
   </button>
   <div class="dropdown-container">
     <a href="/vendor/manage/goods/list.do">상품 목록</a>
-    <a href="#">상품 등록</a>
+    <a href="/vendor/manage/goods/register.do">상품 등록</a>
   </div>
   <button class="dropdown-btn">포인트 관리
     <i class="fa fa-caret-down"></i>

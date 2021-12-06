@@ -56,7 +56,9 @@ public class VendorService {
                 penaltyResponse.setName(name);
                 message.put("penalty", penaltyResponse);
             }
-
+            if(request.getFcm_token() != null) {
+                vendorDao.updateVendorFCMToken(response.getVendor_no(), request.getFcm_token());
+            }
         } else {
             // 로그인 실패 시
             return new ResponseEntity(StringRes.res(StatusCode.LOGIN_FAILED), HttpStatus.OK);

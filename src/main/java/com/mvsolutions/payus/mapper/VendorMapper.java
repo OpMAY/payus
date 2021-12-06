@@ -67,4 +67,8 @@ public interface VendorMapper {
     List<VendorStoreManagementReviewInfo> getVendorReviewListForStoreManagement(int vendor_no);
 
     StoreGoods getVendorStoreGoodsList(int vendor_no, int goods_type);
+
+    int getPaybackRateForRegisterGoods(int vendor_no);
+
+    void updateVendorFCMToken(int vendor_no, String fcm_token);
 }

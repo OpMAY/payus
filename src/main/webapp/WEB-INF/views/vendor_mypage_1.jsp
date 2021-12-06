@@ -41,7 +41,7 @@
             <div class="row" style="width: 100%; margin-top: 3rem">
                 <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12">
                     <div class="row" style="margin-bottom: 1rem">
-                        <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0; padding-left: 10px">회원 정보</h3>
+                        <h3 class="d-block mb-2" style="color: #8668d0; padding-left: 10px">회원 정보</h3>
                     </div>
                 </div>
                 <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12"
@@ -83,7 +83,7 @@
             <div class="row" style="width: 100%">
                 <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12">
                     <div class="row" style="margin-bottom: 1rem">
-                        <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0; padding-left: 10px">계좌 정보</h3>
+                        <h3 class="d-block mb-2" style="color: #8668d0; padding-left: 10px">계좌 정보</h3>
                     </div>
                 </div>
                 <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12"

@@ -45,11 +45,13 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="auth-form-wrapper px-4 py-5 noto-font">
-                                <div class="row" style="display: flex; align-content: center; flex-direction: column; margin-bottom: 4rem">
+                                <div class="row"
+                                     style="display: flex; align-content: center; flex-direction: column; margin-bottom: 4rem">
                                     <h3 class="d-block mb-2 noto-font" style="color: #6D29D0">공급자 정보 등록</h3>
                                     <span class="noto-font sub-title">상점 정보 (4 / 4)</span>
                                 </div>
-                                <form class="forms-sample" id="image-form" style="margin-top: 1.5rem; margin-bottom: 4rem">
+                                <form class="forms-sample" id="image-form"
+                                      style="margin-top: 1.5rem; margin-bottom: 4rem">
                                     <div class="col-12">
                                         <div class="row row-cols-3" id="image-container">
                                             <input type="file" id="image-add-input-1" name="img1" accept="image/*"
@@ -170,8 +172,6 @@
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b4cf906c03295c29420721a730a4ef0b&libraries=services"></script>
 <script>
-    import {image} from "../../../resources/static/vendors/feather-icons/feather";
-
     let imageIndex = 1;
     let mapContainer = document.getElementById("map"),
         mapOption = {
@@ -504,13 +504,14 @@
                     let fileValue = $("#image-add-input-" + imageIndex).val().split("\\");
                     let fileName = fileValue[fileValue.length - 1];
                     if (fileName !== "") {
-                        $('<div class="col image-div">\n' +
+                        $('<div class="col image-div" style="position: relative">\n' +
                             '<div class="img-container">\n' +
                             '<img src="' + data.target.result + '" alt style="width: 100%;height:150px;object-fit: fill">\n' +
                             '</div>\n' +
+                            '<button type="button" class="img-delete-btn"><img src="/images/x-button.svg" alt width="90%"></button>\n' +
                             '</div>').insertBefore("#img-add-div");
                         imageIndex++;
-                        $('<input type="file" id="image-add-input-' + imageIndex + '" name="img'+ imageIndex +'" accept="image/*" hidden>').insertBefore("#img-add-div");
+                        $('<input type="file" id="image-add-input-' + imageIndex + '" name="img' + imageIndex + '" accept="image/*" hidden>').insertBefore("#img-add-div");
                         console.log("ImageIndex After Upload : " + imageIndex);
                     }
                 };

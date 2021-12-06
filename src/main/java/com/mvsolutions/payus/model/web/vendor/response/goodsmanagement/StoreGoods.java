@@ -3,9 +3,9 @@ package com.mvsolutions.payus.model.web.vendor.response.goodsmanagement;
 import com.mvsolutions.payus.model.rest.basic.Room;
 import lombok.Data;
 
-import java.util.List;
+import java.util.ArrayList;
 
 @Data
 public class StoreGoods {
-    private List<Room> roomList;
+    private ArrayList<Room> room_options;
 }

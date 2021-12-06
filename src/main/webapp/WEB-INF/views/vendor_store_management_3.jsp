@@ -128,7 +128,7 @@
                                 </button>
                             </div>
                             <div class="col-12 col-xl-3 col-lg-4" style="margin-bottom: 1rem">
-                                <button type="button" class="btn btn-payus-modal submit">
+                                <button type="button" class="btn btn-payus-modal submit" id="btn-for-answer">
                                     답변 하기
                                 </button>
                             </div>
@@ -149,7 +149,7 @@
                                 </button>
                             </div>
                             <div class="col-12 col-xl-3 col-lg-4" style="margin-bottom: 1rem">
-                                <button type="button" class="btn btn-payus-modal submit">
+                                <button type="button" class="btn btn-payus-modal submit" id="btn-for-submit">
                                     답변 작성
                                 </button>
                             </div>
@@ -466,6 +466,15 @@
             modal.focus();
         }
     });
+
+    $(".btn-payus-modal.cancel").on("click", function () {
+        modal.removeClass("show");
+
+        if (!modal.hasClass("show")) {
+            body.css("overflow", "auto");
+        }
+    });
+
 
     $("#modal-close").on("click", function () {
         modal.removeClass("show");

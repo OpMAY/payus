@@ -179,14 +179,14 @@
 
 
 * {
-    font-family: 'SCDream', sans-serif;
-    /*font-family: 'SCDream', 'SpoqaHanSansNeo', 'Pretendard',  'Roboto', 'Noto Sans KR', sans-serif;*/
+    /*font-family: 'SCDream', 'SpoqaHanSansNeo', sans-serif;*/
+    font-family: 'SCDream', 'SpoqaHanSansNeo', 'Pretendard',  'Roboto', 'Noto Sans KR', sans-serif;
     /*font-family: 'SpoqaHanSansNeo', 'Pretendard', 'SCDream', 'Roboto', 'Noto Sans KR', sans-serif;*/
 }
 
 h1, h2, h3, h4, h5, h6, span, div, section, i, b, small, input, button {
-    font-family: 'SCDream', sans-serif;
-    /*font-family: 'SCDream', 'SpoqaHanSansNeo', 'Pretendard',  'Roboto', 'Noto Sans KR', sans-serif;*/
+    /*font-family: 'SCDream', 'SpoqaHanSansNeo', sans-serif;*/
+    font-family: 'SCDream', 'SpoqaHanSansNeo', 'Pretendard',  'Roboto', 'Noto Sans KR', sans-serif;
     word-break: keep-all;
 }
 
@@ -235,7 +235,7 @@ h1, h2, h3, h4, h5, h6, span, div, section, i, b, small, input, button {
 }
 
 .img-add {
-    background-color: rgba(109, 41, 208, 0.8);
+    background-color: #e9ecef;
     display: flex;
     align-content: center;
 }
@@ -425,6 +425,7 @@ h1, h2, h3, h4, h5, h6, span, div, section, i, b, small, input, button {
 
 .payus-small-textarea:read-only {
     background-color: #efefef;
+    border-color: transparent;
 }
 
 .payus-textarea {
@@ -433,13 +434,15 @@ h1, h2, h3, h4, h5, h6, span, div, section, i, b, small, input, button {
     padding: 15px;
     width: 100%;
     font-size: 15px;
-    font-family: 'SCDream', sans-serif !important;
-    border-color: transparent;
+    /*font-family: 'SCDream', sans-serif !important;*/
+    font-family: 'SpoqaHanSansNeo', 'Pretendard', 'SCDream', 'Roboto', 'Noto Sans KR', sans-serif;
+    border-color: #efefef;
     border-radius: 5px;
 }
 
 .payus-textarea:read-only {
     background-color: #efefef;
+    border-color: transparent;
 }
 
 
@@ -929,4 +932,34 @@ select {
 
 .modal-image-div {
     margin-bottom: 1rem;
+}
+
+
+.payus-input {
+    display: block;
+    padding: 1rem 1rem;
+    border: transparent;
+    width: 100%;
+}
+
+.price-unit {
+    position: absolute;
+    bottom: 0;
+    right: 10%;
+    font-size: 20px;
+    font-weight: 400;
+    color: #666666;
+    transform: translate(30%, -45%);
+}
+
+.img-delete-btn {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 25%;
+    transform: translate(-40%, 30%);
+    z-index: 1;
+    padding: 0 0;
+    border: transparent;
+    background-color: transparent;
 }
