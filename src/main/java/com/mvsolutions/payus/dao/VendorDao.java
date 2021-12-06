@@ -57,6 +57,7 @@ public class VendorDao {
         return mapper.getVendorName(vendor_no);
     }
 
+
     public VendorHomeResponse getVendorHome(int vendor_no) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         return mapper.getVendorHome(vendor_no);
