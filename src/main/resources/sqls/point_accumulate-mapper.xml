@@ -171,7 +171,9 @@
         WHERE accumulate_no = #{content_no}
     </select>
     <select id="checkUserUnreadExists" resultType="_boolean">
-        select IF(EXISTS(select * from point_accumulate WHERE user_no = #{user_no} AND user_read_check = false), TRUE,
+        select IF(EXISTS(select * from point_accumulate WHERE user_no = #{user_no}
+                                                          AND user_read_check = false
+                                                          AND reg_date <![CDATA[>]]> DATE_SUB(now(), INTERVAL 3 DAY)), TRUE,
                   FALSE);
     </select>
     <update id="updateUserReadCheckByVendorReviewAnswer">
@@ -181,5 +183,16 @@
         update point_accumulate
         SET user_read_check = false
         WHERE accumulate_no = @AccumulateNo
+    </update>
+    <update id="updateUserReadCheckAccumulate">
+        update point_accumulate
+        set user_read_check = true
+        where accumulate_no = #{accumulate_no}
+    </update>
+    <update id="updateAnswerDate">
+        SET @AccumulateNo = (select accumulate_no from review where review_no = #{review_no});
+        update point_accumulate
+        set answer_date = #{answer_date}, user_read_check = false
+        where accumulate_no = @AccumulateNo
     </update>
 </mapper>

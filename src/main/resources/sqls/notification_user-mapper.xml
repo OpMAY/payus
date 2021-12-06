@@ -19,7 +19,7 @@
         select EXISTS(select * from notification_user WHERE notification_no = #{last_index})
     </select>
     <select id="getUserNotification" resultType="UserNotificationResponse" resultMap="UserNotificationResponse">
-        select notification_no, type, content, reg_date, notification_json
+        select notification_no, type, content, reg_date, notification_json, review_status
         from notification_user
         WHERE user_no = #{user_no}
         <if test="type != 0">
@@ -31,7 +31,7 @@
         SET @RegDate = (select reg_date
         from notification_user
         WHERE notification_no = #{last_index});
-        select notification_no, type, content, reg_date, notification_json
+        select notification_no, type, content, reg_date, notification_json, review_status
         from notification_user WHERE user_no = #{user_no}
         AND (reg_date <![CDATA[<]]> @RegDate OR
         (reg_date <![CDATA[=]]> @RegDate AND notification_no <![CDATA[<]]> #{last_index}))

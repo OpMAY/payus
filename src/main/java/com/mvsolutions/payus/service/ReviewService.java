@@ -72,20 +72,24 @@ public class ReviewService {
         }
         request.setAnswer_date(Time.TimeFormatHMS());
         reviewDao.answerReview(request);
+        pointAccumulateDao.updateAnswerDate(request);
         // 포인트 적립 내역의 유저 읽기 여부 false로 전환
         pointAccumulateDao.updateUserReadCheckByVendorReviewAnswer(request.getReview_no());
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(propagation = Propagation.REQUIRED)
     public ResponseEntity getReviewContentFromPointList(int accumulate_no) throws JSONException {
         Message message = new Message();
         reviewDao.setSqlSession(sqlSession);
+        pointAccumulateDao.setSqlSession(sqlSession);
         UserMyReviewResponse response = reviewDao.getReviewContentFromPointList(accumulate_no);
         if (response == null) {
             // 삭제된 리뷰에 접근 했을 때 D404
             return new ResponseEntity(StringRes.res(StatusCode.DELETED_CONTENT), HttpStatus.OK);
         }
+        // 리뷰를 확인하였으니, 해당 리뷰에 대하여 읽음으로 처리함.
+        pointAccumulateDao.updateUserReadCheckAccumulate(accumulate_no);
         message.put("review", response);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getReviewContentFromPointList()")), HttpStatus.OK);
     }

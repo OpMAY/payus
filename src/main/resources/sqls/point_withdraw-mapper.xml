@@ -43,6 +43,7 @@
         </choose>
     </update>
     <select id="checkUserUnreadExists" resultType="_boolean">
-        select IF(EXISTS(select * from point_withdraw WHERE user_no = #{user_no} AND read_check = false), TRUE, FALSE);
+        select IF(EXISTS(select * from point_withdraw WHERE user_no = #{user_no}
+                                                        AND reg_date <![CDATA[>]]> DATE_SUB(now(), INTERVAL 3 DAY)), TRUE, FALSE);
     </select>
 </mapper>
