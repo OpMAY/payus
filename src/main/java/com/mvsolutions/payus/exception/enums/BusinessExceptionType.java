@@ -4,7 +4,8 @@ public enum BusinessExceptionType implements BaseExceptionType {
     GRANT_EXCEPTION(1001, 200, "1001, You do not have permission."),
     AUTHORIZATION_TOKEN_EXCEPTION(1002,200,"1002, You do not have permission."),
     NOT_ALLOWED_STORE(1003, 200, "1003, Not Allowed Store Type."),
-    NOTIFICATION_TYPE_ERROR(1004, 200, "1004, Notification Type Is Not Qualified");
+    NOTIFICATION_TYPE_ERROR(1004, 200, "1004, Notification Type Is Not Qualified"),
+    VENDOR_LOGIN_INFO_EXPIRED_OR_NULL(1005, 401, "1005, Vendor Login Session is expired or null");
     private int errorCode;
     private int httpStatus;
     private String errorMessage;

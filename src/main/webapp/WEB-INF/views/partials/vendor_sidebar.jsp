@@ -44,12 +44,14 @@
   </button>
   <div class="dropdown-container">
     <a href="/vendor/manage/customer/notice.do">공지사항</a>
-    <a href="#">FAQ</a>
-    <a href="#">문의 내역</a>
-    <a href="#">문의 하기</a>
+    <a href="/vendor/manage/customer/faq.do">FAQ</a>
+    <a href="/vendor/manage/customer/inquiry/list.do">문의 내역</a>
+    <a href="/vendor/manage/customer/inquiry/request.do">문의 하기</a>
   </div>
-  <a href="#">회원탈퇴</a>
-  <a href="#">로그아웃</a>
+  <div style="display: flex; flex-direction: column">
+    <a href="#">회원탈퇴</a>
+    <a id="logout" style="cursor: pointer">로그아웃</a>
+  </div>
 </div>
 <script type="text/javascript">
   $(function() {
@@ -65,6 +67,7 @@
         //for making parent of submenu active
         console.log($(this).parent());
         $(this).parent().css("display", "block");
+        console.log("prev" + $(this).parent().prev('button').text());
         $(this).parent().addClass("active");
         let dropdown = document.getElementsByClassName("dropdown-btn");
         let i;
@@ -97,4 +100,24 @@
       }
     });
   }
+
+  $("#logout").on("click", function () {
+    $.ajax({
+      type: 'POST',
+      url: '/vendor/mypage/logout',
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8'
+    }).done(function (result) {
+      if(result){
+        alert("로그아웃 되었습니다.");
+        window.location.reload();
+      }
+    }).fail(function (error) {
+      console.log(error);
+    })
+  })
+
+  $('.sidebar-header').on("click", function () {
+    $('.sidebar').css("width", 0);
+  })
 </script>

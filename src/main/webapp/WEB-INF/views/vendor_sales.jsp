@@ -75,7 +75,7 @@
                         </div>
                         <div class="col-12 col-xl-3 col-lg-6 col-md-6 col-sm-6"
                              style="padding-top: 2rem; justify-content: right;">
-                            <select class="review-select" id="review-data-type-select"
+                            <select class="payus-select" id="review-data-type-select"
                                     style="color: black;" onchange="alert('바뀜')">
                                 <option selected value="1">전체</option>
                                 <option value="2">결제 완료</option>

@@ -12,7 +12,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>공지 사항</title>
+    <title>공급자 문의 내역</title>
     <!-- core:css -->
     <link rel="stylesheet" href="/vendors/core/core.css">
     <!-- endinject -->
@@ -39,48 +39,87 @@
 <div class="main-wrapper sidemain">
     <div class="page-wrapper full-page">
         <div class="page-content d-flex align-items-center justify-content-center" style="flex-direction: column">
-            <div class="payus-modal" id="notice-modal">
+            <div class="payus-modal" id="reject-reason-modal">
                 <div class="modal-body" style="height: auto">
                     <div class="row">
                         <div class="col-12" style="display: flex; flex-direction: row; justify-content: space-between">
-                            <h3 style="color: #8668d0;">공지사항</h3>
+                            <h3 style="color: #8668d0;">문의 내역</h3>
                             <button type="button" class="btn btn-payus-modal modal-close">
                                 닫기
                             </button>
                         </div>
                     </div>
-                    <div class="row"
+                    <div class="row row-cols-1 row-cols-xl-3 row-cols-lg-1 row-cols-md-1 row-cols-sm-1"
                          style="margin-top: 2rem">
-                        <div class="col-12 col-xl-8 col-lg-12 col-md-12 col-sm-12 payus-modal-textarea-form">
-                            <label for="notice-modal-title">제목</label>
-                            <textarea class="payus-modal-textarea" id="notice-modal-title" rows="1" readonly>[이벤트] 페이백 이벤트를 진행합니다.</textarea>
+                        <div class="col payus-modal-textarea-form">
+                            <label for="inquiry-modal-title">제목</label>
+                            <textarea class="payus-modal-textarea" id="inquiry-modal-title" rows="1" readonly>상점 등록은 어떻게 하나요?</textarea>
                         </div>
-                        <div class="col-12 col-xl-4 col-lg-12 col-md-12 col-sm-12 payus-modal-textarea-form">
-                            <label for="notice-modal-reg-date">등록 일자</label>
-                            <textarea class="payus-modal-textarea" id="notice-modal-reg-date" rows="1"
+                        <div class="col payus-modal-textarea-form">
+                            <label for="inquiry-modal-category">카테고리</label>
+                            <textarea class="payus-modal-textarea" id="inquiry-modal-category" rows="1"
+                                      readonly>포인트 적립 취소</textarea>
+                        </div>
+                        <div class="col payus-modal-textarea-form">
+                            <label for="inquiry-modal-reg-date">문의 일자</label>
+                            <textarea class="payus-modal-textarea" id="inquiry-modal-reg-date" rows="1"
                                       readonly>2021.11.26</textarea>
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 1rem">
                         <div class="col-12">
-                            <label for="notice-modal-content">공지 내용</label>
-                            <textarea class="payus-modal-textarea" id="notice-modal-content" rows="5" readonly>페이어스 이벤트를 진행합니다.
-                            </textarea>
+                            <label for="inquiry-modal-content">문의 내용</label>
+                            <textarea class="payus-modal-textarea" id="inquiry-modal-content" rows="5" readonly>문의 내용문의 내용문의 내용문의 내용문의 내용문의 내용문의 내용문의 내용문의 내용문의 내용문의 내용</textarea>
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 1rem">
                         <div class="col-12">
-                            <label for="content-image">공지 이미지</label>
-                            <div class="row"
-                                 id="content-image">
-                                <div class="col-12 modal-image-div">
+                            <label for="inquiry-modal-images">첨부 이미지</label>
+                            <div class="row row-cols-1 row-cols-xl-5 row-cols-lg-3 row-cols-md-2 row-cols-sm-1"
+                                 id="inquiry-modal-images">
+                                <div class="col modal-image-div">
                                     <div class="img-container">
                                         <img class="clickable_img"
                                              src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 30%; object-fit: fill">
+                                             alt style="width: 100%; height: 100%; object-fit: fill">
+                                    </div>
+                                </div>
+                                <div class="col modal-image-div">
+                                    <div class="img-container">
+                                        <img class="clickable_img"
+                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
+                                             alt style="width: 100%; height: 100%; object-fit: fill">
+                                    </div>
+                                </div>
+                                <div class="col modal-image-div">
+                                    <div class="img-container">
+                                        <img class="clickable_img"
+                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
+                                             alt style="width: 100%; height: 100%; object-fit: fill">
+                                    </div>
+                                </div>
+                                <div class="col modal-image-div">
+                                    <div class="img-container">
+                                        <img class="clickable_img"
+                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
+                                             alt style="width: 100%; height: 100%; object-fit: fill">
+                                    </div>
+                                </div>
+                                <div class="col modal-image-div">
+                                    <div class="img-container">
+                                        <img class="clickable_img"
+                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
+                                             alt style="width: 100%; height: 100%; object-fit: fill">
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 1rem">
+                        <div class="col-12">
+                            <label for="inquiry-modal-answer">답변</label>
+                            <textarea class="payus-modal-textarea" id="inquiry-modal-answer" rows="5" readonly>공급자 회원가입 후 승인 시 등록이 가능합니다.
+                            </textarea>
                         </div>
                     </div>
                     <div>
@@ -97,70 +136,92 @@
             </div>
             <div class="row" style="width: 100%; margin-top: 3rem">
                 <div class="col-xl-8 offset-xl-2 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12">
-                    <div class="row" style="margin-bottom: 5rem;">
-                        <h3 class="d-block" style="color: #8668d0; padding-left: 10px">공지사항</h3>
+                    <div class="row" style="margin-bottom: 2rem;">
+                        <h3 class="d-block" style="color: #8668d0; padding-left: 10px">문의 내역</h3>
                     </div>
                 </div>
                 <div class="col-xl-8 offset-xl-2 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12"
                      style="margin-bottom: 20px; flex-direction: row; align-items: center">
+
                     <div class="row" style="margin-bottom: 1rem;justify-content: right">
                         <div class="col-12 col-xl-6 col-lg-6 col-md-6 col-sm-6"
-                             style="padding-top: 2rem;display: flex; align-items: center;justify-content: right">
-                            <label class="container" style="font-size: 18px">제목
-                                <input type="checkbox" id="notice-search-title"/>
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="container" style="font-size: 18px">내용
-                                <input type="checkbox" id="notice-search-content"/>
-                                <span class="checkmark"></span>
-                            </label>
-                            <input type="text" placeholder="검색" class="payus-search-input">
-                            <button class="btn" style="padding: 10px 1rem;background-color: #8668d0; margin-left: 10px" type="button"><i
-                                    class="fa fa-search"></i></button>
+                             style="display: flex; align-items: center;justify-content: right">
+                            <button type="button"
+                                    class="btn btn-payus inquiry sidebar-open" id="go-inquiry" style="margin-right: 2rem">
+                                문의하기
+                            </button>
+                            <select class="payus-select inquiry" id="review-data-type-select"
+                                    style="color: black;" onchange="alert('바뀜')">
+                                <option selected value="1">전체</option>
+                                <option value="2">답변 완료</option>
+                                <option value="3">미답변</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row" id="table-div" style="overflow-x: auto;">
                         <%--      TODO 데이터 리스트로 연동                  --%>
                         <div class="col-12" id="table-col"
                              style="display: flex; justify-content: center; flex-direction: column">
-                            <table class="payus-table">
+                            <div class="tab">
+                                <button class="tablinks active">전체</button>
+                                <button class="tablinks">이용 방법</button>
+                                <button class="tablinks">페이백</button>
+                                <button class="tablinks">이벤트</button>
+                                <button class="tablinks">불만</button>
+                                <button class="tablinks">신고</button>
+                                <button class="tablinks">기타</button>
+                            </div>
+                            <table class="payus-table" style="border-top: 3px solid #8668d0;">
                                 <thead>
                                 <tr>
                                     <th style="width: 5%">번호</th>
-                                    <th style="width: 60%">제목</th>
-                                    <th style="width: 10%">등록 일자</th>
-                                    <th style="width: 10%">조회 수</th>
-                                    <th style="width: 25%">상세보기</th>
+                                    <th style="width: 20%">문의 종류</th>
+                                    <th style="width: 40%">문의 제목</th>
+                                    <th style="width: 10%">문의 일자</th>
+                                    <th style="width: 10%">답변 상태</th>
+                                    <th style="width: 15%">상세보기</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr notice="1">
+                                <tr inquiry="1">
                                     <td>1</td>
-                                    <td>[이벤트] 페이어스 이벤트를 진행합니다.</td>
+                                    <td>
+                                        이용방법
+                                    </td>
+                                    <td>
+                                        회원 탈퇴를 진행하고 싶습니다.
+                                    </td>
                                     <td>
                                         2021.11.23
                                     </td>
-                                    <td>5011
+                                    <td>
+                                        답변 완료
                                     </td>
                                     <td>
                                         <button type="button" style="display: block;"
                                                 class="btn btn-payus-table">
-                                            상세보기
+                                            상세 보기
                                         </button>
                                     </td>
                                 </tr>
-                                <tr notice="2">
-                                    <td>2</td>
-                                    <td>[이벤트] 페이어스 이벤트를 진행합니다.</td>
+                                <tr inquiry="2">
+                                    <td>1</td>
+                                    <td>
+                                        페이백
+                                    </td>
+                                    <td>
+                                        회원 탈퇴를 진행하고 싶습니다.
+                                    </td>
                                     <td>
                                         2021.11.23
                                     </td>
-                                    <td>3214
+                                    <td>
+                                        미답변
                                     </td>
                                     <td>
                                         <button type="button" style="display: block;"
                                                 class="btn btn-payus-table">
-                                            상세보기
+                                            상세 보기
                                         </button>
                                     </td>
                                 </tr>
@@ -259,8 +320,8 @@
         let table = $(".payus-table");
         let body = table.children('tbody');
         for (let i = 0; i < body.children().length; i++) {
-            let originalRegDate = body.children('tr:eq(' + i + ')').children('td:eq(5)').text();
-            body.children('tr:eq(' + i + ')').children('td:eq(5)').text(SplitDateFunction(originalRegDate));
+            let originalRegDate = body.children('tr:eq(' + i + ')').children('td:eq(3)').text();
+            body.children('tr:eq(' + i + ')').children('td:eq(3)').text(SplitDateFunction(originalRegDate));
         }
     });
 
@@ -272,7 +333,22 @@
                 body.css("overflow", "auto");
             }
         }
+    })
+
+    $('.tablinks').on("click", function () {
+        if (!$(this).hasClass("active")) {
+            const tabDiv = $(this).parent();
+            tabDiv.children("button.active").removeClass("active");
+            $(this).addClass("active");
+
+            // TODO AJAX OR URL MOVE - 카테고리에 맞는 FAQ 불러오기
+        }
     });
+
+    $('.sidebar-open').on("click", function () {
+        $('.sidebar').css("transition", "0.5s");
+        $('.sidebar').css("width", '100%');
+    })
 </script>
 </body>
 </html>

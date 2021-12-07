@@ -126,4 +126,10 @@ public class VendorPostController {
         }
         return vendorAdminService.registerVendorAll(vendorRegisterRequest, storeRegisterRequest);
     }
+
+    @RequestMapping("/mypage/logout")
+    public boolean VendorLogOut(HttpSession session) {
+        session.removeAttribute("vendor_no");
+        return true;
+    }
 }

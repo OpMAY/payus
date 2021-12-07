@@ -3,7 +3,6 @@ package com.mvsolutions.payus.service;
 import com.google.gson.Gson;
 import com.mvsolutions.payus.dao.StoreDao;
 import com.mvsolutions.payus.dao.VendorDao;
-import com.mvsolutions.payus.model.rest.basic.Room;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
 import com.mvsolutions.payus.model.utility.businessvalidation.BusinessStatusRequest;
@@ -15,6 +14,7 @@ import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorRegisterEmailResponse;
+import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminFAQList;
 import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminNoticeList;
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
@@ -244,5 +244,10 @@ public class VendorAdminService {
     public List<VendorAdminNoticeList> getNoticeList() {
         vendorDao.setSqlSession(sqlSession);
         return vendorDao.getNoticeList();
+    }
+
+    public List<VendorAdminFAQList> getFAQList() {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getFAQList();
     }
 }

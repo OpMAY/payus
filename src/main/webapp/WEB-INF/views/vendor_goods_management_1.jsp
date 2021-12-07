@@ -49,7 +49,7 @@
                      style="margin-bottom: 20px; flex-direction: row; align-items: center">
                     <div class="row" style="justify-content: right; margin-bottom: 1rem;">
                         <div class="col-3">
-                            <select class="review-select" id="review-data-type-select"
+                            <select class="payus-select" id="review-data-type-select"
                                     style="color: black;" onchange="alert('바뀜')">
                                 <option selected value="1">전체</option>
                                 <option value="2">오픈</option>

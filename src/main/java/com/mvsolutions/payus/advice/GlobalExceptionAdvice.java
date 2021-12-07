@@ -1,6 +1,7 @@
 package com.mvsolutions.payus.advice;
 
 import com.mvsolutions.payus.exception.rest.GrantAccessDeniedException;
+import com.mvsolutions.payus.exception.web.VendorAdminLoginException;
 import lombok.extern.log4j.Log4j;
 import org.json.JSONException;
 import org.springframework.validation.BindException;

@@ -508,10 +508,11 @@
                             '<div class="img-container">\n' +
                             '<img src="' + data.target.result + '" alt style="width: 100%;height:150px;object-fit: fill">\n' +
                             '</div>\n' +
-                            '<button type="button" class="img-delete-btn"><img src="/images/x-button.svg" alt width="90%"></button>\n' +
+                            '<button type="button" class="img-delete-btn small"><img src="/images/x-button.svg" alt width="90%"></button>\n' +
                             '</div>').insertBefore("#img-add-div");
                         imageIndex++;
                         $('<input type="file" id="image-add-input-' + imageIndex + '" name="img' + imageIndex + '" accept="image/*" hidden>').insertBefore("#img-add-div");
+                        $('.img-delete-btn').css("display", "block");
                         console.log("ImageIndex After Upload : " + imageIndex);
                     }
                 };

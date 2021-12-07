@@ -30,6 +30,8 @@ body {
     left: 0;
     background-color: #f1f1f1;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .dropdown-btn {
@@ -89,21 +91,39 @@ div.content {
     height: 100%;
 }
 
-@media screen and (max-width: 700px) {
+.sidebar-open {
+    display: none;
+}
+
+@media screen and (max-width: 1200px) {
     .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
+        width: 0;
+        height: 100%;
+        position: fixed;
+        z-index: 3000;
+        top: 0;
+        left: 0;
+        background-color: rgba(241, 241, 241, 0.91);
     }
-    .sidebar a {float: left;}
+    /*.sidebar a {float: left;}*/
     div.content {margin-left: 0;}
 
     .sidemain {
         margin-left: 0;
     }
-}
 
-@media screen and (max-width: 400px) {
+    .sidebar-open {
+        display: block;
+    }
+
+    .sidebar .dropdown-container {
+        justify-content: space-around;
+    }
+
+    .dropdown-btn {
+        text-align: center;
+    }
+
     .sidebar a {
         text-align: center;
         float: none;

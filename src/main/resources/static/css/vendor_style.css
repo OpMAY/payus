@@ -180,13 +180,13 @@
 
 * {
     /*font-family: 'SCDream', 'SpoqaHanSansNeo', sans-serif;*/
-    font-family: 'SCDream', 'SpoqaHanSansNeo', 'Pretendard',  'Roboto', 'Noto Sans KR', sans-serif;
+    font-family: 'SCDream', 'SpoqaHanSansNeo', 'Pretendard', 'Roboto', 'Noto Sans KR', sans-serif;
     /*font-family: 'SpoqaHanSansNeo', 'Pretendard', 'SCDream', 'Roboto', 'Noto Sans KR', sans-serif;*/
 }
 
 h1, h2, h3, h4, h5, h6, span, div, section, i, b, small, input, button {
     /*font-family: 'SCDream', 'SpoqaHanSansNeo', sans-serif;*/
-    font-family: 'SCDream', 'SpoqaHanSansNeo', 'Pretendard',  'Roboto', 'Noto Sans KR', sans-serif;
+    font-family: 'SCDream', 'SpoqaHanSansNeo', 'Pretendard', 'Roboto', 'Noto Sans KR', sans-serif;
     word-break: keep-all;
 }
 
@@ -557,7 +557,6 @@ h1, h2, h3, h4, h5, h6, span, div, section, i, b, small, input, button {
 }
 
 
-
 input:disabled {
     background-color: #f6f7f7 !important;
     border: transparent;
@@ -695,7 +694,7 @@ select {
     color: black;
 }
 
-.payus-atag :hover{
+.payus-atag :hover {
     opacity: 0.7;
 }
 
@@ -828,12 +827,13 @@ select {
     transform: rotate(45deg);
 }
 
-.payus-table{
+.payus-table {
     width: 100%;
 }
 
 .payus-table thead {
-    background-color: rgba(247, 212, 141, 0.5);
+    border-bottom: 3px solid #8668d0;
+    border-top: 3px solid #8668d0;
 }
 
 .payus-table th {
@@ -880,10 +880,13 @@ select {
     color: white;
 }
 
-.pagination a:hover:not(.active) {background-color: #ddd;}
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+}
 
-.review-select {
+.payus-select {
     height: 40px;
+    color: black;
 }
 
 .payus-table tbody tr .overflow {
@@ -982,4 +985,56 @@ select {
     font-weight: 500;
     margin-right: 1rem;
     display: block;
+}
+
+/* Style the tab */
+.tab {
+    overflow: hidden;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: rgba(102, 102, 102, 0.5);
+}
+
+.tab button.active:hover {
+    opacity: 0.7;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: rgba(109, 41, 208, 0.8);
+    color: #FFFFFF;
+}
+
+.btn-payus.inquiry {
+    margin-bottom: 0;
+    width: 23vw;
+}
+
+.payus-select.inquiry {
+    width: 30vw;
+}
+
+.payus-select.inquiry-request {
+    width: 30%;
+}
+
+.payus-textarea:focus {
+    border-color: rgba(109, 41, 208, 0.8);
+}
+
+.img-delete-btn.small {
+    right: 3%;
 }
