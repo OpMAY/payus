@@ -160,6 +160,8 @@ public class PointService {
         // 포인트 충전
         // - 취소 요청됨, 취소됨, 충전 반려됨 (충전 취소를 반려하는 것은 없음, 충전 완료 상태에선 취소 불가)
         if (content_type == 1) {
+            pointAccumulateDao.setSqlSession(sqlSession);
+            pointAccumulateCancelDao.setSqlSession(sqlSession);
             // 적립 내역의 반려 및 취소 사유
             pointAccumulateRejectDao.setSqlSession(sqlSession);
             String reason;
@@ -177,6 +179,7 @@ public class PointService {
         } else if (content_type == 2) {
             // 충전 내역의 반려 사유 - 반려 상태일 때만 반려 사유 존재
             // 충전 내역 취소 요청, 취소됨 - 취소 사유
+            pointChargeDao.setSqlSession(sqlSession);
             pointChargeRejectDao.setSqlSession(sqlSession);
             pointChargeCancelDao.setSqlSession(sqlSession);
             int status = pointChargeDao.checkVendorChargeRejected(content_no);

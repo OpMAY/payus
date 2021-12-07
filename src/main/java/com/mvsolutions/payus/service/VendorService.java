@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class VendorService {
     @Autowired
     private StoreDao storeDao;
 
-    @Transactional(readOnly = true)
+    @Transactional(propagation = Propagation.REQUIRED)
     public ResponseEntity loginVendor(VendorLoginRequest request) throws JSONException {
         Message message = new Message();
         vendorDao.setSqlSession(sqlSession);
