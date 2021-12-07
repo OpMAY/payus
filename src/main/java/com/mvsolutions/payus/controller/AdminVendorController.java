@@ -1,10 +1,12 @@
 package com.mvsolutions.payus.controller;
 
-import com.mvsolutions.payus.model.rest.basic.Room;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
+import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminNoticeList;
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
+import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointAccumulateList;
+import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointChargeList;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreDetailInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreInfo;
@@ -208,8 +210,8 @@ public class AdminVendorController {
         int goodsIndex = 0;
         StoreGoods goods = vendorAdminService.getVendorStoreGoodsList(vendor_no, GoodsType.ROOMS);
         log.info(goods.getRoom_options());
-        for(int i = 0; i < goods.getRoom_options().size(); i++) {
-            if(goods.getRoom_options().get(i).getRoom_no() == goods_no){
+        for (int i = 0; i < goods.getRoom_options().size(); i++) {
+            if (goods.getRoom_options().get(i).getRoom_no() == goods_no) {
                 goodsIndex = i;
                 break;
             }
@@ -217,6 +219,44 @@ public class AdminVendorController {
         int paybackRate = vendorAdminService.getPaybackRateForRegisterGoods(vendor_no);
         VIEW.addObject("paybackRate", paybackRate);
         VIEW.addObject("room", goods.getRoom_options().get(goodsIndex));
+        return VIEW;
+    }
+
+    @RequestMapping("/manage/point/charge.do")
+    public ModelAndView PointManagementChargePage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_point_charge_list");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        List<VendorAdminPointChargeList> chargeList = vendorAdminService.getVendorAdminPointChargeList(vendor_no);
+        int point = vendorAdminService.getVendorPointValue(vendor_no);
+        VIEW.addObject("charge", chargeList);
+        VIEW.addObject("point", point);
+        return VIEW;
+    }
+
+    @RequestMapping("/manage/point/accumulate.do")
+    public ModelAndView PointManagementAccumulatePage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_point_accumulate_list");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        List<VendorAdminPointAccumulateList> accumulateList = vendorAdminService.getVendorAdminPointAccumulateList(vendor_no);
+        int point = vendorAdminService.getVendorPointValue(vendor_no);
+        VIEW.addObject("accumulate", accumulateList);
+        VIEW.addObject("point", point);
+        return VIEW;
+    }
+
+    @RequestMapping("/manage/sales.do")
+    public ModelAndView VendorSalesPage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_sales");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        return VIEW;
+    }
+
+    @RequestMapping("/manage/customer/notice.do")
+    public ModelAndView VendorNoticePage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_notice");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        List<VendorAdminNoticeList> noticeList = vendorAdminService.getNoticeList();
+        VIEW.addObject("notice", noticeList);
         return VIEW;
     }
 
