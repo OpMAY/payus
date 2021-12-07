@@ -87,4 +87,7 @@
         insert into report_store(user_no, store_no, title, content, img_list, reg_date)
         VALUES (#{user_no}, #{store_no}, #{title}, #{content}, #{img_list}, #{reg_date})
     </insert>
+    <update id="updateClickReadCheck">
+        update report_store SET read_check = true where report_no = #{report_no}
+    </update>
 </mapper>

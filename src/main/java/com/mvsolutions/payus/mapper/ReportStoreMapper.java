@@ -17,4 +17,6 @@ public interface ReportStoreMapper {
     void updateReadCheck(List<UserReportStoreResponse> reportList);
 
     void reportStore(StoreReportRequest reportRequest);
+
+    void updateClickReadCheck(int report_no);
 }
