@@ -4,7 +4,7 @@
     <div class="sidebar-header">
         <span class="noto-font" style="">공급자</span>
         <button type="button" class="btn btn-sidebar-close">
-            <img src="/images/x-button.svg" alt width="90%">
+            <img src="/images/modal-x.svg" alt width="90%">
         </button>
     </div>
     <button class="dropdown-btn">내 정보 관리
@@ -92,6 +92,7 @@
     /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
     let dropdown = document.getElementsByClassName("dropdown-btn");
     let i;
+    let outBody = $(document.body);
 
     for (i = 0; i < dropdown.length; i++) {
         dropdown[i].addEventListener("click", function () {
@@ -100,9 +101,10 @@
             let dropdownContent = this.nextElementSibling;
             let childrenElementNumber = dropdownContent.childElementCount;
             if (dropdownContent.style.height === 54 * childrenElementNumber + "px") {
-                dropdownContent.style.height = 0;
-                // dropdownContent.style.display = "none";
                 dropdownContent.style.visibility = "hidden";
+                if (dropdownContent.style.visibility === "hidden")
+                    dropdownContent.style.height = 0;
+                // dropdownContent.style.display = "none";
             } else {
                 dropdownContent.style.height = 54 * childrenElementNumber + "px";
                 // dropdownContent.style.display = "block";
@@ -127,7 +129,8 @@
         })
     });
 
-    $('.sidebar-header').on("click", function () {
+    $('.btn-sidebar-close').on("click", function () {
         $('.sidebar').css("width", 0);
+        outBody.css("overflow", "auto");
     })
 </script>

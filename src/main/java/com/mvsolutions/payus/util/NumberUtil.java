@@ -28,6 +28,11 @@ public class NumberUtil {
         return (double)Math.round(value * k) / k;
     }
 
+
+    /**
+     * @Return String 숫자 3자리씩 , 붙이는 함수
+     * @Param int price
+     * **/
     public static String PriceFormat(int price) {
         String amount = Integer.toString(price);
         return amount.replaceAll("\\B(?=(\\d{3})+(?!\\d))", ",");

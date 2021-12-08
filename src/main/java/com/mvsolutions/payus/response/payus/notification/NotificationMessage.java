@@ -16,4 +16,7 @@ public class NotificationMessage {
         else
             return userName + "님에게" + NumberUtil.PriceFormat(point) + "포인트가 페이백 되었습니다.";
     }
+
+
+
 }

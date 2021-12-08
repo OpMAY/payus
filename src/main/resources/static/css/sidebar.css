@@ -10,6 +10,9 @@ body {
     display: flex;
     justify-content: center;
     position: relative;
+    height: 80px;
+    align-items: center;
+    background-color: rgb(241, 241, 241);
 }
 
 .sidebar .sidebar-subject {
@@ -31,8 +34,7 @@ body {
     left: 0;
     background-color: #f1f1f1;
     overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
+    overflow-y: auto;
 }
 
 .dropdown-btn {
@@ -47,6 +49,7 @@ body {
     cursor: pointer;
     outline: none;
     font-weight: bold;
+    position: relative;
 }
 
 .dropdown-btn.active .fa-caret-down {
@@ -85,11 +88,13 @@ body {
     padding-left: 10px;
     transition: 0.5s;
     visibility: hidden;
+    overflow: hidden;
 }
 
 .fa-caret-down {
-    float: right;
-    padding-right: 8px;
+    position: absolute;
+    top: 35%;
+    right: 3%;
 }
 
 div.content {
@@ -106,8 +111,8 @@ div.content {
     display: block;
     padding: 0;
     position: absolute;
-    top: 0;
-    right: 1%;
+    top: 20%;
+    right: 2%;
     transform: translate(0, 40%);
 }
 

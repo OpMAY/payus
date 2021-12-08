@@ -39,26 +39,30 @@
     <div class="page-wrapper full-page">
 
         <div class="page-content d-flex align-items-center " style="flex-direction: column">
+            <jsp:include page="partials/vendor_nav.jsp" flush="true"/>
             <div class="row" style="width: 100%; margin-top: 3rem">
-                <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12">
+                <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 col-md-10 offset-md-1 col-10 offset-1">
                     <div class="row" style="margin-bottom: 1rem">
                         <h3 class="d-block mb-2" style="color: #8668d0; padding-left: 10px">상점 상세 페이지</h3>
                     </div>
                 </div>
-                <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12"
+                <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 col-md-10 offset-md-1 col-10 offset-1"
                      style="margin-bottom: 20px; flex-direction: row; align-items: center">
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="vendor-store-category-first">카테고리</label>
                                 <div style="position: relative; display: flex">
-                                    <textarea class="payus-small-textarea" style="margin-right: 15px; width: 80px" id="vendor-store-category-first" rows="1"
-                                              readonly>숙박</textarea>
+                                    <textarea class="payus-small-textarea" style="margin-right: 15px; width: 80px"
+                                              id="vendor-store-category-first" rows="1"
+                                              disabled>숙박</textarea>
                                     <div>
-                                        <span><img src="/images/Chevron-Left.svg" alt width="100%" style="padding-top: 13px"></span>
+                                        <span><img src="/images/Chevron-Left.svg" alt width="100%"
+                                                   style="padding-top: 13px"></span>
                                     </div>
-                                    <textarea class="payus-small-textarea" id="vendor-store-category-second" rows="1" style="margin-left: 15px"
-                                              readonly>게스트 하우스</textarea>
+                                    <textarea class="payus-small-textarea" id="vendor-store-category-second" rows="1"
+                                              style="margin-left: 15px"
+                                              disabled>게스트 하우스</textarea>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +70,7 @@
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="vendor-store-explain">상점 소개</label>
                                 <textarea class="payus-textarea" id="vendor-store-explain" rows="2"
-                                          readonly>${store.explain}</textarea>
+                                          disabled>${store.explain}</textarea>
                             </div>
                         </div>
                         <div class="col-12">
@@ -76,9 +80,9 @@
                                     <c:forEach var="service" items="${store.service_list}">
                                         <div style="border-bottom: 1px solid black; border-collapse: collapse; margin-bottom: 10px;">
                                             <textarea class="payus-textarea" rows="1" style="margin-bottom: 1rem"
-                                                      readonly>${service.title}</textarea>
+                                                      disabled>${service.title}</textarea>
                                             <textarea class="payus-textarea" rows="2" style="margin-bottom: 1rem"
-                                                      readonly>${service.content}</textarea>
+                                                      disabled>${service.content}</textarea>
                                         </div>
                                     </c:forEach>
                                 </div>
@@ -89,10 +93,12 @@
                                 <label for="vendor-store-explain">이용안내</label>
                                 <div style="display: flex; align-content: center; flex-direction: column">
                                     <c:forEach var="information" items="${store.information}">
-                                        <textarea class="payus-textarea" rows="1" style="margin-bottom: 1rem"
-                                                  readonly>${information.title}</textarea>
-                                        <textarea class="payus-textarea" rows="2" style="margin-bottom: 1rem"
-                                                  readonly>${information.content}</textarea>
+                                        <div style="border-bottom: 1px solid black; border-collapse: collapse; margin-bottom: 10px;">
+                                            <textarea class="payus-textarea" rows="1" style="margin-bottom: 1rem"
+                                                      disabled>${information.title}</textarea>
+                                            <textarea class="payus-textarea" rows="2" style="margin-bottom: 1rem"
+                                                      disabled>${information.content}</textarea>
+                                        </div>
                                     </c:forEach>
                                 </div>
                             </div>
