@@ -38,7 +38,7 @@
 <div class="main-wrapper sidemain">
     <div class="page-wrapper full-page">
 
-        <div class="page-content d-flex align-items-center justify-content-center" style="flex-direction: column">
+        <div class="page-content d-flex align-items-center " style="flex-direction: column">
             <div class="row" style="width: 100%; margin-top: 3rem">
                 <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12">
                     <div class="row" style="margin-bottom: 1rem">
@@ -97,10 +97,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12">
-                            <button type="button" class="btn btn-payus"
-                                    id="goods-register">
+                    </div>
+                    <div class="row row-cols-1 row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1">
+                        <div class="col">
+                            <button type="button" class="btn btn-payus">
                                 등록
+                            </button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-grey">
+                                취소
                             </button>
                         </div>
                     </div>

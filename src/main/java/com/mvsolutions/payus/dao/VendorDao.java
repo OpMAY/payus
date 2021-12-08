@@ -13,6 +13,7 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
+import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminFAQList;
 import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminNoticeList;
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
@@ -176,6 +177,11 @@ public class VendorDao {
     public List<VendorAdminNoticeList> getNoticeList() {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         return mapper.getNoticeList();
+    }
+
+    public List<VendorAdminFAQList> getFAQList() {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getFAQList();
     }
 
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);

@@ -38,7 +38,7 @@
 <!-- partial -->
 <div class="main-wrapper sidemain">
     <div class="page-wrapper full-page">
-        <div class="page-content d-flex align-items-center justify-content-center" style="flex-direction: column">
+        <div class="page-content d-flex align-items-center " style="flex-direction: column">
             <div class="payus-modal" id="reject-reason-modal">
                 <div class="modal-body" style="height: auto">
                     <div class="row">
@@ -153,7 +153,7 @@
                         </div>
                         <div class="col-12 col-xl-3 col-lg-4 col-md-4 col-sm-4"
                              style="padding-top: 2rem; justify-content: right">
-                            <select class="review-select" id="review-data-type-select"
+                            <select class="payus-select" id="review-data-type-select"
                                     style="color: black;" onchange="alert('바뀜')">
                                 <option selected value="1">전체</option>
                                 <option value="2">승인</option>

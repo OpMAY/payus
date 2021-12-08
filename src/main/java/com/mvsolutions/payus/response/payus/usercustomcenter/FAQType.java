@@ -8,4 +8,5 @@ public class FAQType {
     public static final int REVIEW = 4;
     public static final int PAYBACK = 5;
     public static final int ETC = 6;
+
 }

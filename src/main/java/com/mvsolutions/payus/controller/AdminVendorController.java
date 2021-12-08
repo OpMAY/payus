@@ -1,6 +1,9 @@
 package com.mvsolutions.payus.controller;
 
+import com.mvsolutions.payus.exception.enums.BusinessExceptionType;
+import com.mvsolutions.payus.exception.web.VendorAdminLoginException;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
+import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminFAQList;
 import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminNoticeList;
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
@@ -259,5 +262,29 @@ public class AdminVendorController {
         VIEW.addObject("notice", noticeList);
         return VIEW;
     }
+
+    @RequestMapping("/manage/customer/faq.do")
+    public ModelAndView VendorFAQPage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_faq");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        List<VendorAdminFAQList> faqList = vendorAdminService.getFAQList();
+        VIEW.addObject("faq", faqList);
+        return VIEW;
+    }
+
+    @RequestMapping("/manage/customer/inquiry/list.do")
+    public ModelAndView VendorInquiryListPage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_inquiry_1");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        return VIEW;
+    }
+
+    @RequestMapping("/manage/customer/inquiry/request.do")
+    public ModelAndView VendorInquiryRequestPage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_inquiry_2");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        return VIEW;
+    }
+
 
 }

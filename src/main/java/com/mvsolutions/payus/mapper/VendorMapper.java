@@ -14,6 +14,7 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
+import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminFAQList;
 import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminNoticeList;
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
@@ -82,4 +83,6 @@ public interface VendorMapper {
     List<VendorAdminPointAccumulateList> getVendorAdminPointAccumulateList(int vendor_no);
 
     List<VendorAdminNoticeList> getNoticeList();
+
+    List<VendorAdminFAQList> getFAQList();
 }

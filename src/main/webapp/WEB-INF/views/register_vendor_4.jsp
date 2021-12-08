@@ -32,7 +32,7 @@
 <body>
 <div class="main-wrapper">
     <div class="page-wrapper full-page">
-        <div class="page-content d-flex align-items-center justify-content-center" style="flex-direction: column">
+        <div class="page-content d-flex align-items-center " style="flex-direction: column">
             <div class="row">
                 <div class="col-md-12 col-xl-8 d-flex"
                      style="margin-bottom: 20px; flex-direction: row; align-items: center">
@@ -508,10 +508,11 @@
                             '<div class="img-container">\n' +
                             '<img src="' + data.target.result + '" alt style="width: 100%;height:150px;object-fit: fill">\n' +
                             '</div>\n' +
-                            '<button type="button" class="img-delete-btn"><img src="/images/x-button.svg" alt width="90%"></button>\n' +
+                            '<button type="button" class="img-delete-btn small"><img src="/images/x-button.svg" alt width="90%"></button>\n' +
                             '</div>').insertBefore("#img-add-div");
                         imageIndex++;
                         $('<input type="file" id="image-add-input-' + imageIndex + '" name="img' + imageIndex + '" accept="image/*" hidden>').insertBefore("#img-add-div");
+                        $('.img-delete-btn').css("display", "block");
                         console.log("ImageIndex After Upload : " + imageIndex);
                     }
                 };

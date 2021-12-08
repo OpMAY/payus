@@ -38,7 +38,7 @@
 <div class="main-wrapper sidemain">
     <div class="page-wrapper full-page">
 
-        <div class="page-content d-flex align-items-center justify-content-center" style="flex-direction: column">
+        <div class="page-content d-flex align-items-center " style="flex-direction: column">
             <div class="row" style="width: 100%; margin-top: 3rem">
                 <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12">
                     <div class="row" style="margin-bottom: 1rem">
@@ -54,12 +54,16 @@
                                  style="margin-bottom: 1rem; overflow: hidden">
                                 <input type="file" id="image-add-input" name="img" accept="image/*"
                                        hidden>
-                                <div class="col image-div" id="img-add-div" style="display: flex; justify-content: center; height: 200px; position: relative">
-                                    <div class="img-add" id="img-add-btn" style="display: flex; width: 50%; height: 100%;">
-                                        <img src="https://payus.s3.ap-northeast-2.amazonaws.com/${room.room_img}" alt width="100%" height="100%"
+                                <div class="col image-div" id="img-add-div"
+                                     style="display: flex; justify-content: center; height: 200px; position: relative">
+                                    <div class="img-add" id="img-add-btn"
+                                         style="display: flex; width: 50%; height: 100%;">
+                                        <img src="https://payus.s3.ap-northeast-2.amazonaws.com/${room.room_img}" alt
+                                             width="100%" height="100%"
                                              style="border-radius: 5px">
                                     </div>
-                                    <button type="button" class="img-delete-btn" style="display: block"><img src="/images/x-button.svg" alt width="90%"></button>
+                                    <button type="button" class="img-delete-btn" style="display: block"><img
+                                            src="/images/x-button.svg" alt width="90%"></button>
                                 </div>
                             </div>
                         </div>
@@ -87,20 +91,28 @@
                                 </div>
                                 <div class="col-4 col-xl-2" style="margin-bottom: 2rem">
                                     <label for="vendor-store-payback-rate">페이백률</label>
-                                    <textarea class="payus-textarea" id="vendor-store-payback-rate" rows="1" style="white-space: nowrap"
+                                    <textarea class="payus-textarea" id="vendor-store-payback-rate" rows="1"
+                                              style="white-space: nowrap"
                                               readonly>${paybackRate}%</textarea>
                                 </div>
                                 <div class="col-8 col-xl-4" style="margin-bottom: 2rem">
                                     <label for="vendor-point-result">페이백 적립액</label>
-                                    <textarea class="payus-textarea" id="vendor-point-result" rows="1" readonly style="white-space: nowrap"
+                                    <textarea class="payus-textarea" id="vendor-point-result" rows="1" readonly
+                                              style="white-space: nowrap"
                                               placeholder="금액을 먼저 입력하세요."></textarea>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12">
-                            <button type="button" class="btn btn-payus"
-                                    id="goods-register">
+                    </div>
+                    <div class="row row-cols-1 row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1">
+                        <div class="col">
+                            <button type="button" class="btn btn-payus">
                                 수정
+                            </button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-grey">
+                                취소
                             </button>
                         </div>
                     </div>
@@ -161,7 +173,7 @@
 
         $("#image-add-input").change(function () {
             console.log("changed");
-            if(this.files && this.files[0]) {
+            if (this.files && this.files[0]) {
                 let reader = new FileReader();
                 reader.onload = function (data) {
                     $("#img-add-btn").children('img').attr("src", data.target.result);
@@ -183,7 +195,11 @@
         $("#img-add-btn").children('img').attr("src", '/images/Group%20334.svg');
         $("#img-add-btn").children('img').css("transform", "scale(0.45)");
         $(".img-delete-btn").css("display", "none");
-    })
+    });
+
+    $('.btn-grey').on("click", function () {
+        window.location.replace(window.document.referrer);
+    });
 
 </script>
 </body>

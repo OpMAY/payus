@@ -222,4 +222,9 @@
         from notice
         ORDER BY reg_date DESC
     </select>
+    <select id="getFAQList" resultType="VendorAdminFAQList">
+        select faq_no, question, answer, type, reg_date, view_num
+        from faq
+        ORDER BY reg_date DESC
+    </select>
 </mapper>

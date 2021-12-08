@@ -38,7 +38,7 @@
 <!-- partial -->
 <div class="main-wrapper sidemain">
     <div class="page-wrapper full-page">
-        <div class="page-content d-flex align-items-center justify-content-center" style="flex-direction: column">
+        <div class="page-content d-flex align-items-center " style="flex-direction: column">
             <div class="row" style="width: 100%; margin-top: 3rem">
                 <div class="col-xl-8 offset-xl-2 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12">
                     <div class="row" style="margin-bottom: 5rem;">
@@ -75,7 +75,7 @@
                         </div>
                         <div class="col-12 col-xl-3 col-lg-6 col-md-6 col-sm-6"
                              style="padding-top: 2rem; justify-content: right;">
-                            <select class="review-select" id="review-data-type-select"
+                            <select class="payus-select" id="review-data-type-select"
                                     style="color: black;" onchange="alert('바뀜')">
                                 <option selected value="1">전체</option>
                                 <option value="2">결제 완료</option>

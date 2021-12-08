@@ -9,6 +9,7 @@ body {
     font-weight: bold;
     display: flex;
     justify-content: center;
+    position: relative;
 }
 
 .sidebar .sidebar-subject {
@@ -30,6 +31,8 @@ body {
     left: 0;
     background-color: #f1f1f1;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .dropdown-btn {
@@ -46,8 +49,12 @@ body {
     font-weight: bold;
 }
 
+.dropdown-btn.active .fa-caret-down {
+    transform: rotateX(180deg);
+}
+
 .active-natural {
-    background-color: rgba(109, 41, 208);
+    background-color: rgb(109, 41, 208);
 }
 
 .sidebar a {
@@ -73,9 +80,11 @@ body {
 }
 
 .dropdown-container {
-    display: none;
+    height: 0;
     background-color: #f1f1f1;
     padding-left: 10px;
+    transition: 0.5s;
+    visibility: hidden;
 }
 
 .fa-caret-down {
@@ -89,23 +98,66 @@ div.content {
     height: 100%;
 }
 
-@media screen and (max-width: 700px) {
+.sidebar-open {
+    display: none;
+}
+
+.btn-sidebar-close {
+    display: block;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    right: 1%;
+    transform: translate(0, 40%);
+}
+
+@media screen and (min-width: 1201px) {
     .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
+        width: 200px !important;
+        z-index: 1;
+        background-color: #f1f1f1;
     }
-    .sidebar a {float: left;}
+
+    .btn-sidebar-close {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .sidebar {
+        width: 0;
+        z-index: 3000;
+        background-color: rgba(241, 241, 241, 0.91);
+    }
+    /*.sidebar a {float: left;}*/
     div.content {margin-left: 0;}
 
     .sidemain {
         margin-left: 0;
     }
-}
 
-@media screen and (max-width: 400px) {
+    .sidebar-open {
+        display: block;
+    }
+
+    .sidebar .dropdown-container {
+        justify-content: space-around;
+    }
+
+    .dropdown-btn {
+        text-align: center;
+    }
+
     .sidebar a {
         text-align: center;
         float: none;
+    }
+
+    .btn-sidebar-close {
+        display: block;
+    }
+
+    .dropdown-container {
+        padding-left: 0;
     }
 }

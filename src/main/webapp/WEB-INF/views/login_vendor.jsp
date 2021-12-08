@@ -31,7 +31,7 @@
 <body>
 <div class="main-wrapper">
     <div class="page-wrapper full-page">
-        <div class="page-content d-flex align-items-center justify-content-center page-content-border"
+        <div class="page-content d-flex align-items-center  page-content-border"
              style="flex-direction: column;">
             <div class="row">
                 <div class="col-md-12 col-xl-8 d-flex"

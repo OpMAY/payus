@@ -38,7 +38,7 @@
 <div class="main-wrapper sidemain">
     <div class="page-wrapper full-page">
 
-        <div class="page-content d-flex align-items-center justify-content-center" style="flex-direction: column">
+        <div class="page-content d-flex align-items-center " style="flex-direction: column">
             <div class="row" style="width: 100%; margin-top: 3rem">
                 <div class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12">
                     <div class="row" style="margin-bottom: 1rem">
@@ -74,7 +74,7 @@
                                 <label for="vendor-store-explain">서비스</label>
                                 <div style="display: flex; align-content: center; flex-direction: column">
                                     <c:forEach var="service" items="${store.service_list}">
-                                        <div style="border: 1px solid black; border-collapse: collapse; margin-bottom: 10px;">
+                                        <div style="border-bottom: 1px solid black; border-collapse: collapse; margin-bottom: 10px;">
                                             <textarea class="payus-textarea" rows="1" style="margin-bottom: 1rem"
                                                       readonly>${service.title}</textarea>
                                             <textarea class="payus-textarea" rows="2" style="margin-bottom: 1rem"

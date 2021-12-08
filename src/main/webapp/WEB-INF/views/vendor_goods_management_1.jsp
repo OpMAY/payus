@@ -38,7 +38,7 @@
 <!-- partial -->
 <div class="main-wrapper sidemain">
     <div class="page-wrapper full-page">
-        <div class="page-content d-flex align-items-center justify-content-center" style="flex-direction: column">
+        <div class="page-content d-flex align-items-center " style="flex-direction: column">
             <div class="row" style="width: 100%; margin-top: 3rem">
                 <div class="col-xl-8 offset-xl-2 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12">
                     <div class="row" style="margin-bottom: 1rem">
@@ -49,7 +49,7 @@
                      style="margin-bottom: 20px; flex-direction: row; align-items: center">
                     <div class="row" style="justify-content: right; margin-bottom: 1rem;">
                         <div class="col-3">
-                            <select class="review-select" id="review-data-type-select"
+                            <select class="payus-select" id="review-data-type-select"
                                     style="color: black;" onchange="alert('바뀜')">
                                 <option selected value="1">전체</option>
                                 <option value="2">오픈</option>
