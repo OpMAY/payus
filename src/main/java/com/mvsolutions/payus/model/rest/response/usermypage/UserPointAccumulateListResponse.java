@@ -12,4 +12,5 @@ public class UserPointAccumulateListResponse {
     private int status;
     private boolean review_status;
     private boolean user_read_check;
+    private String answer_date;
 }

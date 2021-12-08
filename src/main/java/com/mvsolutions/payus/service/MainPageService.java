@@ -61,6 +61,18 @@ public class MainPageService {
     private NotificationUserDao notificationUserDao;
 
     @Transactional(readOnly = true)
+    public ResponseEntity getMainUserPoint(int user_no) throws JSONException {
+        Message message = new Message();
+        userDao.setSqlSession(sqlSession);
+        if(user_no != 0) {
+            message.put("point", userDao.getUserPoint(user_no));
+        } else {
+            message.put("point", 0);
+        }
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getMainUserPoint()")), HttpStatus.OK);
+    }
+
+    @Transactional(readOnly = true)
     public ResponseEntity getMainPage(MainPageRequest request) throws IOException, URISyntaxException, JSONException {
         Message message = new Message();
         userDao.setSqlSession(sqlSession);
