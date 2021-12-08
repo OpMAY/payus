@@ -8,7 +8,7 @@
         VALUES (#{user_no}, #{request_point}, #{reg_date})
     </insert>
     <select id="getUserPointWithdrawList" resultType="UserPointWithdrawListResponse">
-        select withdraw_no, point, status, reg_date, read_check
+        select withdraw_no, point, status, reg_date, read_check, revise_date
         from point_withdraw
         WHERE user_no = #{user_no}
         ORDER BY reg_date DESC, withdraw_no DESC
@@ -18,7 +18,7 @@
         SET @RegDate = (select reg_date
                         from point_withdraw
                         WHERE withdraw_no = #{last_index});
-        select withdraw_no, point, status, reg_date, read_check
+        select withdraw_no, point, status, reg_date, read_check, revise_date
         from point_withdraw
         WHERE user_no = #{user_no}
           AND (reg_date <![CDATA[<]]> @RegDate OR
@@ -44,6 +44,6 @@
     </update>
     <select id="checkUserUnreadExists" resultType="_boolean">
         select IF(EXISTS(select * from point_withdraw WHERE user_no = #{user_no}
-                                                        AND reg_date <![CDATA[>]]> DATE_SUB(now(), INTERVAL 3 DAY)), TRUE, FALSE);
+                                                        AND reg_date <![CDATA[>=]]> DATE_SUB(now(), INTERVAL 3 DAY)), TRUE, FALSE);
     </select>
 </mapper>

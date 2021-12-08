@@ -98,6 +98,14 @@ public class PayUsRestController {
     }
 
     /**
+     * MainPage#003 - 유저 포인트 가져오기.
+     */
+    @RequestMapping(value = "/api/main/user/point", method = RequestMethod.GET)
+    public ResponseEntity GetMainUserPoint(@RequestParam("user_no") int user_no) throws JSONException {
+        return mainPageService.getMainUserPoint(user_no);
+    }
+
+    /**
      * UserLoginPage#001
      **/
     @RequestMapping(value = "/api/user/login", method = RequestMethod.POST)
