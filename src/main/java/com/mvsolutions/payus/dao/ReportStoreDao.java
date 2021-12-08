@@ -50,5 +50,10 @@ public class ReportStoreDao {
         mapper.reportStore(reportRequest);
     }
 
+    public void updateClickReadCheck(int report_no) {
+        ReportStoreMapper mapper = sqlSession.getMapper(ReportStoreMapper.class);
+        mapper.updateClickReadCheck(report_no);
+    }
+
 //    private ReportStoreMapper mapper = sqlSession.getMapper(ReportStoreMapper.class);
 }

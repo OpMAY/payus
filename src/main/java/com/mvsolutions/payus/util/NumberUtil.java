@@ -27,4 +27,9 @@ public class NumberUtil {
         }
         return (double)Math.round(value * k) / k;
     }
+
+    public static String PriceFormat(int price) {
+        String amount = Integer.toString(price);
+        return amount.replaceAll("\\B(?=(\\d{3})+(?!\\d))", ",");
+    }
 }

@@ -504,6 +504,14 @@ public class PayUsRestController {
     }
 
     /**
+     * UserReportPage#003
+     **/
+    @RequestMapping(value = "/api/report/update/click", method = RequestMethod.GET)
+    public ResponseEntity GetReportUpdateClick(@RequestParam("report_no") int report_no) throws JSONException {
+        return customerService.getReportUpdateClick(report_no);
+    }
+
+    /**
      * PayusHome#001
      **/
     @RequestMapping(value = "/api/submain/event", method = RequestMethod.GET)

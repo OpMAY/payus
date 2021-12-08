@@ -71,6 +71,9 @@
                         WHERE vendor_no = #{vendor_no});
         insert into point_accumulate (user_no, store_no, point, reg_date, payback_rate, price)
         VALUES (#{user_no}, @StoreNo, #{point}, #{reg_date}, #{payback_rate}, #{price})
+        <selectKey resultType="int" keyProperty="accumulate_no" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
     </insert>
     <select id="getUserPointAccumulateList" resultType="UserPointAccumulateListResponse">
         select accumulate_no,

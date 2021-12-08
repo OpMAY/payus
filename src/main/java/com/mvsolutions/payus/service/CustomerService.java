@@ -98,15 +98,15 @@ public class CustomerService {
         message.put("report2", notAnsweredReportList);
         // Last_index 설정
         if (allReportList.size() > 0) {
-            reportStoreDao.updateReadCheck(allReportList);
+            //reportStoreDao.updateReadCheck(allReportList);
             message.put("last_index0", allReportList.get(allReportList.size() - 1).getReport_no());
         }
         if (answeredReportList.size() > 0) {
-            reportStoreDao.updateReadCheck(answeredReportList);
+            //reportStoreDao.updateReadCheck(answeredReportList);
             message.put("last_index1", answeredReportList.get(answeredReportList.size() - 1).getReport_no());
         }
         if (notAnsweredReportList.size() > 0) {
-            reportStoreDao.updateReadCheck(notAnsweredReportList);
+            //reportStoreDao.updateReadCheck(notAnsweredReportList);
             message.put("last_index2", notAnsweredReportList.get(notAnsweredReportList.size() - 1).getReport_no());
         }
 
@@ -128,5 +128,13 @@ public class CustomerService {
             message.put("last_index", reportList.get(reportList.size() - 1).getReport_no());
         }
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getReportListPageReload()")), HttpStatus.OK);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ResponseEntity getReportUpdateClick(int report_no) throws JSONException {
+        Message message = new Message();
+        reportStoreDao.setSqlSession(sqlSession);
+        reportStoreDao.updateClickReadCheck(report_no);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap()), HttpStatus.OK);
     }
 }
