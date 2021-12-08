@@ -38,7 +38,7 @@
 <!-- partial -->
 <div class="main-wrapper sidemain">
     <div class="page-wrapper full-page">
-        <div class="page-content d-flex align-items-center justify-content-center" style="flex-direction: column">
+        <div class="page-content d-flex align-items-center " style="flex-direction: column">
             <div class="payus-modal">
                 <div class="modal-body">
                     <div class="row">

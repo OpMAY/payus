@@ -38,9 +38,9 @@
 <!-- partial -->
 <div class="main-wrapper sidemain">
     <div class="page-wrapper full-page">
-        <div class="page-content d-flex align-items-center justify-content-center" style="flex-direction: column">
+        <div class="page-content d-flex align-items-center " style="flex-direction: column">
             <div class="payus-modal" id="reject-reason-modal">
-                <div class="modal-body" style="height: auto">
+                <div class="modal-body">
                     <div class="row">
                         <div class="col-12" style="display: flex; flex-direction: row; justify-content: space-between">
                             <h3 style="color: #8668d0;">문의 내역</h3>
@@ -49,7 +49,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="row row-cols-1 row-cols-xl-3 row-cols-lg-1 row-cols-md-1 row-cols-sm-1"
+                    <div class="row row-cols-1 row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1"
                          style="margin-top: 2rem">
                         <div class="col payus-modal-textarea-form">
                             <label for="inquiry-modal-title">제목</label>
@@ -64,6 +64,11 @@
                             <label for="inquiry-modal-reg-date">문의 일자</label>
                             <textarea class="payus-modal-textarea" id="inquiry-modal-reg-date" rows="1"
                                       readonly>2021.11.26</textarea>
+                        </div>
+                        <div class="col payus-modal-textarea-form">
+                            <label for="inquiry-modal-answer-status">답변 여부</label>
+                            <textarea class="payus-modal-textarea" id="inquiry-modal-answer-status" rows="1"
+                                      readonly>답변 완료</textarea>
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 1rem">

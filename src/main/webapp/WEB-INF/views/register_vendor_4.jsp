@@ -32,7 +32,7 @@
 <body>
 <div class="main-wrapper">
     <div class="page-wrapper full-page">
-        <div class="page-content d-flex align-items-center justify-content-center" style="flex-direction: column">
+        <div class="page-content d-flex align-items-center " style="flex-direction: column">
             <div class="row">
                 <div class="col-md-12 col-xl-8 d-flex"
                      style="margin-bottom: 20px; flex-direction: row; align-items: center">
