@@ -11,5 +11,6 @@ public class UserNotificationResponse {
     private String content;
     private String reg_date;
     private boolean review_status;
+    private boolean read_check;
     private UserNotificationJson notification_json;
 }

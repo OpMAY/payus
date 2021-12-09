@@ -124,7 +124,7 @@ public class CustomerService {
         List<UserReportStoreResponse> reportList = reportStoreDao.getReportListReload(user_no, report_status, last_index);
         message.put("report", reportList);
         if (reportList.size() > 0) {
-            reportStoreDao.updateReadCheck(reportList);
+            //reportStoreDao.updateReadCheck(reportList);
             message.put("last_index", reportList.get(reportList.size() - 1).getReport_no());
         }
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getReportListPageReload()")), HttpStatus.OK);

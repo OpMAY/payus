@@ -8,4 +8,5 @@ public class UserPointWithdrawRequest {
     private int original_point;
     private int request_point;
     private String reg_date;
+    private String revise_date;
 }

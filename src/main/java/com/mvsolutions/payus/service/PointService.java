@@ -329,6 +329,7 @@ public class PointService {
             return new ResponseEntity(StringRes.res(StatusCode.LOWER_THAN_1000), HttpStatus.OK);
         }
         request.setReg_date(Time.TimeFormatHMS());
+        request.setRevise_date(Time.TimeFormatHMS());
         // 인출 요청
         pointWithdrawDao.requestWithdraw(request);
         // 포인트 업데이트
