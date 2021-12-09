@@ -10,6 +10,9 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindIdRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindPasswordRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorPasswordResetRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest;
+import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
+import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
+import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
@@ -182,6 +185,26 @@ public class VendorDao {
     public List<VendorAdminFAQList> getFAQList() {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         return mapper.getFAQList();
+    }
+
+    public boolean validateVendorPassword(int vendor_no, String password) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.validateVendorPassword(vendor_no, password);
+    }
+
+    public void changeVendorPersonalData(VendorAdminEditPersonalDataRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.changeVendorPersonalData(request);
+    }
+
+    public void changeVendorBankData(VendorAdminEditBankDataRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.changeVendorBankData(request);
+    }
+
+    public void changeVendorBusinessData(VendorAdminEditBusinessDataRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.changeVendorBusinessData(request);
     }
 
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);

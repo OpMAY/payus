@@ -50,5 +50,4 @@ public class NotificationMessage {
                 "\n현재 보유한 포인트 : " + point + "P";
     }
 
-
 }

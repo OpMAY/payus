@@ -49,27 +49,31 @@
                     <div class="row noto-font">
                         <div class="col-12">
                             <div class="form-group" style="margin-bottom: 2rem">
-                                <label for="vendor-reset-password-id">상호명</label>
-                                <textarea class="payus-textarea" id="vendor-reset-password-id" rows="1"
+                                <label for="vendor-store-name">상호명</label>
+                                <textarea class="payus-textarea" id="vendor-store-name" rows="1"
                                           disabled>${vendor.store_name}</textarea>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="form-group" style="margin-bottom: 2rem">
-                                <label for="vendor-reset-password">사업자 등록 번호</label>
-                                <textarea class="payus-textarea" id="vendor-reset-password" rows="1" disabled>${vendor.business_code}</textarea>
+                            <div class="form-group" style="margin-bottom: 2rem;">
+                                <label for="vendor-business-code">사업자 등록 번호</label>
+                                <textarea class="payus-textarea" id="vendor-business-code" rows="1"
+                                          disabled>${vendor.business_code}</textarea>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group" style="margin-bottom: 2rem">
-                                <label for="vendor-reset-password-check">대표</label>
-                                <textarea class="payus-textarea" id="vendor-reset-password-check" rows="1" disabled>${vendor.vendor_name}</textarea>
+                                <label for="vendor-representative-name">대표</label>
+                                <textarea class="payus-textarea" id="vendor-representative-name" rows="1"
+                                          disabled>${vendor.vendor_name}</textarea>
                             </div>
                         </div>
                         <div class="col-12">
-                            <button type="button" class="btn btn-payus"
-                                    id="personal-edit-btn">
+                            <button type="button" class="btn btn-payus business-info">
                                 수정
+                            </button>
+                            <button type="button" class="btn btn-grey business-info-cancel" style="display: none">
+                                취소
                             </button>
                         </div>
                     </div>
@@ -78,5 +82,53 @@
         </div>
     </div>
 </div>
+<script src="/js/common.js"></script>
+<script>
+    const originalStoreName = $("#vendor-store-name").val();
+    const originalVendorName = $("#vendor-representative-name").val();
+
+    $(".btn-grey.business-info-cancel").on("click", function () {
+        $("#vendor-store-name").attr("disabled", "true");
+        $("#vendor-representative-name").attr("disabled", "true");
+        $("#vendor-store-name").val(originalStoreName);
+        $("#vendor-representative-name").val(originalVendorName);
+        $(".btn-payus.business-info").removeClass("active");
+        $(".btn-payus.business-info").text("수정");
+        $(this).css("display", "none");
+    })
+
+    $(".btn-payus.business-info").on("click", function () {
+        if ($(this).hasClass("active")) {
+            let storeName = $("#vendor-store-name").val();
+            let vendorName = $("#vendor-representative-name").val();
+            let data = {
+                "storeName" : storeName,
+                "vendorName" : vendorName
+            };
+            $.ajax({
+                type: 'POST',
+                url: '/vendor/mypage/change/business',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (result) {
+                if (result) {
+                    alert("사업장 정보가 변경되었습니다.");
+                    window.location.reload();
+                } else {
+                    alert("알 수 없는 오류가 발생했습니다.");
+                }
+            }).fail(function (error) {
+                console.log(error);
+            })
+        } else {
+            $(this).addClass("active");
+            $(this).text("확인");
+            $(".btn-grey.business-info-cancel").css("display", "block");
+            $("#vendor-store-name").removeAttr("disabled");
+            $("#vendor-representative-name").removeAttr("disabled");
+        }
+    });
+</script>
 </body>
 </html>

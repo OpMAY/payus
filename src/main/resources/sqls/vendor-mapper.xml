@@ -227,4 +227,27 @@
         from faq
         ORDER BY reg_date DESC
     </select>
+    <select id="validateVendorPassword" resultType="_boolean">
+        select EXISTS(select * from vendor WHERE vendor_no = #{vendor_no} AND password = #{password})
+    </select>
+    <update id="changeVendorPersonalData">
+        update vendor
+        SET vendor_name = #{name},
+            phone       = #{phone}
+        WHERE vendor_no = #{vendor_no}
+    </update>
+    <update id="changeVendorBankData">
+        update vendor
+        SET bank_name    = #{bankName},
+            bank_account = #{bankAccount},
+            bank_owner   = #{bankOwner}
+        WHERE vendor_no = #{vendor_no}
+    </update>
+    <update id="changeVendorBusinessData">
+        update vendor, store
+        SET vendor.vendor_name = #{vendorName},
+            store.name         = #{storeName}
+        WHERE vendor.vendor_no = #{vendor_no}
+          AND store.vendor_no = #{vendor_no}
+    </update>
 </mapper>

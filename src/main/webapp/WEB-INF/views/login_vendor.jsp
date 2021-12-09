@@ -31,7 +31,7 @@
 <body>
 <div class="main-wrapper">
     <div class="page-wrapper full-page">
-        <div class="page-content d-flex align-items-center  page-content-border"
+        <div class="page-content d-flex align-items-center justify-content-center page-content-border"
              style="flex-direction: column;">
             <div class="row">
                 <div class="col-md-12 col-xl-8 d-flex"
@@ -46,33 +46,34 @@
                         <div class="col-12">
                             <div class="auth-form-wrapper px-4 py-5">
                                 <div class="row justify-content-center" style="margin-bottom: 2rem">
-                                    <h3 class="d-block mb-2 dohyun-font" style="color: #8668d0">공급자 로그인 페이지</h3>
+                                    <h3 class="d-block mb-2" style="color: #8668d0">공급자 로그인 페이지</h3>
                                 </div>
-                                <form class="forms-sample noto-font">
+                                <form class="forms-sample">
                                     <div class="col-12" style="margin-bottom: 2rem">
                                         <div class="form-group">
-                                            <label for="adminInputId" class="noto-font">아이디</label>
-                                            <input class="form-control noto-font" id="adminInputId"
+                                            <label for="adminInputId" class="">아이디</label>
+                                            <input class="form-control" id="adminInputId"
                                                    placeholder="아이디를 입력하세요."
                                                    style="height: 10%">
                                         </div>
                                     </div>
                                     <div class="col-12" style="margin-bottom: 2rem">
                                         <div class="form-group">
-                                            <label for="adminInputPassword" class="noto-font">비밀번호</label>
+                                            <label for="adminInputPassword" class="">비밀번호</label>
                                             <input type="password" class="form-control" id="adminInputPassword"
                                                    autocomplete="current-password" placeholder="비밀번호를 입력하세요."
                                                    style="height: 10%">
                                         </div>
                                     </div>
                                     <div class="row mx-auto">
-                                        <div class="col-12" style="display: flex; justify-content: flex-end; margin-bottom: 2rem">
+                                        <div class="col-12"
+                                             style="display: flex; justify-content: flex-end; margin-bottom: 2rem">
                                             <a href="/vendor/find/identification.do"
-                                               class="d-block noto-font vendor-identification-find"
+                                               class="d-block vendor-identification-find"
                                                style="word-break: keep-all">아이디
                                                 찾기</a>
                                             <a href="/vendor/find/password.do"
-                                               class="d-block noto-font vendor-identification-find"
+                                               class="d-block vendor-identification-find"
                                                style="margin-left: 5px; word-break: keep-all">비밀번호 찾기</a>
                                         </div>
                                     </div>

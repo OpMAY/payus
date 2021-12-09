@@ -32,12 +32,14 @@ public class EmailConfiguration {
     private String id;
     @Value("${admin.mail.password}")
     private String password;
+    @Value("${spring.mail.password}")
+    private String gmailPassword;
 
     @Bean
     public JavaMailSender mailSender() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setUsername(id);
-        javaMailSender.setPassword(password);
+        javaMailSender.setPassword(gmailPassword);
         javaMailSender.setJavaMailProperties(getMailProperties());
         javaMailSender.setDefaultEncoding("UTF-8");
         return javaMailSender;

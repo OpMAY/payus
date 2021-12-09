@@ -1069,3 +1069,10 @@ select {
 .img-delete-btn.small {
     right: 3%;
 }
+
+.pw-change-note {
+    font-size: 1rem;
+    color: #010101;
+    margin: 1rem 0;
+    text-align: center;
+}
