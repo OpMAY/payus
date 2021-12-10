@@ -120,24 +120,6 @@
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b4cf906c03295c29420721a730a4ef0b&libraries=services"></script>
 <script>
-    let mapContainer = document.getElementById("map"),
-        mapOption = {
-            center: new daum.maps.LatLng(${store.address_y}, ${store.address_x}),
-            level: 2
-        };
-
-    // 지도를 미리 생성
-    let map = new daum.maps.Map(mapContainer, mapOption);
-
-    // 주소-좌표 변환 객체를 생성
-    let geoCoder = new daum.maps.services.Geocoder();
-
-    // 마커를 미리 생성
-    let marker = new daum.maps.Marker({
-        position: new daum.maps.LatLng(${store.address_y}, ${store.address_x}),
-        map: map
-    });
-
     console.log(${store.image_list.size()});
     let container = $("#image-container");
     console.log(container.height());

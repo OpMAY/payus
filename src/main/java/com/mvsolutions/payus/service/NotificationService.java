@@ -6,6 +6,7 @@ import com.mvsolutions.payus.dao.UserDao;
 import com.mvsolutions.payus.dao.VendorDao;
 import com.mvsolutions.payus.model.rest.basic.NotificationUser;
 import com.mvsolutions.payus.model.rest.basic.NotificationVendor;
+import com.mvsolutions.payus.model.rest.basic.UserPushData;
 import com.mvsolutions.payus.model.rest.request.suphomepage.VendorNotificationDeleteRequest;
 import com.mvsolutions.payus.model.rest.response.mainpage.UserNotificationResponse;
 import com.mvsolutions.payus.model.rest.response.suphomepage.VendorNotificationResponse;
@@ -123,12 +124,34 @@ public class NotificationService {
             // 유저에게 알림
             notificationUserDao.setSqlSession(sqlSession);
             userDao.setSqlSession(sqlSession);
+            UserPushData pushData = userDao.getUserPushData(notificationUser.getUser_no());
             notificationUserDao.insertNotification(notificationUser);
+            boolean canSend;
+            switch (notificationUser.getType()) {
+                case NotificationUserType.WARNING:
+                    canSend = pushData.isReport_push();
+                    break;
+                case NotificationUserType.PAYBACK:
+                case NotificationUserType.POINT:
+                    canSend = pushData.isPoint_push();
+                    break;
+                case NotificationUserType.EVENT:
+                    canSend = pushData.isEvent_push();
+                    break;
+                case NotificationUserType.REVIEW:
+                    canSend = pushData.isReview_push();
+                    break;
+                default:
+                    canSend = false;
+                    break;
+            }
             String fcm_token = userDao.getUserFCMToken(notificationUser.getUser_no());
-            if (fcm_token != null) {
+            if (fcm_token != null && canSend) {
                 if (FCMUtil.sendFCMMessage(fcm_token, FCMTitle.getFCMTitle(notificationUser.getType(), true), notificationUser.getContent(), notificationUser.getNotification_json())) {
                     log.info("FCM Notification Send Success");
                 }
+            } else if (!canSend) {
+                log.info("Push Setting is OFF");
             } else {
                 log.info("FCM TOKEN IS NULL");
             }

@@ -156,15 +156,39 @@
         WHERE store.vendor_no = #{vendor_no}
           AND store_lodgement.store_no = store.store_no
     </select>
-    <select id="getVendorReviewListForStoreManagement" resultType="VendorStoreManagementReviewInfo">
+    <select id="getVendorReviewListForStoreManagementInit" resultType="VendorStoreManagementReviewInfo">
         SET @StoreNo = (select store_no
                         from store
                         WHERE vendor_no = #{vendor_no});
-        select review.review_no, review.content, review.rate, user.nickname, review.reg_date, review.answer_status
+        select review.review_no,
+               review.content,
+               review.rate,
+               user.nickname as user_name,
+               review.reg_date,
+               review.answer_status
         from review,
              user
         WHERE review.store_no = @StoreNo
           AND user.user_no = review.user_no
+        ORDER BY review.reg_date DESC
+        LIMIT 10
+    </select>
+    <select id="getReviewListCallDataByPagination" resultType="VendorStoreManagementReviewInfo">
+        SET @StoreNo = (select store_no
+                        from store
+                        WHERE vendor_no = #{vendor_no});
+        select review.review_no,
+               review.content,
+               review.rate,
+               user.nickname as user_name,
+               review.reg_date,
+               review.answer_status
+        from review,
+             user
+        WHERE review.store_no = @StoreNo
+          AND user.user_no = review.user_no
+        ORDER BY review.reg_date DESC
+        LIMIT #{start_index}, #{end_index}
     </select>
     <select id="getVendorStoreGoodsList" resultType="StoreGoods" resultMap="StoreGoods">
         SET @StoreNo = (select store_no
@@ -250,4 +274,12 @@
         WHERE vendor.vendor_no = #{vendor_no}
           AND store.vendor_no = #{vendor_no}
     </update>
+    <select id="getVendorReviewNumber" resultType="int">
+        SET @StoreNo = (select store_no
+                        from store
+                        WHERE vendor_no = #{vendor_no});
+        select COUNT(*)
+        from review
+        WHERE store_no = @StoreNo
+    </select>
 </mapper>

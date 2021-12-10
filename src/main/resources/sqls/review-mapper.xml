@@ -66,12 +66,15 @@
         WHERE point_accumulate.accumulate_no = #{accumulate_no}
           AND store.store_no = point_accumulate.store_no
     </select>
-    <insert id="uploadReview">
+    <insert id="uploadReview" useGeneratedKeys="true" keyProperty="review_no">
         SET @StoreNo = (select store_no
-                        from point_accumulate
-                        WHERE accumulate_no = #{accumulate_no});
+        from point_accumulate
+        WHERE accumulate_no = #{accumulate_no});
         insert into review (store_no, user_no, accumulate_no, content, rate, reg_date, image_list)
         VALUES (@StoreNo, #{user_no}, #{accumulate_no}, #{content}, #{rate}, #{reg_date}, #{image_list})
+        <selectKey resultType="int" keyProperty="review_no" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
     </insert>
     <select id="getUserMyReviewList" resultType="UserMyReviewResponse" resultMap="UserMyReviewResponse">
         select review_no,
@@ -167,5 +170,14 @@
         select COUNT(*)
         from review
         WHERE user_no = #{user_no}
+    </select>
+    <select id="getDataForNotificationByReviewAnswer" resultType="ReviewAnswerNotificationData">
+        select review.user_no, user.nickname as user_name, store.name as store_name, review.content as review_content
+        from review,
+             user,
+             store
+        WHERE review.review_no = #{review_no}
+          AND user.user_no = review.user_no
+          AND store.store_no = review.store_no
     </select>
 </mapper>

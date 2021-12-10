@@ -10,6 +10,7 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindIdRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindPasswordRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorPasswordResetRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest;
+import com.mvsolutions.payus.model.web.vendor.request.common.VendorPagingRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
@@ -142,9 +143,9 @@ public class VendorDao {
         return mapper.getVendorStoreDetailForStoreManagement(vendor_no);
     }
 
-    public List<VendorStoreManagementReviewInfo> getVendorReviewListForStoreManagement(int vendor_no) {
+    public List<VendorStoreManagementReviewInfo> getVendorReviewListForStoreManagementInit(int vendor_no) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
-        return mapper.getVendorReviewListForStoreManagement(vendor_no);
+        return mapper.getVendorReviewListForStoreManagementInit(vendor_no);
     }
 
     public StoreGoods getVendorStoreGoodsList(int vendor_no, int goods_type) {
@@ -205,6 +206,16 @@ public class VendorDao {
     public void changeVendorBusinessData(VendorAdminEditBusinessDataRequest request) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         mapper.changeVendorBusinessData(request);
+    }
+
+    public List<VendorStoreManagementReviewInfo> getReviewListCallDataByPagination(VendorPagingRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getReviewListCallDataByPagination(request);
+    }
+
+    public int getVendorReviewNumber(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorReviewNumber(vendor_no);
     }
 
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);

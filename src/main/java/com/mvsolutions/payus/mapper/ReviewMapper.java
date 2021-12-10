@@ -5,6 +5,7 @@ import com.mvsolutions.payus.model.rest.request.suphomepage.VendorAnswerReviewRe
 import com.mvsolutions.payus.model.rest.request.usermypage.ReviewUploadRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserReviewDeleteRequest;
 import com.mvsolutions.payus.model.rest.response.storedetailpage.StoreReviewPageResponse;
+import com.mvsolutions.payus.model.rest.response.suphomepage.ReviewAnswerNotificationData;
 import com.mvsolutions.payus.model.rest.response.suphomepage.VendorReviewContentResponse;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserMyReviewResponse;
 
@@ -38,4 +39,6 @@ public interface ReviewMapper {
     int getStoreNoByReviewNo(int review_no);
 
     int getReviewNumByUserNo(int user_no);
+
+    ReviewAnswerNotificationData getDataForNotificationByReviewAnswer(int review_no);
 }

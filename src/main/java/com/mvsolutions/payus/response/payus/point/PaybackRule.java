@@ -17,4 +17,15 @@ public class PaybackRule {
             return value + USER_CODE_CALCULATION_AMOUNT;
         return value - USER_CODE_CALCULATION_AMOUNT;
     }
+
+    public static int JudgePointLack(int point) {
+        // 공급자 포인트가 10000P 이하일 경우 1
+        // 공급자 포인트가 10000~30000P 사이일 경우 2
+        if(point < 10000) {
+            return 1;
+        } else if (point > 10000 && point < 30000) {
+            return 2;
+        }
+        return 0;
+    }
 }

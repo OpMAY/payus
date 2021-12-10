@@ -99,4 +99,9 @@ public class StoreDao {
         StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
         mapper.registerStore(storeRegisterRequest);
     }
+
+    public int getVendorNoByStoreNo(int store_no) {
+        StoreMapper mapper = sqlSession.getMapper(StoreMapper.class);
+        return mapper.getVendorNoByStoreNo(store_no);
+    }
 }
