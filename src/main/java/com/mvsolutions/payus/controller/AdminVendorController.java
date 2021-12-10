@@ -251,13 +251,13 @@ public class AdminVendorController {
     public ModelAndView VendorSalesPage(HttpServletRequest request) {
         VIEW = new ModelAndView("vendor_sales");
         Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        // TODO 매출 정보 from point_accumulate
         return VIEW;
     }
 
     @RequestMapping("/manage/customer/notice.do")
     public ModelAndView VendorNoticePage(HttpServletRequest request) {
         VIEW = new ModelAndView("vendor_notice");
-        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
         List<VendorAdminNoticeList> noticeList = vendorAdminService.getNoticeList();
         VIEW.addObject("notice", noticeList);
         return VIEW;
@@ -266,7 +266,6 @@ public class AdminVendorController {
     @RequestMapping("/manage/customer/faq.do")
     public ModelAndView VendorFAQPage(HttpServletRequest request) {
         VIEW = new ModelAndView("vendor_faq");
-        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
         List<VendorAdminFAQList> faqList = vendorAdminService.getFAQList();
         VIEW.addObject("faq", faqList);
         return VIEW;
@@ -276,13 +275,25 @@ public class AdminVendorController {
     public ModelAndView VendorInquiryListPage(HttpServletRequest request) {
         VIEW = new ModelAndView("vendor_inquiry_1");
         Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        //TODO Inquiry List
         return VIEW;
     }
 
     @RequestMapping("/manage/customer/inquiry/request.do")
     public ModelAndView VendorInquiryRequestPage(HttpServletRequest request) {
         VIEW = new ModelAndView("vendor_inquiry_2");
-        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        return VIEW;
+    }
+
+    @RequestMapping("/mypage/password/validation.do")
+    public ModelAndView VendorPasswordValidationPage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_validate_password");
+        return VIEW;
+    }
+
+    @RequestMapping("/mypage/password/change.do")
+    public ModelAndView VendorPasswordChangePage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_change_password");
         return VIEW;
     }
 

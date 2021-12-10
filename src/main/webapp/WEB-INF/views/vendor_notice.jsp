@@ -39,6 +39,7 @@
 <div class="main-wrapper sidemain">
     <div class="page-wrapper full-page">
         <div class="page-content d-flex align-items-center " style="flex-direction: column">
+            <jsp:include page="partials/vendor_nav.jsp" flush="true"/>
             <div class="payus-modal" id="notice-modal">
                 <div class="modal-body" style="height: auto">
                     <div class="row">
@@ -96,12 +97,12 @@
                 </div>
             </div>
             <div class="row" style="width: 100%; margin-top: 3rem">
-                <div class="col-xl-8 offset-xl-2 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12">
+                <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 col-md-10 offset-md-1 col-10 offset-1">
                     <div class="row" style="margin-bottom: 5rem;">
                         <h3 class="d-block" style="color: #8668d0; padding-left: 10px">공지사항</h3>
                     </div>
                 </div>
-                <div class="col-xl-8 offset-xl-2 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12"
+                <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 col-md-10 offset-md-1 col-10 offset-1"
                      style="margin-bottom: 20px; flex-direction: row; align-items: center">
                     <div class="row" style="margin-bottom: 1rem;justify-content: right">
                         <div class="col-12 col-xl-6 col-lg-6 col-md-6 col-sm-6"
@@ -202,6 +203,10 @@
             paginationDiv.children('.active').removeClass('active');
             $(this).addClass('active');
         }
+    });
+
+    $(document).ready(function () {
+        listenResize();
     });
 
     function listenResize() {

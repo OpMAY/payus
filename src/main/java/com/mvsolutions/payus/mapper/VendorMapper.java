@@ -11,6 +11,9 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindIdRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindPasswordRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorPasswordResetRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest;
+import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
+import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
+import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
@@ -85,4 +88,12 @@ public interface VendorMapper {
     List<VendorAdminNoticeList> getNoticeList();
 
     List<VendorAdminFAQList> getFAQList();
+
+    boolean validateVendorPassword(int vendor_no, String password);
+
+    void changeVendorPersonalData(VendorAdminEditPersonalDataRequest request);
+
+    void changeVendorBankData(VendorAdminEditBankDataRequest request);
+
+    void changeVendorBusinessData(VendorAdminEditBusinessDataRequest request);
 }

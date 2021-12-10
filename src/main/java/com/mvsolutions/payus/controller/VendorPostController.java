@@ -4,6 +4,10 @@ import com.google.gson.Gson;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
 import com.mvsolutions.payus.model.web.vendor.request.auth.*;
+import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
+import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
+import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
+import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorPasswordValidationRequest;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorRegisterEmailResponse;
@@ -75,7 +79,7 @@ public class VendorPostController {
     @RequestMapping("/find/password/reset")
     public int VendorResetPassword(@RequestBody String body) {
         VendorPasswordResetRequest request = new Gson().fromJson(body, VendorPasswordResetRequest.class);
-        return vendorAdminService.resetPassword(request);
+        return vendorAdminService.resetPassword(request, null);
     }
 
     @RequestMapping("/register/email/validate")
@@ -131,5 +135,49 @@ public class VendorPostController {
     public boolean VendorLogOut(HttpSession session) {
         session.removeAttribute("vendor_no");
         return true;
+    }
+
+    @RequestMapping("/mypage/password/validate")
+    public boolean VendorValidatePassword(HttpSession session,
+                                          @RequestBody String body) {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorPasswordValidationRequest request = new Gson().fromJson(body, VendorPasswordValidationRequest.class);
+        return vendorAdminService.validateVendorPassword(vendor_no, request.getPassword());
+    }
+
+    @RequestMapping("/mypage/password/change")
+    public int VendorPasswordChange(HttpSession session,
+                                    @RequestBody String body) {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorPasswordResetRequest request = new Gson().fromJson(body, VendorPasswordResetRequest.class);
+        request.setVendor_no(vendor_no);
+        return vendorAdminService.resetPassword(request, session);
+    }
+
+    @RequestMapping("/mypage/change/personal")
+    public boolean VendorChangePersonalData(HttpSession session,
+                                            @RequestBody String body) {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorAdminEditPersonalDataRequest request = new Gson().fromJson(body, VendorAdminEditPersonalDataRequest.class);
+        request.setVendor_no(vendor_no);
+        return vendorAdminService.changeVendorPersonalData(request);
+    }
+
+    @RequestMapping("/mypage/change/bank")
+    public boolean VendorChangeBankData(HttpSession session,
+                                        @RequestBody String body) {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorAdminEditBankDataRequest request = new Gson().fromJson(body, VendorAdminEditBankDataRequest.class);
+        request.setVendor_no(vendor_no);
+        return vendorAdminService.changeVendorBankData(request);
+    }
+
+    @RequestMapping("/mypage/change/business")
+    public boolean VendorChangeBusinessData(HttpSession session,
+                                            @RequestBody String body) {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorAdminEditBusinessDataRequest request = new Gson().fromJson(body, VendorAdminEditBusinessDataRequest.class);
+        request.setVendor_no(vendor_no);
+        return vendorAdminService.changeVendorBusinessData(request);
     }
 }

@@ -10,6 +10,9 @@ import com.mvsolutions.payus.model.utility.businessvalidation.BusinessStatusResp
 import com.mvsolutions.payus.model.utility.kakaolocation.Documents;
 import com.mvsolutions.payus.model.utility.kakaolocation.KakaoLocationResponse;
 import com.mvsolutions.payus.model.web.vendor.request.auth.*;
+import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
+import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
+import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
@@ -109,12 +112,15 @@ public class VendorAdminService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public int resetPassword(VendorPasswordResetRequest request) {
+    public int resetPassword(VendorPasswordResetRequest request, HttpSession session) {
         vendorDao.setSqlSession(sqlSession);
         if (vendorDao.checkVendorCurrentPassword(request)) {
             return 1;
         }
         vendorDao.resetPassword(request);
+        if(session != null) {
+            session.removeAttribute("vendor_no");
+        }
         return 0;
     }
 
@@ -249,5 +255,28 @@ public class VendorAdminService {
     public List<VendorAdminFAQList> getFAQList() {
         vendorDao.setSqlSession(sqlSession);
         return vendorDao.getFAQList();
+    }
+
+    public boolean validateVendorPassword(int vendor_no, String password) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.validateVendorPassword(vendor_no, password);
+    }
+
+    public boolean changeVendorPersonalData(VendorAdminEditPersonalDataRequest request) {
+        vendorDao.setSqlSession(sqlSession);
+        vendorDao.changeVendorPersonalData(request);
+        return true;
+    }
+
+    public boolean changeVendorBankData(VendorAdminEditBankDataRequest request) {
+        vendorDao.setSqlSession(sqlSession);
+        vendorDao.changeVendorBankData(request);
+        return true;
+    }
+
+    public boolean changeVendorBusinessData(VendorAdminEditBusinessDataRequest request) {
+        vendorDao.setSqlSession(sqlSession);
+        vendorDao.changeVendorBusinessData(request);
+        return true;
     }
 }

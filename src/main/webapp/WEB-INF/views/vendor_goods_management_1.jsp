@@ -39,13 +39,14 @@
 <div class="main-wrapper sidemain">
     <div class="page-wrapper full-page">
         <div class="page-content d-flex align-items-center " style="flex-direction: column">
+            <jsp:include page="partials/vendor_nav.jsp" flush="true"/>
             <div class="row" style="width: 100%; margin-top: 3rem">
-                <div class="col-xl-8 offset-xl-2 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12">
+                <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 col-md-10 offset-md-1 col-10 offset-1">
                     <div class="row" style="margin-bottom: 1rem">
                         <h3 class="d-block mb-2" style="color: #8668d0; padding-left: 10px">상품 목록</h3>
                     </div>
                 </div>
-                <div class="col-xl-8 offset-xl-2 col-lg-8 offset-lg-2 col-md-8 offset-md-2 col-12"
+                <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 col-md-10 offset-md-1 col-10 offset-1"
                      style="margin-bottom: 20px; flex-direction: row; align-items: center">
                     <div class="row" style="justify-content: right; margin-bottom: 1rem;">
                         <div class="col-3">
@@ -66,12 +67,12 @@
                                 <tr>
                                     <th style="width: 5%">번호</th>
                                     <th style="width: 12%">이미지</th>
-                                    <th style="width: 10%">상품명</th>
-                                    <th style="width: 35%">상품 옵션</th>
+                                    <th style="width: 15%">상품명</th>
+                                    <th style="width: 20%">상품 옵션</th>
                                     <th style="width: 8%">가격</th>
                                     <th style="width: 10%">등록 일자</th>
-                                    <th style="width: 10%">수정</th>
-                                    <th style="width: 10%">삭제</th>
+                                    <th style="width: 15%">수정</th>
+                                    <th style="width: 15%">삭제</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -84,7 +85,7 @@
                                         <td>
                                             <div class="overflow">
                                                 <div class="overflow-space">
-                                                    <div class="overflow-text">${rooms[i-1].name}
+                                                    <div class="overflow-text" title="${rooms[i-1].name}">${rooms[i-1].name}
                                                     </div>
                                                 </div>
                                             </div>
@@ -92,7 +93,7 @@
                                         <td>
                                             <div class="overflow">
                                                 <div class="overflow-space">
-                                                    <div class="overflow-text">${rooms[i-1].room_explain}
+                                                    <div class="overflow-text" title="${rooms[i-1].room_explain}">${rooms[i-1].room_explain}
                                                     </div>
                                                 </div>
                                             </div>
@@ -156,6 +157,10 @@
             paginationDiv.children('.active').removeClass('active');
             $(this).addClass('active');
         }
+    });
+
+    $(document).ready(function () {
+        listenResize();
     });
 
     function listenResize() {
