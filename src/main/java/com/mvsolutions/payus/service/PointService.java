@@ -8,6 +8,8 @@ import com.mvsolutions.payus.model.rest.request.suppointpage.VendorChargeCancelR
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorPointCancelRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorPointChargeRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserPointWithdrawRequest;
+import com.mvsolutions.payus.model.rest.response.loginpage.user.UserPenaltyResponse;
+import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorPenaltyResponse;
 import com.mvsolutions.payus.model.rest.response.storedetailpage.UserAccumulateCheckResponse;
 import com.mvsolutions.payus.model.rest.response.suppointpage.*;
 import com.mvsolutions.payus.model.rest.response.usermypage.*;
@@ -33,8 +35,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
+import static com.mvsolutions.payus.util.Time.timeZone;
 
 @Service
 @Log4j
@@ -80,6 +87,12 @@ public class PointService {
 
     @Autowired
     private NotificationService notificationService;
+
+    @Autowired
+    private PenaltyUserDao penaltyUserDao;
+
+    @Autowired
+    private PenaltyVendorDao penaltyVendorDao;
 
     @Transactional(readOnly = true)
     public ResponseEntity getDataForPointCharge(int vendor_no) throws JSONException {
@@ -244,7 +257,22 @@ public class PointService {
             // 유저 정보 없을 때 U404
             return new ResponseEntity(StringRes.res(StatusCode.NO_USER_DETECTED), HttpStatus.OK);
         } else if (response.isUser_penalty()) {
-            return new ResponseEntity(StringRes.res(StatusCode.PENALTY_USER), HttpStatus.OK);
+            // 스케쥴러가 돌지 않았을 경우 더블 체크.
+            penaltyUserDao.setSqlSession(sqlSession);
+            List<UserPenaltyResponse> penaltyList = penaltyUserDao.getUserPenaltyInfo(user_no);
+            UserPenaltyResponse penaltyResponse = penaltyList.get(0);
+            try {
+                  SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+                  // 지금
+                  Date date1 = transFormat.parse(Time.TimeFormatDay());
+                  // 가져온 데이터.
+                  Date date2 = transFormat.parse(penaltyResponse.getEnd_date());
+                  if(date1.before(date2)) {
+                      return new ResponseEntity(StringRes.res(StatusCode.PENALTY_USER), HttpStatus.OK);
+                  }
+            } catch (ParseException ex) {
+                return new ResponseEntity(StringRes.res(StatusCode.PENALTY_USER), HttpStatus.OK);
+            }
         }
         message.put("user", response);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getUserDataForPayback()")), HttpStatus.OK);
@@ -271,10 +299,42 @@ public class PointService {
         } else if (request.getPrice() >= PaybackRule.LIMIT_PRICE) {
             // 100만원 결제 한도가 넘었을 때 P404
             return new ResponseEntity(StringRes.res(StatusCode.PRICE_EXCEEDED, message.getHashMap("requestPayback() - Price amount Exceeded")), HttpStatus.OK);
-        } else if (userDao.checkUserPenalty(request.getUser_no()) || vendorDao.checkVendorPenalty(request.getVendor_no())) {
+        } else if (userDao.checkUserPenalty(request.getUser_no())) {
             // 정지된 유저 및 정지된 공급자 일 떄 U501
-            return new ResponseEntity(StringRes.res(StatusCode.PENALTY_USER, message.getHashMap("requestPayback() - User or Vendor is penalty")), HttpStatus.OK);
-        } else if (PaybackRule.CalculatePoint(request.getPrice(), request.getPayback_rate(), request.getPoint())) {
+            penaltyUserDao.setSqlSession(sqlSession);
+            List<UserPenaltyResponse> penaltyList = penaltyUserDao.getUserPenaltyInfo(request.getUser_no());
+            UserPenaltyResponse penaltyResponse = penaltyList.get(0);
+            try {
+                SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+                // 지금
+                Date date1 = transFormat.parse(Time.TimeFormatDay());
+                // 가져온 데이터.
+                Date date2 = transFormat.parse(penaltyResponse.getEnd_date());
+                if(date1.before(date2)) {
+                    return new ResponseEntity(StringRes.res(StatusCode.PENALTY_USER, message.getHashMap("requestPayback() - User or Vendor is penalty")), HttpStatus.OK);
+                }
+            } catch (ParseException ex) {
+                return new ResponseEntity(StringRes.res(StatusCode.PENALTY_USER, message.getHashMap("requestPayback() - User or Vendor is penalty")), HttpStatus.OK);
+            }
+        } else if(vendorDao.checkVendorPenalty(request.getVendor_no())) {
+            // 정지된 유저 및 정지된 공급자 일 떄 U501
+            penaltyVendorDao.setSqlSession(sqlSession);
+            List<VendorPenaltyResponse> penaltyList = penaltyVendorDao.getVendorPenaltyInfo(request.getVendor_no());
+            VendorPenaltyResponse penaltyResponse = penaltyList.get(0);
+            try {
+                SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+                // 지금
+                Date date1 = transFormat.parse(Time.TimeFormatDay());
+                // 가져온 데이터.
+                Date date2 = transFormat.parse(penaltyResponse.getEnd_date());
+                if(date1.before(date2)) {
+                    return new ResponseEntity(StringRes.res(StatusCode.PENALTY_USER, message.getHashMap("requestPayback() - User or Vendor is penalty")), HttpStatus.OK);
+                }
+            } catch (ParseException ex) {
+                return new ResponseEntity(StringRes.res(StatusCode.PENALTY_USER, message.getHashMap("requestPayback() - User or Vendor is penalty")), HttpStatus.OK);
+            }
+        }
+        else if (PaybackRule.CalculatePoint(request.getPrice(), request.getPayback_rate(), request.getPoint())) {
             // 포인트 != 가격 * 페이백률이 다를 때 P405
             return new ResponseEntity(StringRes.res(StatusCode.POINT_RESULT_ERROR, message.getHashMap("requestPayback() - Point result is not match")), HttpStatus.OK);
         }
