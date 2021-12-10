@@ -254,6 +254,7 @@
 </div>
 <script src="/js/date-formatter.js"></script>
 <script src="/js/payus-pagination.js"></script>
+<script src="/js/common.js"></script>
 <script>
     $(".btn-payus-table-report").on("click", function () {
         let review_no = $(this).parent().parent().attr('review');
@@ -276,7 +277,7 @@
         tablePagination(${review_num}, 'review-table-pagination');
         let table = $(".payus-table");
         let body = table.children('tbody');
-        for(let i = 0; i < body.children().length; i++) {
+        for (let i = 0; i < body.children().length; i++) {
             let originalRegDate = body.children('tr:eq(' + i + ')').children('td:eq(4)').text();
             body.children('tr:eq(' + i + ')').children('td:eq(4)').text(SplitDateFunction(originalRegDate));
         }
@@ -286,11 +287,14 @@
     $(".pagination").on("click", 'a', function () {
         let selectedPage = $(this);
         let data_order = selectedPage.attr('data-order');
+        let selectedPageIndex = (data_order * 10) - 10;
         console.log(data_order);
         let paginationDiv = $("#review-table-pagination");
         let active_page = paginationDiv.children('.active').attr('data-order');
         if (active_page !== data_order) {
-            let data = {"page" : data_order};
+            paginationDiv.children('.active').removeClass('active');
+            selectedPage.addClass('active');
+            let data = {"page": data_order};
             $.ajax({
                 type: 'POST',
                 url: '/vendor/manage/store/review/paging',
@@ -301,11 +305,42 @@
                 $("#pagination_layout *").remove();
                 console.log(result);
                 console.log("length : " + result.length);
-                for(let i = 0; i < result.length; i++) {
-
+                for (let i = 0; i < result.length; i++) {
+                    let data = result[i];
+                    let thisIndex = selectedPageIndex + i + 1;
+                    let answerStatusString;
+                    if (data.answer_status) {
+                        answerStatusString = '답변 완료';
+                    } else {
+                        answerStatusString = '미답변';
+                    }
+                    $("#pagination_layout").append('<tr review="' + data.review_no + '">\n' +
+                        '                                        <td>' + thisIndex + '</td>\n' +
+                        '                                        <td>\n' +
+                        '                                            <div class="overflow">\n' +
+                        '                                                <div class="overflow-space">\n' +
+                        '                                                    <div class="overflow-text">' + data.content + '\n' +
+                        '                                                    </div>\n' +
+                        '                                                </div>\n' +
+                        '                                            </div>\n' +
+                        '                                        </td>\n' +
+                        '                                        <td>' + data.rate + '</td>\n' +
+                        '                                        <td>' + data.user_name + '</td>\n' +
+                        '                                        <td>' + SplitDateFunction(data.reg_date) + '</td>\n' +
+                        '                                        <td>' + answerStatusString + '</td>\n' +
+                        '                                        <td>\n' +
+                        '                                                <%--      TODO 신고하기 페이지 이동              --%>\n' +
+                        '                                            <button type="button" class="btn btn-payus-table-report">\n' +
+                        '                                                신고하기\n' +
+                        '                                            </button>\n' +
+                        '                                        </td>\n' +
+                        '                                        <td>\n' +
+                        '                                            <button type="button" class="btn btn-payus-table">\n' +
+                        '                                                자세히보기\n' +
+                        '                                            </button>\n' +
+                        '                                        </td>\n' +
+                        '                                    </tr>');
                 }
-                paginationDiv.children('.active').removeClass('active');
-                selectedPage.addClass('active');
             }).fail(function (error) {
                 console.log(error);
             });
@@ -316,10 +351,22 @@
 <script>
     let body = $(document.body);
     let modal = $(".payus-modal");
-    $(".btn-payus-table").on("click", function () {
+    $("#pagination_layout tr td").on("click", ".btn-payus-table", function () {
         let review_no = $(this).parent().parent().attr('review');
         console.log(review_no);
         // TODO 해당 review_no로 리뷰 상세 내용 AJAX
+        let data = {"review_no": review_no};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/store/review/detail',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            console.log(result);
+        }).fail(function (error) {
+            console.log(error);
+        });
 
         modal.addClass('show');
 

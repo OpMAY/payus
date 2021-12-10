@@ -19,6 +19,11 @@
         <result column="room_options" property="room_options"
                 typeHandler="com.mvsolutions.payus.handler.JsonRoomTypeHandler"/>
     </resultMap>
+    <resultMap id="VendorStoreManagementReviewDetail"
+               type="com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewDetail">
+        <result column="image_list" property="image_list"
+                typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+    </resultMap>
     <select id="checkVendorExists" resultType="_boolean">
         select EXISTS(select * from vendor WHERE id = #{id} AND password = #{password})
     </select>
@@ -281,5 +286,19 @@
         select COUNT(*)
         from review
         WHERE store_no = @StoreNo
+    </select>
+    <select id="getReviewDetailForModal" resultType="VendorStoreManagementReviewDetail"
+            resultMap="VendorStoreManagementReviewDetail">
+        select review.review_no,
+               user.nickname as user_name,
+               review.rate,
+               review.reg_date,
+               review.answer_status,
+               review.content,
+               review.image_list
+        from review,
+             user
+        WHERE review.review_no = #{review_no}
+          AND user.user_no = review.user_no
     </select>
 </mapper>

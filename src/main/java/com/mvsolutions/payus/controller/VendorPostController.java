@@ -9,9 +9,11 @@ import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBank
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorPasswordValidationRequest;
+import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewDetailRequest;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorRegisterEmailResponse;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewDetail;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
 import com.mvsolutions.payus.service.VendorAdminService;
 import com.mvsolutions.payus.util.Constant;
@@ -193,5 +195,13 @@ public class VendorPostController {
         request.setStart_index((request.getPage() - 1) * 10);
         request.setEnd_index(request.getPage() * 10);
         return vendorAdminService.getReviewListCallDataByPagination(request);
+    }
+
+    @RequestMapping("/manage/store/review/detail")
+    public VendorStoreManagementReviewDetail VendorReviewDetailForModal(HttpSession session,
+                                                                        @RequestBody String body) {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorAdminReviewDetailRequest request = new Gson().fromJson(body, VendorAdminReviewDetailRequest.class);
+        return vendorAdminService.getReviewDetailForModal(request);
     }
 }
