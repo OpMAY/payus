@@ -64,10 +64,10 @@ public class MainPageService {
     public ResponseEntity getMainUserPoint(int user_no) throws JSONException {
         Message message = new Message();
         userDao.setSqlSession(sqlSession);
-        if(user_no != 0) {
-            message.put("point", userDao.getUserPoint(user_no));
+        if (user_no != 0) {
+            message.put("user", userDao.getUserForMainPage(user_no));
         } else {
-            message.put("point", 0);
+            message.put("user", new MainPageUser());
         }
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getMainUserPoint()")), HttpStatus.OK);
     }
