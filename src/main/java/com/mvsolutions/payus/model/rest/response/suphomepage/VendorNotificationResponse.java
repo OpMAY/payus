@@ -10,4 +10,5 @@ public class VendorNotificationResponse {
     private String content;
     private String reg_date;
     private VendorNotificationJson notification_json;
+    private boolean read_check;
 }

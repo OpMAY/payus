@@ -9,7 +9,7 @@
                 typeHandler="com.mvsolutions.payus.handler.JsonObjectTypeHandler"/>
     </resultMap>
     <select id="getNotificationList" resultType="VendorNotificationResponse" resultMap="VendorNotificationResponse">
-        select notification_no, type, content, reg_date, notification_json
+        select notification_no, type, content, reg_date, notification_json, read_check
         from notification_vendor
         WHERE vendor_no = #{vendor_no}
         <if test="type != 0">
@@ -21,7 +21,7 @@
         SET @RegDate = (select reg_date
         from notification_vendor
         WHERE notification_no = #{last_index});
-        select notification_no, type, content, reg_date, notification_json
+        select notification_no, type, content, reg_date, notification_json, read_check
         from notification_vendor WHERE vendor_no = #{vendor_no}
         AND (reg_date <![CDATA[<]]> @RegDate OR
         (reg_date <![CDATA[=]]> @RegDate AND notification_no <![CDATA[<]]> #{last_index}))
@@ -47,7 +47,7 @@
         <choose>
             <when test="notificationList.size != 0">
                 notification_no in
-                <foreach collection="notificationList" item="item" index="index" open="(" separator="OR" close=")">
+                <foreach collection="notificationList" item="item" index="index" open="(" separator="," close=")">
                     #{item.notification_no}
                 </foreach>
             </when>

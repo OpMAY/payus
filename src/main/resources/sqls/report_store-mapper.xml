@@ -79,7 +79,7 @@
         <choose>
             <when test="reportList.size != 0">
                 report_store.report_no in
-                <foreach collection="reportList" item="item" index="index" open="(" separator="OR" close=")">
+                <foreach collection="reportList" item="item" index="index" open="(" separator="," close=")">
                     #{item.report_no}
                 </foreach>
             </when>

@@ -40,7 +40,7 @@
         <choose>
             <when test="chargeList.size != 0">
                 charge_no in
-                <foreach collection="chargeList" item="item" index="index" open="(" separator="OR" close=")">
+                <foreach collection="chargeList" item="item" index="index" open="(" separator="," close=")">
                     #{item.charge_no}
                 </foreach>
             </when>

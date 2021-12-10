@@ -59,7 +59,7 @@
         <choose>
             <when test="accumulateList.size != 0">
                 accumulate_no in
-                <foreach collection="accumulateList" item="item" index="index" open="(" separator="OR" close=")">
+                <foreach collection="accumulateList" item="item" index="index" open="(" separator="," close=")">
                     #{item.accumulate_no}
                 </foreach>
             </when>
@@ -119,7 +119,7 @@
         <choose>
             <when test="accumulateList.size != 0">
                 accumulate_no in
-                <foreach collection="accumulateList" item="item" index="index" open="(" separator="OR" close=")">
+                <foreach collection="accumulateList" item="item" index="index" open="(" separator="," close=")">
                     #{item.accumulate_no}
                 </foreach>
             </when>
