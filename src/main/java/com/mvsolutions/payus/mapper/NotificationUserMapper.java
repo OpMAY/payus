@@ -1,6 +1,7 @@
 package com.mvsolutions.payus.mapper;
 
 import com.mvsolutions.payus.model.rest.basic.NotificationUser;
+import com.mvsolutions.payus.model.rest.basic.UserNotificationDelete;
 import com.mvsolutions.payus.model.rest.response.mainpage.UserNotificationResponse;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface NotificationUserMapper {
     void updateReadCheck(List<UserNotificationResponse> notificationList);
 
     void updateNotificationByUploadReview(int accumulate_no);
+
+    void deleteUserNotification(UserNotificationDelete request);
 }

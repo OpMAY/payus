@@ -3,6 +3,7 @@ package com.mvsolutions.payus.dao;
 import com.mvsolutions.payus.mapper.NotificationUserMapper;
 import com.mvsolutions.payus.mapper.NotificationVendorMapper;
 import com.mvsolutions.payus.model.rest.basic.NotificationUser;
+import com.mvsolutions.payus.model.rest.basic.UserNotificationDelete;
 import com.mvsolutions.payus.model.rest.response.mainpage.UserNotificationResponse;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -51,5 +52,10 @@ public class NotificationUserDao {
 
     public void updateNotificationByUploadReview(int accumulate_no) {
         initMapper().updateNotificationByUploadReview(accumulate_no);
+    }
+
+    public void deleteUserNotification(UserNotificationDelete request) {
+        NotificationUserMapper mapper = sqlSession.getMapper(NotificationUserMapper.class);
+        mapper.deleteUserNotification(request);
     }
 }
