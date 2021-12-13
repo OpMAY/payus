@@ -4,13 +4,17 @@ import com.google.gson.Gson;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
 import com.mvsolutions.payus.model.web.vendor.request.auth.*;
+import com.mvsolutions.payus.model.web.vendor.request.common.VendorPagingRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorPasswordValidationRequest;
+import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewDetailRequest;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorRegisterEmailResponse;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewDetail;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
 import com.mvsolutions.payus.service.VendorAdminService;
 import com.mvsolutions.payus.util.Constant;
 import com.mvsolutions.payus.util.FileUploadUtility;
@@ -29,6 +33,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 @Log4j
@@ -179,5 +184,24 @@ public class VendorPostController {
         VendorAdminEditBusinessDataRequest request = new Gson().fromJson(body, VendorAdminEditBusinessDataRequest.class);
         request.setVendor_no(vendor_no);
         return vendorAdminService.changeVendorBusinessData(request);
+    }
+
+    @RequestMapping("/manage/store/review/paging")
+    public List<VendorStoreManagementReviewInfo> VendorReviewListCallDataByPagination(HttpSession session,
+                                                                                      @RequestBody String body) {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorPagingRequest request = new Gson().fromJson(body, VendorPagingRequest.class);
+        request.setVendor_no(vendor_no);
+        request.setStart_index((request.getPage() - 1) * 10);
+        request.setEnd_index(request.getPage() * 10);
+        return vendorAdminService.getReviewListCallDataByPagination(request);
+    }
+
+    @RequestMapping("/manage/store/review/detail")
+    public VendorStoreManagementReviewDetail VendorReviewDetailForModal(HttpSession session,
+                                                                        @RequestBody String body) {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorAdminReviewDetailRequest request = new Gson().fromJson(body, VendorAdminReviewDetailRequest.class);
+        return vendorAdminService.getReviewDetailForModal(request);
     }
 }

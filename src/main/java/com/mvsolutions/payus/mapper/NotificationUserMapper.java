@@ -17,4 +17,6 @@ public interface NotificationUserMapper {
     List<UserNotificationResponse> getUserNotificationReload(int user_no, int type, int last_index);
 
     void updateReadCheck(List<UserNotificationResponse> notificationList);
+
+    void updateNotificationByUploadReview(int accumulate_no);
 }

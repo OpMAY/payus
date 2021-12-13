@@ -1,7 +1,5 @@
 package com.mvsolutions.payus.controller;
 
-import com.mvsolutions.payus.exception.enums.BusinessExceptionType;
-import com.mvsolutions.payus.exception.web.VendorAdminLoginException;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
 import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminFAQList;
 import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminNoticeList;
@@ -182,8 +180,9 @@ public class AdminVendorController {
     public ModelAndView StoreManagementReviewListPage(HttpServletRequest request) {
         VIEW = new ModelAndView("vendor_store_management_3");
         Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
-        List<VendorStoreManagementReviewInfo> reviewList = vendorAdminService.getVendorReviewListForStoreManagement(vendor_no);
+        List<VendorStoreManagementReviewInfo> reviewList = vendorAdminService.getVendorReviewListForStoreManagementInit(vendor_no);
         VIEW.addObject("review", reviewList);
+        VIEW.addObject("review_num", vendorAdminService.getVendorReviewNumber(vendor_no));
         return VIEW;
     }
 

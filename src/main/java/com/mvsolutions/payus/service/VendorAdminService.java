@@ -10,9 +10,11 @@ import com.mvsolutions.payus.model.utility.businessvalidation.BusinessStatusResp
 import com.mvsolutions.payus.model.utility.kakaolocation.Documents;
 import com.mvsolutions.payus.model.utility.kakaolocation.KakaoLocationResponse;
 import com.mvsolutions.payus.model.web.vendor.request.auth.*;
+import com.mvsolutions.payus.model.web.vendor.request.common.VendorPagingRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
+import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewDetailRequest;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
@@ -24,6 +26,7 @@ import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusine
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointAccumulateList;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointChargeList;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewDetail;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreDetailInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreInfo;
@@ -217,9 +220,9 @@ public class VendorAdminService {
     }
 
     @Transactional(readOnly = true)
-    public List<VendorStoreManagementReviewInfo> getVendorReviewListForStoreManagement(int vendor_no) {
+    public List<VendorStoreManagementReviewInfo> getVendorReviewListForStoreManagementInit(int vendor_no) {
         vendorDao.setSqlSession(sqlSession);
-        return vendorDao.getVendorReviewListForStoreManagement(vendor_no);
+        return vendorDao.getVendorReviewListForStoreManagementInit(vendor_no);
     }
 
     public StoreGoods getVendorStoreGoodsList(int vendor_no, int goods_type) {
@@ -278,5 +281,20 @@ public class VendorAdminService {
         vendorDao.setSqlSession(sqlSession);
         vendorDao.changeVendorBusinessData(request);
         return true;
+    }
+
+    public List<VendorStoreManagementReviewInfo> getReviewListCallDataByPagination(VendorPagingRequest request) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getReviewListCallDataByPagination(request);
+    }
+
+    public int getVendorReviewNumber(int vendor_no) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorReviewNumber(vendor_no);
+    }
+
+    public VendorStoreManagementReviewDetail getReviewDetailForModal(VendorAdminReviewDetailRequest request) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getReviewDetailForModal(request);
     }
 }

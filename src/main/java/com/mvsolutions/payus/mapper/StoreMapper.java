@@ -42,4 +42,6 @@ public interface StoreMapper {
     String getStoreNameByAccumulateNo(int accumulate_no);
 
     void registerStore(StoreRegisterRequest storeRegisterRequest);
+
+    int getVendorNoByStoreNo(int store_no);
 }

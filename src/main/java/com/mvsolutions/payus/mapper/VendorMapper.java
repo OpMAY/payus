@@ -11,9 +11,11 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindIdRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindPasswordRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorPasswordResetRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest;
+import com.mvsolutions.payus.model.web.vendor.request.common.VendorPagingRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
+import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewDetailRequest;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
@@ -24,6 +26,7 @@ import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusine
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointAccumulateList;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointChargeList;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewDetail;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreDetailInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreInfo;
@@ -71,7 +74,7 @@ public interface VendorMapper {
 
     VendorStoreManagementStoreDetailInfo getVendorStoreDetailForStoreManagement(int vendor_no);
 
-    List<VendorStoreManagementReviewInfo> getVendorReviewListForStoreManagement(int vendor_no);
+    List<VendorStoreManagementReviewInfo> getVendorReviewListForStoreManagementInit(int vendor_no);
 
     StoreGoods getVendorStoreGoodsList(int vendor_no, int goods_type);
 
@@ -96,4 +99,10 @@ public interface VendorMapper {
     void changeVendorBankData(VendorAdminEditBankDataRequest request);
 
     void changeVendorBusinessData(VendorAdminEditBusinessDataRequest request);
+
+    List<VendorStoreManagementReviewInfo> getReviewListCallDataByPagination(VendorPagingRequest request);
+
+    int getVendorReviewNumber(int vendor_no);
+
+    VendorStoreManagementReviewDetail getReviewDetailForModal(VendorAdminReviewDetailRequest request);
 }

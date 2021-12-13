@@ -4,6 +4,8 @@ import lombok.Data;
 
 @Data
 public class ReviewUploadRequest {
+    // Key Property - Update After Insert DB
+    private int review_no;
     // Application Send
     private int user_no;
     private int accumulate_no;

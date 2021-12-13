@@ -2,10 +2,7 @@ package com.mvsolutions.payus.service;
 
 import com.google.gson.Gson;
 import com.mvsolutions.payus.dao.*;
-import com.mvsolutions.payus.model.rest.basic.NotificationJson;
-import com.mvsolutions.payus.model.rest.basic.NotificationUser;
-import com.mvsolutions.payus.model.rest.basic.NotificationVendor;
-import com.mvsolutions.payus.model.rest.basic.PointAccumulate;
+import com.mvsolutions.payus.model.rest.basic.*;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorChargeCancelRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.VendorPointCancelRequest;
@@ -23,6 +20,7 @@ import com.mvsolutions.payus.response.StringRes;
 import com.mvsolutions.payus.response.payus.notification.NotificationContentType;
 import com.mvsolutions.payus.response.payus.notification.NotificationMessage;
 import com.mvsolutions.payus.response.payus.notification.NotificationUserType;
+import com.mvsolutions.payus.response.payus.notification.NotificationVendorType;
 import com.mvsolutions.payus.response.payus.point.PaybackRule;
 import com.mvsolutions.payus.response.payus.point.PointAccumulateType;
 import com.mvsolutions.payus.response.payus.point.PointChargeType;
@@ -347,15 +345,31 @@ public class PointService {
         // 유저 포인트 +, 공급자 포인트 -
         userDao.requestPayback(request);
         vendorDao.requestPayback(request);
-        // 유저에게 알림 전송
+        // 유저, 공급자에게 알림 전송
         // 이동 관련 Json 설정
-        NotificationJson notificationJson = new NotificationJson(NotificationUserType.PAYBACK, NotificationContentType.NO_TYPE, request.getAccumulate_no(), null);
+        UserNotificationJson notificationJsonUser = new UserNotificationJson(NotificationUserType.PAYBACK, NotificationContentType.NO_TYPE, request.getAccumulate_no(), null, false);
+        VendorNotificationJson notificationJsonVendor = new VendorNotificationJson(NotificationVendorType.POINT, NotificationContentType.NO_TYPE, request.getAccumulate_no(), null, null);
         // 알림 데이터 설정
         String username = userDao.getUserName(request.getUser_no());
         String storeName = storeDao.getStoreNameByAccumulateNo(request.getAccumulate_no());
-        NotificationUser notificationUser = new NotificationUser(request.getUser_no(), NotificationUserType.PAYBACK, NotificationMessage.PointPayback(username, storeName, request.getPoint(), true), time, new Gson().toJson(notificationJson));
-        NotificationVendor notificationVendor = new NotificationVendor(request.getVendor_no(), NotificationUserType.PAYBACK, NotificationMessage.PointPayback(username, storeName, request.getPoint(), false), time, new Gson().toJson(notificationJson));
+        NotificationUser notificationUser = new NotificationUser(request.getUser_no(), NotificationUserType.PAYBACK, NotificationMessage.PointPayback(username, storeName, request.getPoint(), true), time, new Gson().toJson(notificationJsonUser));
+        NotificationVendor notificationVendor = new NotificationVendor(request.getVendor_no(), NotificationUserType.PAYBACK, NotificationMessage.PointPayback(username, storeName, request.getPoint(), false), time, new Gson().toJson(notificationJsonVendor));
         notificationService.sendNotification(notificationUser, notificationVendor);
+        // 페이백 후 공급자 포인트가 부족할 경우 알림 메세지
+        int point = vendorDao.getVendorPoint(request.getVendor_no()).getPoint();
+        if(PaybackRule.JudgePointLack(point) != 0){
+            NotificationVendor pointLackNotification;
+            VendorNotificationJson pointLackNotificationJson = new VendorNotificationJson(NotificationVendorType.WARNING, NotificationContentType.NO_TYPE, 0, null, null);
+            if(PaybackRule.JudgePointLack(point) == 2) {
+                // 거의 부족
+                pointLackNotification = new NotificationVendor(request.getVendor_no(), NotificationVendorType.WARNING, NotificationMessage.VendorPointLackClose(storeName, point), time, new Gson().toJson(pointLackNotificationJson));
+            } else {
+                // 10000P 이하
+                pointLackNotification = new NotificationVendor(request.getVendor_no(), NotificationVendorType.WARNING, NotificationMessage.VendorPointLack(storeName, point), time, new Gson().toJson(pointLackNotificationJson));
+                // TODO 상점 앱에 뜨지않게 수정
+            }
+            notificationService.sendNotification(null, pointLackNotification);
+        }
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
     }
 

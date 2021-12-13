@@ -6,6 +6,7 @@ import com.mvsolutions.payus.model.rest.request.suphomepage.VendorAnswerReviewRe
 import com.mvsolutions.payus.model.rest.request.usermypage.ReviewUploadRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserReviewDeleteRequest;
 import com.mvsolutions.payus.model.rest.response.storedetailpage.StoreReviewPageResponse;
+import com.mvsolutions.payus.model.rest.response.suphomepage.ReviewAnswerNotificationData;
 import com.mvsolutions.payus.model.rest.response.suphomepage.VendorReviewContentResponse;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserMyReviewResponse;
 import org.apache.ibatis.session.SqlSession;
@@ -93,6 +94,12 @@ public class ReviewDao {
         ReviewMapper mapper = sqlSession.getMapper(ReviewMapper.class);
         return mapper.getReviewNumByUserNo(user_no);
     }
+
+    public ReviewAnswerNotificationData getDataForNotificationByReviewAnswer(int review_no) {
+        ReviewMapper mapper = sqlSession.getMapper(ReviewMapper.class);
+        return mapper.getDataForNotificationByReviewAnswer(review_no);
+    }
+
 
 //    private ReviewMapper mapper = sqlSession.getMapper(ReviewMapper.class);
 }

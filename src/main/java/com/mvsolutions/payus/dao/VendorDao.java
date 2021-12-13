@@ -10,9 +10,11 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindIdRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindPasswordRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorPasswordResetRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest;
+import com.mvsolutions.payus.model.web.vendor.request.common.VendorPagingRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
+import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewDetailRequest;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
@@ -23,6 +25,7 @@ import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusine
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointAccumulateList;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointChargeList;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewDetail;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreDetailInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreInfo;
@@ -142,9 +145,9 @@ public class VendorDao {
         return mapper.getVendorStoreDetailForStoreManagement(vendor_no);
     }
 
-    public List<VendorStoreManagementReviewInfo> getVendorReviewListForStoreManagement(int vendor_no) {
+    public List<VendorStoreManagementReviewInfo> getVendorReviewListForStoreManagementInit(int vendor_no) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
-        return mapper.getVendorReviewListForStoreManagement(vendor_no);
+        return mapper.getVendorReviewListForStoreManagementInit(vendor_no);
     }
 
     public StoreGoods getVendorStoreGoodsList(int vendor_no, int goods_type) {
@@ -205,6 +208,21 @@ public class VendorDao {
     public void changeVendorBusinessData(VendorAdminEditBusinessDataRequest request) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         mapper.changeVendorBusinessData(request);
+    }
+
+    public List<VendorStoreManagementReviewInfo> getReviewListCallDataByPagination(VendorPagingRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getReviewListCallDataByPagination(request);
+    }
+
+    public int getVendorReviewNumber(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorReviewNumber(vendor_no);
+    }
+
+    public VendorStoreManagementReviewDetail getReviewDetailForModal(VendorAdminReviewDetailRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getReviewDetailForModal(request);
     }
 
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);

@@ -17,7 +17,8 @@
         </if>
         ORDER BY reg_date DESC, notification_no DESC LIMIT 10
     </select>
-    <select id="getNotificationListReload" resultType="VendorNotificationResponse" resultMap="VendorNotificationResponse">
+    <select id="getNotificationListReload" resultType="VendorNotificationResponse"
+            resultMap="VendorNotificationResponse">
         SET @RegDate = (select reg_date
         from notification_vendor
         WHERE notification_no = #{last_index});
@@ -56,4 +57,11 @@
     <select id="checkNotificationExists" resultType="_boolean">
         select EXISTS(select * from notification_vendor WHERE notification_no = #{last_index})
     </select>
+    <update id="updateByAnswerReview">
+        update notification_vendor
+        SET notification_json = JSON_SET(notification_json, '$.answer_status', true)
+        WHERE JSON_EXTRACT(notification_json, '$.content_no') = #{review_no}
+          AND type = 4
+        # Notification type = 4 (리뷰 알림) 에서 content_no (review_no) 가 일치하는 곳의 리뷰 답변 작성 여부를 1로 변환, 리뷰 삭제는 고려하지 않음
+    </update>
 </mapper>

@@ -51,5 +51,9 @@ public class NotificationVendorDao {
         return initMapper().checkNotificationExists(last_index);
     }
 
+    public void updateByAnswerReview(int review_no) {
+        initMapper().updateByAnswerReview(review_no);
+    }
+
 //    private NotificationVendorMapper mapper = sqlSession.getMapper(NotificationVendorMapper.class);
 }

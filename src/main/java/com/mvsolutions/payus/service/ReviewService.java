@@ -1,12 +1,13 @@
 package com.mvsolutions.payus.service;
 
-import com.mvsolutions.payus.dao.PointAccumulateDao;
-import com.mvsolutions.payus.dao.ReviewDao;
-import com.mvsolutions.payus.dao.StoreDao;
+import com.google.gson.Gson;
+import com.mvsolutions.payus.dao.*;
+import com.mvsolutions.payus.model.rest.basic.*;
 import com.mvsolutions.payus.model.rest.request.suphomepage.VendorAnswerReviewRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.ReviewUploadRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserReviewDeleteRequest;
 import com.mvsolutions.payus.model.rest.response.storedetailpage.StoreReviewPageResponse;
+import com.mvsolutions.payus.model.rest.response.suphomepage.ReviewAnswerNotificationData;
 import com.mvsolutions.payus.model.rest.response.suphomepage.VendorReviewContentResponse;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserMyReviewResponse;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserReviewPagePreDataResponse;
@@ -14,6 +15,10 @@ import com.mvsolutions.payus.response.IntegerRes;
 import com.mvsolutions.payus.response.Message;
 import com.mvsolutions.payus.response.StatusCode;
 import com.mvsolutions.payus.response.StringRes;
+import com.mvsolutions.payus.response.payus.notification.NotificationContentType;
+import com.mvsolutions.payus.response.payus.notification.NotificationMessage;
+import com.mvsolutions.payus.response.payus.notification.NotificationUserType;
+import com.mvsolutions.payus.response.payus.notification.NotificationVendorType;
 import com.mvsolutions.payus.response.payus.user.ReviewListType;
 import com.mvsolutions.payus.util.Time;
 import lombok.extern.log4j.Log4j;
@@ -43,6 +48,18 @@ public class ReviewService {
     @Autowired
     private StoreDao storeDao;
 
+    @Autowired
+    private NotificationUserDao notificationUserDao;
+
+    @Autowired
+    private NotificationVendorDao notificationVendorDao;
+
+    @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
+    private UserDao userDao;
+
     @Transactional(readOnly = true)
     public ResponseEntity getReviewContentFromNotification(int review_no) throws JSONException {
         Message message = new Message();
@@ -70,11 +87,19 @@ public class ReviewService {
             // 이미 답변한 리뷰에 접근할 시
             return new ResponseEntity(StringRes.res(StatusCode.ALREADY_ANSWERED), HttpStatus.OK);
         }
-        request.setAnswer_date(Time.TimeFormatHMS());
+        String time = Time.TimeFormatHMS();
+        request.setAnswer_date(time);
         reviewDao.answerReview(request);
         pointAccumulateDao.updateAnswerDate(request);
-        // 포인트 적립 내역의 유저 읽기 여부 false로 전환
+        // 공급자 Notification 에서 답변 여부 true 로 변환
+        notificationVendorDao.updateByAnswerReview(request.getReview_no());
+        // 포인트 적립 내역의 유저 읽기 여부 false 로 전환
         pointAccumulateDao.updateUserReadCheckByVendorReviewAnswer(request.getReview_no());
+        // 해당 유저에게 공급자가 리뷰에 답변을 작성했다고 알림 전송
+        ReviewAnswerNotificationData data = reviewDao.getDataForNotificationByReviewAnswer(request.getReview_no());
+        UserNotificationJson notificationJson = new UserNotificationJson(NotificationUserType.REVIEW, NotificationContentType.NO_TYPE, request.getReview_no(), null, null);
+        NotificationUser notificationUser = new NotificationUser(data.getUser_no(), NotificationUserType.REVIEW, NotificationMessage.ReviewAnswered(data.getUser_name(), data.getReview_content(), data.getStore_name()), time, new Gson().toJson(notificationJson));
+        notificationService.sendNotification(notificationUser, null);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
     }
 
@@ -144,10 +169,20 @@ public class ReviewService {
         if (pointAccumulateDao.checkReviewWritten(reviewUploadRequest.getAccumulate_no())) {
             return new ResponseEntity(StringRes.res(StatusCode.ALREADY_REVIEWED), HttpStatus.OK);
         }
-        reviewUploadRequest.setReg_date(Time.TimeFormatHMS());
+        String time = Time.TimeFormatHMS();
+        reviewUploadRequest.setReg_date(time);
         reviewDao.uploadReview(reviewUploadRequest);
+        // 리뷰 업로드를 통해 DB Status Update (Update : 포인트 적립, 유저 알림)
         pointAccumulateDao.updateAccumulateByUploadReview(reviewUploadRequest.getAccumulate_no());
+        notificationUserDao.updateNotificationByUploadReview(reviewUploadRequest.getAccumulate_no());
+        // 공급자에게 리뷰 알림
         int store_no = pointAccumulateDao.getStoreNoFromAccumulate(reviewUploadRequest.getAccumulate_no());
+        int vendor_no = storeDao.getVendorNoByStoreNo(store_no);
+        String userName = userDao.getUserName(reviewUploadRequest.getUser_no());
+        String storeName = storeDao.getStoreNameByAccumulateNo(reviewUploadRequest.getAccumulate_no());
+        VendorNotificationJson notificationJson = new VendorNotificationJson(NotificationVendorType.REVIEW, NotificationContentType.NO_TYPE, reviewUploadRequest.getReview_no(), null, false);
+        NotificationVendor notificationVendor = new NotificationVendor(vendor_no, NotificationVendorType.REVIEW, NotificationMessage.NewReviewForVendor(userName, storeName), time, new Gson().toJson(notificationJson));
+        notificationService.sendNotification(null, notificationVendor);
         // 별점 총합 / 리뷰 갯수 = 평균 별점
         int rateSum = reviewDao.getReviewRateSum(store_no);
         int reviewNum = reviewDao.getStoreReviewNum(store_no);

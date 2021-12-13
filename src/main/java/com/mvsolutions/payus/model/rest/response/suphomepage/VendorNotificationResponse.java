@@ -1,6 +1,6 @@
 package com.mvsolutions.payus.model.rest.response.suphomepage;
 
-import com.mvsolutions.payus.response.payus.notification.VendorNotificationJson;
+import com.mvsolutions.payus.model.rest.basic.VendorNotificationJson;
 import lombok.Data;
 
 @Data

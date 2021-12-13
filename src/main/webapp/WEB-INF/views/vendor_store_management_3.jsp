@@ -209,211 +209,41 @@
                                     <th style="width: 18%">상세 정보</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr review="11">
-                                    <td>1</td>
-                                    <td>
-                                        <div class="overflow">
-                                            <div class="overflow-space">
-                                                <div class="overflow-text">온수도 잘나오고 따뜻한 숙소입니다. 다시 한번 더 방문하고 싶은 숙소네요!
+                                <tbody id="pagination_layout">
+                                <c:forEach var="i" begin="1" end="${review.size()}">
+                                    <tr review="${review[i-1].review_no}">
+                                        <td>${i}</td>
+                                        <td>
+                                            <div class="overflow">
+                                                <div class="overflow-space">
+                                                    <div class="overflow-text">${review[i-1].content}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>4</td>
-                                    <td>한지우</td>
-                                    <td>2021.01.12</td>
-                                    <td>미답변</td>
-                                    <td>
-                                        <%--      TODO 신고하기 페이지 이동              --%>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            신고하기
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table">
-                                            자세히보기
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr review="10">
-                                    <td>2</td>
-                                    <td>안녕하세요</td>
-                                    <td>4</td>
-                                    <td>한지우</td>
-                                    <td>2021.01.12</td>
-                                    <td>답변 완료</td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            신고하기
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table">
-                                            자세히보기
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr review="9">
-                                    <td>3</td>
-                                    <td>안녕하세요</td>
-                                    <td>4</td>
-                                    <td>한지우</td>
-                                    <td>2021.01.12</td>
-                                    <td>미답변</td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            신고하기
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table">
-                                            자세히보기
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr review="8">
-                                    <td>4</td>
-                                    <td>안녕하세요</td>
-                                    <td>4</td>
-                                    <td>한지우</td>
-                                    <td>2021.01.12</td>
-                                    <td>미답변</td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            신고하기
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table">
-                                            자세히보기
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr review="7">
-                                    <td>5</td>
-                                    <td>안녕하세요</td>
-                                    <td>4</td>
-                                    <td>한지우</td>
-                                    <td>2021.01.12</td>
-                                    <td>미답변</td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            신고하기
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table">
-                                            자세히보기
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr review="6">
-                                    <td>6</td>
-                                    <td>안녕하세요</td>
-                                    <td>4</td>
-                                    <td>한지우</td>
-                                    <td>2021.01.12</td>
-                                    <td>미답변</td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            신고하기
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table">
-                                            자세히보기
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr review="5">
-                                    <td>7</td>
-                                    <td>안녕하세요</td>
-                                    <td>4</td>
-                                    <td>한지우</td>
-                                    <td>2021.01.12</td>
-                                    <td>미답변</td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            신고하기
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table">
-                                            자세히보기
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr review="4">
-                                    <td>8</td>
-                                    <td>안녕하세요</td>
-                                    <td>4</td>
-                                    <td>한지우</td>
-                                    <td>2021.01.12</td>
-                                    <td>미답변</td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            신고하기
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table">
-                                            자세히보기
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr review="3">
-                                    <td>9</td>
-                                    <td>안녕하세요</td>
-                                    <td>4</td>
-                                    <td>한지우</td>
-                                    <td>2021.01.12</td>
-                                    <td>미답변</td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            신고하기
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table">
-                                            자세히보기
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr review="2">
-                                    <td>10</td>
-                                    <td>안녕하세요</td>
-                                    <td>4</td>
-                                    <td>한지우</td>
-                                    <td>2021.01.12</td>
-                                    <td>미답변</td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            신고하기
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table">
-                                            자세히보기
-                                        </button>
-                                    </td>
-                                </tr>
+                                        </td>
+                                        <td>${review[i-1].rate}</td>
+                                        <td>${review[i-1].user_name}</td>
+                                        <td>${review[i-1].reg_date}</td>
+                                        <td><c:choose><c:when
+                                                test="${review[i-1].answer_status == false}">미답변</c:when><c:when
+                                                test="${review[i-1].answer_status == true}">답변 완료</c:when></c:choose></td>
+                                        <td>
+                                                <%--      TODO 신고하기 페이지 이동              --%>
+                                            <button type="button" class="btn btn-payus-table-report">
+                                                신고하기
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-payus-table">
+                                                자세히보기
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                             <%--  TODO 전체 리뷰 갯수로 페이지네이션 리뷰 페이지당 10개씩   --%>
                             <div class="pagination" id="review-table-pagination">
-                                <a href="#">&laquo;</a>
-                                <a data-order="1" style="cursor: pointer" class="active">1</a>
-                                <a data-order="2" style="cursor: pointer">2</a>
-                                <a data-order="3" style="cursor: pointer">3</a>
-                                <a data-order="4" style="cursor: pointer">4</a>
-                                <a data-order="5" style="cursor: pointer">5</a>
-                                <a data-order="6" style="cursor: pointer">6</a>
-                                <a data-order="7" style="cursor: pointer">7</a>
-                                <a data-order="8" style="cursor: pointer">8</a>
-                                <a data-order="9" style="cursor: pointer">9</a>
-                                <a data-order="10" style="cursor: pointer">10</a>
-                                <a href="#">&raquo;</a>
                             </div>
                         </div>
                     </div>
@@ -422,28 +252,14 @@
         </div>
     </div>
 </div>
+<script src="/js/date-formatter.js"></script>
+<script src="/js/payus-pagination.js"></script>
+<script src="/js/common.js"></script>
 <script>
     $(".btn-payus-table-report").on("click", function () {
         let review_no = $(this).parent().parent().attr('review');
         console.log(review_no);
         // TODO 해당 review_no 실어서 리뷰 신고 페이지 이동
-    });
-
-
-    $(".pagination a").on("click", function () {
-        let data_order = $(this).attr('data-order');
-        console.log(data_order);
-        let paginationDiv = $("#review-table-pagination");
-        let active_page = paginationDiv.children('.active').attr('data-order');
-        if (active_page !== data_order) {
-            // TODO 페이지 별 데이터 AJAX
-            paginationDiv.children('.active').removeClass('active');
-            $(this).addClass('active');
-        }
-    });
-
-    $(document).ready(function () {
-        listenResize();
     });
 
     function listenResize() {
@@ -455,14 +271,102 @@
         let pagination = $(".pagination");
         pagination.width(tableWidth);
     }
+
+    $(document).ready(function () {
+        listenResize();
+        tablePagination(${review_num}, 'review-table-pagination');
+        let table = $(".payus-table");
+        let body = table.children('tbody');
+        for (let i = 0; i < body.children().length; i++) {
+            let originalRegDate = body.children('tr:eq(' + i + ')').children('td:eq(4)').text();
+            body.children('tr:eq(' + i + ')').children('td:eq(4)').text(SplitDateFunction(originalRegDate));
+        }
+    });
+
+
+    $(".pagination").on("click", 'a', function () {
+        let selectedPage = $(this);
+        let data_order = selectedPage.attr('data-order');
+        let selectedPageIndex = (data_order * 10) - 10;
+        console.log(data_order);
+        let paginationDiv = $("#review-table-pagination");
+        let active_page = paginationDiv.children('.active').attr('data-order');
+        if (active_page !== data_order) {
+            paginationDiv.children('.active').removeClass('active');
+            selectedPage.addClass('active');
+            let data = {"page": data_order};
+            $.ajax({
+                type: 'POST',
+                url: '/vendor/manage/store/review/paging',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (result) {
+                $("#pagination_layout *").remove();
+                console.log(result);
+                console.log("length : " + result.length);
+                for (let i = 0; i < result.length; i++) {
+                    let data = result[i];
+                    let thisIndex = selectedPageIndex + i + 1;
+                    let answerStatusString;
+                    if (data.answer_status) {
+                        answerStatusString = '답변 완료';
+                    } else {
+                        answerStatusString = '미답변';
+                    }
+                    $("#pagination_layout").append('<tr review="' + data.review_no + '">\n' +
+                        '                                        <td>' + thisIndex + '</td>\n' +
+                        '                                        <td>\n' +
+                        '                                            <div class="overflow">\n' +
+                        '                                                <div class="overflow-space">\n' +
+                        '                                                    <div class="overflow-text">' + data.content + '\n' +
+                        '                                                    </div>\n' +
+                        '                                                </div>\n' +
+                        '                                            </div>\n' +
+                        '                                        </td>\n' +
+                        '                                        <td>' + data.rate + '</td>\n' +
+                        '                                        <td>' + data.user_name + '</td>\n' +
+                        '                                        <td>' + SplitDateFunction(data.reg_date) + '</td>\n' +
+                        '                                        <td>' + answerStatusString + '</td>\n' +
+                        '                                        <td>\n' +
+                        '                                                <%--      TODO 신고하기 페이지 이동              --%>\n' +
+                        '                                            <button type="button" class="btn btn-payus-table-report">\n' +
+                        '                                                신고하기\n' +
+                        '                                            </button>\n' +
+                        '                                        </td>\n' +
+                        '                                        <td>\n' +
+                        '                                            <button type="button" class="btn btn-payus-table">\n' +
+                        '                                                자세히보기\n' +
+                        '                                            </button>\n' +
+                        '                                        </td>\n' +
+                        '                                    </tr>');
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+        }
+    });
+
 </script>
 <script>
     let body = $(document.body);
     let modal = $(".payus-modal");
-    $(".btn-payus-table").on("click", function () {
+    $("#pagination_layout tr td").on("click", ".btn-payus-table", function () {
         let review_no = $(this).parent().parent().attr('review');
         console.log(review_no);
         // TODO 해당 review_no로 리뷰 상세 내용 AJAX
+        let data = {"review_no": review_no};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/store/review/detail',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            console.log(result);
+        }).fail(function (error) {
+            console.log(error);
+        });
 
         modal.addClass('show');
 

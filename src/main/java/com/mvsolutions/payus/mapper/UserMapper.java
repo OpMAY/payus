@@ -1,6 +1,7 @@
 package com.mvsolutions.payus.mapper;
 
 import com.mvsolutions.payus.model.rest.basic.User;
+import com.mvsolutions.payus.model.rest.basic.UserPushData;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserPointWithdrawRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserResignRequest;
@@ -70,4 +71,6 @@ public interface UserMapper {
     String getUserFCMToken(int user_no);
 
     void resignUser(UserResignRequest request);
+
+    UserPushData getUserPushData(int user_no);
 }

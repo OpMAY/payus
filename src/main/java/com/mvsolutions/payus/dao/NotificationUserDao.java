@@ -48,4 +48,8 @@ public class NotificationUserDao {
     public List<UserNotificationResponse> getUserNotificationReload(int user_no, int type, int last_index) {
         return initMapper().getUserNotificationReload(user_no, type, last_index);
     }
+
+    public void updateNotificationByUploadReview(int accumulate_no) {
+        initMapper().updateNotificationByUploadReview(accumulate_no);
+    }
 }

@@ -19,4 +19,6 @@ public interface NotificationVendorMapper {
     void updateReadCheck(List<VendorNotificationResponse> notificationList);
 
     boolean checkNotificationExists(int last_index);
+
+    void updateByAnswerReview(int review_no);
 }

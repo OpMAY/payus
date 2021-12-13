@@ -185,4 +185,9 @@
         from user
         WHERE user_no = #{user_no}
     </delete>
+    <select id="getUserPushData" resultType="UserPushData">
+        select event_push, review_push, point_push, report_push, marketing_agree
+        from user
+        WHERE user_no = #{user_no}
+    </select>
 </mapper>

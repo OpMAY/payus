@@ -50,4 +50,7 @@ public class NotificationMessage {
                 "\n현재 보유한 포인트 : " + point + "P";
     }
 
+    public static String NewReviewForVendor(String userName, String storeName) {
+        return userName + "님이 \"" + storeName + "\"에 리뷰를 등록하였습니다. 리뷰에 답변을 해주세요!";
+    }
 }

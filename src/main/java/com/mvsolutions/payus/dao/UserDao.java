@@ -2,6 +2,7 @@ package com.mvsolutions.payus.dao;
 
 import com.mvsolutions.payus.mapper.UserMapper;
 import com.mvsolutions.payus.model.rest.basic.User;
+import com.mvsolutions.payus.model.rest.basic.UserPushData;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserPointWithdrawRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserResignRequest;
@@ -168,4 +169,10 @@ public class UserDao {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         mapper.resignUser(request);
     }
+
+    public UserPushData getUserPushData(int user_no) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.getUserPushData(user_no);
+    }
+
 }

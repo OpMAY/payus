@@ -75,9 +75,15 @@
         SET @Point = (select point
                       from vendor
                       WHERE vendor_no = #{vendor_no});
-        select store.store_no, IF(EXISTS(select * from advertisement_store where advertisement_store.store_no = store.store_no and status = true), advertise_payback, payback_rate) as payback_rate,
-               @Point as point
-        from store left join advertisement_store on store.store_no = advertisement_store.store_no
+        select store.store_no,
+               IF(EXISTS(select *
+                         from advertisement_store
+                         where advertisement_store.store_no = store.store_no
+                           and status = true), advertise_payback,
+                  payback_rate) as payback_rate,
+               @Point           as point
+        from store
+                 left join advertisement_store on store.store_no = advertisement_store.store_no
         WHERE vendor_no = #{vendor_no}
     </select>
     <select id="getStoreListForSubMain" resultType="SubMainPageStoreResponse">
@@ -283,4 +289,9 @@
                 #{address_y}, #{address_1depth}, #{address_2depth}, #{address_3depth}, #{address_short},
                 #{address_road}, #{thumbnail}, #{image_list}, #{reg_date})
     </insert>
+    <select id="getVendorNoByStoreNo" resultType="int">
+        select vendor_no
+        from store
+        WHERE store_no = #{store_no}
+    </select>
 </mapper>
