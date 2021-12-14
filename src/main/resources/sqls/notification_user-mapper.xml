@@ -60,7 +60,7 @@
         # Notification type = 2 (포인트 알림) 에서 content_no (accumulate_no) 가 일치하는 곳의 리뷰 작성 여부를 1로 변환, 리뷰 삭제는 고려하지 않음
     </update>
     <delete id="deleteUserNotification">
-        delete from notificatino_user where user_no = #{user_no}
+        delete from notification_user where user_no = #{user_no}
         <if test="type != 0">
             and type = #{type}
         </if>
