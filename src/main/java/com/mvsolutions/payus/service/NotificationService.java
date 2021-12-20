@@ -6,6 +6,7 @@ import com.mvsolutions.payus.dao.UserDao;
 import com.mvsolutions.payus.dao.VendorDao;
 import com.mvsolutions.payus.model.rest.basic.NotificationUser;
 import com.mvsolutions.payus.model.rest.basic.NotificationVendor;
+import com.mvsolutions.payus.model.rest.basic.UserNotificationDelete;
 import com.mvsolutions.payus.model.rest.basic.UserPushData;
 import com.mvsolutions.payus.model.rest.request.suphomepage.VendorNotificationDeleteRequest;
 import com.mvsolutions.payus.model.rest.response.mainpage.UserNotificationResponse;
@@ -242,5 +243,11 @@ public class NotificationService {
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getUserNotificationReload()")), HttpStatus.OK);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ResponseEntity deleteUserNotification(UserNotificationDelete request) {
+        notificationUserDao.setSqlSession(sqlSession);
+        notificationUserDao.deleteUserNotification(request);
+        return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
+    }
 
 }

@@ -17,12 +17,12 @@
     </resultMap>
     <select id="getReviewContentFromNotification" resultType="VendorReviewContentResponse"
             resultMap="VendorReviewContentResponse">
-        select review_no, user.nickname as user_name, content, rate, review.reg_date
+        select review_no, user.nickname as user_name, content, rate, review.reg_date, review.image_list
         from review,
              user
         WHERE review_no = #{review_no}
           AND user.user_no = review.user_no
-          AND answer_status = false
+          # AND answer_status = false
     </select>
     <select id="checkReviewExists" resultType="_boolean">
         select EXISTS(select * from review WHERE review_no = #{review_no})

@@ -1,6 +1,7 @@
 package com.mvsolutions.payus.restcontroller;
 
 import com.google.gson.Gson;
+import com.mvsolutions.payus.model.rest.basic.UserNotificationDelete;
 import com.mvsolutions.payus.model.rest.request.loginpage.user.UserLoginRequest;
 import com.mvsolutions.payus.model.rest.request.loginpage.user.UserRegisterRequest;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
@@ -139,6 +140,15 @@ public class PayUsRestController {
                                                  @RequestParam("type") int type,
                                                  @RequestParam("last_index") int last_index) throws JSONException {
         return notificationService.getUserNotificationReload(user_no, type, last_index);
+    }
+
+    /**
+     * UserNotification#003
+     */
+    @RequestMapping(value = "/api/user/notification/delete", method = RequestMethod.POST)
+    public ResponseEntity DeleteUserNotification(@RequestBody String body) {
+        UserNotificationDelete request =  new Gson().fromJson(body, UserNotificationDelete.class);
+        return notificationService.deleteUserNotification(request);
     }
 
     /**

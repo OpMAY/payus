@@ -353,7 +353,7 @@ public class PointService {
         String username = userDao.getUserName(request.getUser_no());
         String storeName = storeDao.getStoreNameByAccumulateNo(request.getAccumulate_no());
         NotificationUser notificationUser = new NotificationUser(request.getUser_no(), NotificationUserType.PAYBACK, NotificationMessage.PointPayback(username, storeName, request.getPoint(), true), time, new Gson().toJson(notificationJsonUser));
-        NotificationVendor notificationVendor = new NotificationVendor(request.getVendor_no(), NotificationUserType.PAYBACK, NotificationMessage.PointPayback(username, storeName, request.getPoint(), false), time, new Gson().toJson(notificationJsonVendor));
+        NotificationVendor notificationVendor = new NotificationVendor(request.getVendor_no(), NotificationVendorType.POINT, NotificationMessage.PointPayback(username, storeName, request.getPoint(), false), time, new Gson().toJson(notificationJsonVendor));
         notificationService.sendNotification(notificationUser, notificationVendor);
         // 페이백 후 공급자 포인트가 부족할 경우 알림 메세지
         int point = vendorDao.getVendorPoint(request.getVendor_no()).getPoint();
