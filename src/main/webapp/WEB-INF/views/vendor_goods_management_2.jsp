@@ -53,14 +53,19 @@
                         <div class="col-12">
                             <div class="row" id="image-container"
                                  style="margin-bottom: 1rem; overflow: hidden">
-                                <input type="file" id="image-add-input" name="img" accept="image/*"
-                                       hidden>
-                                <div class="col image-div" id="img-add-div" style="display: flex; justify-content: center; height: 200px; position: relative">
-                                    <div class="img-add" id="img-add-btn" style="display: flex; width: 50%; height: 100%;">
+                                <form id="img-form">
+                                    <input type="file" id="image-add-input" name="img" accept="image/*"
+                                           hidden>
+                                </form>
+                                <div class="col image-div" id="img-add-div"
+                                     style="display: flex; justify-content: center; height: 200px; position: relative">
+                                    <div class="img-add" id="img-add-btn"
+                                         style="display: flex; width: 50%; height: 100%;">
                                         <img src="/images/Group%20334.svg" alt width="100%" height="100%"
                                              style="transform: scale(0.45); border-radius: 5px">
                                     </div>
-                                    <button type="button" class="img-delete-btn"><img src="/images/x-button.svg" alt width="90%"></button>
+                                    <button type="button" class="img-delete-btn"><img src="/images/x-button.svg" alt
+                                                                                      width="90%"></button>
                                 </div>
                             </div>
                         </div>
@@ -88,12 +93,14 @@
                                 </div>
                                 <div class="col-4 col-xl-2" style="margin-bottom: 2rem">
                                     <label for="vendor-store-payback-rate">페이백률</label>
-                                    <textarea class="payus-textarea" id="vendor-store-payback-rate" rows="1" style="white-space: nowrap"
+                                    <textarea class="payus-textarea" id="vendor-store-payback-rate" rows="1"
+                                              style="white-space: nowrap"
                                               readonly>${paybackRate}%</textarea>
                                 </div>
                                 <div class="col-8 col-xl-4" style="margin-bottom: 2rem">
                                     <label for="vendor-point-result">페이백 적립액</label>
-                                    <textarea class="payus-textarea" id="vendor-point-result" rows="1" readonly style="white-space: nowrap"
+                                    <textarea class="payus-textarea" id="vendor-point-result" rows="1" readonly
+                                              style="white-space: nowrap"
                                               placeholder="금액을 먼저 입력하세요."></textarea>
                                 </div>
                             </div>
@@ -117,6 +124,43 @@
     </div>
 </div>
 <script>
+    let storeNo = ${store_no};
+    $('.btn-payus').on("click", function () {
+        let goodsName = $('#vendor-goods-name').val();
+        let goodsExplain = $("#vendor-goods-explain").val();
+        let goodsPrice = $("#vendor-goods-price").val();
+        let form = $("#img-form")[0];
+        let formData = new FormData(form);
+        let goodsData = {
+            "goods_name": goodsName,
+            "goods_explain": goodsExplain,
+            "price": unComma(goodsPrice),
+            "store_no": ${store_no}
+        };
+        formData.append("goods_data", JSON.stringify(goodsData));
+        $.ajax({
+            type: 'POST',
+            enctype: 'multipart/form-data',
+            url: '/vendor/manage/goods/register',
+            contentType: false,
+            processData: false,
+            data: formData
+        }).done(function (result) {
+            if(result === 0){
+                alert("상품 등록이 완료되었습니다.");
+                window.location.href = '/vendor/manage/goods/list.do'
+            } else if (result === 1) {
+                alert("이미 동일한 상품명으로 등록된 상품이 존재합니다.\n다른 상품명으로 등록해주세요.");
+                return false;
+            } else {
+                alert("올바르지 않은 접근입니다.");
+                return false;
+            }
+        }).fail(function (error) {
+            console.log(error);
+        })
+    });
+
     $("#vendor-goods-price").on("keypress", function (e) {
         if (this.value === "") {
             if ((e.keyCode <= 48) || (e.keyCode > 57))
@@ -160,7 +204,7 @@
 
         $("#image-add-input").change(function () {
             console.log("changed");
-            if(this.files && this.files[0]) {
+            if (this.files && this.files[0]) {
                 let reader = new FileReader();
                 reader.onload = function (data) {
                     $("#img-add-btn").children('img').attr("src", data.target.result);

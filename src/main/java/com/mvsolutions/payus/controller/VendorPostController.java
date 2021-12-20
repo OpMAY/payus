@@ -1,20 +1,26 @@
 package com.mvsolutions.payus.controller;
 
+import com.google.api.Http;
 import com.google.gson.Gson;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
 import com.mvsolutions.payus.model.web.vendor.request.auth.*;
 import com.mvsolutions.payus.model.web.vendor.request.common.VendorPagingRequest;
+import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminDeleteGoodsRequest;
+import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminEditGoodsRequest;
+import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminRegisterGoodsRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorPasswordValidationRequest;
+import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewAnswerRequest;
 import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewDetailRequest;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorRegisterEmailResponse;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewDetail;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
+import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewPagingResponse;
 import com.mvsolutions.payus.service.VendorAdminService;
 import com.mvsolutions.payus.util.Constant;
 import com.mvsolutions.payus.util.FileUploadUtility;
@@ -187,8 +193,8 @@ public class VendorPostController {
     }
 
     @RequestMapping("/manage/store/review/paging")
-    public List<VendorStoreManagementReviewInfo> VendorReviewListCallDataByPagination(HttpSession session,
-                                                                                      @RequestBody String body) {
+    public VendorStoreManagementReviewPagingResponse VendorReviewListCallDataByPagination(HttpSession session,
+                                                                                          @RequestBody String body) {
         Integer vendor_no = (Integer) session.getAttribute("vendor_no");
         VendorPagingRequest request = new Gson().fromJson(body, VendorPagingRequest.class);
         request.setVendor_no(vendor_no);
@@ -203,5 +209,76 @@ public class VendorPostController {
         Integer vendor_no = (Integer) session.getAttribute("vendor_no");
         VendorAdminReviewDetailRequest request = new Gson().fromJson(body, VendorAdminReviewDetailRequest.class);
         return vendorAdminService.getReviewDetailForModal(request);
+    }
+
+    @RequestMapping("/manage/store/review/answer")
+    public boolean VendorReviewAnswer(HttpSession session,
+                                      @RequestBody String body) {
+        VendorAdminReviewAnswerRequest request = new Gson().fromJson(body, VendorAdminReviewAnswerRequest.class);
+        return vendorAdminService.answerReview(request);
+    }
+
+    @RequestMapping("/manage/goods/delete")
+    public boolean VendorDeleteGoods(HttpSession session,
+                                     @RequestBody String body) {
+        VendorAdminDeleteGoodsRequest request = new Gson().fromJson(body, VendorAdminDeleteGoodsRequest.class);
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        request.setVendor_no(vendor_no);
+        return vendorAdminService.deleteGoods(request);
+    }
+
+    @RequestMapping("/manage/goods/register")
+    public int VendorRegisterGoods(HttpSession session,
+                                   HttpServletRequest servletRequest,
+                                   @RequestParam("goods_data") String body) throws IOException {
+
+        VendorAdminRegisterGoodsRequest request = new Gson().fromJson(body, VendorAdminRegisterGoodsRequest.class);
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        request.setVendor_no(vendor_no);
+        // File Control
+        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) servletRequest;
+        Map<String, MultipartFile> fileMap = multipartHttpServletRequest.getFileMap();
+        Iterator<String> keys = fileMap.keySet().iterator();
+        ArrayList<String> imageList = new ArrayList<>();
+        String timeForDB = Time.TimeFormatHMS();
+        while(keys.hasNext()){
+            String key = keys.next();
+            if(key.contains("img")){
+                if(!fileMap.get(key).isEmpty()){
+                    String path = fileUploadUtility.uploadFile("api/images/store/" + request.getStore_no() + "/", fileMap.get(key).getOriginalFilename(), fileMap.get(key).getBytes(), Constant.AWS_SAVE);
+                    imageList.add("api/images/store/" + request.getStore_no() + "/" + path);
+                }
+            }
+        }
+        request.setGoods_img(imageList.get(0));
+        request.setReg_date(timeForDB);
+        return vendorAdminService.registerGoods(request);
+    }
+
+    @RequestMapping("/manage/goods/edit")
+    public int VendorEditGoods(HttpSession session,
+                               HttpServletRequest servletRequest,
+                               @RequestParam("goods_data") String body) throws IOException {
+        VendorAdminEditGoodsRequest request = new Gson().fromJson(body, VendorAdminEditGoodsRequest.class);
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        // File Control
+        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) servletRequest;
+        Map<String, MultipartFile> fileMap = multipartHttpServletRequest.getFileMap();
+        Iterator<String> keys = fileMap.keySet().iterator();
+        ArrayList<String> imageList = new ArrayList<>();
+        String timeForDB = Time.TimeFormatHMS();
+        while(keys.hasNext()){
+            String key = keys.next();
+            if(key.contains("img")){
+                if(!fileMap.get(key).isEmpty()){
+                    String path = fileUploadUtility.uploadFile("api/images/store/" + request.getStore_no() + "/", fileMap.get(key).getOriginalFilename(), fileMap.get(key).getBytes(), Constant.AWS_SAVE);
+                    imageList.add("api/images/store/" + request.getStore_no() + "/" + path);
+                }
+            }
+        }
+        if(imageList.size() > 0){
+            request.setGoods_img(imageList.get(0));
+        }
+        return vendorAdminService.editGoods(request);
     }
 }

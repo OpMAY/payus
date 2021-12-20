@@ -13,4 +13,6 @@ public class VendorStoreManagementReviewDetail {
     private boolean answer_status;
     private String content;
     private List<String> image_list;
+    private String answer_content;
+    private String answer_date;
 }

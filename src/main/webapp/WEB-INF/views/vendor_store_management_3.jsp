@@ -41,7 +41,7 @@
         <div class="page-content d-flex align-items-center " style="flex-direction: column">
             <jsp:include page="partials/vendor_nav.jsp" flush="true"/>
             <div class="payus-modal">
-                <div class="modal-body">
+                <div class="modal-body" data-number="0">
                     <div class="row">
                         <div class="col-12" style="display: flex; flex-direction: row; justify-content: space-between">
                             <h3 style="color: #8668d0;">리뷰 내용</h3>
@@ -120,7 +120,7 @@
                             </div>
                         </div>
                     </div>
-                    <div data-type="not-answered">
+                    <div class="modal-data-div" data-type="not-answered">
                         <div class="row modal-btn-div"
                              style="margin-bottom: 1rem; display: flex; justify-content: flex-end;">
                             <div class="col-12 col-xl-3 col-lg-4" style="margin-bottom: 1rem">
@@ -135,7 +135,7 @@
                             </div>
                         </div>
                     </div>
-                    <div data-type="answer" style="display: none">
+                    <div class="modal-data-div" data-type="answer" style="display: none">
                         <div class="row" style="margin-bottom: 1rem">
                             <div class="col-12">
                                 <label for="review-answer">답변 내용</label>
@@ -156,11 +156,17 @@
                             </div>
                         </div>
                     </div>
-                    <div data-type="answered" style="display: none">
+                    <div class="modal-data-div" data-type="answered" style="display: none">
                         <div class="row" style="margin-bottom: 1rem">
+                            <div class="col-12 col-xl-4 col-lg-4" style="margin-bottom: 1rem">
+                                <label for="review-answered-date">답변 일자</label>
+                                <textarea class="payus-modal-textarea" id="review-answered-date" rows="1"
+                                          readonly></textarea>
+                            </div>
                             <div class="col-12">
                                 <label for="review-answered-content">답변 내용</label>
-                                <textarea class="payus-modal-textarea" id="review-answered-content" rows="5" readonly>답변 내용입니다.</textarea>
+                                <textarea class="payus-modal-textarea" id="review-answered-content" rows="5"
+                                          readonly></textarea>
                             </div>
                         </div>
                         <div class="row modal-btn-div"
@@ -185,7 +191,7 @@
                     <div class="row" style="justify-content: right; margin-bottom: 1rem;">
                         <div class="col-3">
                             <select class="payus-select" id="review-data-type-select"
-                                    style="color: black;" onchange="alert('바뀜')">
+                                    style="color: black;">
                                 <option selected value="1">전체</option>
                                 <option value="2">답변 완료</option>
                                 <option value="3">미답변</option>
@@ -255,7 +261,15 @@
 <script src="/js/date-formatter.js"></script>
 <script src="/js/payus-pagination.js"></script>
 <script src="/js/common.js"></script>
+<script src="/js/text-input-checker.js"></script>
 <script>
+    let totalReviewNum = ${review_num};
+    const paginationDivId = 'review-table-pagination';
+    const paginationDiv = $("#" + paginationDivId);
+    /*
+    * TODO
+    * 1. review_no 실어서 리뷰 신고 페이지 이동
+    *  */
     $(".btn-payus-table-report").on("click", function () {
         let review_no = $(this).parent().parent().attr('review');
         console.log(review_no);
@@ -274,7 +288,7 @@
 
     $(document).ready(function () {
         listenResize();
-        tablePagination(${review_num}, 'review-table-pagination');
+        tablePagination(totalReviewNum, 'review-table-pagination');
         let table = $(".payus-table");
         let body = table.children('tbody');
         for (let i = 0; i < body.children().length; i++) {
@@ -283,67 +297,81 @@
         }
     });
 
+    function dataCallFunction(page, data_type, selectChange) {
+        let data = {"page": page, "data_type": data_type, "select_change": selectChange};
+        let selectedPageIndex = (page * 10) - 10;
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/store/review/paging',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            $("#pagination_layout *").remove();
+            console.log(result);
+            console.log("length : " + result.reviewList.length);
+            for (let i = 0; i < result.reviewList.length; i++) {
+                let data = result.reviewList[i];
+                let thisIndex = selectedPageIndex + i + 1;
+                let answerStatusString = data.answer_status ? '답변 완료' : '미답변';
+                $("#pagination_layout").append('<tr review="' + data.review_no + '">\n' +
+                    '                                        <td>' + thisIndex + '</td>\n' +
+                    '                                        <td>\n' +
+                    '                                            <div class="overflow">\n' +
+                    '                                                <div class="overflow-space">\n' +
+                    '                                                    <div class="overflow-text">' + data.content + '\n' +
+                    '                                                    </div>\n' +
+                    '                                                </div>\n' +
+                    '                                            </div>\n' +
+                    '                                        </td>\n' +
+                    '                                        <td>' + data.rate + '</td>\n' +
+                    '                                        <td>' + data.user_name + '</td>\n' +
+                    '                                        <td>' + SplitDateFunction(data.reg_date) + '</td>\n' +
+                    '                                        <td>' + answerStatusString + '</td>\n' +
+                    '                                        <td>\n' +
+                    '                                                <%--      TODO 신고하기 페이지 이동              --%>\n' +
+                    '                                            <button type="button" class="btn btn-payus-table-report">\n' +
+                    '                                                신고하기\n' +
+                    '                                            </button>\n' +
+                    '                                        </td>\n' +
+                    '                                        <td>\n' +
+                    '                                            <button type="button" class="btn btn-payus-table">\n' +
+                    '                                                자세히보기\n' +
+                    '                                            </button>\n' +
+                    '                                        </td>\n' +
+                    '                                    </tr>');
+            }
+            totalReviewNum = result.review_num;
+            if (selectChange)
+                tablePagination(result.review_num, 'review-table-pagination');
+        }).fail(function (error) {
+            console.log(error);
+        });
+    }
 
     $(".pagination").on("click", 'a', function () {
         let selectedPage = $(this);
         let data_order = selectedPage.attr('data-order');
-        let selectedPageIndex = (data_order * 10) - 10;
+        let data_type = $('.payus-select option:selected').val();
         console.log(data_order);
-        let paginationDiv = $("#review-table-pagination");
         let active_page = paginationDiv.children('.active').attr('data-order');
-        if (active_page !== data_order) {
-            paginationDiv.children('.active').removeClass('active');
-            selectedPage.addClass('active');
-            let data = {"page": data_order};
-            $.ajax({
-                type: 'POST',
-                url: '/vendor/manage/store/review/paging',
-                dataType: 'json',
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(data)
-            }).done(function (result) {
-                $("#pagination_layout *").remove();
-                console.log(result);
-                console.log("length : " + result.length);
-                for (let i = 0; i < result.length; i++) {
-                    let data = result[i];
-                    let thisIndex = selectedPageIndex + i + 1;
-                    let answerStatusString;
-                    if (data.answer_status) {
-                        answerStatusString = '답변 완료';
-                    } else {
-                        answerStatusString = '미답변';
-                    }
-                    $("#pagination_layout").append('<tr review="' + data.review_no + '">\n' +
-                        '                                        <td>' + thisIndex + '</td>\n' +
-                        '                                        <td>\n' +
-                        '                                            <div class="overflow">\n' +
-                        '                                                <div class="overflow-space">\n' +
-                        '                                                    <div class="overflow-text">' + data.content + '\n' +
-                        '                                                    </div>\n' +
-                        '                                                </div>\n' +
-                        '                                            </div>\n' +
-                        '                                        </td>\n' +
-                        '                                        <td>' + data.rate + '</td>\n' +
-                        '                                        <td>' + data.user_name + '</td>\n' +
-                        '                                        <td>' + SplitDateFunction(data.reg_date) + '</td>\n' +
-                        '                                        <td>' + answerStatusString + '</td>\n' +
-                        '                                        <td>\n' +
-                        '                                                <%--      TODO 신고하기 페이지 이동              --%>\n' +
-                        '                                            <button type="button" class="btn btn-payus-table-report">\n' +
-                        '                                                신고하기\n' +
-                        '                                            </button>\n' +
-                        '                                        </td>\n' +
-                        '                                        <td>\n' +
-                        '                                            <button type="button" class="btn btn-payus-table">\n' +
-                        '                                                자세히보기\n' +
-                        '                                            </button>\n' +
-                        '                                        </td>\n' +
-                        '                                    </tr>');
-                }
-            }).fail(function (error) {
-                console.log(error);
-            });
+        if (data_order === '-1') {
+            if (tablePaginationChange(totalReviewNum, paginationDivId, false)) {
+                let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
+                dataCallFunction(firstPageAfterChange, data_type);
+            }
+        } else if (data_order === '0') {
+            if (tablePaginationChange(totalReviewNum, paginationDivId, true)) {
+                let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
+                dataCallFunction(firstPageAfterChange, data_type);
+            }
+        } else {
+            console.log("else");
+            if (active_page !== data_order) {
+                paginationDiv.children('.active').removeClass('active');
+                selectedPage.addClass('active');
+                dataCallFunction(data_order, data_type);
+            }
         }
     });
 
@@ -351,10 +379,8 @@
 <script>
     let body = $(document.body);
     let modal = $(".payus-modal");
-    $("#pagination_layout tr td").on("click", ".btn-payus-table", function () {
+    $(body).on("click", ".btn-payus-table", function () {
         let review_no = $(this).parent().parent().attr('review');
-        console.log(review_no);
-        // TODO 해당 review_no로 리뷰 상세 내용 AJAX
         let data = {"review_no": review_no};
         $.ajax({
             type: 'POST',
@@ -363,20 +389,52 @@
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(data)
         }).done(function (result) {
-            console.log(result);
+            let reviewImageDiv = $('#review-images');
+            // 모달 상위 textarea Setting
+            modal.children().attr("data-number", result.review_no);
+            $("#review-writer").text(result.user_name);
+            $('#review-rate').text(result.rate);
+            $('#review-reg-date').text(SplitDateFunction(result.reg_date));
+            let answerStatusString = result.answer_status === true ? '답변 완료' : '미답변';
+            $('#review-answer-status').text(answerStatusString);
+
+            // 리뷰 내용
+            $('#review-content').text(result.content);
+
+            // 리뷰 이미지
+            reviewImageDiv.children().remove();
+            $(result.image_list).each(function (index, object) {
+                reviewImageDiv.append('<div class="col modal-image-div">\n' +
+                    '                                    <div class="img-container">\n' +
+                    '                                        <img class="clickable_img"\n' +
+                    '                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/' + object + '"\n' +
+                    '                                             alt style="width: 100%; height: 100%; object-fit: fill">\n' +
+                    '                                    </div>\n' +
+                    '                                </div>');
+            });
+            if (result.answer_status) {
+                $('.modal-body .modal-data-div[data-type="answered"]').css('display', 'block');
+                $('.modal-body .modal-data-div:not([data-type="answered"])').css('display', 'none');
+                $("#review-answered-date").text(SplitDateFunction(result.answer_date));
+                $("#review-answered-content").text(result.answer_content);
+            } else {
+                $('.modal-body .modal-data-div[data-type="not-answered"]').css('display', 'block');
+                $('.modal-body .modal-data-div:not([data-type="not-answered"])').css('display', 'none');
+            }
+
+            modal.addClass('show');
+
+            if (modal.hasClass('show')) {
+                body.css("overflow", "hidden");
+                modal.focus();
+            }
         }).fail(function (error) {
             console.log(error);
         });
 
-        modal.addClass('show');
-
-        if (modal.hasClass('show')) {
-            body.css("overflow", "hidden");
-            modal.focus();
-        }
     });
 
-    $(".btn-payus-modal.cancel").on("click", function () {
+    $(body).on("click", ".btn-payus-modal.cancel", function () {
         modal.removeClass("show");
 
         if (!modal.hasClass("show")) {
@@ -393,14 +451,14 @@
         }
     });
 
-    $('.clickable_img').on("click", function () {
+    $(body).on("click", '.clickable_img', function () {
         if (confirm('해당 이미지를 보시겠습니까?')) {
             let imageUrl = $(this).attr("src");
             window.open(imageUrl);
         } else {
             return false;
         }
-    })
+    });
 
     $('.payus-modal').on("click", function (event) {
         if (event.target.className === 'payus-modal show') {
@@ -411,6 +469,51 @@
             }
         }
     });
+</script>
+<script>
+    modal.on('click', '.btn-payus-modal.submit', function () {
+
+        let nowDataDiv = $(this).parent().parent().parent();
+        let nowDataType = nowDataDiv.attr('data-type');
+        let answerTextArea = $("#review-answer");
+        if (nowDataType === 'not-answered') {
+            nowDataDiv.css('display', 'none');
+            answerTextArea.val('');
+            nowDataDiv.next().css('display', 'block');
+        } else {
+            if (confirm('답변은 한 번만 등록 가능하며 등록 후 수정이 불가능합니다. 그래도 등록하시겠습니까?')) {
+                let answerContent = answerTextArea.val();
+                if (checkValue(answerContent, 'review_answer')) {
+                    return false;
+                }
+                let review_no = modal.children().attr("data-number");
+                if (review_no === 0) {
+                    alert("올바르지 않은 접근입니다.");
+                    return false;
+                }
+                let data = {"review_no": review_no, "answer_content": answerContent};
+                $.ajax({
+                    type: 'POST',
+                    url: '/vendor/manage/store/review/answer',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(data)
+                }).done(function (result) {
+                    if (result) {
+                        alert("답변이 등록되었습니다.");
+                        window.location.reload();
+                    }
+                }).fail(function (error) {
+                    console.log(error);
+                });
+            } else return false;
+        }
+    });
+
+    $('.payus-select').on('change', function () {
+        let selectedText = $('.payus-select option:selected').val();
+        dataCallFunction(1, selectedText, true);
+    })
 </script>
 </body>
 </html>

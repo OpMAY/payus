@@ -192,6 +192,7 @@ public class AdminVendorController {
         Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
         StoreGoods goods = vendorAdminService.getVendorStoreGoodsList(vendor_no, GoodsType.ROOMS);
         VIEW.addObject("rooms", goods.getRoom_options());
+        VIEW.addObject("goodsType", GoodsType.ROOMS);
         return VIEW;
     }
 
@@ -199,8 +200,10 @@ public class AdminVendorController {
     public ModelAndView GoodsManagementRegisterPage(HttpServletRequest request) {
         VIEW = new ModelAndView("vendor_goods_management_2");
         Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        int store_no = vendorAdminService.getVendorStoreNo(vendor_no);
         int paybackRate = vendorAdminService.getPaybackRateForRegisterGoods(vendor_no);
         VIEW.addObject("paybackRate", paybackRate);
+        VIEW.addObject("store_no", store_no);
         return VIEW;
     }
 
@@ -219,8 +222,10 @@ public class AdminVendorController {
             }
         }
         int paybackRate = vendorAdminService.getPaybackRateForRegisterGoods(vendor_no);
+        int storeNo = vendorAdminService.getVendorStoreNo(vendor_no);
         VIEW.addObject("paybackRate", paybackRate);
         VIEW.addObject("room", goods.getRoom_options().get(goodsIndex));
+        VIEW.addObject("store_no", storeNo);
         return VIEW;
     }
 

@@ -31,6 +31,7 @@ $.ajaxSetup({
 
     },
     complete: function () {
+        console.log("AJAX Complete");
         $("#div_ajax_load_image").hide();
     }
 });

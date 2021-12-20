@@ -1,6 +1,7 @@
 package com.mvsolutions.payus.dao;
 
 import com.mvsolutions.payus.mapper.VendorMapper;
+import com.mvsolutions.payus.model.rest.basic.Room;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
@@ -11,9 +12,12 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindPasswordReq
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorPasswordResetRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest;
 import com.mvsolutions.payus.model.web.vendor.request.common.VendorPagingRequest;
+import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminDeleteGoodsRequest;
+import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminRegisterGoodsRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
+import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewAnswerRequest;
 import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewDetailRequest;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
@@ -223,6 +227,51 @@ public class VendorDao {
     public VendorStoreManagementReviewDetail getReviewDetailForModal(VendorAdminReviewDetailRequest request) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         return mapper.getReviewDetailForModal(request);
+    }
+
+    public int getReviewNumberByDataType(int vendor_no, int data_type) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getReviewNumberByDataType(vendor_no, data_type);
+    }
+
+    public void answerReview(VendorAdminReviewAnswerRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.answerReview(request);
+    }
+
+    public void deleteRoom(VendorAdminDeleteGoodsRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.deleteRoom(request);
+    }
+
+    public int getVendorStoreType(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorStoreType(vendor_no);
+    }
+
+    public boolean checkRoomNameExists(String goods_name, int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.checkRoomNameExists(goods_name, vendor_no);
+    }
+
+    public void registerRoom(Room room, int store_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.registerRoom(room, store_no);
+    }
+
+    public String getRoomKeyList(int store_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getRoomKeyList(store_no);
+    }
+
+    public int getVendorStoreNo(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorStoreNo(vendor_no);
+    }
+
+    public boolean checkRoomNameSameByRoomNo(String goods_name, int store_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.checkRoomNameSameByRoomNo(goods_name, store_no);
     }
 
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
