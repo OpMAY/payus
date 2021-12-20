@@ -235,8 +235,10 @@ public class AdminVendorController {
         Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
         List<VendorAdminPointChargeList> chargeList = vendorAdminService.getVendorAdminPointChargeList(vendor_no);
         int point = vendorAdminService.getVendorPointValue(vendor_no);
+        int chargeListNum = vendorAdminService.getVendorPointChargeListNumber(vendor_no);
         VIEW.addObject("charge", chargeList);
         VIEW.addObject("point", point);
+        VIEW.addObject("chargeNum", chargeListNum);
         return VIEW;
     }
 
@@ -245,9 +247,11 @@ public class AdminVendorController {
         VIEW = new ModelAndView("vendor_point_accumulate_list");
         Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
         List<VendorAdminPointAccumulateList> accumulateList = vendorAdminService.getVendorAdminPointAccumulateList(vendor_no);
+        int accumulateNum = vendorAdminService.getVendorPointAccumulateListNumber(vendor_no);
         int point = vendorAdminService.getVendorPointValue(vendor_no);
         VIEW.addObject("accumulate", accumulateList);
         VIEW.addObject("point", point);
+        VIEW.addObject("accumulateNum", accumulateNum);
         return VIEW;
     }
 

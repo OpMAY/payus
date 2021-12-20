@@ -87,9 +87,13 @@ public interface VendorMapper {
 
     List<VendorAdminPointChargeList> getVendorAdminPointChargeList(int vendor_no);
 
+    int getVendorPointChargeListNumber(int vendor_no);
+
     int getVendorPointValue(int vendor_no);
 
     List<VendorAdminPointAccumulateList> getVendorAdminPointAccumulateList(int vendor_no);
+
+    int getVendorPointAccumulateListNumber(int vendor_no);
 
     List<VendorAdminNoticeList> getNoticeList();
 
@@ -125,5 +129,7 @@ public interface VendorMapper {
 
     int getVendorStoreNo(int vendor_no);
 
-    boolean checkRoomNameSameByRoomNo(String goods_name, int store_no);
+    boolean checkRoomNameSameByRoomNo(int goods_no, String goods_name, int store_no);
+
+    void updateRoom(Room room, String original_goods_name, int store_no);
 }

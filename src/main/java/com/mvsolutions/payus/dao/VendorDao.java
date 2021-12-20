@@ -174,6 +174,11 @@ public class VendorDao {
         return mapper.getVendorAdminPointChargeList(vendor_no);
     }
 
+    public int getVendorPointChargeListNumber(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorPointChargeListNumber(vendor_no);
+    }
+
     public int getVendorPointValue(int vendor_no) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         return mapper.getVendorPointValue(vendor_no);
@@ -182,6 +187,11 @@ public class VendorDao {
     public List<VendorAdminPointAccumulateList> getVendorAdminPointAccumulateList(int vendor_no) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         return mapper.getVendorAdminPointAccumulateList(vendor_no);
+    }
+
+    public int getVendorPointAccumulateListNumber(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorPointAccumulateListNumber(vendor_no);
     }
 
     public List<VendorAdminNoticeList> getNoticeList() {
@@ -269,9 +279,14 @@ public class VendorDao {
         return mapper.getVendorStoreNo(vendor_no);
     }
 
-    public boolean checkRoomNameSameByRoomNo(String goods_name, int store_no) {
+    public boolean checkRoomNameSameByRoomNo(int goods_no, String goods_name, int store_no) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
-        return mapper.checkRoomNameSameByRoomNo(goods_name, store_no);
+        return mapper.checkRoomNameSameByRoomNo(goods_no, goods_name, store_no);
+    }
+
+    public void updateRoom(Room room, String original_goods_name, int store_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.updateRoom(room, original_goods_name, store_no);
     }
 
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);

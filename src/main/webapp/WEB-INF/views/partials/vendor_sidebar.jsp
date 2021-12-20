@@ -133,4 +133,8 @@
         $('.sidebar').css("width", 0);
         outBody.css("overflow", "auto");
     })
+
+    $(document).ready(function () {
+      // TODO 공급자 간단 정보 호출 AJAX
+    })
 </script>

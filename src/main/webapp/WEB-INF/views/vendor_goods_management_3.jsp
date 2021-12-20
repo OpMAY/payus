@@ -123,13 +123,15 @@
     </div>
 </div>
 <script>
-    $(".btn-payus").on("click", function () {
+    $('.btn-payus').on('click', function () {
+        console.log('clicked');
         let goodsName = $('#vendor-goods-name').val();
         let goodsExplain = $("#vendor-goods-explain").val();
         let goodsPrice = $("#vendor-goods-price").val();
         let form = $("#img-form")[0];
         let formData = new FormData(form);
         let goodsData = {
+            "original_goods_name" : '${room.name}',
             "goods_no" : ${room.room_no},
             "goods_name": goodsName,
             "goods_explain": goodsExplain,
@@ -146,7 +148,7 @@
             data: formData
         }).done(function (result) {
             if(result === 0){
-                alert("상품 등록이 완료되었습니다.");
+                alert("상품 수정이 완료되었습니다.");
                 window.location.href = '/vendor/manage/goods/list.do'
             } else if (result === 1) {
                 alert("이미 동일한 상품명으로 등록된 상품이 존재합니다.\n다른 상품명으로 등록해주세요.");

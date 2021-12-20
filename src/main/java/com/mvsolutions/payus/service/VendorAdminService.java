@@ -251,6 +251,12 @@ public class VendorAdminService {
     }
 
     @Transactional(readOnly = true)
+    public int getVendorPointChargeListNumber(int vendor_no) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorPointChargeListNumber(vendor_no);
+    }
+
+    @Transactional(readOnly = true)
     public int getVendorPointValue(int vendor_no) {
         vendorDao.setSqlSession(sqlSession);
         return vendorDao.getVendorPointValue(vendor_no);
@@ -260,6 +266,12 @@ public class VendorAdminService {
     public List<VendorAdminPointAccumulateList> getVendorAdminPointAccumulateList(int vendor_no) {
         vendorDao.setSqlSession(sqlSession);
         return vendorDao.getVendorAdminPointAccumulateList(vendor_no);
+    }
+
+    @Transactional(readOnly = true)
+    public int getVendorPointAccumulateListNumber(int vendor_no) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorPointAccumulateListNumber(vendor_no);
     }
 
     @Transactional(readOnly = true)
@@ -408,7 +420,7 @@ public class VendorAdminService {
         int storeType = vendorDao.getVendorStoreType(request.getVendor_no());
         switch (storeType){
             case StoreType.LODGEMENT:
-                if(!vendorDao.checkRoomNameSameByRoomNo(request.getGoods_name(), request.getStore_no())){
+                if(!vendorDao.checkRoomNameSameByRoomNo(request.getGoods_no() ,request.getGoods_name(), request.getStore_no())){
                     // 변경하려는 상품의 이름이 변경되었는지 확인
                     if(vendorDao.checkRoomNameExists(request.getGoods_name(), request.getVendor_no())) {
                         // 변경하려는 상품의 이름이 변경되었지만, 다른 상품의 이름과 동일한 경우
@@ -420,7 +432,9 @@ public class VendorAdminService {
                 if(request.getGoods_img() != null)
                     room.setRoom_img(request.getGoods_img());
                 room.setName(request.getGoods_name());
-
+                room.setRoom_explain(request.getGoods_explain());
+                room.setPrice(request.getPrice());
+                vendorDao.updateRoom(room, request.getOriginal_goods_name(), request.getStore_no());
                 return 0;
             case StoreType.RESTAURANT:
                 log.info("식당 상품은 현재 지원하지 않는 상품입니다.");

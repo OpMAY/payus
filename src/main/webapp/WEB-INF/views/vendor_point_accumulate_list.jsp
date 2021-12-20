@@ -450,19 +450,7 @@
                                 </tbody>
                             </table>
                             <%--  TODO 전체 리뷰 갯수로 페이지네이션 리뷰 페이지당 10개씩   --%>
-                            <div class="pagination" id="charge-table-pagination">
-                                <a href="#">&laquo;</a>
-                                <a data-order="1" style="cursor: pointer" class="active">1</a>
-                                <a data-order="2" style="cursor: pointer">2</a>
-                                <a data-order="3" style="cursor: pointer">3</a>
-                                <a data-order="4" style="cursor: pointer">4</a>
-                                <a data-order="5" style="cursor: pointer">5</a>
-                                <a data-order="6" style="cursor: pointer">6</a>
-                                <a data-order="7" style="cursor: pointer">7</a>
-                                <a data-order="8" style="cursor: pointer">8</a>
-                                <a data-order="9" style="cursor: pointer">9</a>
-                                <a data-order="10" style="cursor: pointer">10</a>
-                                <a href="#">&raquo;</a>
+                            <div class="pagination" id="accumulate-table-pagination">
                             </div>
                         </div>
                     </div>
@@ -471,7 +459,9 @@
         </div>
     </div>
 </div>
+<script src="/js/common.js"></script>
 <script src="/js/date-formatter.js"></script>
+<script src="/js/payus-pagination.js"></script>
 <script>
 
     $(".pagination a").on("click", function () {
@@ -488,6 +478,7 @@
 
     $(document).ready(function () {
         listenResize();
+        tablePagination(${accumulateNum}, 'accumulate-table-pagination');
     });
 
     function listenResize() {

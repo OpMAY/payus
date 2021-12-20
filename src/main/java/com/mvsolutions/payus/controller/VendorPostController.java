@@ -261,12 +261,12 @@ public class VendorPostController {
                                @RequestParam("goods_data") String body) throws IOException {
         VendorAdminEditGoodsRequest request = new Gson().fromJson(body, VendorAdminEditGoodsRequest.class);
         Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        request.setVendor_no(vendor_no);
         // File Control
         MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) servletRequest;
         Map<String, MultipartFile> fileMap = multipartHttpServletRequest.getFileMap();
         Iterator<String> keys = fileMap.keySet().iterator();
         ArrayList<String> imageList = new ArrayList<>();
-        String timeForDB = Time.TimeFormatHMS();
         while(keys.hasNext()){
             String key = keys.next();
             if(key.contains("img")){

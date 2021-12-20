@@ -231,6 +231,12 @@
         from point_charge
         WHERE vendor_no = #{vendor_no}
         ORDER BY reg_date DESC
+        LIMIT 10
+    </select>
+    <select id="getVendorPointChargeListNumber" resultType="int">
+        select COUNT(*)
+        from point_charge
+        WHERE vendor_no = #{vendor_no}
     </select>
     <select id="getVendorPointValue" resultType="int">
         select point
@@ -253,6 +259,16 @@
              user
         WHERE point_accumulate.store_no = @StoreNo
           AND user.user_no = point_accumulate.user_no
+        ORDER BY point_accumulate.reg_date DESC
+        LIMIT 10
+    </select>
+    <select id="getVendorPointAccumulateListNumber" resultType="int">
+        SET @StoreNo = (select store_no
+                        from store
+                        WHERE vendor_no = #{vendor_no});
+        select COUNT(*)
+        from point_accumulate
+        WHERE store_no = @StoreNo
     </select>
     <select id="getNoticeList" resultType="VendorAdminNoticeList">
         select notice_no, title, reg_date, view_num
@@ -390,4 +406,17 @@
         from store_lodgement
         WHERE store_no = #{store_no}
     </select>
+    <update id="updateRoom">
+        SET @RoomNameIndex =
+        (select REPLACE(REPLACE(JSON_SEARCH(room_options, 'one', #{original_goods_name}, null, '$[*].name'),
+        '"$[', ''),
+        '].name"', '')
+        from store_lodgement
+        WHERE store_no = #{store_no});
+        update store_lodgement
+        SET room_options = JSON_REPLACE(room_options, concat('$[', @RoomNameIndex, '].name'), #{room.name}, <if
+            test="room.room_img != null">concat('$[', @RoomNameIndex, '].room_img'), #{room.room_img},
+    </if> concat('$[', @RoomNameIndex, '].price'), #{room.price}, concat('$[', @RoomNameIndex, '].room_explain'),
+        #{room.room_explain}) WHERE store_no = #{store_no}
+    </update>
 </mapper>
