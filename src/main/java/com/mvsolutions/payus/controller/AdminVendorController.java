@@ -15,7 +15,7 @@ import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorSto
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreInfo;
 import com.mvsolutions.payus.response.payus.vendor.GoodsType;
 import com.mvsolutions.payus.service.VendorAdminService;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
-@Log4j
+@Log4j2
 @RequestMapping(value = "/vendor", method = RequestMethod.GET)
 public class AdminVendorController {
     @Autowired

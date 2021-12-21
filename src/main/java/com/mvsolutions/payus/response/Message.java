@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.json.JSONException;
 
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Log4j
+@Log4j2
 public class Message {
     private Map<String, Object> map;
 

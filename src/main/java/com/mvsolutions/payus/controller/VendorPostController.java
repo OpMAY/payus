@@ -25,7 +25,7 @@ import com.mvsolutions.payus.service.VendorAdminService;
 import com.mvsolutions.payus.util.Constant;
 import com.mvsolutions.payus.util.FileUploadUtility;
 import com.mvsolutions.payus.util.Time;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,7 +42,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-@Log4j
+@Log4j2
 @RestController
 @RequestMapping(value = "/vendor", method = RequestMethod.POST)
 public class VendorPostController {

@@ -2,7 +2,7 @@ package com.mvsolutions.payus.advice;
 
 import com.mvsolutions.payus.exception.rest.GrantAccessDeniedException;
 import com.mvsolutions.payus.exception.web.VendorAdminLoginException;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.json.JSONException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -16,7 +16,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import java.io.FileNotFoundException;
 import java.nio.file.AccessDeniedException;
 
-@Log4j
+@Log4j2
 @ControllerAdvice(basePackages = "com.mvsolutions.payus.controller.mvc")
 public class GlobalExceptionAdvice {
 

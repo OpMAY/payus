@@ -17,7 +17,7 @@ import com.mvsolutions.payus.response.StringRes;
 import com.mvsolutions.payus.response.payus.StoreType;
 import com.mvsolutions.payus.response.payus.SubMainStoreType;
 import com.mvsolutions.payus.util.KakaoLocationService;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.session.SqlSession;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ import java.util.List;
  * 설명 : 메인 페이지 + 서브 페이지 관련 서비스
  **/
 @Service
-@Log4j
+@Log4j2
 public class MainPageService {
     @Autowired
     private SqlSession sqlSession;

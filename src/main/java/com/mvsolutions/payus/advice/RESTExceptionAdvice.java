@@ -4,7 +4,7 @@ import com.mvsolutions.payus.exception.rest.AuthorizationTokenException;
 import com.mvsolutions.payus.exception.rest.GrantAccessDeniedException;
 import com.mvsolutions.payus.response.IntegerRes;
 import com.mvsolutions.payus.response.StatusCode;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.json.JSONException;
 import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.http.HttpStatus;
@@ -91,7 +91,7 @@ import java.io.FileNotFoundException;
  * NETWORK_AUTHENTICATION_REQUIRED(511, HttpStatus.Series.SERVER_ERROR, "Network Authentication Required");
  */
 
-@Log4j
+@Log4j2
 @RestControllerAdvice(basePackages = "com.mvsolutions.payus.restcontroller")
 public class RESTExceptionAdvice {
 

@@ -13,7 +13,7 @@ import com.mvsolutions.payus.response.IntegerRes;
 import com.mvsolutions.payus.response.Message;
 import com.mvsolutions.payus.response.StatusCode;
 import com.mvsolutions.payus.response.StringRes;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.session.SqlSession;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Log4j
+@Log4j2
 @Service
 public class VendorService {
     @Autowired

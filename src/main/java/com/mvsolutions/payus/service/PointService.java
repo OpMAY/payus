@@ -25,7 +25,7 @@ import com.mvsolutions.payus.response.payus.point.PaybackRule;
 import com.mvsolutions.payus.response.payus.point.PointAccumulateType;
 import com.mvsolutions.payus.response.payus.point.PointChargeType;
 import com.mvsolutions.payus.util.Time;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.session.SqlSession;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ import java.util.List;
 import static com.mvsolutions.payus.util.Time.timeZone;
 
 @Service
-@Log4j
+@Log4j2
 public class PointService {
     @Autowired
     private SqlSession sqlSession;
