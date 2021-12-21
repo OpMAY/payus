@@ -36,9 +36,28 @@ $.ajaxSetup({
     }
 });
 
+$('.clickable_img').on("click", function () {
+    if (confirm('해당 이미지를 보시겠습니까?')) {
+        let imageUrl = $(this).attr("src");
+        window.open(imageUrl);
+    } else {
+        return false;
+    }
+});
+
 function comma(str) {
     str = String(str);
     return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+}
+
+function listenResize() {
+    let screenHeight = $(window).height();
+    console.log(screenHeight);
+
+    let tableWidth = $(".payus-table").width();
+    console.log("table Width : " + tableWidth);
+    let pagination = $(".pagination");
+    pagination.width(tableWidth);
 }
 
 $(document).ready(function () {
@@ -46,6 +65,7 @@ $(document).ready(function () {
         $(this).text(comma($(this).text()));
     });
     $('.td-date').each(function () {
-        $(this).text(SplitDateFunction($(this).text()));
+        if ($(this).text() !== '관리자가 확인 중 입니다.')
+            $(this).text(SplitDateFunction($(this).text()));
     });
 });

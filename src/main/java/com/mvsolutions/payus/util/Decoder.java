@@ -1,16 +1,19 @@
 package com.mvsolutions.payus.util;
 
+import lombok.extern.log4j.Log4j2;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.Normalizer;
 
+@Log4j2
 public class Decoder {
     public static String fileNameDecoder(String filename) {
         try {
             filename = normalizeNfc(URLDecoder.decode(filename, "UTF-8"));
             return filename;
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            log.error("", e);
             throw new RuntimeException();
         }
     }

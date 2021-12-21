@@ -141,7 +141,7 @@
                         <h3 class="d-block" style="color: #8668d0; padding-left: 10px">포인트 충전 내역</h3>
                         <h5 class="d-block"
                             style="color: #979797; padding-left: 10px;margin-top: 1rem; line-height: 170%; word-break: keep-all">
-                            페이어스 포인트 적립은 관리자에게 무통장 송금 후 송금 내역을 확인해 이상이 없을 시 포인트가 충전됩니다.</h5>
+                            페이어스 포인트 충전은 관리자에게 무통장 송금 후 송금 내역을 확인해 이상이 없을 시 포인트가 충전됩니다.</h5>
                     </div>
                 </div>
                 <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 col-md-10 offset-md-1 col-10 offset-1"
@@ -154,12 +154,13 @@
                         </div>
                         <div class="col-12 col-xl-3 col-lg-4 col-md-4 col-sm-4"
                              style="padding-top: 2rem; justify-content: right">
-                            <select class="payus-select" id="review-data-type-select"
-                                    style="color: black;" onchange="alert('바뀜')">
+                            <select class="payus-select" id="charge-data-type-select"
+                                    style="color: black;">
                                 <option selected value="1">전체</option>
                                 <option value="2">승인</option>
                                 <option value="3">미승인</option>
                                 <option value="4">요청</option>
+                                <option value="5">취소</option>
                             </select>
                         </div>
                     </div>
@@ -178,15 +179,17 @@
                                     <th style="width: 15%">취소 요청</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="pagination_layout">
                                 <c:forEach var="i" begin="1" end="${charge.size()}">
                                     <tr charge="${charge[i-1].charge_no}">
                                         <td>${i}</td>
-                                        <td>${charge[i-1].point}원</td>
-                                        <td>${charge[i-1].reg_date}</td>
-                                        <td><c:choose><c:when
-                                                test="${charge[i-1].revise_date == null}">관리자가 <br>확인 중 입니다.</c:when><c:when
-                                                test="${charge[i-1].revise_date != null}">${charge[i-1].revise_date}</c:when></c:choose></td>
+                                        <td class="td-comma">${charge[i-1].point}원</td>
+                                        <td class="td-date">${charge[i-1].reg_date}</td>
+                                        <td class="td-date"><c:choose><c:when
+                                                test="${charge[i-1].revise_date == null}">관리자가
+                                            <br>확인 중 입니다.</c:when><c:when
+                                                test="${charge[i-1].revise_date != null}">${charge[i-1].revise_date}</c:when></c:choose>
+                                        </td>
                                         <td><c:choose><c:when test="${charge[i-1].status == 1}">요청됨</c:when><c:when
                                                 test="${charge[i-1].status == 2}">승인</c:when><c:when
                                                 test="${charge[i-1].status == 3}">미승인<button type="button" style="display: block; margin-top: 10px"
@@ -229,38 +232,112 @@
 <script src="/js/date-formatter.js"></script>
 <script src="/js/payus-pagination.js"></script>
 <script>
+    let paginationDivId = 'charge-table-pagination';
+    let paginationDiv = $('#' + paginationDivId);
+    let totalChargeNum = ${chargeNum};
     $(".pagination").on("click", 'a', function () {
-        let data_order = $(this).attr('data-order');
+        let selectedPage = $(this);
+        let data_order = selectedPage.attr('data-order');
+        let data_type = $('.payus-select option:selected').val();
         console.log(data_order);
-        let paginationDiv = $("#charge-table-pagination");
         let active_page = paginationDiv.children('.active').attr('data-order');
-        if (active_page !== data_order) {
-            // TODO 페이지 별 데이터 AJAX
-            paginationDiv.children('.active').removeClass('active');
-            $(this).addClass('active');
+        if (data_order === '-1') {
+            if (tablePaginationChange(totalChargeNum, paginationDivId, false)) {
+                let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
+                dataCallFunction(firstPageAfterChange, data_type);
+            }
+        } else if (data_order === '0') {
+            if (tablePaginationChange(totalChargeNum, paginationDivId, true)) {
+                let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
+                dataCallFunction(firstPageAfterChange, data_type);
+            }
+        } else {
+            console.log("else");
+            if (active_page !== data_order) {
+                paginationDiv.children('.active').removeClass('active');
+                selectedPage.addClass('active');
+                dataCallFunction(data_order, data_type);
+            }
         }
     });
 
-    function comma(str) {
-        str = String(str);
-        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+    function dataCallFunction(page, data_type, selectChange) {
+        let data = {"page": page, "data_type": data_type, "select_change": selectChange};
+        let selectedPageIndex = (page * 10) - 10;
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/point/charge/paging',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            $("#pagination_layout *").remove();
+            console.log(result);
+            console.log("length : " + result.chargeList.length);
+            for (let i = 0; i < result.chargeList.length; i++) {
+                let data = result.chargeList[i];
+                let thisIndex = selectedPageIndex + i + 1;
+                let reviseDateString = data.revise_date == null ? '관리자가 <br>확인 중 입니다.' : data.revise_date;
+                let statusString;
+                let cancelString;
+                switch (data.status) {
+                    case 1 :
+                        statusString = '요청됨';
+                        cancelString = '<button type="button" class="btn btn-payus-table-report">\n' +
+                            '                                                취소 요청\n' +
+                            '                                            </button>';
+                        break;
+                    case 2 :
+                        statusString = '승인';
+                        cancelString = '충전 완료 후<br>취소 요청 불가';
+                        break;
+                    case 3 :
+                        statusString = '미승인<button type="button" style="display: block; margin-top: 10px"\n' +
+                            '                                            class="btn btn-payus-table">\n' +
+                            '                                            반려 사유\n' +
+                            '                                            </button>';
+                        cancelString = '<button type="button" class="btn btn-payus-table-report">\n' +
+                            '                                                취소 요청\n' +
+                            '                                            </button>';
+                        break;
+                    case 4 :
+                        statusString = '취소 요청됨';
+                        cancelString = '<button type="button" class="btn btn-payus-table-report reason">\n' +
+                            '                                                취소 요청 확인\n' +
+                            '                                            </button>';
+                        break;
+                    case 5 :
+                        statusString = '취소됨';
+                        cancelString = '취소 완료 후<br>취소 요청 불가';
+                        break;
+                }
+                $('#pagination_layout').append('<tr charge="' + data.charge_no + '">\n' +
+                    '                                        <td>' + thisIndex + '</td>\n' +
+                    '                                        <td class="td-comma">' + comma(data.point) + '원</td>\n' +
+                    '                                        <td class="td-date">' + SplitDateFunction(data.reg_date) + '</td>\n' +
+                    '                                        <td class="td-date">' + reviseDateString + '</td>\n' +
+                    '                                        <td>' + statusString + '</td>\n' +
+                    '                                        <td>' + cancelString + '</td>\n' +
+                    '                                    </tr>');
+                totalChargeNum = result.charge_num;
+                if (selectChange)
+                    tablePagination(result.charge_num, paginationDivId);
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
     }
+
+    $('.payus-select').on('change', function () {
+        let selectedText = $('.payus-select option:selected').val();
+        dataCallFunction(1, selectedText, true);
+    });
 
     $(document).ready(function () {
         listenResize();
         tablePagination(${chargeNum}, 'charge-table-pagination');
         $('#point_strong').text(comma(${point}) + 'P');
     });
-
-    function listenResize() {
-        let screenHeight = $(window).height();
-        console.log(screenHeight);
-
-        let tableWidth = $(".payus-table").width();
-        console.log("table Width : " + tableWidth);
-        let pagination = $(".pagination");
-        pagination.width(tableWidth);
-    }
 </script>
 <script>
     let body = $(document.body);
@@ -316,22 +393,6 @@
             window.open(imageUrl);
         } else {
             return false;
-        }
-    });
-
-    $(document).ready(function () {
-        let table = $(".payus-table");
-        let body = table.children('tbody');
-        console.log(body.children().length);
-        for (let i = 0; i < body.children().length; i++) {
-            let originalPrice = body.children('tr:eq(' + i + ')').children('td:eq(1)').text();
-            body.children('tr:eq(' + i + ')').children('td:eq(1)').text(comma(originalPrice));
-            let originalRegDate = body.children('tr:eq(' + i + ')').children('td:eq(2)').text();
-            let originalReviseDate = body.children('tr:eq(' + i + ')').children('td:eq(3)').text();
-            console.log(i + "번째 index - OriginRegDate : " + originalRegDate + ', OriginReviseDate : ' + originalReviseDate);
-            body.children('tr:eq(' + i + ')').children('td:eq(2)').text(SplitDateFunction(originalRegDate));
-            if (originalReviseDate !== '관리자가 확인 중 입니다.')
-                body.children('tr:eq(' + i + ')').children('td:eq(3)').text(SplitDateFunction(originalReviseDate));
         }
     });
 

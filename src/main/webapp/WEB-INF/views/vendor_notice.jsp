@@ -98,7 +98,7 @@
             </div>
             <div class="row" style="width: 100%; margin-top: 3rem">
                 <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 col-md-10 offset-md-1 col-10 offset-1">
-                    <div class="row" style="margin-bottom: 5rem;">
+                    <div class="row" style="margin-bottom: 2rem;">
                         <h3 class="d-block" style="color: #8668d0; padding-left: 10px">공지사항</h3>
                     </div>
                 </div>
@@ -152,19 +152,7 @@
                                 </tbody>
                             </table>
                             <%--  TODO 전체 리뷰 갯수로 페이지네이션 리뷰 페이지당 10개씩   --%>
-                            <div class="pagination" id="charge-table-pagination">
-                                <a href="#">&laquo;</a>
-                                <a data-order="1" style="cursor: pointer" class="active">1</a>
-                                <a data-order="2" style="cursor: pointer">2</a>
-                                <a data-order="3" style="cursor: pointer">3</a>
-                                <a data-order="4" style="cursor: pointer">4</a>
-                                <a data-order="5" style="cursor: pointer">5</a>
-                                <a data-order="6" style="cursor: pointer">6</a>
-                                <a data-order="7" style="cursor: pointer">7</a>
-                                <a data-order="8" style="cursor: pointer">8</a>
-                                <a data-order="9" style="cursor: pointer">9</a>
-                                <a data-order="10" style="cursor: pointer">10</a>
-                                <a href="#">&raquo;</a>
+                            <div class="pagination" id="notice-table-pagination">
                             </div>
                         </div>
                     </div>
@@ -181,7 +169,7 @@
     $(".pagination").on("click", 'a', function () {
         let data_order = $(this).attr('data-order');
         console.log(data_order);
-        let paginationDiv = $("#charge-table-pagination");
+        let paginationDiv = $("#notice-table-pagination");
         let active_page = paginationDiv.children('.active').attr('data-order');
         if (active_page !== data_order) {
             // TODO 페이지 별 데이터 AJAX
@@ -192,6 +180,7 @@
 
     $(document).ready(function () {
         listenResize();
+        tablePagination(${noticeNum}, 'notice-table-pagination');
     });
 
     function listenResize() {

@@ -33,7 +33,7 @@ public class FirebaseMessaging {
             refreshToken.close();
         } catch (Exception e) {
             System.out.println("notification error: " + e);
-            e.printStackTrace();
+            log.error("", e);
         }
     }
 
@@ -65,7 +65,7 @@ public class FirebaseMessaging {
             System.out.println("Successfully sent message: " + firbaseResponse);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("", e);
         }
     }
 
@@ -91,7 +91,7 @@ public class FirebaseMessaging {
             log.info("notification 통과");
         } catch (Exception e) {
             log.info("notification error: " + e);
-            e.printStackTrace();
+            log.error("", e);
         }
     }
 }

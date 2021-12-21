@@ -343,7 +343,7 @@
             }
             totalReviewNum = result.review_num;
             if (selectChange)
-                tablePagination(result.review_num, 'review-table-pagination');
+                tablePagination(result.review_num, paginationDivId);
         }).fail(function (error) {
             console.log(error);
         });

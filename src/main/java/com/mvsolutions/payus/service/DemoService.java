@@ -401,7 +401,7 @@
 //                    try {
 //                        url = fileUploadUtility.uploadFile(null, file.getOriginalFilename(), file.getBytes(), Constant.LOCAL_SAVE);
 //                    } catch (IOException e) {
-//                        e.printStackTrace();
+//                        log.error("", e);
 //                    }
 //                    fileComponents.setFile_uri(upload_path + url);
 //                    fileList.add(fileComponents);

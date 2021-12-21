@@ -47,7 +47,7 @@ public class CDNService {
         } catch (AmazonClientException e) {
             // The call was transmitted successfully, but Amazon S3 couldn't process
             // it and returned an error response.
-            e.printStackTrace();
+            log.error("", e);
         }
     }
 
@@ -63,10 +63,10 @@ public class CDNService {
             s3Client.shutdown();
             return true;
         } catch (AmazonServiceException e) {
-            e.printStackTrace();
+            log.error("", e);
             return false;
         } catch (SdkClientException e) {
-            e.printStackTrace();
+            log.error("", e);
             return false;
         }
     }
@@ -83,7 +83,7 @@ public class CDNService {
             FileUtils.copyInputStreamToFile(inputStream, file);  //#2 - 스트림을 파일로 저장함
             return file;
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("", e);
             return null;
         }
     }

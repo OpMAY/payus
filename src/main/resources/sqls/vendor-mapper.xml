@@ -475,4 +475,28 @@
         WHERE store_no = @StoreNo
           AND status != 4
     </select>
+    <select id="getVendorPointAccumulateListByPaging" resultType="VendorAdminPointChargeList">
+        select charge_no, point, reg_date, revise_date, status
+        from point_charge
+        WHERE vendor_no = #{vendor_no}
+        <choose>
+            <when test="data_type == 2">AND status = 2</when>
+            <when test="data_type == 3">AND status = 3</when>
+            <when test="data_type == 4">AND (status = 1 OR status = 4)</when>
+            <when test="data_type == 5">AND status = 5</when>
+        </choose>
+        ORDER BY reg_date DESC
+        LIMIT #{start_index}, #{end_index}
+    </select>
+    <select id="getChargeListNumberByDataType" resultType="int">
+        select COUNT(*)
+        from point_charge
+        WHERE vendor_no = #{vendor_no}
+        <choose>
+            <when test="data_type == 2">AND status = 2</when>
+            <when test="data_type == 3">AND status = 3</when>
+            <when test="data_type == 4">AND (status = 1 OR status = 4)</when>
+            <when test="data_type == 5">AND status = 5</when>
+        </choose>
+    </select>
 </mapper>

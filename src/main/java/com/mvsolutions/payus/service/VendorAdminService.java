@@ -28,10 +28,12 @@ import com.mvsolutions.payus.model.web.vendor.response.auth.VendorRegisterEmailR
 import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminFAQList;
 import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminNoticeList;
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods;
+import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.VendorStoreManagementGoodsPagingResponse;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointAccumulateList;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointChargeList;
+import com.mvsolutions.payus.model.web.vendor.response.point.VendorStoreManagementPointChargePagingResponse;
 import com.mvsolutions.payus.model.web.vendor.response.sales.VendorAdminSalesList;
 import com.mvsolutions.payus.model.web.vendor.response.sales.VendorSalesPageSummary;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.*;
@@ -283,9 +285,21 @@ public class VendorAdminService {
     }
 
     @Transactional(readOnly = true)
+    public int getNoticeNum() {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getNoticeNum();
+    }
+
+    @Transactional(readOnly = true)
     public List<VendorAdminFAQList> getFAQList() {
         vendorDao.setSqlSession(sqlSession);
         return vendorDao.getFAQList();
+    }
+
+    @Transactional(readOnly = true)
+    public int getFAQNum(int type) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getFAQNum(type);
     }
 
     @Transactional(readOnly = true)
@@ -465,5 +479,25 @@ public class VendorAdminService {
     public VendorSalesPageSummary getVendorSalesSummary(int vendor_no) {
         vendorDao.setSqlSession(sqlSession);
         return vendorDao.getVendorSalesSummary(vendor_no);
+    }
+
+    @Transactional(readOnly = true)
+    public VendorStoreManagementGoodsPagingResponse getGoodsListDataCallByPagination(VendorPagingRequest request) {
+        vendorDao.setSqlSession(sqlSession);
+        StoreGoods storeGoods = vendorDao.getVendorStoreGoodsList(request.getVendor_no(), GoodsType.ROOMS);
+        VendorStoreManagementGoodsPagingResponse response = new VendorStoreManagementGoodsPagingResponse();
+        response.setGoodsList(storeGoods);
+        response.setGoods_num(storeGoods.getRoom_options().size());
+        return response;
+    }
+
+    @Transactional(readOnly = true)
+    public VendorStoreManagementPointChargePagingResponse getPointChargeListDataCallByPagination(VendorPagingRequest request) {
+        vendorDao.setSqlSession(sqlSession);
+        VendorStoreManagementPointChargePagingResponse response = new VendorStoreManagementPointChargePagingResponse();
+        List<VendorAdminPointChargeList> chargeList = vendorDao.getVendorPointChargeListByPaging(request);
+        response.setChargeList(chargeList);
+        response.setCharge_num(vendorDao.getChargeListNumberByDataType(request.getVendor_no(), request.getData_type()));
+        return response;
     }
 }
