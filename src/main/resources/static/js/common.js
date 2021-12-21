@@ -35,3 +35,17 @@ $.ajaxSetup({
         $("#div_ajax_load_image").hide();
     }
 });
+
+function comma(str) {
+    str = String(str);
+    return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+}
+
+$(document).ready(function () {
+    $('.td-comma').each(function () {
+        $(this).text(comma($(this).text()));
+    });
+    $('.td-date').each(function () {
+        $(this).text(SplitDateFunction($(this).text()));
+    });
+});

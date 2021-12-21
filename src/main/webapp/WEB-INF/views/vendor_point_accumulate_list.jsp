@@ -262,7 +262,7 @@
             <div class="row" style="width: 100%; margin-top: 3rem">
                 <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 col-md-10 offset-md-1 col-10 offset-1">
                     <div class="row" style="margin-bottom: 5rem; flex-direction: column">
-                        <h3 class="d-block" style="color: #8668d0; padding-left: 10px">포인트 충전 내역</h3>
+                        <h3 class="d-block" style="color: #8668d0; padding-left: 10px">포인트 적립 내역</h3>
                         <h5 class="d-block"
                             style="color: #979797; padding-left: 10px;margin-top: 1rem; line-height: 170%; word-break: keep-all">
                             페이어스 포인트 적립은 관리자에게 무통장 송금 후 송금 내역을 확인해 이상이 없을 시 포인트가 충전됩니다.</h5>
@@ -272,8 +272,8 @@
                      style="margin-bottom: 20px; flex-direction: row; align-items: center">
                     <div class="row" style="margin-bottom: 1rem;justify-content: right">
                         <div class="col-12 col-xl-9 col-lg-12 col-md-12 col-sm-12" style="flex-direction: column">
-                            <span class="mypoint">나의 포인트 <strong
-                                    style="font-size: 2rem; color: #6D29D0">${point}P</strong></span>
+                            <span class="mypoint">나의 포인트 <strong id="point_strong"
+                                    style="font-size: 2rem; color: #6D29D0"></strong></span>
                             <span>페이어스 포인트가 10,000P 이하인 경우 앱에 상점이 노출되지 않습니다.</span>
                         </div>
                         <div class="col-12 col-xl-3 col-lg-4 col-md-4 col-sm-4"
@@ -305,148 +305,43 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr accumulate="1">
-                                    <td>1</td>
-                                    <td>한지우</td>
-                                    <td>
-                                        23,000원
-                                    </td>
-                                    <td>
-                                        10%
-                                    </td>
-                                    <td>
-                                        2,300P
-                                    </td>
-                                    <td>
-                                        2021.11.23
-                                    </td>
-                                    <td>적립 완료
-                                    </td>
-                                    <td>
-                                        미작성
-                                    </td>
-                                </tr>
-                                <tr accumulate="2">
-                                    <td>2</td>
-                                    <td>한지우</td>
-                                    <td>
-                                        23,000원
-                                    </td>
-                                    <td>
-                                        10%
-                                    </td>
-                                    <td>
-                                        2,300P
-                                    </td>
-                                    <td>
-                                        2021.11.23
-                                    </td>
-                                    <td>적립 예정
-                                        <button type="button" style="display: block; margin-top: 10px"
-                                                class="btn btn-payus-table cancel-request">
+                                <c:forEach var="i" begin="1" end="${accumulate.size()}">
+                                    <tr accumulate="${accumulate[i-1].accumulate_no}">
+                                        <td>${i}</td>
+                                        <td>${accumulate[i-1].user_name}</td>
+                                        <td>${accumulate[i-1].price}원</td>
+                                        <td>${accumulate[i-1].payback_rate}%</td>
+                                        <td>${accumulate[i-1].point}P</td>
+                                        <td>${accumulate[i-1].reg_date}</td>
+                                        <td><c:choose><c:when
+                                                test="${accumulate[i-1].status == 1}">적립 예정<button type="button" style="display: block; margin-top: 10px"
+                                            class="btn btn-payus-table cancel-request">
                                             취소 요청
-                                        </button>
-                                    </td>
-                                    <td>
-                                        미작성
-                                    </td>
-                                </tr>
-                                <tr accumulate="3">
-                                    <td>3</td>
-                                    <td>한지우</td>
-                                    <td>
-                                        23,000원
-                                    </td>
-                                    <td>
-                                        10%
-                                    </td>
-                                    <td>
-                                        2,300P
-                                    </td>
-                                    <td>
-                                        2021.11.23
-                                    </td>
-                                    <td>적립 취소 반려
-                                        <button type="button" style="display: block; margin-top: 10px"
-                                                class="btn btn-payus-table reject-reason">
+                                            </button></c:when><c:when
+                                                test="${accumulate[i-1].status == 2}">적립 완료</c:when><c:when
+                                                test="${accumulate[i-1].status == 3}">취소 요청됨<button type="button" style="display: block; margin-top: 10px"
+                                            class="btn btn-payus-table cancel-request">
+                                            요청 취소
+                                            </button></c:when><c:when
+                                                test="${accumulate[i-1].status == 4}">적립 취소됨</c:when><c:when
+                                                test="${accumulate[i-1].status == 5}">적립 취소 반려<button type="button" style="display: block; margin-top: 10px"
+                                            class="btn btn-payus-table reject-reason">
                                             반려 사유
-                                        </button>
-                                    </td>
-                                    <td>
-                                        미작성
-                                    </td>
-                                </tr>
-                                <tr accumulate="4">
-                                    <td>4</td>
-                                    <td>한지우</td>
-                                    <td>
-                                        23,000원
-                                    </td>
-                                    <td>
-                                        10%
-                                    </td>
-                                    <td>
-                                        2,300P
-                                    </td>
-                                    <td>
-                                        2021.11.23
-                                    </td>
-                                    <td>적립 취소됨
-                                    </td>
-                                    <td>
-                                        미작성
-                                    </td>
-                                </tr>
-                                <tr accumulate="5">
-                                    <td>5</td>
-                                    <td>한지우</td>
-                                    <td>
-                                        23,000원
-                                    </td>
-                                    <td>
-                                        10%
-                                    </td>
-                                    <td>
-                                        2,300P
-                                    </td>
-                                    <td>
-                                        2021.11.23
-                                    </td>
-                                    <td>적립 완료
-                                    </td>
-                                    <td>
-                                        작성
-                                        <button type="button" style="display: block; margin-top: 10px"
-                                                class="btn btn-payus-table answer-review">
-                                            답변 하기
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr accumulate="6">
-                                    <td>6</td>
-                                    <td>한지우</td>
-                                    <td>
-                                        23,000원
-                                    </td>
-                                    <td>
-                                        10%
-                                    </td>
-                                    <td>
-                                        2,300P
-                                    </td>
-                                    <td>
-                                        2021.11.23
-                                    </td>
-                                    <td>적립 완료
-                                    </td>
-                                    <td>
-                                        작성
-                                        <button type="button" style="display: block; margin-top: 10px"
-                                                class="btn btn-payus-table answered-review">
-                                            리뷰 보기
-                                        </button>
-                                    </td>
-                                </tr>
+                                            </button></c:when></c:choose></td>
+                                        <td><c:choose><c:when
+                                                test="${accumulate[i-1].review_status == 0 || accumulate[i-1].review_status == 2}">미작성</c:when><c:when
+                                                test="${accumulate[i-1].review_status == 1}">작성<c:choose><c:when
+                                                test="${accumulate[i-1]._answered == false}">
+                                            <button type="button" style="display: block; margin-top: 10px"
+                                                    class="btn btn-payus-table answer-review">답변 하기
+                                            </button>
+                                        </c:when><c:when test="${accumulate[i-1]._answered == true}">
+                                            <button type="button" style="display: block; margin-top: 10px"
+                                                    class="btn btn-payus-table answered-review">리뷰 보기
+                                            </button>
+                                        </c:when></c:choose></c:when></c:choose></td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                             <%--  TODO 전체 리뷰 갯수로 페이지네이션 리뷰 페이지당 10개씩   --%>
@@ -464,10 +359,10 @@
 <script src="/js/payus-pagination.js"></script>
 <script>
 
-    $(".pagination a").on("click", function () {
+    $(".pagination").on("click", 'a', function () {
         let data_order = $(this).attr('data-order');
         console.log(data_order);
-        let paginationDiv = $("#charge-table-pagination");
+        let paginationDiv = $("#accumulate-table-pagination");
         let active_page = paginationDiv.children('.active').attr('data-order');
         if (active_page !== data_order) {
             // TODO 페이지 별 데이터 AJAX
@@ -479,7 +374,13 @@
     $(document).ready(function () {
         listenResize();
         tablePagination(${accumulateNum}, 'accumulate-table-pagination');
+        $('#point_strong').text(comma(${point}) + 'P');
     });
+
+    function comma(str) {
+        str = String(str);
+        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+    }
 
     function listenResize() {
         let screenHeight = $(window).height();
@@ -585,7 +486,11 @@
         let table = $(".payus-table");
         let body = table.children('tbody');
         for (let i = 0; i < body.children().length; i++) {
+            let originalPrice = body.children('tr:eq(' + i + ')').children('td:eq(2)').text();
+            let originalPoint = body.children('tr:eq(' + i + ')').children('td:eq(4)').text();
             let originalRegDate = body.children('tr:eq(' + i + ')').children('td:eq(5)').text();
+            body.children('tr:eq(' + i + ')').children('td:eq(2)').text(comma(originalPrice));
+            body.children('tr:eq(' + i + ')').children('td:eq(4)').text(comma(originalPoint));
             body.children('tr:eq(' + i + ')').children('td:eq(5)').text(SplitDateFunction(originalRegDate));
         }
     });

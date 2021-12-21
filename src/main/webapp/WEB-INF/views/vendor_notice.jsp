@@ -135,36 +135,20 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr notice="1">
-                                    <td>1</td>
-                                    <td>[이벤트] 페이어스 이벤트를 진행합니다.</td>
-                                    <td>
-                                        2021.11.23
-                                    </td>
-                                    <td>5011
-                                    </td>
-                                    <td>
-                                        <button type="button" style="display: block;"
-                                                class="btn btn-payus-table">
-                                            상세보기
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr notice="2">
-                                    <td>2</td>
-                                    <td>[이벤트] 페이어스 이벤트를 진행합니다.</td>
-                                    <td>
-                                        2021.11.23
-                                    </td>
-                                    <td>3214
-                                    </td>
-                                    <td>
-                                        <button type="button" style="display: block;"
-                                                class="btn btn-payus-table">
-                                            상세보기
-                                        </button>
-                                    </td>
-                                </tr>
+                                <c:forEach var="i" begin="1" end="${notice.size()}">
+                                    <tr notice="${notice[i-1].notice_no}">
+                                        <td>${i}</td>
+                                        <td>${notice[i-1].title}</td>
+                                        <td class="td-date">${notice[i-1].reg_date}</td>
+                                        <td class="td-comma">${notice[i-1].view_num}</td>
+                                        <td>
+                                            <button type="button" style="display: block;"
+                                                    class="btn btn-payus-table">
+                                                상세보기
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                             <%--  TODO 전체 리뷰 갯수로 페이지네이션 리뷰 페이지당 10개씩   --%>
@@ -189,11 +173,12 @@
         </div>
     </div>
 </div>
+<script src="/js/common.js"></script>
+<script src="/js/payus-pagination.js"></script>
 <script src="/js/date-formatter.js"></script>
 <script>
 
-
-    $(".pagination a").on("click", function () {
+    $(".pagination").on("click", 'a', function () {
         let data_order = $(this).attr('data-order');
         console.log(data_order);
         let paginationDiv = $("#charge-table-pagination");

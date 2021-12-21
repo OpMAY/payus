@@ -248,13 +248,14 @@
                         from store
                         WHERE vendor_no = #{vendor_no});
         select accumulate_no,
-               user.nickname as user_name,
+               user.nickname                        as user_name,
                price,
                payback_rate,
                point_accumulate.point,
                point_accumulate.reg_date,
                status,
-               review_status
+               review_status,
+               IF(answer_date is NULL, false, true) as is_answered
         from point_accumulate,
              user
         WHERE point_accumulate.store_no = @StoreNo
@@ -274,11 +275,22 @@
         select notice_no, title, reg_date, view_num
         from notice
         ORDER BY reg_date DESC
+        LIMIT 10
+    </select>
+    <select id="getNoticeNum" resultType="int">
+        select COUNT(*)
+        from notice
     </select>
     <select id="getFAQList" resultType="VendorAdminFAQList">
         select faq_no, question, answer, type, reg_date, view_num
         from faq
         ORDER BY reg_date DESC
+        LIMIT 10
+    </select>
+    <select id="getFAQNum" resultType="int">
+        select COUNT(*)
+        from faq
+        <if test="type != 0">WHERE type = #{type}</if>
     </select>
     <select id="validateVendorPassword" resultType="_boolean">
         select EXISTS(select * from vendor WHERE vendor_no = #{vendor_no} AND password = #{password})
@@ -344,11 +356,13 @@
         </choose>
     </select>
     <update id="answerReview">
-        update review
-        SET answer_content = #{answer_content},
-            answer_date    = #{answer_date},
-            answer_status  = true
-        WHERE review_no = #{review_no}
+        update review, point_accumulate
+        SET review.answer_content        = #{answer_content},
+            review.answer_date           = #{answer_date},
+            review.answer_status         = true,
+            point_accumulate.answer_date = #{answer_date}
+        WHERE review.review_no = #{review_no}
+          AND point_accumulate.accumulate_no = review.accumulate_no
     </update>
     <update id="deleteRoom">
         SET @StoreNo = (select store_no
@@ -419,4 +433,46 @@
     </if> concat('$[', @RoomNameIndex, '].price'), #{room.price}, concat('$[', @RoomNameIndex, '].room_explain'),
         #{room.room_explain}) WHERE store_no = #{store_no}
     </update>
+    <select id="getVendorSalesList" resultType="VendorAdminSalesList">
+        SET @StoreNo = (select store_no
+                        from store
+                        WHERE vendor_no = #{vendor_no});
+        select accumulate_no,
+               user.nickname                                as user_name,
+               price,
+               payback_rate,
+               point_accumulate.point,
+               point_accumulate.reg_date,
+               IF(point_accumulate.status = 4, false, true) as status
+        from point_accumulate,
+             user
+        WHERE store_no = @StoreNo
+          AND user.user_no = point_accumulate.user_no
+        ORDER BY point_accumulate.reg_date DESC
+        LIMIT 10
+    </select>
+    <select id="getVendorSalesSummary" resultType="VendorSalesPageSummary">
+        SET @StoreNo = (select store_no
+                        from store
+                        WHERE vendor_no = #{vendor_no});
+        SET @ThisMonthPrice = (select SUM(price)
+                               from point_accumulate
+                               WHERE store_no = @StoreNo
+                                 AND YEAR(reg_date) = YEAR(CURRENT_DATE)
+                                 AND MONTH(reg_date) = MONTH(CURRENT_DATE)
+                                 AND status != 4);
+        SET @ThisMonthPoint = (select SUM(point)
+                               from point_accumulate
+                               WHERE store_no = @StoreNo
+                                 AND YEAR(reg_date) = YEAR(CURRENT_DATE)
+                                 AND MONTH(reg_date) = MONTH(CURRENT_DATE)
+                                 AND status != 4);
+        select SUM(price)      as total_price,
+               SUM(point)      as total_point,
+               @ThisMonthPrice as this_month_price,
+               @ThisMonthPoint as this_month_point
+        from point_accumulate
+        WHERE store_no = @StoreNo
+          AND status != 4
+    </select>
 </mapper>

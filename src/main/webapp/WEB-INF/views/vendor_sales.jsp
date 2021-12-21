@@ -45,22 +45,27 @@
                     <div class="row" style="margin-bottom: 5rem;">
                         <h3 class="d-block" style="color: #8668d0; padding-left: 10px">매출 현황</h3>
                     </div>
-                    <div class="row row-cols-1 row-cols-xl-4 row-cols-lg-2 row-cols-md-1 row-cols-sm-1" style="display: flex; margin-bottom: 2rem">
+                    <div class="row row-cols-1 row-cols-xl-4 row-cols-lg-2 row-cols-md-1 row-cols-sm-1"
+                         style="display: flex; margin-bottom: 2rem">
                         <div class="col">
                             <label for="total-sales">총 매출</label>
-                            <textarea class="payus-textarea sales" id="total-sales" rows="1" disabled>13,000,000원</textarea>
+                            <textarea class="payus-textarea sales" id="total-sales" rows="1"
+                                      disabled>${summary.total_price}원</textarea>
                         </div>
                         <div class="col">
                             <label for="monthly-sales">금월 매출</label>
-                            <textarea class="payus-textarea sales" id="monthly-sales" rows="1" disabled>5,000,000원</textarea>
+                            <textarea class="payus-textarea sales" id="monthly-sales" rows="1"
+                                      disabled>${summary.this_month_price}원</textarea>
                         </div>
                         <div class="col">
                             <label for="total-point-usage">총 포인트 사용</label>
-                            <textarea class="payus-textarea sales" id="total-point-usage" rows="1" disabled>1,300,000원</textarea>
+                            <textarea class="payus-textarea sales" id="total-point-usage" rows="1"
+                                      disabled>${summary.total_point}P</textarea>
                         </div>
                         <div class="col">
                             <label for="monthly-point-usage">금월 포인트 사용</label>
-                            <textarea class="payus-textarea sales" id="monthly-point-usage" rows="1" disabled>500,000원</textarea>
+                            <textarea class="payus-textarea sales" id="monthly-point-usage" rows="1"
+                                      disabled>${summary.this_month_point}P</textarea>
                         </div>
                     </div>
                 </div>
@@ -101,58 +106,22 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr accumulate="1">
-                                    <td>1</td>
-                                    <td>한지우</td>
-                                    <td>
-                                        23,000원
-                                    </td>
-                                    <td>
-                                        10%
-                                    </td>
-                                    <td>
-                                        2,300P
-                                    </td>
-                                    <td>
-                                        2021.11.23
-                                    </td>
-                                    <td>결제 완료
-                                    </td>
-                                </tr>
-                                <tr accumulate="2">
-                                    <td>2</td>
-                                    <td>한지우</td>
-                                    <td>
-                                        23,000원
-                                    </td>
-                                    <td>
-                                        10%
-                                    </td>
-                                    <td>
-                                        2,300P
-                                    </td>
-                                    <td>
-                                        2021.11.23
-                                    </td>
-                                    <td>결제 취소
-                                    </td>
-                                </tr>
+                                <c:forEach var="i" begin="1" end="${sales.size()}">
+                                    <tr accumulate="${sales[i-1].accumulate_no}">
+                                        <td>${i}</td>
+                                        <td>${sales[i-1].user_name}</td>
+                                        <td class="td-comma">${sales[i-1].price}원</td>
+                                        <td>${sales[i-1].payback_rate}%</td>
+                                        <td class="td-comma">${sales[i-1].point}P</td>
+                                        <td class="td-date">${sales[i-1].reg_date}</td>
+                                        <td><c:choose><c:when test="${sales[i-1].status == true}">결제 완료</c:when><c:when
+                                                test="${sales[i-1].status == false}">결제 취소</c:when></c:choose></td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                             <%--  TODO 전체 리뷰 갯수로 페이지네이션 리뷰 페이지당 10개씩   --%>
-                            <div class="pagination" id="charge-table-pagination">
-                                <a href="#">&laquo;</a>
-                                <a data-order="1" style="cursor: pointer" class="active">1</a>
-                                <a data-order="2" style="cursor: pointer">2</a>
-                                <a data-order="3" style="cursor: pointer">3</a>
-                                <a data-order="4" style="cursor: pointer">4</a>
-                                <a data-order="5" style="cursor: pointer">5</a>
-                                <a data-order="6" style="cursor: pointer">6</a>
-                                <a data-order="7" style="cursor: pointer">7</a>
-                                <a data-order="8" style="cursor: pointer">8</a>
-                                <a data-order="9" style="cursor: pointer">9</a>
-                                <a data-order="10" style="cursor: pointer">10</a>
-                                <a href="#">&raquo;</a>
+                            <div class="pagination" id="sales-table-pagination">
                             </div>
                         </div>
                     </div>
@@ -161,14 +130,16 @@
         </div>
     </div>
 </div>
+<script src="/js/common.js"></script>
+<script src="/js/payus-pagination.js"></script>
 <script src="/js/date-formatter.js"></script>
 <script>
 
 
-    $(".pagination a").on("click", function () {
+    $(".pagination").on("click", 'a', function () {
         let data_order = $(this).attr('data-order');
         console.log(data_order);
-        let paginationDiv = $("#charge-table-pagination");
+        let paginationDiv = $("#sales-table-pagination");
         let active_page = paginationDiv.children('.active').attr('data-order');
         if (active_page !== data_order) {
             // TODO 페이지 별 데이터 AJAX
@@ -179,6 +150,16 @@
 
     $(document).ready(function () {
         listenResize();
+        tablePagination(${salesNum}, 'sales-table-pagination');
+        $('.sales').each(function () {
+            $(this).text(comma($(this).text()));
+        });
+        $('.td-comma').each(function () {
+            $(this).text(comma($(this).text()));
+        });
+        $('.td-date').each(function () {
+            $(this).text(SplitDateFunction($(this).text()));
+        });
     });
 
     function listenResize() {
@@ -245,14 +226,6 @@
             window.open(imageUrl);
         } else {
             return false;
-        }
-    });
-    $(document).ready(function () {
-        let table = $(".payus-table");
-        let body = table.children('tbody');
-        for (let i = 0; i < body.children().length; i++) {
-            let originalRegDate = body.children('tr:eq(' + i + ')').children('td:eq(5)').text();
-            body.children('tr:eq(' + i + ')').children('td:eq(5)').text(SplitDateFunction(originalRegDate));
         }
     });
 

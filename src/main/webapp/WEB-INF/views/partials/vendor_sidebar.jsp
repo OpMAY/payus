@@ -72,7 +72,6 @@
                 let childrenElementNumber = $(this).parent().children().length;
                 $(this).parent().css("height", 54 * childrenElementNumber + "px");
                 $(this).parent().css("visibility", "visible");
-                console.log("prev" + $(this).parent().prev('button').text());
                 $(this).parent().prev('button').addClass("active");
                 let dropdown = document.getElementsByClassName("dropdown-btn");
                 let i;

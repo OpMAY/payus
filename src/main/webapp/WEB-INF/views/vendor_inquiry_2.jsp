@@ -77,11 +77,11 @@
                                 ></textarea>
                             </div>
                         </div>
-                        <div class="col-12">
+                        <div class="col-12" style="margin-bottom: 2rem">
                             <div class="row row-cols-4" id="image-container">
                                 <input type="file" id="image-add-input-1" name="img1" accept="image/*"
                                        hidden>
-                                <div class="col image-div" id="img-add-div" style="height: 200px">
+                                <div class="col image-div" id="img-add-div" style="height: 100%">
                                     <div class="img-add" id="img-add-btn">
                                         <img src="/images/Group%20334.svg" alt width="100%" height="100%"
                                              style="transform: scale(0.45)">
