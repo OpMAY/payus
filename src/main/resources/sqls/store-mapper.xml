@@ -102,7 +102,7 @@
         thumbnail
         from store left join advertisement_store on store.store_no = advertisement_store.store_no
         WHERE (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
-        sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[<=]]> 100
+        sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[<=]]> 3
         AND class_first = #{class_first}
         <if test="class_second != 0">AND class_second = #{class_second}</if>
         <choose>
@@ -141,7 +141,7 @@
         thumbnail
         from store left join advertisement_store on store.store_no = advertisement_store.store_no
         WHERE (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
-        sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[<=]]> 100
+        sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[<=]]> 3
         AND class_first = #{class_first}
         <choose>
             <when test="order_type == 1">
