@@ -12,9 +12,12 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindPasswordReq
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorPasswordResetRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest;
 import com.mvsolutions.payus.model.web.vendor.request.common.VendorPagingRequest;
+import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminDeleteGoodsRequest;
+import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminRegisterGoodsRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
+import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewAnswerRequest;
 import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewDetailRequest;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
@@ -84,9 +87,13 @@ public interface VendorMapper {
 
     List<VendorAdminPointChargeList> getVendorAdminPointChargeList(int vendor_no);
 
+    int getVendorPointChargeListNumber(int vendor_no);
+
     int getVendorPointValue(int vendor_no);
 
     List<VendorAdminPointAccumulateList> getVendorAdminPointAccumulateList(int vendor_no);
+
+    int getVendorPointAccumulateListNumber(int vendor_no);
 
     List<VendorAdminNoticeList> getNoticeList();
 
@@ -105,4 +112,24 @@ public interface VendorMapper {
     int getVendorReviewNumber(int vendor_no);
 
     VendorStoreManagementReviewDetail getReviewDetailForModal(VendorAdminReviewDetailRequest request);
+
+    int getReviewNumberByDataType(int vendor_no, int data_type);
+
+    void answerReview(VendorAdminReviewAnswerRequest request);
+
+    void deleteRoom(VendorAdminDeleteGoodsRequest request);
+
+    int getVendorStoreType(int vendor_no);
+
+    boolean checkRoomNameExists(String goods_name, int vendor_no);
+
+    void registerRoom(Room room, int store_no);
+
+    String getRoomKeyList(int store_no);
+
+    int getVendorStoreNo(int vendor_no);
+
+    boolean checkRoomNameSameByRoomNo(int goods_no, String goods_name, int store_no);
+
+    void updateRoom(Room room, String original_goods_name, int store_no);
 }

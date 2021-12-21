@@ -59,7 +59,7 @@
         read_check
         from report_store,
         store
-        WHERE report_store.user_no
+        WHERE report_store.user_no = #{user_no}
         AND store.store_no = report_store.store_no
         AND (report_store.reg_date <![CDATA[<]]> @RegDate
         OR (report_store.reg_date <![CDATA[=]]> @RegDate AND report_no <![CDATA[<]]> #{last_index}))

@@ -77,7 +77,7 @@
                                 </thead>
                                 <tbody>
                                 <c:forEach var="i" begin="1" end="${rooms.size()}">
-                                    <tr room="${rooms[i-1].room_no}">
+                                    <tr goods="${rooms[i-1].room_no}">
                                         <td>${i}</td>
                                         <td><img class="clickable_img"
                                                  src="https://payus.s3.ap-northeast-2.amazonaws.com/${rooms[i-1].room_img}"
@@ -85,16 +85,16 @@
                                         <td>
                                             <div class="overflow">
                                                 <div class="overflow-space">
-                                                    <div class="overflow-text" title="${rooms[i-1].name}">${rooms[i-1].name}
-                                                    </div>
+                                                    <div class="overflow-text"
+                                                         title="${rooms[i-1].name}">${rooms[i-1].name}</div>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="overflow">
                                                 <div class="overflow-space">
-                                                    <div class="overflow-text" title="${rooms[i-1].room_explain}">${rooms[i-1].room_explain}
-                                                    </div>
+                                                    <div class="overflow-text"
+                                                         title="${rooms[i-1].room_explain}">${rooms[i-1].room_explain}</div>
                                                 </div>
                                             </div>
                                         </td>
@@ -117,19 +117,7 @@
                                 </tbody>
                             </table>
                             <%--  TODO 전체 리뷰 갯수로 페이지네이션 리뷰 페이지당 10개씩   --%>
-                            <div class="pagination" id="review-table-pagination">
-                                <a href="#">&laquo;</a>
-                                <a data-order="1" style="cursor: pointer" class="active">1</a>
-                                <a data-order="2" style="cursor: pointer">2</a>
-                                <a data-order="3" style="cursor: pointer">3</a>
-                                <a data-order="4" style="cursor: pointer">4</a>
-                                <a data-order="5" style="cursor: pointer">5</a>
-                                <a data-order="6" style="cursor: pointer">6</a>
-                                <a data-order="7" style="cursor: pointer">7</a>
-                                <a data-order="8" style="cursor: pointer">8</a>
-                                <a data-order="9" style="cursor: pointer">9</a>
-                                <a data-order="10" style="cursor: pointer">10</a>
-                                <a href="#">&raquo;</a>
+                            <div class="pagination" id="goods-table-pagination">
                             </div>
                         </div>
                     </div>
@@ -139,11 +127,33 @@
     </div>
 </div>
 <script src="/js/date-formatter.js"></script>
+<script src="/js/payus-pagination.js"></script>
 <script>
+    let totalGoodsNum = ${rooms.size()};
+    let GoodsType = ${goodsType};
     $(".btn-payus-table-report").on("click", function () {
-        let room_no = $(this).parent().parent().attr('room');
-        console.log(room_no);
-        // TODO 해당 room_no로 방 삭제
+        let goods_no = $(this).parent().parent().attr('goods');
+        console.log(goods_no);
+        let goodsName = $(this).parent().parent().children(':eq(2)').children().children().children('.overflow-text').text();
+        if (confirm('상품 \'' + goodsName + '\'을 삭제합니다.\n정말 삭제하시겠습니까?')) {
+            let data = {"room_no": goods_no, "goods_name" : goodsName, "goods_type" : GoodsType};
+            $.ajax({
+                type: 'POST',
+                url: '/vendor/manage/goods/delete',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (result) {
+                if(result){
+                    alert("삭제되었습니다.");
+                    window.location.reload();
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+        } else {
+            return false;
+        }
     });
 
 
@@ -175,9 +185,8 @@
 </script>
 <script>
     $(".btn-payus-table").on("click", function () {
-        let room_no = $(this).parent().parent().attr('room');
+        let room_no = $(this).parent().parent().attr('goods');
         console.log(room_no);
-        // TODO 해당 room_no로 수정 페이지 이동
         window.location.href = "/vendor/manage/goods/edit.do?goods_no=" + room_no;
     });
 
@@ -189,13 +198,15 @@
             return false;
         }
     });
+
     $(document).ready(function () {
-       let table = $(".payus-table");
-       let body = table.children('tbody');
-       for(let i = 0; i < body.children().length; i++) {
-           let originalRegDate = body.children('tr:eq(' + i + ')').children('td:eq(5)').text();
-           body.children('tr:eq(' + i + ')').children('td:eq(5)').text(SplitDateFunction(originalRegDate));
-       }
+        let table = $(".payus-table");
+        let body = table.children('tbody');
+        tablePagination(totalGoodsNum, 'goods-table-pagination');
+        for (let i = 0; i < body.children().length; i++) {
+            let originalRegDate = body.children('tr:eq(' + i + ')').children('td:eq(5)').text();
+            body.children('tr:eq(' + i + ')').children('td:eq(5)').text(SplitDateFunction(originalRegDate));
+        }
     });
 </script>
 </body>

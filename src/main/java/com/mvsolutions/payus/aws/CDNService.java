@@ -60,6 +60,7 @@ public class CDNService {
             String awsCdnFilePath = awsModel.getUpload().getCdn_fpath() + awsModel.getUpload().getFile().getName();
             log.info(awsCdnFilePath);
             s3Client.putObject(pathModel.getBucketName(), awsCdnFilePath, awsModel.getUpload().getFile());
+            s3Client.shutdown();
             return true;
         } catch (AmazonServiceException e) {
             e.printStackTrace();

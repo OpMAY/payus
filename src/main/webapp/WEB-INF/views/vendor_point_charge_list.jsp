@@ -148,8 +148,8 @@
                      style="margin-bottom: 20px; flex-direction: row; align-items: center">
                     <div class="row" style="margin-bottom: 1rem;justify-content: right">
                         <div class="col-12 col-xl-9 col-lg-12 col-md-12 col-sm-12" style="flex-direction: column">
-                            <span class="mypoint">나의 포인트 <strong
-                                    style="font-size: 2rem; color: #6D29D0">99,999,999P</strong></span>
+                            <span class="mypoint">나의 포인트 <strong id="point_strong"
+                                                                 style="font-size: 2rem; color: #6D29D0"></strong></span>
                             <span>페이어스 포인트가 10,000P 이하인 경우 앱에 상점이 노출되지 않습니다.</span>
                         </div>
                         <div class="col-12 col-xl-3 col-lg-4 col-md-4 col-sm-4"
@@ -171,87 +171,52 @@
                                 <thead>
                                 <tr>
                                     <th style="width: 5%">번호</th>
-                                    <th style="width: 20%">포인트 충전 요청 금액</th>
-                                    <th style="width: 20%">충전 후 내 포인트</th>
-                                    <th style="width: 10%">신청 일자</th>
-                                    <th style="width: 10%">처리 일자</th>
+                                    <th style="width: 30%">포인트 충전 요청 금액</th>
+                                    <th style="width: 15%">신청 일자</th>
+                                    <th style="width: 15%">처리 일자</th>
                                     <th style="width: 15%">상태</th>
                                     <th style="width: 15%">취소 요청</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr charge="1">
-                                    <td>1</td>
-                                    <td>23,000원</td>
-                                    <td>
-                                        73,000원
-                                    </td>
-                                    <td>
-                                        2021.11.23
-                                    </td>
-                                    <td>2021.11.28</td>
-                                    <td>미승인
-                                        <button type="button" style="display: block; margin-top: 10px"
-                                                class="btn btn-payus-table">
+                                <c:forEach var="i" begin="1" end="${charge.size()}">
+                                    <tr charge="${charge[i-1].charge_no}">
+                                        <td>${i}</td>
+                                        <td>${charge[i-1].point}원</td>
+                                        <td>${charge[i-1].reg_date}</td>
+                                        <td><c:choose><c:when
+                                                test="${charge[i-1].revise_date == null}">관리자가 <br>확인 중 입니다.</c:when><c:when
+                                                test="${charge[i-1].revise_date != null}">${charge[i-1].revise_date}</c:when></c:choose></td>
+                                        <td><c:choose><c:when test="${charge[i-1].status == 1}">요청됨</c:when><c:when
+                                                test="${charge[i-1].status == 2}">승인</c:when><c:when
+                                                test="${charge[i-1].status == 3}">미승인<button type="button" style="display: block; margin-top: 10px"
+                                            class="btn btn-payus-table">
                                             반려 사유
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            취소 요청
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr charge="2">
-                                    <td>2</td>
-                                    <td>23,000원</td>
-                                    <td>
-                                        73,000원
-                                    </td>
-                                    <td>
-                                        2021.11.23
-                                    </td>
-                                    <td>2021.11.28</td>
-                                    <td>승인
-                                    </td>
-                                    <td>
-                                        충전 완료 후<br>취소 요청 불가
-                                    </td>
-                                </tr>
-                                <tr charge="3">
-                                    <td>3</td>
-                                    <td>23,000원</td>
-                                    <td>
-                                        73,000원
-                                    </td>
-                                    <td>
-                                        2021.11.23
-                                    </td>
-                                    <td>관리자가 <br>확인 중 입니다.</td>
-                                    <td>요청
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-payus-table-report">
-                                            취소 요청
-                                        </button>
-                                    </td>
-                                </tr>
+                                            </button></c:when><c:when
+                                                test="${charge[i-1].status == 4}">취소 요청됨</c:when><c:when
+                                                test="${charge[i-1].status == 5}">취소됨</c:when></c:choose></td>
+                                        <td><c:choose><c:when test="${charge[i-1].status == 1}">
+                                            <button type="button" class="btn btn-payus-table-report">
+                                                취소 요청
+                                            </button>
+                                        </c:when><c:when
+                                                test="${charge[i-1].status == 2}">충전 완료 후<br>취소 요청 불가</c:when><c:when
+                                                test="${charge[i-1].status == 3}">
+                                            <button type="button" class="btn btn-payus-table-report">
+                                                취소 요청
+                                            </button>
+                                        </c:when><c:when test="${charge[i-1].status == 4}">
+                                            <button type="button" class="btn btn-payus-table-report reason">
+                                                취소 요청 확인
+                                            </button>
+                                        </c:when><c:when test="${charge[i-1].status == 5}">취소 완료 후<br>취소 요청 불가</c:when></c:choose>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                             <%--  TODO 전체 리뷰 갯수로 페이지네이션 리뷰 페이지당 10개씩   --%>
                             <div class="pagination" id="charge-table-pagination">
-                                <a href="#">&laquo;</a>
-                                <a data-order="1" style="cursor: pointer" class="active">1</a>
-                                <a data-order="2" style="cursor: pointer">2</a>
-                                <a data-order="3" style="cursor: pointer">3</a>
-                                <a data-order="4" style="cursor: pointer">4</a>
-                                <a data-order="5" style="cursor: pointer">5</a>
-                                <a data-order="6" style="cursor: pointer">6</a>
-                                <a data-order="7" style="cursor: pointer">7</a>
-                                <a data-order="8" style="cursor: pointer">8</a>
-                                <a data-order="9" style="cursor: pointer">9</a>
-                                <a data-order="10" style="cursor: pointer">10</a>
-                                <a href="#">&raquo;</a>
                             </div>
                         </div>
                     </div>
@@ -260,11 +225,11 @@
         </div>
     </div>
 </div>
+<script src="/js/common.js"></script>
 <script src="/js/date-formatter.js"></script>
+<script src="/js/payus-pagination.js"></script>
 <script>
-
-
-    $(".pagination a").on("click", function () {
+    $(".pagination").on("click", 'a', function () {
         let data_order = $(this).attr('data-order');
         console.log(data_order);
         let paginationDiv = $("#charge-table-pagination");
@@ -276,8 +241,15 @@
         }
     });
 
+    function comma(str) {
+        str = String(str);
+        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+    }
+
     $(document).ready(function () {
         listenResize();
+        tablePagination(${chargeNum}, 'charge-table-pagination');
+        $('#point_strong').text(comma(${point}) + 'P');
     });
 
     function listenResize() {
@@ -312,7 +284,7 @@
     $(".btn-payus-table-report").on("click", function () {
         let charge_no = $(this).parent().parent().attr('charge');
         console.log(charge_no);
-        // TODO 해당 room_no로 방 삭제
+        // TODO 해당 charge_no로 충전 정보 불러옴 AJAX
 
         cancelRequestModal.addClass('show');
 
@@ -346,12 +318,20 @@
             return false;
         }
     });
+
     $(document).ready(function () {
         let table = $(".payus-table");
         let body = table.children('tbody');
+        console.log(body.children().length);
         for (let i = 0; i < body.children().length; i++) {
-            let originalRegDate = body.children('tr:eq(' + i + ')').children('td:eq(5)').text();
-            body.children('tr:eq(' + i + ')').children('td:eq(5)').text(SplitDateFunction(originalRegDate));
+            let originalPrice = body.children('tr:eq(' + i + ')').children('td:eq(1)').text();
+            body.children('tr:eq(' + i + ')').children('td:eq(1)').text(comma(originalPrice));
+            let originalRegDate = body.children('tr:eq(' + i + ')').children('td:eq(2)').text();
+            let originalReviseDate = body.children('tr:eq(' + i + ')').children('td:eq(3)').text();
+            console.log(i + "번째 index - OriginRegDate : " + originalRegDate + ', OriginReviseDate : ' + originalReviseDate);
+            body.children('tr:eq(' + i + ')').children('td:eq(2)').text(SplitDateFunction(originalRegDate));
+            if (originalReviseDate !== '관리자가 확인 중 입니다.')
+                body.children('tr:eq(' + i + ')').children('td:eq(3)').text(SplitDateFunction(originalReviseDate));
         }
     });
 
