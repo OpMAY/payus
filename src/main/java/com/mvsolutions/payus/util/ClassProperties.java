@@ -1,13 +1,13 @@
 package com.mvsolutions.payus.util;
 
 import com.mvsolutions.payus.model.ColumnInfo;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 
 import java.lang.reflect.Field;
 import java.util.*;
 
 
-@Log4j
+@Log4j2
 public class ClassProperties {
     /**
      주석 생성 날짜 - 2021-09-14, 화, 11:11

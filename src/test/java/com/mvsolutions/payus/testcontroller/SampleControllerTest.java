@@ -1,7 +1,7 @@
 package com.mvsolutions.payus.testcontroller;
 
 import com.mvsolutions.payus.restcontroller.SampleController;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -53,7 +53,7 @@ import org.springframework.web.context.WebApplicationContext;
  * <p>
  * 초기에는 post 제외하고 get
  */
-@Log4j
+@Log4j2
 @WebMvcTest(controllers = SampleController.class)
 @AutoConfigureMockMvc
 class SampleControllerTest {

@@ -1,6 +1,6 @@
 package com.mvsolutions.payus.util;
 
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-@Log4j
+@Log4j2
 @Service
 public class KakaoLocationService {
     /**

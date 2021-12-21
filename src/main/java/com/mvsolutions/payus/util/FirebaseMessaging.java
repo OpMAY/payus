@@ -7,13 +7,13 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import com.google.firebase.messaging.TopicManagementResponse;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
 import java.util.List;
 
-@Log4j
+@Log4j2
 @Service
 public class FirebaseMessaging {
     //초기화

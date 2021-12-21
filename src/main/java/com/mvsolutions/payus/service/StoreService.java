@@ -18,7 +18,7 @@ import com.mvsolutions.payus.response.StringRes;
 import com.mvsolutions.payus.response.payus.StoreType;
 import com.mvsolutions.payus.util.KakaoLocationService;
 import com.mvsolutions.payus.util.Time;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.session.SqlSession;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
-@Log4j
+@Log4j2
 @Service
 public class StoreService {
     @Autowired

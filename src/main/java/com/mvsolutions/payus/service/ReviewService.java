@@ -21,7 +21,7 @@ import com.mvsolutions.payus.response.payus.notification.NotificationUserType;
 import com.mvsolutions.payus.response.payus.notification.NotificationVendorType;
 import com.mvsolutions.payus.response.payus.user.ReviewListType;
 import com.mvsolutions.payus.util.Time;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.session.SqlSession;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Log4j
+@Log4j2
 @Service
 public class ReviewService {
     @Autowired

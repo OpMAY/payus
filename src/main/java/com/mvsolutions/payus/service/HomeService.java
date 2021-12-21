@@ -16,7 +16,7 @@ import com.mvsolutions.payus.response.payus.StoreType;
 import com.mvsolutions.payus.util.ClassProperties;
 import com.mvsolutions.payus.util.DemoStoreAddressApi;
 import com.mvsolutions.payus.util.Time;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.ibatis.session.SqlSession;
@@ -31,7 +31,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-@Log4j
+@Log4j2
 @Service
 public class HomeService {
 

@@ -15,7 +15,7 @@ import com.mvsolutions.payus.service.HomeService;
 import com.google.gson.Gson;
 import com.mvsolutions.payus.util.*;
 import lombok.*;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.json.JSONException;
@@ -45,7 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@Log4j
+@Log4j2
 public class HomeController {
 
     private ModelAndView VIEW;

@@ -3,7 +3,7 @@ package com.mvsolutions.payus.config;
 import com.mvsolutions.payus.interceptor.MvcInterceptor;
 import com.mvsolutions.payus.interceptor.RestInterceptor;
 import com.mvsolutions.payus.interceptor.VendorAdminInterceptor;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-@Log4j
+@Log4j2
 public class WebConfiguration implements WebMvcConfigurer {
 
     private List<String> rest_interceptor_excluded_urls;
