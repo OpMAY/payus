@@ -320,5 +320,15 @@ public class VendorDao {
         return mapper.getChargeListNumberByDataType(vendor_no, data_type);
     }
 
+    public List<VendorAdminPointAccumulateList> getVendorPointAccumulateListByPaging(VendorPagingRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorPointAccumulateListByPaging(request);
+    }
+
+    public int getAccumulateListNumberByDataType(int vendor_no, int data_type) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getAccumulateListNumberByDataType(vendor_no, data_type);
+    }
+
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
 }

@@ -17,7 +17,7 @@ import java.io.FileNotFoundException;
 import java.nio.file.AccessDeniedException;
 
 @Log4j2
-@ControllerAdvice(basePackages = "com.mvsolutions.payus.controller.mvc")
+@ControllerAdvice(basePackages = "com.mvsolutions.payus.controller")
 public class GlobalExceptionAdvice {
 
     private ModelAndView modelAndView;

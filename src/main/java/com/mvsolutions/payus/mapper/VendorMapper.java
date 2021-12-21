@@ -146,4 +146,8 @@ public interface VendorMapper {
     List<VendorAdminPointChargeList> getVendorPointChargeListByPaging(VendorPagingRequest request);
 
     int getChargeListNumberByDataType(int vendor_no, int data_type);
+
+    List<VendorAdminPointAccumulateList> getVendorPointAccumulateListByPaging(VendorPagingRequest request);
+
+    int getAccumulateListNumberByDataType(int vendor_no, int data_type);
 }

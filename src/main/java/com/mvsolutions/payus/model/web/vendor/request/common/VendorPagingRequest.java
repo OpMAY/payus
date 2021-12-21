@@ -9,5 +9,4 @@ public class VendorPagingRequest {
     private boolean select_change;
     private int page;
     private int start_index;
-    private int end_index;
 }

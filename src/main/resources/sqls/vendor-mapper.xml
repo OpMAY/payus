@@ -201,7 +201,7 @@
             </when>
         </choose>
         ORDER BY review.reg_date DESC
-        LIMIT #{start_index}, #{end_index}
+        LIMIT #{start_index}, 10
     </select>
     <select id="getVendorStoreGoodsList" resultType="StoreGoods" resultMap="StoreGoods">
         SET @StoreNo = (select store_no
@@ -475,7 +475,7 @@
         WHERE store_no = @StoreNo
           AND status != 4
     </select>
-    <select id="getVendorPointAccumulateListByPaging" resultType="VendorAdminPointChargeList">
+    <select id="getVendorPointChargeListByPaging" resultType="VendorAdminPointChargeList">
         select charge_no, point, reg_date, revise_date, status
         from point_charge
         WHERE vendor_no = #{vendor_no}
@@ -486,7 +486,7 @@
             <when test="data_type == 5">AND status = 5</when>
         </choose>
         ORDER BY reg_date DESC
-        LIMIT #{start_index}, #{end_index}
+        LIMIT #{start_index}, 10
     </select>
     <select id="getChargeListNumberByDataType" resultType="int">
         select COUNT(*)
@@ -497,6 +497,50 @@
             <when test="data_type == 3">AND status = 3</when>
             <when test="data_type == 4">AND (status = 1 OR status = 4)</when>
             <when test="data_type == 5">AND status = 5</when>
+        </choose>
+    </select>
+    <select id="getVendorPointAccumulateListByPaging" resultType="VendorAdminPointAccumulateList">
+        SET @StoreNo = (select store_no
+        from store
+        WHERE vendor_no = #{vendor_no});
+        select accumulate_no,
+        user.nickname as user_name,
+        price,
+        payback_rate,
+        point_accumulate.point,
+        point_accumulate.reg_date,
+        status,
+        review_status,
+        IF(answer_date is NULL, false, true) as is_answered
+        from point_accumulate,
+        user
+        WHERE point_accumulate.store_no = @StoreNo
+        AND user.user_no = point_accumulate.user_no
+        <choose>
+            <when test="data_type == 2">AND status = 1</when>
+            <when test="data_type == 3">AND status = 2</when>
+            <when test="data_type == 4">AND status = 3</when>
+            <when test="data_type == 5">AND status = 4</when>
+            <when test="data_type == 6">AND status = 5</when>
+            <when test="data_type == 7">AND review_status = true AND answer_date is null</when>
+        </choose>
+        ORDER BY point_accumulate.reg_date DESC
+        LIMIT #{start_index}, 10
+    </select>
+    <select id="getAccumulateListNumberByDataType" resultType="int">
+        SET @StoreNo = (select store_no
+        from store
+        WHERE vendor_no = #{vendor_no});
+        select COUNT(*)
+        from point_accumulate
+        WHERE store_no = @StoreNo
+        <choose>
+            <when test="data_type == 2">AND status = 1</when>
+            <when test="data_type == 3">AND status = 2</when>
+            <when test="data_type == 4">AND status = 3</when>
+            <when test="data_type == 5">AND status = 4</when>
+            <when test="data_type == 6">AND status = 5</when>
+            <when test="data_type == 7">AND review_status = true AND answer_date is null</when>
         </choose>
     </select>
 </mapper>

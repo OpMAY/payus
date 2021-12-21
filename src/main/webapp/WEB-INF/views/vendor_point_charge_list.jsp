@@ -244,19 +244,19 @@
         if (data_order === '-1') {
             if (tablePaginationChange(totalChargeNum, paginationDivId, false)) {
                 let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
-                dataCallFunction(firstPageAfterChange, data_type);
+                dataCallFunction(firstPageAfterChange, data_type, false);
             }
         } else if (data_order === '0') {
             if (tablePaginationChange(totalChargeNum, paginationDivId, true)) {
                 let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
-                dataCallFunction(firstPageAfterChange, data_type);
+                dataCallFunction(firstPageAfterChange, data_type, false);
             }
         } else {
             console.log("else");
             if (active_page !== data_order) {
                 paginationDiv.children('.active').removeClass('active');
                 selectedPage.addClass('active');
-                dataCallFunction(data_order, data_type);
+                dataCallFunction(data_order, data_type, false);
             }
         }
     });

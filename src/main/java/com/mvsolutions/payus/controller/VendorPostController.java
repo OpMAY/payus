@@ -19,6 +19,7 @@ import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorRegisterEmailResponse;
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.VendorStoreManagementGoodsPagingResponse;
+import com.mvsolutions.payus.model.web.vendor.response.point.VendorStoreManagementPointAccumulatePagingResponse;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorStoreManagementPointChargePagingResponse;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewDetail;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
@@ -201,7 +202,6 @@ public class VendorPostController {
         VendorPagingRequest request = new Gson().fromJson(body, VendorPagingRequest.class);
         request.setVendor_no(vendor_no);
         request.setStart_index((request.getPage() - 1) * 10);
-        request.setEnd_index(request.getPage() * 10);
         return vendorAdminService.getReviewListCallDataByPagination(request);
     }
 
@@ -291,7 +291,6 @@ public class VendorPostController {
         VendorPagingRequest request = new Gson().fromJson(body, VendorPagingRequest.class);
         request.setVendor_no(vendor_no);
         request.setStart_index((request.getPage() - 1) * 10);
-        request.setEnd_index(request.getPage() * 10);
         return vendorAdminService.getGoodsListDataCallByPagination(request);
     }
 
@@ -302,7 +301,16 @@ public class VendorPostController {
         VendorPagingRequest request = new Gson().fromJson(body, VendorPagingRequest.class);
         request.setVendor_no(vendor_no);
         request.setStart_index((request.getPage() - 1) * 10);
-        request.setEnd_index(request.getPage() * 10);
         return vendorAdminService.getPointChargeListDataCallByPagination(request);
+    }
+
+    @RequestMapping("/manage/point/accumulate/paging")
+    public VendorStoreManagementPointAccumulatePagingResponse VendorPointAccumulateCallByPagination(HttpSession session,
+                                                                                                    @RequestBody String body) {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorPagingRequest request = new Gson().fromJson(body, VendorPagingRequest.class);
+        request.setVendor_no(vendor_no);
+        request.setStart_index((request.getPage() - 1) * 10);
+        return vendorAdminService.getPointAccumulateListDataCallByPagination(request);
     }
 }

@@ -33,6 +33,7 @@ import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusine
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointAccumulateList;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointChargeList;
+import com.mvsolutions.payus.model.web.vendor.response.point.VendorStoreManagementPointAccumulatePagingResponse;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorStoreManagementPointChargePagingResponse;
 import com.mvsolutions.payus.model.web.vendor.response.sales.VendorAdminSalesList;
 import com.mvsolutions.payus.model.web.vendor.response.sales.VendorSalesPageSummary;
@@ -498,6 +499,16 @@ public class VendorAdminService {
         List<VendorAdminPointChargeList> chargeList = vendorDao.getVendorPointChargeListByPaging(request);
         response.setChargeList(chargeList);
         response.setCharge_num(vendorDao.getChargeListNumberByDataType(request.getVendor_no(), request.getData_type()));
+        return response;
+    }
+
+    @Transactional(readOnly = true)
+    public VendorStoreManagementPointAccumulatePagingResponse getPointAccumulateListDataCallByPagination(VendorPagingRequest request) {
+        vendorDao.setSqlSession(sqlSession);
+        VendorStoreManagementPointAccumulatePagingResponse response = new VendorStoreManagementPointAccumulatePagingResponse();
+        List<VendorAdminPointAccumulateList> accumulateList = vendorDao.getVendorPointAccumulateListByPaging(request);
+        response.setAccumulateList(accumulateList);
+        response.setAccumulate_num(vendorDao.getAccumulateListNumberByDataType(request.getVendor_no(), request.getData_type()));
         return response;
     }
 }

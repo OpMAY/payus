@@ -273,17 +273,20 @@
                     <div class="row" style="margin-bottom: 1rem;justify-content: right">
                         <div class="col-12 col-xl-9 col-lg-12 col-md-12 col-sm-12" style="flex-direction: column">
                             <span class="mypoint">나의 포인트 <strong id="point_strong"
-                                    style="font-size: 2rem; color: #6D29D0"></strong></span>
+                                                                 style="font-size: 2rem; color: #6D29D0"></strong></span>
                             <span>페이어스 포인트가 10,000P 이하인 경우 앱에 상점이 노출되지 않습니다.</span>
                         </div>
                         <div class="col-12 col-xl-3 col-lg-4 col-md-4 col-sm-4"
                              style="padding-top: 2rem; justify-content: right">
                             <select class="payus-select" id="review-data-type-select"
-                                    style="color: black;" onchange="alert('바뀜')">
+                                    style="color: black;">
                                 <option selected value="1">전체</option>
-                                <option value="2">승인</option>
-                                <option value="3">미승인</option>
-                                <option value="4">요청</option>
+                                <option value="2">적립 예정</option>
+                                <option value="3">적립 완료</option>
+                                <option value="4">취소 요청</option>
+                                <option value="5">취소됨</option>
+                                <option value="6">취소 반려됨</option>
+                                <option value="7">답변 미작성</option>
                             </select>
                         </div>
                     </div>
@@ -304,7 +307,7 @@
                                     <th style="width: 15%">리뷰 상태</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="pagination_layout">
                                 <c:forEach var="i" begin="1" end="${accumulate.size()}">
                                     <tr accumulate="${accumulate[i-1].accumulate_no}">
                                         <td>${i}</td>
@@ -358,22 +361,123 @@
 <script src="/js/date-formatter.js"></script>
 <script src="/js/payus-pagination.js"></script>
 <script>
-
+    let paginationDivId = 'accumulate-table-pagination';
+    let paginationDiv = $('#' + paginationDivId);
+    let totalAccumulateNum = ${accumulateNum};
     $(".pagination").on("click", 'a', function () {
-        let data_order = $(this).attr('data-order');
+        let selectedPage = $(this);
+        let data_order = selectedPage.attr('data-order');
+        let data_type = $('.payus-select option:selected').val();
         console.log(data_order);
-        let paginationDiv = $("#accumulate-table-pagination");
         let active_page = paginationDiv.children('.active').attr('data-order');
-        if (active_page !== data_order) {
-            // TODO 페이지 별 데이터 AJAX
-            paginationDiv.children('.active').removeClass('active');
-            $(this).addClass('active');
+        if (data_order === '-1') {
+            if (tablePaginationChange(totalAccumulateNum, paginationDivId, false)) {
+                let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
+                dataCallFunction(firstPageAfterChange, data_type);
+            }
+        } else if (data_order === '0') {
+            if (tablePaginationChange(totalAccumulateNum, paginationDivId, true)) {
+                let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
+                dataCallFunction(firstPageAfterChange, data_type);
+            }
+        } else {
+            console.log("else");
+            if (active_page !== data_order) {
+                paginationDiv.children('.active').removeClass('active');
+                selectedPage.addClass('active');
+                dataCallFunction(data_order, data_type);
+            }
         }
+    });
+
+    function dataCallFunction(page, data_type, selectChange) {
+        let data = {"page": page, "data_type": data_type, "select_change": selectChange};
+        let selectedPageIndex = (page * 10) - 10;
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/point/accumulate/paging',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            $("#pagination_layout *").remove();
+            console.log(result);
+            console.log("length : " + result.accumulateList.length);
+            for (let i = 0; i < result.accumulateList.length; i++) {
+                let data = result.accumulateList[i];
+                let thisIndex = selectedPageIndex + i + 1;
+                let statusString;
+                let reviewString;
+                switch (data.status) {
+                    case 1 :
+                        statusString = '적립 예정<button type="button" style="display: block; margin-top: 10px"\n' +
+                            '                                            class="btn btn-payus-table cancel-request">\n' +
+                            '                                            취소 요청\n' +
+                            '                                            </button>';
+                        break;
+                    case 2 :
+                        statusString = '적립 완료';
+                        break;
+                    case 3 :
+                        statusString = '취소 요청됨<button type="button" style="display: block; margin-top: 10px"\n' +
+                            '                                            class="btn btn-payus-table cancel-request">\n' +
+                            '                                            요청 취소\n' +
+                            '                                            </button>';
+                        break;
+                    case 4 :
+                        statusString = '적립 취소됨';
+                        break;
+                    case 5 :
+                        statusString = '적립 취소 반려<button type="button" style="display: block; margin-top: 10px"\n' +
+                            '                                            class="btn btn-payus-table reject-reason">\n' +
+                            '                                            반려 사유\n' +
+                            '                                            </button>';
+                        break;
+                }
+                switch (data.review_status) {
+                    case 0:
+                    case 2:
+                        reviewString = '미작성';
+                        break;
+                    case 1:
+                        reviewString = '작성';
+                        if(data.is_answered) {
+                            reviewString = reviewString + '<button type="button" style="display: block; margin-top: 10px"\n' +
+                                '                                                    class="btn btn-payus-table answer-review">리뷰 보기\n' +
+                                '                                            </button>';
+                        } else {
+                            reviewString = reviewString + '<button type="button" style="display: block; margin-top: 10px"\n' +
+                                '                                                    class="btn btn-payus-table answered-review">답변 하기\n' +
+                                '                                            </button>';
+                        }
+                }
+                $('#pagination_layout').append('<tr accumulate="' + data.accumulate_no + '">\n' +
+                    '                                        <td>' + thisIndex + '</td>\n' +
+                    '                                        <td>' + data.user_name + '</td>\n' +
+                    '                                        <td class="td-comma">' + comma(data.price) + '원</td>\n' +
+                    '                                        <td>' + data.payback_rate + '%</td>\n' +
+                    '                                        <td class="td-comma">' + comma(data.point) + 'P</td>\n' +
+                    '                                        <td class="td-date">' + SplitDateFunction(data.reg_date) + '</td>\n' +
+                    '                                        <td>' + statusString + '</td>\n' +
+                    '                                        <td>' + reviewString + '</td>\n' +
+                    '                                    </tr>');
+                totalAccumulateNum = result.accumulate_num;
+                if (selectChange)
+                    tablePagination(result.accumulate_num, paginationDivId);
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
+    }
+
+    $('.payus-select').on('change', function () {
+        let selectedText = $('.payus-select option:selected').val();
+        dataCallFunction(1, selectedText, true);
     });
 
     $(document).ready(function () {
         listenResize();
-        tablePagination(${accumulateNum}, 'accumulate-table-pagination');
+        tablePagination(${accumulateNum}, paginationDivId);
         $('#point_strong').text(comma(${point}) + 'P');
     });
 </script>
