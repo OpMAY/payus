@@ -123,7 +123,7 @@ public class FileUploadUtility {
             ImageIO.write(newImage, format, new File(resize_target_path));
             return resize_target_path;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("", e);
             throw new RuntimeException();
         }
     }

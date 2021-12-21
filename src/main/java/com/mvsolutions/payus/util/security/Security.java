@@ -45,7 +45,7 @@ public class Security {
             md.update(msg.getBytes());
             return bytesToHex(md.digest());
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            log.error("", e);
             throw new RuntimeException(e);
         }
     }

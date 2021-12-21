@@ -154,23 +154,7 @@
         $('.sales').each(function () {
             $(this).text(comma($(this).text()));
         });
-        $('.td-comma').each(function () {
-            $(this).text(comma($(this).text()));
-        });
-        $('.td-date').each(function () {
-            $(this).text(SplitDateFunction($(this).text()));
-        });
     });
-
-    function listenResize() {
-        let screenHeight = $(window).height();
-        console.log(screenHeight);
-
-        let tableWidth = $(".payus-table").width();
-        console.log("table Width : " + tableWidth);
-        let pagination = $(".pagination");
-        pagination.width(tableWidth);
-    }
 </script>
 <script>
     let body = $(document.body);

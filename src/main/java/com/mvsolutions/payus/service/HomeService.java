@@ -184,7 +184,7 @@ public class HomeService {
                 log.info(value);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("", e);
         }
     }
 }

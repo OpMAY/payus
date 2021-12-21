@@ -13,7 +13,6 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorPasswordResetRe
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest;
 import com.mvsolutions.payus.model.web.vendor.request.common.VendorPagingRequest;
 import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminDeleteGoodsRequest;
-import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminRegisterGoodsRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
@@ -201,9 +200,19 @@ public class VendorDao {
         return mapper.getNoticeList();
     }
 
+    public int getNoticeNum() {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getNoticeNum();
+    }
+
     public List<VendorAdminFAQList> getFAQList() {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         return mapper.getFAQList();
+    }
+
+    public int getFAQNum(int type) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getFAQNum(type);
     }
 
     public boolean validateVendorPassword(int vendor_no, String password) {
@@ -299,6 +308,16 @@ public class VendorDao {
     public VendorSalesPageSummary getVendorSalesSummary(int vendor_no) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         return mapper.getVendorSalesSummary(vendor_no);
+    }
+
+    public List<VendorAdminPointChargeList> getVendorPointChargeListByPaging(VendorPagingRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorPointChargeListByPaging(request);
+    }
+
+    public int getChargeListNumberByDataType(int vendor_no, int data_type) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getChargeListNumberByDataType(vendor_no, data_type);
     }
 
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);

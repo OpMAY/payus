@@ -13,6 +13,7 @@ import com.mvsolutions.payus.model.web.vendor.response.sales.VendorSalesPageSumm
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreDetailInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreInfo;
+import com.mvsolutions.payus.response.payus.usercustomcenter.FAQType;
 import com.mvsolutions.payus.response.payus.vendor.GoodsType;
 import com.mvsolutions.payus.service.VendorAdminService;
 import lombok.extern.log4j.Log4j2;
@@ -195,6 +196,7 @@ public class AdminVendorController {
         StoreGoods goods = vendorAdminService.getVendorStoreGoodsList(vendor_no, GoodsType.ROOMS);
         VIEW.addObject("rooms", goods.getRoom_options());
         VIEW.addObject("goodsType", GoodsType.ROOMS);
+        VIEW.addObject("roomNum", goods.getRoom_options().size());
         return VIEW;
     }
 
@@ -281,7 +283,9 @@ public class AdminVendorController {
     public ModelAndView VendorNoticePage(HttpServletRequest request) {
         VIEW = new ModelAndView("vendor_notice");
         List<VendorAdminNoticeList> noticeList = vendorAdminService.getNoticeList();
+        int noticeNum = vendorAdminService.getNoticeNum();
         VIEW.addObject("notice", noticeList);
+        VIEW.addObject("noticeNum", noticeNum);
         return VIEW;
     }
 
@@ -289,7 +293,9 @@ public class AdminVendorController {
     public ModelAndView VendorFAQPage(HttpServletRequest request) {
         VIEW = new ModelAndView("vendor_faq");
         List<VendorAdminFAQList> faqList = vendorAdminService.getFAQList();
+        int faqNum = vendorAdminService.getFAQNum(FAQType.ALL);
         VIEW.addObject("faq", faqList);
+        VIEW.addObject("faqNum", faqNum);
         return VIEW;
     }
 

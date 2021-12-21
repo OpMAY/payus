@@ -48,16 +48,16 @@
                 </div>
                 <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 col-md-10 offset-md-1 col-10 offset-1"
                      style="margin-bottom: 20px; flex-direction: row; align-items: center">
-                    <div class="row" style="justify-content: right; margin-bottom: 1rem;">
-                        <div class="col-3">
-                            <select class="payus-select" id="review-data-type-select"
-                                    style="color: black;" onchange="alert('바뀜')">
-                                <option selected value="1">전체</option>
-                                <option value="2">오픈</option>
-                                <option value="3">준비중</option>
-                            </select>
-                        </div>
-                    </div>
+                    <%--                    <div class="row" style="justify-content: right; margin-bottom: 1rem;">--%>
+                    <%--                        <div class="col-3">--%>
+                    <%--                            <select class="payus-select" id="review-data-type-select"--%>
+                    <%--                                    style="color: black;" onchange="alert('바뀜')">--%>
+                    <%--                                <option selected value="1">전체</option>--%>
+                    <%--                                <option value="2">오픈</option>--%>
+                    <%--                                <option value="3">준비중</option>--%>
+                    <%--                            </select>--%>
+                    <%--                        </div>--%>
+                    <%--                    </div>--%>
                     <div class="row" id="table-div" style="overflow-x: auto;">
                         <%--      TODO 데이터 리스트로 연동                  --%>
                         <div class="col-12" id="table-col"
@@ -75,44 +75,46 @@
                                     <th style="width: 15%">삭제</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="pagination_layout">
                                 <c:forEach var="i" begin="1" end="${rooms.size()}">
-                                    <tr goods="${rooms[i-1].room_no}">
-                                        <td>${i}</td>
-                                        <td><img class="clickable_img"
-                                                 src="https://payus.s3.ap-northeast-2.amazonaws.com/${rooms[i-1].room_img}"
-                                                 alt style="width: 100%; object-fit: fill"></td>
-                                        <td>
-                                            <div class="overflow">
-                                                <div class="overflow-space">
-                                                    <div class="overflow-text"
-                                                         title="${rooms[i-1].name}">${rooms[i-1].name}</div>
+                                    <c:if test="${i <= 10}">
+                                        <tr goods="${rooms[i-1].room_no}">
+                                            <td>${i}</td>
+                                            <td><img class="clickable_img"
+                                                     src="https://payus.s3.ap-northeast-2.amazonaws.com/${rooms[i-1].room_img}"
+                                                     alt style="width: 100%; object-fit: fill"></td>
+                                            <td>
+                                                <div class="overflow">
+                                                    <div class="overflow-space">
+                                                        <div class="overflow-text"
+                                                             title="${rooms[i-1].name}">${rooms[i-1].name}</div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="overflow">
-                                                <div class="overflow-space">
-                                                    <div class="overflow-text"
-                                                         title="${rooms[i-1].room_explain}">${rooms[i-1].room_explain}</div>
+                                            </td>
+                                            <td>
+                                                <div class="overflow">
+                                                    <div class="overflow-space">
+                                                        <div class="overflow-text"
+                                                             title="${rooms[i-1].room_explain}">${rooms[i-1].room_explain}</div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>${rooms[i-1].price}</td>
-                                        <td>${rooms[i-1].reg_date}</td>
-                                        <td>
-                                                <%--      TODO 수정하기 페이지 이동              --%>
-                                            <button type="button" class="btn btn-payus-table">
-                                                수정
-                                            </button>
-                                        </td>
-                                        <td>
-                                                <%--      TODO 삭제 AJAX                      --%>
-                                            <button type="button" class="btn btn-payus-table-report">
-                                                삭제
-                                            </button>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            <td class="td-comma">${rooms[i-1].price}원</td>
+                                            <td class="td-date">${rooms[i-1].reg_date}</td>
+                                            <td>
+                                                    <%--      TODO 수정하기 페이지 이동              --%>
+                                                <button type="button" class="btn btn-payus-table">
+                                                    수정
+                                                </button>
+                                            </td>
+                                            <td>
+                                                    <%--      TODO 삭제 AJAX                      --%>
+                                                <button type="button" class="btn btn-payus-table-report">
+                                                    삭제
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </c:if>
                                 </c:forEach>
                                 </tbody>
                             </table>
@@ -126,17 +128,21 @@
         </div>
     </div>
 </div>
+<script src="/js/common.js"></script>
 <script src="/js/date-formatter.js"></script>
 <script src="/js/payus-pagination.js"></script>
 <script>
     let totalGoodsNum = ${rooms.size()};
+    const paginationDivId = 'goods-table-pagination';
     let GoodsType = ${goodsType};
-    $(".btn-payus-table-report").on("click", function () {
+    let body = $(document.body);
+
+    $(body).on("click", ".btn-payus-table-report", function () {
         let goods_no = $(this).parent().parent().attr('goods');
         console.log(goods_no);
         let goodsName = $(this).parent().parent().children(':eq(2)').children().children().children('.overflow-text').text();
         if (confirm('상품 \'' + goodsName + '\'을 삭제합니다.\n정말 삭제하시겠습니까?')) {
-            let data = {"room_no": goods_no, "goods_name" : goodsName, "goods_type" : GoodsType};
+            let data = {"room_no": goods_no, "goods_name": goodsName, "goods_type": GoodsType};
             $.ajax({
                 type: 'POST',
                 url: '/vendor/manage/goods/delete',
@@ -144,7 +150,7 @@
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(data)
             }).done(function (result) {
-                if(result){
+                if (result) {
                     alert("삭제되었습니다.");
                     window.location.reload();
                 }
@@ -156,58 +162,102 @@
         }
     });
 
-
-    $(".pagination a").on("click", function () {
-        let data_order = $(this).attr('data-order');
-        console.log(data_order);
-        let paginationDiv = $("#review-table-pagination");
-        let active_page = paginationDiv.children('.active').attr('data-order');
-        if (active_page !== data_order) {
-            // TODO 페이지 별 데이터 AJAX
-            paginationDiv.children('.active').removeClass('active');
-            $(this).addClass('active');
-        }
-    });
-
-    $(document).ready(function () {
-        listenResize();
-    });
-
-    function listenResize() {
-        let screenHeight = $(window).height();
-        console.log(screenHeight);
-
-        let tableWidth = $(".payus-table").width();
-        console.log("table Width : " + tableWidth);
-        let pagination = $(".pagination");
-        pagination.width(tableWidth);
-    }
-</script>
-<script>
-    $(".btn-payus-table").on("click", function () {
+    $(body).on("click", ".btn-payus-table", function () {
         let room_no = $(this).parent().parent().attr('goods');
         console.log(room_no);
         window.location.href = "/vendor/manage/goods/edit.do?goods_no=" + room_no;
     });
 
-    $('.clickable_img').on("click", function () {
-        if (confirm('해당 이미지를 보시겠습니까?')) {
-            let imageUrl = $(this).attr("src");
-            window.open(imageUrl);
+    function dataCallFunction(page) {
+        let data = {"page": page};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/goods/list/paging',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            $("#pagination_layout *").remove();
+            let startIndex = (page - 1) * 10;
+            for (let i = startIndex; i < totalGoodsNum; i++) {
+                if(i === startIndex + 10)
+                    break;
+                let thisIndex = i + 1;
+                let data = result.goodsList.room_options[i];
+                $('#pagination_layout').append('<tr goods="' + data.room_no + '">\n' +
+                    '                                        <td>' + thisIndex + '</td>\n' +
+                    '                                        <td><img class="clickable_img"\n' +
+                    '                                                 src="https://payus.s3.ap-northeast-2.amazonaws.com/' + data.room_img + '"\n' +
+                    '                                                 alt style="width: 100%; object-fit: fill"></td>\n' +
+                    '                                        <td>\n' +
+                    '                                            <div class="overflow">\n' +
+                    '                                                <div class="overflow-space">\n' +
+                    '                                                    <div class="overflow-text"\n' +
+                    '                                                         title="' + data.name + '">' + data.name + '</div>\n' +
+                    '                                                </div>\n' +
+                    '                                            </div>\n' +
+                    '                                        </td>\n' +
+                    '                                        <td>\n' +
+                    '                                            <div class="overflow">\n' +
+                    '                                                <div class="overflow-space">\n' +
+                    '                                                    <div class="overflow-text"\n' +
+                    '                                                         title="' + data.room_explain +'">' + data.room_explain +'</div>\n' +
+                    '                                                </div>\n' +
+                    '                                            </div>\n' +
+                    '                                        </td>\n' +
+                    '                                        <td class="td-comma">' + comma(data.price) + '원</td>\n' +
+                    '                                        <td class="td-date">' + SplitDateFunction(data.reg_date) + '</td>\n' +
+                    '                                        <td>\n' +
+                    '                                                <%--      TODO 수정하기 페이지 이동              --%>\n' +
+                    '                                            <button type="button" class="btn btn-payus-table">\n' +
+                    '                                                수정\n' +
+                    '                                            </button>\n' +
+                    '                                        </td>\n' +
+                    '                                        <td>\n' +
+                    '                                                <%--      TODO 삭제 AJAX                      --%>\n' +
+                    '                                            <button type="button" class="btn btn-payus-table-report">\n' +
+                    '                                                삭제\n' +
+                    '                                            </button>\n' +
+                    '                                        </td>\n' +
+                    '                                    </tr>');
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
+    }
+
+    $(".pagination").on("click", 'a', function () {
+        let data_order = $(this).attr('data-order');
+        console.log(data_order);
+        let paginationDiv = $("#goods-table-pagination");
+        let active_page = paginationDiv.children('.active').attr('data-order');
+        if (data_order === '-1') {
+            if (tablePaginationChange(totalGoodsNum, paginationDiv, false)) {
+                let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
+                dataCallFunction(firstPageAfterChange);
+            }
+        } else if (data_order === '0') {
+            if (tablePaginationChange(totalGoodsNum, paginationDiv, false)) {
+                let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
+                dataCallFunction(firstPageAfterChange);
+            }
         } else {
-            return false;
+            if (active_page !== data_order) {
+                paginationDiv.children('.active').removeClass('active');
+                $(this).addClass('active');
+                dataCallFunction(data_order);
+            }
         }
     });
 
     $(document).ready(function () {
-        let table = $(".payus-table");
-        let body = table.children('tbody');
-        tablePagination(totalGoodsNum, 'goods-table-pagination');
-        for (let i = 0; i < body.children().length; i++) {
-            let originalRegDate = body.children('tr:eq(' + i + ')').children('td:eq(5)').text();
-            body.children('tr:eq(' + i + ')').children('td:eq(5)').text(SplitDateFunction(originalRegDate));
-        }
+        listenResize();
+        tablePagination(${roomNum}, 'goods-table-pagination');
     });
+</script>
+<script>
+
+
 </script>
 </body>
 </html>

@@ -27,7 +27,7 @@ public class GlobalExceptionAdvice {
      */
     @ExceptionHandler(JSONException.class)
     protected ModelAndView handleJSONException(JSONException e) {
-        e.printStackTrace();
+        log.error("", e);
         log.info("handleJSONException");
         modelAndView = new ModelAndView("error/error");
         return modelAndView;
@@ -38,7 +38,7 @@ public class GlobalExceptionAdvice {
      */
     @ExceptionHandler(InterruptedException.class)
     protected void handleInterruptedException(InterruptedException e) {
-        e.printStackTrace();
+        log.error("", e);
     }
 
     /**
@@ -47,7 +47,7 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(NoHandlerFoundException.class)
     protected ModelAndView handleNoHandlerFoundException(NoHandlerFoundException e) {
         if (!e.getMessage().contains("/favicon.ico")) {
-            e.printStackTrace();
+            log.error("", e);
             log.info("handleNoHandlerFoundException");
         }
         modelAndView = new ModelAndView("error/error");
@@ -59,7 +59,7 @@ public class GlobalExceptionAdvice {
      */
     @ExceptionHandler(GrantAccessDeniedException.class)
     protected ModelAndView handleGrantAccessDeniedException(GrantAccessDeniedException e) {
-        e.printStackTrace();
+        log.error("", e);
         log.info("handleGrantAccessDeniedException");
         modelAndView = new ModelAndView("error/error");
         return modelAndView;
@@ -72,7 +72,7 @@ public class GlobalExceptionAdvice {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ModelAndView handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        e.printStackTrace();
+        log.error("", e);
         log.info("handleMethodArgumentNotValidException");
         modelAndView = new ModelAndView("error/error");
         return modelAndView;
@@ -84,7 +84,7 @@ public class GlobalExceptionAdvice {
      */
     @ExceptionHandler(BindException.class)
     protected ModelAndView handleBindException(BindException e) {
-        e.printStackTrace();
+        log.error("", e);
         log.info("handleBindException");
         modelAndView = new ModelAndView("error/error");
         return modelAndView;
@@ -96,7 +96,7 @@ public class GlobalExceptionAdvice {
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected ModelAndView handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
-        e.printStackTrace();
+        log.error("", e);
         log.info("handleMethodArgumentTypeMismatchException");
         modelAndView = new ModelAndView("error/error");
         return modelAndView;
@@ -107,7 +107,7 @@ public class GlobalExceptionAdvice {
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     protected ModelAndView handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-        e.printStackTrace();
+        log.error("", e);
         log.info("handleHttpRequestMethodNotSupportedException");
         modelAndView = new ModelAndView("error/error");
         return modelAndView;
@@ -118,7 +118,7 @@ public class GlobalExceptionAdvice {
      */
     @ExceptionHandler(AccessDeniedException.class)
     protected ModelAndView handleAccessDeniedException(AccessDeniedException e) {
-        e.printStackTrace();
+        log.error("", e);
         log.info("handleAccessDeniedException");
         modelAndView = new ModelAndView("error/error");
         return modelAndView;
@@ -126,7 +126,7 @@ public class GlobalExceptionAdvice {
 
     @ExceptionHandler(NullPointerException.class)
     protected ModelAndView handleNullPointerException(Exception e) {
-        e.printStackTrace();
+        log.error("", e);
         log.info("NullPointerException");
         modelAndView = new ModelAndView("error/error");
         return modelAndView;
@@ -134,7 +134,7 @@ public class GlobalExceptionAdvice {
 
     @ExceptionHandler(Exception.class)
     protected ModelAndView handleException(Exception e) {
-        e.printStackTrace();
+        log.error("", e);
         log.info("Global General Exception");
         modelAndView = new ModelAndView("error/error");
         return modelAndView;
@@ -142,7 +142,7 @@ public class GlobalExceptionAdvice {
 
     @ExceptionHandler(FileNotFoundException.class)
     protected ModelAndView handlerFileNotFoundException(FileNotFoundException e) {
-        e.printStackTrace();
+        log.error("", e);
         log.info("handlerFileNotFoundException");
         modelAndView = new ModelAndView("error/error");
         return modelAndView;

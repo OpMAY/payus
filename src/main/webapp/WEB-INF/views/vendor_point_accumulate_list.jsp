@@ -265,7 +265,7 @@
                         <h3 class="d-block" style="color: #8668d0; padding-left: 10px">포인트 적립 내역</h3>
                         <h5 class="d-block"
                             style="color: #979797; padding-left: 10px;margin-top: 1rem; line-height: 170%; word-break: keep-all">
-                            페이어스 포인트 적립은 관리자에게 무통장 송금 후 송금 내역을 확인해 이상이 없을 시 포인트가 충전됩니다.</h5>
+                            페이어스 포인트 적립 취소 요청은 적립 후 3일동안 가능하고 관리자의 요청 승인 후 취소되며 취소된 내역은 매출에 집계되지 않습니다.</h5>
                     </div>
                 </div>
                 <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 col-md-10 offset-md-1 col-10 offset-1"
@@ -309,10 +309,10 @@
                                     <tr accumulate="${accumulate[i-1].accumulate_no}">
                                         <td>${i}</td>
                                         <td>${accumulate[i-1].user_name}</td>
-                                        <td>${accumulate[i-1].price}원</td>
+                                        <td class="td-comma">${accumulate[i-1].price}원</td>
                                         <td>${accumulate[i-1].payback_rate}%</td>
-                                        <td>${accumulate[i-1].point}P</td>
-                                        <td>${accumulate[i-1].reg_date}</td>
+                                        <td class="td-comma">${accumulate[i-1].point}P</td>
+                                        <td class="td-date">${accumulate[i-1].reg_date}</td>
                                         <td><c:choose><c:when
                                                 test="${accumulate[i-1].status == 1}">적립 예정<button type="button" style="display: block; margin-top: 10px"
                                             class="btn btn-payus-table cancel-request">
@@ -376,21 +376,6 @@
         tablePagination(${accumulateNum}, 'accumulate-table-pagination');
         $('#point_strong').text(comma(${point}) + 'P');
     });
-
-    function comma(str) {
-        str = String(str);
-        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
-    }
-
-    function listenResize() {
-        let screenHeight = $(window).height();
-        console.log(screenHeight);
-
-        let tableWidth = $(".payus-table").width();
-        console.log("table Width : " + tableWidth);
-        let pagination = $(".pagination");
-        pagination.width(tableWidth);
-    }
 </script>
 <script>
     let body = $(document.body);
@@ -480,18 +465,6 @@
             window.open(imageUrl);
         } else {
             return false;
-        }
-    });
-    $(document).ready(function () {
-        let table = $(".payus-table");
-        let body = table.children('tbody');
-        for (let i = 0; i < body.children().length; i++) {
-            let originalPrice = body.children('tr:eq(' + i + ')').children('td:eq(2)').text();
-            let originalPoint = body.children('tr:eq(' + i + ')').children('td:eq(4)').text();
-            let originalRegDate = body.children('tr:eq(' + i + ')').children('td:eq(5)').text();
-            body.children('tr:eq(' + i + ')').children('td:eq(2)').text(comma(originalPrice));
-            body.children('tr:eq(' + i + ')').children('td:eq(4)').text(comma(originalPoint));
-            body.children('tr:eq(' + i + ')').children('td:eq(5)').text(SplitDateFunction(originalRegDate));
         }
     });
 

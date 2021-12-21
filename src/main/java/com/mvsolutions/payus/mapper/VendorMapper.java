@@ -99,7 +99,11 @@ public interface VendorMapper {
 
     List<VendorAdminNoticeList> getNoticeList();
 
+    int getNoticeNum();
+
     List<VendorAdminFAQList> getFAQList();
+
+    int getFAQNum(int type);
 
     boolean validateVendorPassword(int vendor_no, String password);
 
@@ -138,4 +142,8 @@ public interface VendorMapper {
     List<VendorAdminSalesList> getVendorSalesList(int vendor_no);
 
     VendorSalesPageSummary getVendorSalesSummary(int vendor_no);
+
+    List<VendorAdminPointChargeList> getVendorPointChargeListByPaging(VendorPagingRequest request);
+
+    int getChargeListNumberByDataType(int vendor_no, int data_type);
 }

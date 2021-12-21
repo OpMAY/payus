@@ -5,7 +5,9 @@ import com.mvsolutions.payus.model.rest.basic.UserNotificationJson;
 import com.mvsolutions.payus.model.rest.basic.VendorNotificationJson;
 import com.mvsolutions.payus.model.utility.fcm.NotificationNext;
 import com.google.gson.Gson;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class FCMUtil {
     // NotificationNext 세부 인자 받아서 여기서 생성 후 전송
     public static boolean sendFCMMessage(String fcm_token, String title, String content, int type, int content_type, int content_no, String json_content, Boolean review_status, Boolean answer_status, boolean user){
@@ -22,7 +24,7 @@ public class FCMUtil {
             messaging.push(fcm_token, title, content, jsonString);
             return true;
         } catch (Exception e){
-            e.printStackTrace();
+            log.error("", e);
             return false;
         }
     }
@@ -34,7 +36,7 @@ public class FCMUtil {
             messaging.push(fcm_token, title, content, notification_json);
             return true;
         } catch (Exception e){
-            e.printStackTrace();
+            log.error("", e);
             return false;
         }
     }

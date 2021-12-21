@@ -1,5 +1,6 @@
 package com.mvsolutions.payus.util;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -11,6 +12,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.UUID;
 
+@Log4j2
 @Service
 @PropertySource("classpath:mail.properties")
 public class EmailSendService {
@@ -39,7 +41,7 @@ public class EmailSendService {
             messageHelper.setText(content);
             emailSender.send(message);
         } catch (MessagingException e) {
-            e.printStackTrace();
+            log.error("", e);
         }
 
         return validationCode;

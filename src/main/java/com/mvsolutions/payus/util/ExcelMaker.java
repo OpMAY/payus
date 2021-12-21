@@ -134,7 +134,7 @@ public class ExcelMaker {
             xlsxWb.write(fos);
             if (fos != null) fos.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("", e);
         }
     }
 
