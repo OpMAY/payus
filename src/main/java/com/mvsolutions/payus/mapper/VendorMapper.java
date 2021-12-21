@@ -29,6 +29,8 @@ import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusine
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointAccumulateList;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointChargeList;
+import com.mvsolutions.payus.model.web.vendor.response.sales.VendorAdminSalesList;
+import com.mvsolutions.payus.model.web.vendor.response.sales.VendorSalesPageSummary;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewDetail;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreDetailInfo;
@@ -132,4 +134,8 @@ public interface VendorMapper {
     boolean checkRoomNameSameByRoomNo(int goods_no, String goods_name, int store_no);
 
     void updateRoom(Room room, String original_goods_name, int store_no);
+
+    List<VendorAdminSalesList> getVendorSalesList(int vendor_no);
+
+    VendorSalesPageSummary getVendorSalesSummary(int vendor_no);
 }

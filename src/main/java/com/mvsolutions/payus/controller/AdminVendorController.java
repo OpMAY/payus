@@ -8,6 +8,8 @@ import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusine
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointAccumulateList;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointChargeList;
+import com.mvsolutions.payus.model.web.vendor.response.sales.VendorAdminSalesList;
+import com.mvsolutions.payus.model.web.vendor.response.sales.VendorSalesPageSummary;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreDetailInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreInfo;
@@ -259,7 +261,19 @@ public class AdminVendorController {
     public ModelAndView VendorSalesPage(HttpServletRequest request) {
         VIEW = new ModelAndView("vendor_sales");
         Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
-        // TODO 매출 정보 from point_accumulate
+        /* TODO 매출 정보 from point_accumulate
+           1. 매출 정보 LIST O
+           2. 총 매출 금액
+           3. 금월 매출 금액
+           4. 총 포인트 사용 금액
+           5. 금월 포인트 사용 금액
+        * */
+        List<VendorAdminSalesList> salesList = vendorAdminService.getVendorSalesList(vendor_no);
+        int accumulateNum = vendorAdminService.getVendorPointAccumulateListNumber(vendor_no);
+        VendorSalesPageSummary summary = vendorAdminService.getVendorSalesSummary(vendor_no);
+        VIEW.addObject("sales", salesList);
+        VIEW.addObject("salesNum", accumulateNum);
+        VIEW.addObject("summary", summary);
         return VIEW;
     }
 

@@ -32,6 +32,8 @@ import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusine
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointAccumulateList;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointChargeList;
+import com.mvsolutions.payus.model.web.vendor.response.sales.VendorAdminSalesList;
+import com.mvsolutions.payus.model.web.vendor.response.sales.VendorSalesPageSummary;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.*;
 import com.mvsolutions.payus.response.payus.StoreType;
 import com.mvsolutions.payus.response.payus.vendor.GoodsType;
@@ -451,5 +453,17 @@ public class VendorAdminService {
             default:
                 return -1;
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<VendorAdminSalesList> getVendorSalesList(int vendor_no) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorSalesList(vendor_no);
+    }
+
+    @Transactional(readOnly = true)
+    public VendorSalesPageSummary getVendorSalesSummary(int vendor_no) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorSalesSummary(vendor_no);
     }
 }

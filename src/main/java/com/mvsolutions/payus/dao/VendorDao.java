@@ -29,6 +29,8 @@ import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusine
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointAccumulateList;
 import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointChargeList;
+import com.mvsolutions.payus.model.web.vendor.response.sales.VendorAdminSalesList;
+import com.mvsolutions.payus.model.web.vendor.response.sales.VendorSalesPageSummary;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewDetail;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreDetailInfo;
@@ -287,6 +289,16 @@ public class VendorDao {
     public void updateRoom(Room room, String original_goods_name, int store_no) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         mapper.updateRoom(room, original_goods_name, store_no);
+    }
+
+    public List<VendorAdminSalesList> getVendorSalesList(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorSalesList(vendor_no);
+    }
+
+    public VendorSalesPageSummary getVendorSalesSummary(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorSalesSummary(vendor_no);
     }
 
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);

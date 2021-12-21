@@ -12,4 +12,5 @@ public class VendorAdminPointAccumulateList {
     private String reg_date;
     private int status;
     private int review_status;
+    private boolean is_answered;
 }
