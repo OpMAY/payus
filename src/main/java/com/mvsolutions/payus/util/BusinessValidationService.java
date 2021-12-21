@@ -3,14 +3,14 @@ package com.mvsolutions.payus.util;
 
 import com.mvsolutions.payus.model.utility.businessvalidation.BusinessStatusRequest;
 import com.mvsolutions.payus.model.utility.businessvalidation.BusinessValidationRequest;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-@Log4j
+@Log4j2
 @Service
 public class BusinessValidationService {
     /**

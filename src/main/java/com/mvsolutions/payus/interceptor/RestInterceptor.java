@@ -3,7 +3,7 @@ package com.mvsolutions.payus.interceptor;
 import com.mvsolutions.payus.exception.enums.BusinessExceptionType;
 import com.mvsolutions.payus.exception.rest.AuthorizationTokenException;
 import com.mvsolutions.payus.util.security.Security;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Component
-@Log4j
+@Log4j2
 public class RestInterceptor implements HandlerInterceptor {
     @Value("${api.access_key}")
     private String access_key;

@@ -10,12 +10,12 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.mvsolutions.payus.exception.enums.BusinessExceptionType;
 import com.mvsolutions.payus.exception.rest.AuthorizationTokenException;
 import com.mvsolutions.payus.util.Time;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-@Log4j
+@Log4j2
 public class Security {
     private String access_key;
 

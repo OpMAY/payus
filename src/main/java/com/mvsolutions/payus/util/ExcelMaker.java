@@ -1,6 +1,6 @@
 package com.mvsolutions.payus.util;
 
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.IOUtils;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -19,7 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@Log4j
+@Log4j2
 public class ExcelMaker {
     public <T> void makeExcel(LinkedHashMap<String, String> column_info, Map<String, Class<?>> components, List<Object> objectList, String fileName, String title) {
         // WorkBook 생성

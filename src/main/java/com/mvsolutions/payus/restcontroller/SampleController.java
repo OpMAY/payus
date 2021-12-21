@@ -15,7 +15,7 @@ import com.mvsolutions.payus.util.FileUploadUtility;
 import com.mvsolutions.payus.util.Time;
 import com.mvsolutions.payus.util.security.AES256Util;
 import com.mvsolutions.payus.util.security.Security;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +36,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-@Log4j
+@Log4j2
 @RestController
 public class SampleController {
 

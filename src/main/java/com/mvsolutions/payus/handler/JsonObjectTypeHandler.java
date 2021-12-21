@@ -3,7 +3,7 @@ package com.mvsolutions.payus.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.mvsolutions.payus.model.rest.basic.UserNotificationJson;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 
@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@Log4j
+@Log4j2
 public class JsonObjectTypeHandler<T extends Object> extends BaseTypeHandler<T> {
     private Class<T> tClass;
 

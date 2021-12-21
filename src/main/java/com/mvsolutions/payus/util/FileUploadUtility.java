@@ -3,7 +3,7 @@ package com.mvsolutions.payus.util;
 import com.mvsolutions.payus.aws.CDNService;
 import com.mvsolutions.payus.aws.model.AWSModel;
 import com.mvsolutions.payus.aws.model.smodel.Upload;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.UUID;
 
-@Log4j
+@Log4j2
 @Service
 @PropertySources({
         @PropertySource("classpath:aws.properties"),
