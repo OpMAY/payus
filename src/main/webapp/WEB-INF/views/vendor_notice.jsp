@@ -116,7 +116,8 @@
                                 <span class="checkmark"></span>
                             </label>
                             <input type="text" placeholder="검색" class="payus-search-input">
-                            <button class="btn" style="padding: 10px 1rem;background-color: #8668d0; margin-left: 10px" type="button"><i
+                            <button class="btn" style="padding: 10px 1rem;background-color: #8668d0; margin-left: 10px"
+                                    type="button"><i
                                     class="fa fa-search"></i></button>
                         </div>
                     </div>
@@ -134,7 +135,7 @@
                                     <th style="width: 25%">상세보기</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="pagination_layout">
                                 <c:forEach var="i" begin="1" end="${notice.size()}">
                                     <tr notice="${notice[i-1].notice_no}">
                                         <td>${i}</td>
@@ -165,18 +166,64 @@
 <script src="/js/payus-pagination.js"></script>
 <script src="/js/date-formatter.js"></script>
 <script>
-
+    let paginationDivId = 'notice-table-pagination';
+    let paginationDiv = $('#' + paginationDivId);
+    let totalNoticeNum = ${noticeNum};
     $(".pagination").on("click", 'a', function () {
-        let data_order = $(this).attr('data-order');
+        let selectedPage = $(this);
+        let data_order = selectedPage.attr('data-order');
+        let data_type = $('.payus-select option:selected').val();
         console.log(data_order);
-        let paginationDiv = $("#notice-table-pagination");
         let active_page = paginationDiv.children('.active').attr('data-order');
-        if (active_page !== data_order) {
-            // TODO 페이지 별 데이터 AJAX
-            paginationDiv.children('.active').removeClass('active');
-            $(this).addClass('active');
+        if (data_order === '-1') {
+            if (tablePaginationChange(totalNoticeNum, paginationDivId, false)) {
+                let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
+                dataCallFunction(firstPageAfterChange, data_type);
+            }
+        } else if (data_order === '0') {
+            if (tablePaginationChange(totalNoticeNum, paginationDivId, true)) {
+                let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
+                dataCallFunction(firstPageAfterChange, data_type);
+            }
+        } else {
+            console.log("else");
+            if (active_page !== data_order) {
+                paginationDiv.children('.active').removeClass('active');
+                selectedPage.addClass('active');
+                dataCallFunction(data_order, data_type);
+            }
         }
     });
+
+    function dataCallFunction(page, data_type, searchKeyword, sTitle, sContent) {
+        let data = {"page": page, "data_type": data_type};
+        let selectedPageIndex = (page * 10) - 10;
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/customer/notice/paging',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            $("#pagination_layout *").remove();
+            console.log(result);
+            console.log("length : " + result.noticeList.length);
+            for (let i = 0; i < result.noticeList.length; i++) {
+                let data = result.noticeList[i];
+                let thisIndex = selectedPageIndex + i + 1;
+                $('#pagination_layout').append('<tr notice="' + data.notice_no + '">\n' +
+                    '                                        <td>' + thisIndex + '</td>\n' +
+                    '                                        <td>' + data.title + '</td>\n' +
+                    '                                        <td class="td-date">' + SplitDateFunction(data.reg_date) + '</td>\n' +
+                    '                                        <td class="td-comma">' + comma(data.view_num) + '</td>\n' +
+                    '                                        <td><button type="button" style="display: block;" class="btn btn-payus-table">상세보기</button></td>\n' +
+                    '                                    </tr>');
+                totalNoticeNum = result.notice_num;
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
+    }
 
     $(document).ready(function () {
         listenResize();

@@ -99,6 +99,9 @@
                                 닫기
                             </button>
                         </div>
+                        <div class="col-12" style="margin-top: 5px">
+                            <span>충전 요청 상태의 내역은 바로 취소 가능합니다.</span>
+                        </div>
                     </div>
                     <div class="row row-cols-1 row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1"
                          style="margin-top: 2rem">
@@ -130,6 +133,46 @@
                         <div class="col-12 col-xl-3 col-lg-4" style="margin-bottom: 1rem">
                             <button type="button" class="btn btn-payus-modal submit" id="btn-for-request">
                                 취소 요청
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="payus-modal" id="canceled-request-modal">
+                <div class="modal-body" style="height: auto">
+                    <div class="row">
+                        <div class="col-12" style="display: flex; flex-direction: row; justify-content: space-between">
+                            <h3 style="color: #8668d0;">충전 취소 요청 확인</h3>
+                            <button type="button" class="btn btn-payus-modal modal-close">
+                                닫기
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row row-cols-1 row-cols-xl-2 row-cols-lg-1 row-cols-md-1 row-cols-sm-1"
+                         style="margin-top: 2rem">
+                        <div class="col payus-modal-textarea-form">
+                            <label for="cancel-charge-request-point">요청 포인트</label>
+                            <textarea class="payus-modal-textarea" id="canceled-charge-request-point" rows="1"
+                                      readonly>23,000원</textarea>
+                        </div>
+                        <div class="col payus-modal-textarea-form">
+                            <label for="cancel-charge-request-date">신청 일자</label>
+                            <textarea class="payus-modal-textarea" id="canceled-charge-request-date" rows="1"
+                                      readonly>2021.11.26</textarea>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 1rem">
+                        <div class="col-12">
+                            <label for="cancel-reason">취소 사유</label>
+                            <textarea class="payus-modal-textarea" id="canceled-reason" rows="5"
+                                      placeholder="포인트 충전 취소 사유를 입력해주세요." readonly>취소 사유</textarea>
+                        </div>
+                    </div>
+                    <div class="row modal-btn-div"
+                         style="margin-bottom: 1rem; display: flex; justify-content: flex-end;">
+                        <div class="col-12 col-xl-3 col-lg-4" style="margin-bottom: 1rem">
+                            <button type="button" class="btn btn-payus-modal cancel">
+                                취소
                             </button>
                         </div>
                     </div>
@@ -186,10 +229,8 @@
                                         <td class="td-comma">${charge[i-1].point}원</td>
                                         <td class="td-date">${charge[i-1].reg_date}</td>
                                         <td class="td-date"><c:choose><c:when
-                                                test="${charge[i-1].revise_date == null}">관리자가
-                                            <br>확인 중 입니다.</c:when><c:when
-                                                test="${charge[i-1].revise_date != null}">${charge[i-1].revise_date}</c:when></c:choose>
-                                        </td>
+                                                test="${charge[i-1].revise_date == null}">관리자가 <br>확인 중 입니다.</c:when><c:when
+                                                test="${charge[i-1].revise_date != null}">${charge[i-1].revise_date}</c:when></c:choose></td>
                                         <td><c:choose><c:when test="${charge[i-1].status == 1}">요청됨</c:when><c:when
                                                 test="${charge[i-1].status == 2}">승인</c:when><c:when
                                                 test="${charge[i-1].status == 3}">미승인<button type="button" style="display: block; margin-top: 10px"
@@ -199,16 +240,13 @@
                                                 test="${charge[i-1].status == 4}">취소 요청됨</c:when><c:when
                                                 test="${charge[i-1].status == 5}">취소됨</c:when></c:choose></td>
                                         <td><c:choose><c:when test="${charge[i-1].status == 1}">
-                                            <button type="button" class="btn btn-payus-table-report">
+                                            <button type="button" class="btn btn-payus-table-report request">
                                                 취소 요청
                                             </button>
                                         </c:when><c:when
                                                 test="${charge[i-1].status == 2}">충전 완료 후<br>취소 요청 불가</c:when><c:when
-                                                test="${charge[i-1].status == 3}">
-                                            <button type="button" class="btn btn-payus-table-report">
-                                                취소 요청
-                                            </button>
-                                        </c:when><c:when test="${charge[i-1].status == 4}">
+                                                test="${charge[i-1].status == 3}">미승인 내역<br>취소 요청 불가</c:when><c:when
+                                                test="${charge[i-1].status == 4}">
                                             <button type="button" class="btn btn-payus-table-report reason">
                                                 취소 요청 확인
                                             </button>
@@ -283,7 +321,7 @@
                 switch (data.status) {
                     case 1 :
                         statusString = '요청됨';
-                        cancelString = '<button type="button" class="btn btn-payus-table-report">\n' +
+                        cancelString = '<button type="button" class="btn btn-payus-table-report request">\n' +
                             '                                                취소 요청\n' +
                             '                                            </button>';
                         break;
@@ -293,12 +331,10 @@
                         break;
                     case 3 :
                         statusString = '미승인<button type="button" style="display: block; margin-top: 10px"\n' +
-                            '                                            class="btn btn-payus-table">\n' +
+                            '                                            class="btn btn-payus-table reason">\n' +
                             '                                            반려 사유\n' +
                             '                                            </button>';
-                        cancelString = '<button type="button" class="btn btn-payus-table-report">\n' +
-                            '                                                취소 요청\n' +
-                            '                                            </button>';
+                        cancelString = '미승인 내역<br>취소 요청 불가';
                         break;
                     case 4 :
                         statusString = '취소 요청됨';
@@ -345,30 +381,86 @@
 
     let rejectReasonModal = $("#reject-reason-modal");
     let cancelRequestModal = $("#cancel-request-modal");
-    $(".btn-payus-table").on("click", function () {
+    let canceledModal = $("#canceled-request-modal");
+    $(body).on("click", ".btn-payus-table", function () {
         let charge_no = $(this).parent().parent().attr('charge');
         console.log(charge_no);
         // TODO 해당 charge_no로 반려 사유 받아오기
-        rejectReasonModal.addClass('show');
+        let data = {"charge_no" : charge_no};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/point/charge/reject',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            $('#charge-request-point').val(comma(result.point) + '원');
+            $('#charge-request-date').val(SplitDateFunction(result.request_date));
+            $('#reject-reason').val(result.reject_reason);
+            rejectReasonModal.addClass('show');
 
-        if (rejectReasonModal.hasClass('show')) {
-            body.css("overflow", "hidden");
-            rejectReasonModal.focus();
-        }
+            if (rejectReasonModal.hasClass('show')) {
+                body.css("overflow", "hidden");
+                rejectReasonModal.focus();
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
+
     });
 
 
-    $(".btn-payus-table-report").on("click", function () {
+    $(body).on("click", ".btn-payus-table-report.request", function () {
         let charge_no = $(this).parent().parent().attr('charge');
         console.log(charge_no);
-        // TODO 해당 charge_no로 충전 정보 불러옴 AJAX
+        // TODO 해당 charge_no로 취소 요청 전 정보 받아오기
+        let data = {"charge_no" : charge_no, "for_cancel" : true};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/point/charge/cancel/info',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            $('#cancel-charge-request-point').val(comma(result.point) + '원');
+            $('#cancel-charge-request-date').val(SplitDateFunction(result.request_date));
+            cancelRequestModal.addClass('show');
 
-        cancelRequestModal.addClass('show');
+            if (cancelRequestModal.hasClass('show')) {
+                body.css("overflow", "hidden");
+                cancelRequestModal.focus();
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
 
-        if (cancelRequestModal.hasClass('show')) {
-            body.css("overflow", "hidden");
-            cancelRequestModal.focus();
-        }
+    });
+
+    $(body).on("click", ".btn-payus-table-report.reason", function () {
+        let charge_no = $(this).parent().parent().attr('charge');
+        console.log(charge_no);
+        // TODO 해당 charge_no로 취소 요청한 정보 불러옴
+        let data = {"charge_no" : charge_no, "for_cancel" : false};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/point/charge/cancel/info',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            $('#canceled-charge-request-point').val(comma(result.point) + '원');
+            $('#canceled-charge-request-date').val(SplitDateFunction(result.request_date));
+            $('#canceled-reason').val(result.cancel_reason);
+            canceledModal.addClass('show');
+
+            if (canceledModal.hasClass('show')) {
+                body.css("overflow", "hidden");
+                canceledModal.focus();
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
+
     });
 
     $(".modal-close").on("click", function () {

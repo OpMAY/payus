@@ -105,7 +105,7 @@
                                     <th style="width: 15%">결제 상태</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="pagination_layout">
                                 <c:forEach var="i" begin="1" end="${sales.size()}">
                                     <tr accumulate="${sales[i-1].accumulate_no}">
                                         <td>${i}</td>
@@ -134,23 +134,81 @@
 <script src="/js/payus-pagination.js"></script>
 <script src="/js/date-formatter.js"></script>
 <script>
-
-
+    let paginationDivId = 'sales-table-pagination';
+    let paginationDiv = $('#' + paginationDivId);
+    let totalSalesNum = ${salesNum};
     $(".pagination").on("click", 'a', function () {
-        let data_order = $(this).attr('data-order');
+        let selectedPage = $(this);
+        let data_order = selectedPage.attr('data-order');
+        let data_type = $('.payus-select option:selected').val();
         console.log(data_order);
-        let paginationDiv = $("#sales-table-pagination");
         let active_page = paginationDiv.children('.active').attr('data-order');
-        if (active_page !== data_order) {
-            // TODO 페이지 별 데이터 AJAX
-            paginationDiv.children('.active').removeClass('active');
-            $(this).addClass('active');
+        if (data_order === '-1') {
+            if (tablePaginationChange(totalSalesNum, paginationDivId, false)) {
+                let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
+                dataCallFunction(firstPageAfterChange, data_type, false);
+            } else {
+                alert('이전 페이지가 없습니다.');
+            }
+        } else if (data_order === '0') {
+            if (tablePaginationChange(totalSalesNum, paginationDivId, true)) {
+                let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
+                dataCallFunction(firstPageAfterChange, data_type, false);
+            } else {
+                alert('다음 페이지가 없습니다.');
+            }
+        } else {
+            console.log("else");
+            if (active_page !== data_order) {
+                paginationDiv.children('.active').removeClass('active');
+                selectedPage.addClass('active');
+                dataCallFunction(data_order, data_type, false);
+            }
         }
     });
 
+    function dataCallFunction(page, data_type, selectChange) {
+        let data = {"page": page, "data_type": data_type, "select_change": selectChange};
+        let selectedPageIndex = (page * 10) - 10;
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/sales/paging',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            $("#pagination_layout *").remove();
+            console.log(result);
+            console.log("length : " + result.salesList.length);
+            for (let i = 0; i < result.salesList.length; i++) {
+                let data = result.salesList[i];
+                let thisIndex = selectedPageIndex + i + 1;
+                let statusString = data.status ? '결제 완료' : '결제 취소';
+                $('#pagination_layout').append('<tr sales="' + data.accumulate_no + '">\n' +
+                    '                                        <td>' + thisIndex + '</td>\n' +
+                    '                                        <td>' + data.user_name + '</td>\n' +
+                    '                                        <td class="td-comma">' + comma(data.price) + '원</td>\n' +
+                    '                                        <td>' + data.payback_rate + '원</td>\n' +
+                    '                                        <td class="td-comma">' + comma(data.point) + '</td>\n' +
+                    '                                        <td class="td-date">' + SplitDateFunction(data.reg_date) + '</td>\n' +
+                    '                                        <td>' + statusString + '</td>\n' +
+                    '                                    </tr>');
+                totalSalesNum = result.sale_num;
+                if (selectChange)
+                    tablePagination(result.sale_num, paginationDivId);
+                $('#total-sales').text(comma(result.summary.total_price) + '원');
+                $('#total-point-usage').text(comma(result.summary.total_point) + 'P');
+                $('#monthly-sales').text(comma(result.summary.this_month_price) + '원');
+                $('#monthly-point-usage').text(comma(result.summary.this_month_point) + 'P');
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
+    }
+
     $(document).ready(function () {
         listenResize();
-        tablePagination(${salesNum}, 'sales-table-pagination');
+        tablePagination(${salesNum}, paginationDivId);
         $('.sales').each(function () {
             $(this).text(comma($(this).text()));
         });
@@ -222,6 +280,10 @@
             }
         }
     });
+
+    $('#excel-btn').on("click", function () {
+        window.open("/vendor/download/excel.do", '_blank');
+    })
 </script>
 </body>
 </html>

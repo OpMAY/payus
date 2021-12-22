@@ -69,6 +69,13 @@
                     </div>
                     <div class="row" style="margin-bottom: 1rem">
                         <div class="col-12">
+                            <label for="cancel-reason">취소 요청 사유</label>
+                            <textarea class="payus-modal-textarea" id="cancel-sent-reason" rows="5"
+                                      readonly>취소 요청 사유</textarea>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 1rem">
+                        <div class="col-12">
                             <label for="reject-reason">반려 사유</label>
                             <textarea class="payus-modal-textarea" id="reject-reason" rows="5" readonly>송금 내역이 존재하지 않습니다.송금 내역 확인 후 다시 문의해주시길 바랍니다.</textarea>
                         </div>
@@ -487,8 +494,9 @@
 
     let rejectReasonModal = $("#reject-reason-modal");
     let cancelRequestModal = $("#cancel-request-modal");
+    let cancelRejectModal = $("#canceled-request-modal");
     let reviewContentModal = $("#review-content-modal");
-    $(".btn-payus-table.cancel-request").on("click", function () {
+    $(body).on("click", ".btn-payus-table.cancel-request", function () {
         let accumulate_no = $(this).parent().parent().attr('accumulate');
         console.log(accumulate_no);
         // TODO 해당 accumulate_no로 취소 요청
@@ -501,7 +509,7 @@
     });
 
 
-    $(".btn-payus-table.reject-reason").on("click", function () {
+    $(body).on("click", ".btn-payus-table.reject-reason", function () {
         let accumulate_no = $(this).parent().parent().attr('accumulate');
         console.log(accumulate_no);
         // TODO 해당 accumulate_no로 반려 사유 받아오기
@@ -515,7 +523,7 @@
         }
     });
 
-    $(".btn-payus-table.answer-review").on("click", function () {
+    $(body).on("click", ".btn-payus-table.answer-review", function () {
         let accumulate_no = $(this).parent().parent().attr('accumulate');
         console.log(accumulate_no);
         // TODO 해당 accumulate_no로 반려 사유 받아오기
@@ -531,7 +539,7 @@
     });
 
 
-    $(".btn-payus-table.answered-review").on("click", function () {
+    $(body).on("click", ".btn-payus-table.answered-review", function () {
         let accumulate_no = $(this).parent().parent().attr('accumulate');
         console.log(accumulate_no);
         // TODO 해당 accumulate_no로 반려 사유 받아오기

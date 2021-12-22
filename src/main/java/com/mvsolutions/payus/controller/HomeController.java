@@ -8,11 +8,13 @@ import com.mvsolutions.payus.model.utility.businessvalidation.BusinessValidation
 import com.mvsolutions.payus.model.utility.businessvalidation.BusinessValidationRequest;
 import com.mvsolutions.payus.model.utility.kakaolocation.KakaoLocationResponse;
 import com.mvsolutions.payus.model.utility.kakaolocation.LocationCoordinate;
+import com.mvsolutions.payus.model.web.vendor.response.sales.VendorAdminSalesList;
 import com.mvsolutions.payus.response.IntegerRes;
 import com.mvsolutions.payus.response.Message;
 import com.mvsolutions.payus.response.StatusCode;
 import com.mvsolutions.payus.service.HomeService;
 import com.google.gson.Gson;
+import com.mvsolutions.payus.service.VendorAdminService;
 import com.mvsolutions.payus.util.*;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
@@ -42,6 +44,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -65,6 +68,9 @@ public class HomeController {
     @Autowired
     private EmailSendService emailSendService;
 
+    @Autowired
+    private VendorAdminService vendorAdminService;
+
     public void HomeController() {
         VIEW = new ModelAndView("home");
     }
@@ -72,6 +78,17 @@ public class HomeController {
     @RequestMapping(value = "/home.do", method = RequestMethod.GET)
     public ModelAndView Home() {
         HomeController();
+        return new ModelAndView("home");
+    }
+
+    @RequestMapping(value = "/excel.do", method = RequestMethod.GET)
+    public ModelAndView Excel(HttpServletResponse response) throws IOException {
+        HomeController();
+        List<VendorAdminSalesList> salesList = vendorAdminService.getVendorSalesListAllForExcel(2);
+        ExcelMaker excelMaker = new ExcelMaker();
+        String fileName = excelMaker.makeSalesExcel(salesList, "");
+        log.info(fileName);
+        response.sendRedirect("/download/file.do?name=" + fileName);
         return new ModelAndView("home");
     }
 
