@@ -78,7 +78,7 @@
                              style="margin-bottom: 1rem; display: flex; justify-content: flex-end;">
                             <div class="col-12 col-xl-3 col-lg-4" style="margin-bottom: 1rem">
                                 <button type="button" class="btn btn-payus-modal cancel">
-                                    취소
+                                    닫기
                                 </button>
                             </div>
                             <div class="col-12 col-xl-3 col-lg-4" style="margin-bottom: 1rem">
@@ -127,7 +127,7 @@
                          style="margin-bottom: 1rem; display: flex; justify-content: flex-end;">
                         <div class="col-12 col-xl-3 col-lg-4" style="margin-bottom: 1rem">
                             <button type="button" class="btn btn-payus-modal cancel">
-                                취소
+                                닫기
                             </button>
                         </div>
                         <div class="col-12 col-xl-3 col-lg-4" style="margin-bottom: 1rem">
@@ -172,7 +172,12 @@
                          style="margin-bottom: 1rem; display: flex; justify-content: flex-end;">
                         <div class="col-12 col-xl-3 col-lg-4" style="margin-bottom: 1rem">
                             <button type="button" class="btn btn-payus-modal cancel">
-                                취소
+                                닫기
+                            </button>
+                        </div>
+                        <div class="col-12 col-xl-3 col-lg-4" style="margin-bottom: 1rem">
+                            <button type="button" class="btn btn-payus-modal submit" id="btn-for-request-cancel">
+                                요청 철회
                             </button>
                         </div>
                     </div>
@@ -273,6 +278,7 @@
     let paginationDivId = 'charge-table-pagination';
     let paginationDiv = $('#' + paginationDivId);
     let totalChargeNum = ${chargeNum};
+    let thisModalIndex = 0;
     $(".pagination").on("click", 'a', function () {
         let selectedPage = $(this);
         let data_order = selectedPage.attr('data-order');
@@ -374,6 +380,39 @@
         tablePagination(${chargeNum}, 'charge-table-pagination');
         $('#point_strong').text(comma(${point}) + 'P');
     });
+
+    $('#btn-for-inquiry').on('click', function (){
+        //TODO 문의하기로 이동
+    });
+
+    $('#btn-for-request').on('click', function (){
+       // TODO 취소 요청
+        let reason = $('#cancel-reason').val();
+        let data = {"charge_no" : thisModalIndex, "reason" : reason};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/point/charge/cancel/request',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            if(result === 1){
+                alert('취소 요청을 전송하였습니다.');
+                window.location.reload();
+            } else if (result === 0){
+                alert('충전 요청이 취소되었습니다.');
+                window.location.reload();
+            } else {
+                alert('알 수 없는 오류가 발생했습니다.');
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
+    });
+
+    $('#btn-for-request-cancel').on('click', function () {
+       // TODO 취소 요청 철회
+    });
 </script>
 <script>
     let body = $(document.body);
@@ -385,6 +424,8 @@
     $(body).on("click", ".btn-payus-table", function () {
         let charge_no = $(this).parent().parent().attr('charge');
         console.log(charge_no);
+        thisModalIndex = charge_no;
+        console.log(thisModalIndex);
         // TODO 해당 charge_no로 반려 사유 받아오기
         let data = {"charge_no" : charge_no};
         $.ajax({
@@ -413,6 +454,8 @@
     $(body).on("click", ".btn-payus-table-report.request", function () {
         let charge_no = $(this).parent().parent().attr('charge');
         console.log(charge_no);
+        thisModalIndex = charge_no;
+        console.log(thisModalIndex);
         // TODO 해당 charge_no로 취소 요청 전 정보 받아오기
         let data = {"charge_no" : charge_no, "for_cancel" : true};
         $.ajax({
@@ -440,6 +483,8 @@
         let charge_no = $(this).parent().parent().attr('charge');
         console.log(charge_no);
         // TODO 해당 charge_no로 취소 요청한 정보 불러옴
+        thisModalIndex = charge_no;
+        console.log(thisModalIndex);
         let data = {"charge_no" : charge_no, "for_cancel" : false};
         $.ajax({
             type: 'POST',
@@ -464,6 +509,7 @@
     });
 
     $(".modal-close").on("click", function () {
+        thisModalIndex = 0;
         modal.removeClass("show");
 
         if (!modal.hasClass("show")) {
@@ -472,6 +518,7 @@
     });
 
     $(".btn-payus-modal.cancel").on("click", function () {
+        thisModalIndex = 0;
         modal.removeClass("show");
 
         if (!modal.hasClass("show")) {
@@ -490,6 +537,7 @@
 
     $('.payus-modal').on("click", function (event) {
         if (event.target.className === 'payus-modal show') {
+            thisModalIndex = 0;
             modal.removeClass("show");
 
             if (!modal.hasClass("show")) {

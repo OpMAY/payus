@@ -24,6 +24,11 @@
         <result column="image_list" property="image_list"
                 typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
     </resultMap>
+    <resultMap id="VendorStoreManagementPointAccumulateReviewInfo"
+               type="com.mvsolutions.payus.model.web.vendor.response.point.VendorStoreManagementPointAccumulateReviewInfo">
+        <result column="image_list" property="image_list"
+                typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+    </resultMap>
     <select id="checkVendorExists" resultType="_boolean">
         select EXISTS(select * from vendor WHERE id = #{id} AND password = #{password})
     </select>
@@ -628,5 +633,70 @@
         select point, reg_date as request_date, @CancelReason as cancel_reason
         from point_charge
         WHERE charge_no = #{charge_no}
+    </select>
+    <select id="checkPointChargeStatus" resultType="int">
+        select status
+        from point_charge
+        WHERE charge_no = #{charge_no}
+    </select>
+    <insert id="insertChargeRequest">
+        insert into point_charge_cancel(charge_no, reason, reg_date)
+        VALUES (#{charge_no}, #{reason}, #{reg_date})
+    </insert>
+    <update id="updatePointChargeByCancel">
+        SET @OriginalStatus = (select IF(status = 1, 5, 4)
+                               from point_charge
+                               WHERE charge_no = #{charge_no});
+        SET @CancelStatus = (select IF(status = 1, true, false)
+                             from point_charge
+                             WHERE charge_no = #{charge_no});
+        SET @AutoCancelDate = (select reg_date
+                               from point_charge_cancel
+                               WHERE charge_no = #{charge_no});
+        update point_charge
+        SET point_charge.status      = @OriginalStatus,
+            point_charge.revise_date = @AutoCancelDate
+        WHERE point_charge.charge_no = #{charge_no};
+
+        update point_charge_cancel
+        SET point_charge_cancel.cancel_status = @CancelStatus,
+            point_charge_cancel.cancel_date   = now()
+        WHERE point_charge_cancel.charge_no = #{charge_no}
+    </update>
+    <select id="getVendorPointAccumulateReviewInfo" resultType="VendorStoreManagementPointAccumulateReviewInfo"
+            resultMap="VendorStoreManagementPointAccumulateReviewInfo">
+        select review.review_no,
+               user.nickname as user_name,
+               review.rate,
+               review.reg_date,
+               review.answer_status,
+               review.content,
+               review.image_list,
+               review.answer_content,
+               review.answer_date
+        from review,
+             user
+        WHERE review.accumulate_no = #{accumulate_no}
+          AND user.user_no = review.user_no
+    </select>
+    <select id="getVendorPointAccumulateCancelRejectInfo"
+            resultType="VendorStoreManagementPointAccumulateCancelRejectInfo">
+        select point_accumulate.point,
+               point_accumulate.reg_date      as request_date,
+               point_accumulate_cancel.reason as cancel_reason,
+               point_accumulate_reject.reason as reject_reason
+        from point_accumulate,
+             point_accumulate_cancel,
+             point_accumulate_reject
+        WHERE point_accumulate.accumulate_no = #{accumulate_no}
+          AND point_accumulate_cancel.accumulate_no = #{accumulate_no}
+          AND point_accumulate_reject.accumulate_no = #{accumulate_no}
+    </select>
+    <select id="getVendorPointAccumulateCancelModalInfo" resultType="VendorStoreManagementPointAccumulateCancelInfo">
+        select user.nickname as user_name, point_accumulate.point, point_accumulate.reg_date
+        from point_accumulate,
+             user
+        WHERE point_accumulate.accumulate_no = #{accumulate_no}
+          AND user.user_no = point_accumulate.user_no
     </select>
 </mapper>

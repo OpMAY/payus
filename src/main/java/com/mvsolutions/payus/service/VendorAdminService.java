@@ -19,8 +19,7 @@ import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdmi
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
-import com.mvsolutions.payus.model.web.vendor.request.point.VendorPointChargeCancelModalRequest;
-import com.mvsolutions.payus.model.web.vendor.request.point.VendorPointChargeRejectModalRequest;
+import com.mvsolutions.payus.model.web.vendor.request.point.*;
 import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewAnswerRequest;
 import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewDetailRequest;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
@@ -558,5 +557,36 @@ public class VendorAdminService {
     public VendorStoreManagementPointChargeCancelInfo getVendorPointChargeModalInfo(VendorPointChargeCancelModalRequest request) {
         vendorDao.setSqlSession(sqlSession);
         return vendorDao.getVendorPointChargeModalInfo(request);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public int cancelVendorPointCharge(VendorPointChargeCancelRequest request) {
+        vendorDao.setSqlSession(sqlSession);
+        int originalStatus = vendorDao.checkPointChargeStatus(request.getCharge_no());
+        request.setReg_date(Time.TimeFormatHMS());
+        vendorDao.updatePointChargeByCancel(request);
+        if(originalStatus == 1) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public VendorStoreManagementPointAccumulateReviewInfo getVendorPointAccumulateReviewInfo(VendorPointAccumulateReviewRequest request) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorPointAccumulateReviewInfo(request);
+    }
+
+    @Transactional(readOnly = true)
+    public VendorStoreManagementPointAccumulateCancelRejectInfo getVendorPointAccumulateCancelRejectInfo(VendorPointAccumulateCancelRejectRequest request) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorPointAccumulateCancelRejectInfo(request);
+    }
+
+    @Transactional(readOnly = true)
+    public VendorStoreManagementPointAccumulateCancelInfo getVendorPointAccumulateCancelModalInfo(VendorPointAccumulateCancelModalRequest request) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorPointAccumulateCancelModalInfo(request);
     }
 }
