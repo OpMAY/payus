@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mvsolutions.payus.mapper.StoreOptionMapper">
+    <select id="getStoreServiceList" resultType="StoreService">
+        select title, content
+        from store_service
+        WHERE store_no = #{store_no}
+        ORDER BY reg_date
+    </select>
+    <select id="getStoreInformationList" resultType="StoreInformation">
+        select title, content
+        from store_information
+        WHERE store_no = #{store_no}
+        ORDER BY reg_date
+    </select>
+    <select id="getStoreGoodsList" resultType="Goods">
+        select *
+        from store_goods
+        WHERE store_no = #{store_no}
+        ORDER BY reg_date
+    </select>
+</mapper>
