@@ -16,8 +16,14 @@ import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorSto
 import com.mvsolutions.payus.response.payus.usercustomcenter.FAQType;
 import com.mvsolutions.payus.response.payus.vendor.GoodsType;
 import com.mvsolutions.payus.service.VendorAdminService;
+import com.mvsolutions.payus.util.ExcelMaker;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,12 +33,18 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 @Controller
 @Log4j2
 @RequestMapping(value = "/vendor", method = RequestMethod.GET)
 public class AdminVendorController {
+    @Value("${path.upload_path}")
+    private String path;
+
     @Autowired
     private VendorAdminService vendorAdminService;
 
@@ -325,5 +337,19 @@ public class AdminVendorController {
         return VIEW;
     }
 
+    @RequestMapping("/download/excel.do")
+    public ResponseEntity<InputStreamResource> download(HttpServletRequest request) throws FileNotFoundException {
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        List<VendorAdminSalesList> salesList = vendorAdminService.getVendorSalesListAllForExcel(vendor_no);
+        ExcelMaker excelMaker = new ExcelMaker();
+        String fileName = excelMaker.makeSalesExcel(salesList, path);
+        File file = new File(path, fileName);
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
+                .contentLength(file.length())
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(resource);
+    }
 
 }

@@ -13,13 +13,17 @@ import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBank
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorPasswordValidationRequest;
+import com.mvsolutions.payus.model.web.vendor.request.point.*;
 import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewAnswerRequest;
 import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewDetailRequest;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorRegisterEmailResponse;
+import com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementFAQPagingResponse;
+import com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementNoticePagingResponse;
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.VendorStoreManagementGoodsPagingResponse;
-import com.mvsolutions.payus.model.web.vendor.response.point.VendorStoreManagementPointChargePagingResponse;
+import com.mvsolutions.payus.model.web.vendor.response.point.*;
+import com.mvsolutions.payus.model.web.vendor.response.sales.VendorStoreManagementSalesPagingResponse;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewDetail;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewPagingResponse;
@@ -201,7 +205,6 @@ public class VendorPostController {
         VendorPagingRequest request = new Gson().fromJson(body, VendorPagingRequest.class);
         request.setVendor_no(vendor_no);
         request.setStart_index((request.getPage() - 1) * 10);
-        request.setEnd_index(request.getPage() * 10);
         return vendorAdminService.getReviewListCallDataByPagination(request);
     }
 
@@ -291,7 +294,6 @@ public class VendorPostController {
         VendorPagingRequest request = new Gson().fromJson(body, VendorPagingRequest.class);
         request.setVendor_no(vendor_no);
         request.setStart_index((request.getPage() - 1) * 10);
-        request.setEnd_index(request.getPage() * 10);
         return vendorAdminService.getGoodsListDataCallByPagination(request);
     }
 
@@ -302,7 +304,85 @@ public class VendorPostController {
         VendorPagingRequest request = new Gson().fromJson(body, VendorPagingRequest.class);
         request.setVendor_no(vendor_no);
         request.setStart_index((request.getPage() - 1) * 10);
-        request.setEnd_index(request.getPage() * 10);
         return vendorAdminService.getPointChargeListDataCallByPagination(request);
     }
+
+    @RequestMapping("/manage/point/accumulate/paging")
+    public VendorStoreManagementPointAccumulatePagingResponse VendorPointAccumulateCallByPagination(HttpSession session,
+                                                                                                    @RequestBody String body) {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorPagingRequest request = new Gson().fromJson(body, VendorPagingRequest.class);
+        request.setVendor_no(vendor_no);
+        request.setStart_index((request.getPage() - 1) * 10);
+        return vendorAdminService.getPointAccumulateListDataCallByPagination(request);
+    }
+
+    @RequestMapping("/manage/sales/paging")
+    public VendorStoreManagementSalesPagingResponse VendorSalesListCallByPagination(HttpSession session,
+                                                                                    @RequestBody String body) {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorPagingRequest request = new Gson().fromJson(body, VendorPagingRequest.class);
+        request.setVendor_no(vendor_no);
+        request.setStart_index((request.getPage() - 1) * 10);
+        return vendorAdminService.getVendorSalesListDataCallByPagination(request);
+    }
+
+    @RequestMapping("/manage/customer/notice/paging")
+    public VendorStoreManagementNoticePagingResponse VendorNoticeListCallByPagination(HttpSession session,
+                                                                                      @RequestBody String body) {
+        VendorPagingRequest request = new Gson().fromJson(body, VendorPagingRequest.class);
+        request.setStart_index((request.getPage() - 1) * 10);
+        return vendorAdminService.getNoticeListDataCallByPagination(request);
+    }
+
+    @RequestMapping("/manage/customer/faq/paging")
+    public VendorStoreManagementFAQPagingResponse VendorFAQListCallByPagination(HttpSession session,
+                                                                                @RequestBody String body) {
+        VendorPagingRequest request = new Gson().fromJson(body, VendorPagingRequest.class);
+        request.setStart_index((request.getPage() - 1) * 10);
+        return vendorAdminService.getFAQListDataCallByPagination(request);
+    }
+
+    @RequestMapping("/manage/point/charge/reject")
+    public VendorStoreManagementPointChargeRejectInfo VendorPointChargeRejectModalInfo(HttpSession session,
+                                                                                       @RequestBody String body) {
+        VendorPointChargeRejectModalRequest request = new Gson().fromJson(body, VendorPointChargeRejectModalRequest.class);
+        return vendorAdminService.getVendorPointChargeRejectInfo(request);
+    }
+
+    @RequestMapping("/manage/point/charge/cancel/info")
+    public VendorStoreManagementPointChargeCancelInfo VendorPointChargeCancelModalInfo(HttpSession session,
+                                                                                       @RequestBody String body) {
+        VendorPointChargeCancelModalRequest request = new Gson().fromJson(body, VendorPointChargeCancelModalRequest.class);
+        return vendorAdminService.getVendorPointChargeModalInfo(request);
+    }
+
+    @RequestMapping("/manage/point/charge/cancel/request")
+    public int VendorPointChargeCancel(HttpSession session, @RequestBody String body) {
+        VendorPointChargeCancelRequest request = new Gson().fromJson(body, VendorPointChargeCancelRequest.class);
+        return vendorAdminService.cancelVendorPointCharge(request);
+    }
+
+    @RequestMapping("/manage/point/accumulate/review")
+    public VendorStoreManagementPointAccumulateReviewInfo VendorPointAccumulateModalInfo(HttpSession session,
+                                                                                          @RequestBody String body) {
+        VendorPointAccumulateReviewRequest request = new Gson().fromJson(body, VendorPointAccumulateReviewRequest.class);
+        return vendorAdminService.getVendorPointAccumulateReviewInfo(request);
+
+    }
+
+    @RequestMapping("/manage/point/accumulate/reject")
+    public VendorStoreManagementPointAccumulateCancelRejectInfo VendorPointAccumulateCancelRejectModalInfo(HttpSession session,
+                                                                                                           @RequestBody String body) {
+        VendorPointAccumulateCancelRejectRequest request = new Gson().fromJson(body, VendorPointAccumulateCancelRejectRequest.class);
+        return vendorAdminService.getVendorPointAccumulateCancelRejectInfo(request);
+    }
+
+    @RequestMapping("/manage/point/accumulate/cancel/info")
+    public VendorStoreManagementPointAccumulateCancelInfo VendorPointAccumulateCancelModalInfo(HttpSession session,
+                                                                                               @RequestBody String body) {
+        VendorPointAccumulateCancelModalRequest request = new Gson().fromJson(body, VendorPointAccumulateCancelModalRequest.class);
+        return vendorAdminService.getVendorPointAccumulateCancelModalInfo(request);
+    }
+
 }

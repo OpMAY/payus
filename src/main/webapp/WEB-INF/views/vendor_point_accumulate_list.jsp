@@ -59,21 +59,28 @@
                         <div class="col payus-modal-textarea-form">
                             <label for="charge-request-point">포인트</label>
                             <textarea class="payus-modal-textarea" id="charge-request-point" rows="1"
-                                      readonly>4,000P</textarea>
+                                      readonly></textarea>
                         </div>
                         <div class="col payus-modal-textarea-form">
                             <label for="charge-request-date">적립 일자</label>
                             <textarea class="payus-modal-textarea" id="charge-request-date" rows="1"
-                                      readonly>2021.11.26</textarea>
+                                      readonly></textarea>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 1rem">
+                        <div class="col-12">
+                            <label for="cancel-reason">취소 요청 사유</label>
+                            <textarea class="payus-modal-textarea" id="cancel-sent-reason" rows="5"
+                                      readonly></textarea>
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 1rem">
                         <div class="col-12">
                             <label for="reject-reason">반려 사유</label>
-                            <textarea class="payus-modal-textarea" id="reject-reason" rows="5" readonly>송금 내역이 존재하지 않습니다.송금 내역 확인 후 다시 문의해주시길 바랍니다.</textarea>
+                            <textarea class="payus-modal-textarea" id="reject-reason" rows="5" readonly></textarea>
                         </div>
                     </div>
-                    <div data-type="not-answered">
+                    <div>
                         <div class="row modal-btn-div"
                              style="margin-bottom: 1rem; display: flex; justify-content: flex-end;">
                             <div class="col-12 col-xl-3 col-lg-4" style="margin-bottom: 1rem">
@@ -105,17 +112,17 @@
                         <div class="col payus-modal-textarea-form">
                             <label for="cancel-accumulate-request-user-name">고객 닉네임</label>
                             <textarea class="payus-modal-textarea" id="cancel-accumulate-request-user-name" rows="1"
-                                      readonly>한지우</textarea>
+                                      readonly></textarea>
                         </div>
                         <div class="col payus-modal-textarea-form">
-                            <label for="cancel-accumulate-request-point">요청 포인트</label>
+                            <label for="cancel-accumulate-request-point">포인트</label>
                             <textarea class="payus-modal-textarea" id="cancel-accumulate-request-point" rows="1"
-                                      readonly>4,000P</textarea>
+                                      readonly></textarea>
                         </div>
                         <div class="col payus-modal-textarea-form">
                             <label for="cancel-accumulate-request-date">적립 일자</label>
                             <textarea class="payus-modal-textarea" id="cancel-accumulate-request-date" rows="1"
-                                      readonly>2021.11.26</textarea>
+                                      readonly></textarea>
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 1rem">
@@ -154,27 +161,27 @@
                          style="margin-top: 2rem">
                         <div class="col payus-modal-textarea-form">
                             <label for="review-writer">작성자</label>
-                            <textarea class="payus-modal-textarea" id="review-writer" rows="1" readonly>리뷰 내용</textarea>
+                            <textarea class="payus-modal-textarea" id="review-writer" rows="1" readonly></textarea>
                         </div>
                         <div class="col payus-modal-textarea-form">
                             <label for="review-rate">별점</label>
-                            <textarea class="payus-modal-textarea" id="review-rate" rows="1" readonly>4</textarea>
+                            <textarea class="payus-modal-textarea" id="review-rate" rows="1" readonly></textarea>
                         </div>
                         <div class="col payus-modal-textarea-form">
                             <label for="review-reg-date">생성 일자</label>
                             <textarea class="payus-modal-textarea" id="review-reg-date" rows="1"
-                                      readonly>2021.01.12</textarea>
+                                      readonly></textarea>
                         </div>
                         <div class="col payus-modal-textarea-form">
                             <label for="review-answer-status">답변 여부</label>
                             <textarea class="payus-modal-textarea" id="review-answer-status" rows="1"
-                                      readonly>답변 완료</textarea>
+                                      readonly></textarea>
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 1rem">
                         <div class="col-12">
                             <label for="review-content">리뷰 내용</label>
-                            <textarea class="payus-modal-textarea" id="review-content" rows="5" readonly>리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용</textarea>
+                            <textarea class="payus-modal-textarea" id="review-content" rows="5" readonly></textarea>
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 1rem">
@@ -182,41 +189,6 @@
                             <label for="review-images">리뷰 이미지</label>
                             <div class="row row-cols-1 row-cols-xl-5 row-cols-lg-3 row-cols-md-2 row-cols-sm-1"
                                  id="review-images">
-                                <div class="col modal-image-div">
-                                    <div class="img-container">
-                                        <img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; height: 100%; object-fit: fill">
-                                    </div>
-                                </div>
-                                <div class="col modal-image-div">
-                                    <div class="img-container">
-                                        <img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; height: 100%; object-fit: fill">
-                                    </div>
-                                </div>
-                                <div class="col modal-image-div">
-                                    <div class="img-container">
-                                        <img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; height: 100%; object-fit: fill">
-                                    </div>
-                                </div>
-                                <div class="col modal-image-div">
-                                    <div class="img-container">
-                                        <img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; height: 100%; object-fit: fill">
-                                    </div>
-                                </div>
-                                <div class="col modal-image-div">
-                                    <div class="img-container">
-                                        <img class="clickable_img"
-                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
-                                             alt style="width: 100%; height: 100%; object-fit: fill">
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -243,9 +215,13 @@
                     </div>
                     <div data-type="answered" style="display: none">
                         <div class="row" style="margin-bottom: 1rem">
+                            <div class="col-12 col-lg-4 col-xl-4" style="margin-bottom: 1rem">
+                                <label for="review-answered-date">답변 일자</label>
+                                <textarea class="payus-modal-textarea" id="review-answered-date" rows="1" readonly></textarea>
+                            </div>
                             <div class="col-12">
                                 <label for="review-answered-content">답변 내용</label>
-                                <textarea class="payus-modal-textarea" id="review-answered-content" rows="5" readonly>답변 내용입니다.</textarea>
+                                <textarea class="payus-modal-textarea" id="review-answered-content" rows="5" readonly></textarea>
                             </div>
                         </div>
                         <div class="row modal-btn-div"
@@ -273,17 +249,20 @@
                     <div class="row" style="margin-bottom: 1rem;justify-content: right">
                         <div class="col-12 col-xl-9 col-lg-12 col-md-12 col-sm-12" style="flex-direction: column">
                             <span class="mypoint">나의 포인트 <strong id="point_strong"
-                                    style="font-size: 2rem; color: #6D29D0"></strong></span>
+                                                                 style="font-size: 2rem; color: #6D29D0"></strong></span>
                             <span>페이어스 포인트가 10,000P 이하인 경우 앱에 상점이 노출되지 않습니다.</span>
                         </div>
                         <div class="col-12 col-xl-3 col-lg-4 col-md-4 col-sm-4"
                              style="padding-top: 2rem; justify-content: right">
                             <select class="payus-select" id="review-data-type-select"
-                                    style="color: black;" onchange="alert('바뀜')">
+                                    style="color: black;">
                                 <option selected value="1">전체</option>
-                                <option value="2">승인</option>
-                                <option value="3">미승인</option>
-                                <option value="4">요청</option>
+                                <option value="2">적립 예정</option>
+                                <option value="3">적립 완료</option>
+                                <option value="4">취소 요청</option>
+                                <option value="5">취소됨</option>
+                                <option value="6">취소 반려됨</option>
+                                <option value="7">답변 미작성</option>
                             </select>
                         </div>
                     </div>
@@ -304,7 +283,7 @@
                                     <th style="width: 15%">리뷰 상태</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="pagination_layout">
                                 <c:forEach var="i" begin="1" end="${accumulate.size()}">
                                     <tr accumulate="${accumulate[i-1].accumulate_no}">
                                         <td>${i}</td>
@@ -315,13 +294,13 @@
                                         <td class="td-date">${accumulate[i-1].reg_date}</td>
                                         <td><c:choose><c:when
                                                 test="${accumulate[i-1].status == 1}">적립 예정<button type="button" style="display: block; margin-top: 10px"
-                                            class="btn btn-payus-table cancel-request">
+                                            class="btn btn-payus-table cancel-point">
                                             취소 요청
                                             </button></c:when><c:when
                                                 test="${accumulate[i-1].status == 2}">적립 완료</c:when><c:when
                                                 test="${accumulate[i-1].status == 3}">취소 요청됨<button type="button" style="display: block; margin-top: 10px"
                                             class="btn btn-payus-table cancel-request">
-                                            요청 취소
+                                            요청 철회
                                             </button></c:when><c:when
                                                 test="${accumulate[i-1].status == 4}">적립 취소됨</c:when><c:when
                                                 test="${accumulate[i-1].status == 5}">적립 취소 반려<button type="button" style="display: block; margin-top: 10px"
@@ -358,22 +337,123 @@
 <script src="/js/date-formatter.js"></script>
 <script src="/js/payus-pagination.js"></script>
 <script>
-
+    let paginationDivId = 'accumulate-table-pagination';
+    let paginationDiv = $('#' + paginationDivId);
+    let totalAccumulateNum = ${accumulateNum};
     $(".pagination").on("click", 'a', function () {
-        let data_order = $(this).attr('data-order');
+        let selectedPage = $(this);
+        let data_order = selectedPage.attr('data-order');
+        let data_type = $('.payus-select option:selected').val();
         console.log(data_order);
-        let paginationDiv = $("#accumulate-table-pagination");
         let active_page = paginationDiv.children('.active').attr('data-order');
-        if (active_page !== data_order) {
-            // TODO 페이지 별 데이터 AJAX
-            paginationDiv.children('.active').removeClass('active');
-            $(this).addClass('active');
+        if (data_order === '-1') {
+            if (tablePaginationChange(totalAccumulateNum, paginationDivId, false)) {
+                let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
+                dataCallFunction(firstPageAfterChange, data_type);
+            }
+        } else if (data_order === '0') {
+            if (tablePaginationChange(totalAccumulateNum, paginationDivId, true)) {
+                let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
+                dataCallFunction(firstPageAfterChange, data_type);
+            }
+        } else {
+            console.log("else");
+            if (active_page !== data_order) {
+                paginationDiv.children('.active').removeClass('active');
+                selectedPage.addClass('active');
+                dataCallFunction(data_order, data_type);
+            }
         }
+    });
+
+    function dataCallFunction(page, data_type, selectChange) {
+        let data = {"page": page, "data_type": data_type, "select_change": selectChange};
+        let selectedPageIndex = (page * 10) - 10;
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/point/accumulate/paging',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            $("#pagination_layout *").remove();
+            console.log(result);
+            console.log("length : " + result.accumulateList.length);
+            for (let i = 0; i < result.accumulateList.length; i++) {
+                let data = result.accumulateList[i];
+                let thisIndex = selectedPageIndex + i + 1;
+                let statusString;
+                let reviewString;
+                switch (data.status) {
+                    case 1 :
+                        statusString = '적립 예정<button type="button" style="display: block; margin-top: 10px"\n' +
+                            '                                            class="btn btn-payus-table cancel-point">\n' +
+                            '                                            취소 요청\n' +
+                            '                                            </button>';
+                        break;
+                    case 2 :
+                        statusString = '적립 완료';
+                        break;
+                    case 3 :
+                        statusString = '취소 요청됨<button type="button" style="display: block; margin-top: 10px"\n' +
+                            '                                            class="btn btn-payus-table cancel-request">\n' +
+                            '                                            요청 철회\n' +
+                            '                                            </button>';
+                        break;
+                    case 4 :
+                        statusString = '적립 취소됨';
+                        break;
+                    case 5 :
+                        statusString = '적립 취소 반려<button type="button" style="display: block; margin-top: 10px"\n' +
+                            '                                            class="btn btn-payus-table reject-reason">\n' +
+                            '                                            반려 사유\n' +
+                            '                                            </button>';
+                        break;
+                }
+                switch (data.review_status) {
+                    case 0:
+                    case 2:
+                        reviewString = '미작성';
+                        break;
+                    case 1:
+                        reviewString = '작성';
+                        if(data.is_answered) {
+                            reviewString = reviewString + '<button type="button" style="display: block; margin-top: 10px"\n' +
+                                '                                                    class="btn btn-payus-table answered-review">리뷰 보기\n' +
+                                '                                            </button>';
+                        } else {
+                            reviewString = reviewString + '<button type="button" style="display: block; margin-top: 10px"\n' +
+                                '                                                    class="btn btn-payus-table answer-review">답변 하기\n' +
+                                '                                            </button>';
+                        }
+                }
+                $('#pagination_layout').append('<tr accumulate="' + data.accumulate_no + '">\n' +
+                    '                                        <td>' + thisIndex + '</td>\n' +
+                    '                                        <td>' + data.user_name + '</td>\n' +
+                    '                                        <td class="td-comma">' + comma(data.price) + '원</td>\n' +
+                    '                                        <td>' + data.payback_rate + '%</td>\n' +
+                    '                                        <td class="td-comma">' + comma(data.point) + 'P</td>\n' +
+                    '                                        <td class="td-date">' + SplitDateFunction(data.reg_date) + '</td>\n' +
+                    '                                        <td>' + statusString + '</td>\n' +
+                    '                                        <td>' + reviewString + '</td>\n' +
+                    '                                    </tr>');
+                totalAccumulateNum = result.accumulate_num;
+                if (selectChange)
+                    tablePagination(result.accumulate_num, paginationDivId);
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
+    }
+
+    $('.payus-select').on('change', function () {
+        let selectedText = $('.payus-select option:selected').val();
+        dataCallFunction(1, selectedText, true);
     });
 
     $(document).ready(function () {
         listenResize();
-        tablePagination(${accumulateNum}, 'accumulate-table-pagination');
+        tablePagination(${accumulateNum}, paginationDivId);
         $('#point_strong').text(comma(${point}) + 'P');
     });
 </script>
@@ -383,64 +463,180 @@
 
     let rejectReasonModal = $("#reject-reason-modal");
     let cancelRequestModal = $("#cancel-request-modal");
+    let cancelRejectModal = $("#canceled-request-modal");
     let reviewContentModal = $("#review-content-modal");
-    $(".btn-payus-table.cancel-request").on("click", function () {
+    $(body).on("click", ".btn-payus-table.cancel-point", function () {
         let accumulate_no = $(this).parent().parent().attr('accumulate');
         console.log(accumulate_no);
-        // TODO 해당 accumulate_no로 취소 요청
-        cancelRequestModal.addClass('show');
-        cancelRequestModal.children("div").scrollTop(0);
-        if (cancelRequestModal.hasClass('show')) {
-            body.css("overflow", "hidden");
-            cancelRequestModal.focus();
+        // TODO 해당 accumulate_no로 간단 데이터
+        let data = {"accumulate_no" : accumulate_no};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/point/accumulate/cancel/info',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            console.log(result);
+            // Modal Data Set
+            $('#cancel-accumulate-request-user-name').val(result.user_name);
+            $('#cancel-accumulate-request-point').val(comma(result.point) + 'P');
+            $('#cancel-accumulate-request-date').val(SplitDateFunction(result.reg_date));
+
+            // Modal Open
+            cancelRequestModal.addClass('show');
+            cancelRequestModal.children("div").scrollTop(0);
+            if (cancelRequestModal.hasClass('show')) {
+                body.css("overflow", "hidden");
+                cancelRequestModal.focus();
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
+    });
+
+    $(body).on("click", ".btn-payus-table.cancel-request", function () {
+        let accumulate_no = $(this).parent().parent().attr('accumulate');
+        console.log(accumulate_no);
+        if(confirm('취소 요청한 포인트 적립을 철회하시겠습니까?')){
+            // TODO 포인트 취소 요청 철회 - 3일 이내면 status -> 1, 3일 지났으면 status -> 2
+        } else {
+            return false;
         }
     });
 
-
-    $(".btn-payus-table.reject-reason").on("click", function () {
+    $(body).on("click", ".btn-payus-table.reject-reason", function () {
         let accumulate_no = $(this).parent().parent().attr('accumulate');
         console.log(accumulate_no);
         // TODO 해당 accumulate_no로 반려 사유 받아오기
+        let data = {"accumulate_no" : accumulate_no};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/point/accumulate/reject',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            console.log(result);
+            // Modal Data Set
+            $('#charge-request-point').val(result.point);
+            $('#charge-request-date').val(SplitDateFunction(result.request_date));
+            $('#cancel-sent-reason').val(result.cancel_reason);
+            $('#reject-reason').val(result.reject_reason);
 
-        rejectReasonModal.addClass('show');
-        rejectReasonModal.children("div").scrollTop(0);
+            // Modal Open
+            rejectReasonModal.addClass('show');
+            rejectReasonModal.children("div").scrollTop(0);
 
-        if (rejectReasonModal.hasClass('show')) {
-            body.css("overflow", "hidden");
-            rejectReasonModal.focus();
-        }
+            if (rejectReasonModal.hasClass('show')) {
+                body.css("overflow", "hidden");
+                rejectReasonModal.focus();
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
+
     });
 
-    $(".btn-payus-table.answer-review").on("click", function () {
+    $(body).on("click", ".btn-payus-table.answer-review", function () {
         let accumulate_no = $(this).parent().parent().attr('accumulate');
         console.log(accumulate_no);
-        // TODO 해당 accumulate_no로 반려 사유 받아오기
+        let data = {"accumulate_no" : accumulate_no};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/point/accumulate/review',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            let reviewImageDiv = $('#review-images');
+            console.log(result);
+            // 모달 상위 textArea Setting - 답변 완료 모달
+            $('#review-writer').val(result.user_name);
+            $('#review-rate').val(result.rate);
+            $('#review-reg-date').val(SplitDateFunction(result.reg_date));
+            $('#review-answer-status').val('미답변');
 
-        reviewContentModal.addClass('show');
-        reviewContentModal.children("div").children("div:eq(04)").css("display", "block");
-        reviewContentModal.children("div").children("div:eq(05)").css("display", "none");
-        reviewContentModal.children("div").scrollTop(0);
-        if (reviewContentModal.hasClass('show')) {
-            body.css("overflow", "hidden");
-            reviewContentModal.focus();
-        }
+            // 리뷰 내용
+            $('#review-content').val(result.content);
+
+            // 리뷰 이미지
+            reviewImageDiv.children().remove();
+            $(result.image_list).each(function (index, object) {
+                reviewImageDiv.append('<div class="col modal-image-div">\n' +
+                    '                                    <div class="img-container">\n' +
+                    '                                        <img class="clickable_img"\n' +
+                    '                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/' + object + '"\n' +
+                    '                                             alt style="width: 100%; height: 100%; object-fit: fill">\n' +
+                    '                                    </div>\n' +
+                    '                                </div>');
+            });
+
+            // Modal Open
+            reviewContentModal.addClass('show');
+            reviewContentModal.children("div").children("div:eq(04)").css("display", "block");
+            reviewContentModal.children("div").children("div:eq(05)").css("display", "none");
+            reviewContentModal.children("div").scrollTop(0);
+            if (reviewContentModal.hasClass('show')) {
+                body.css("overflow", "hidden");
+                reviewContentModal.focus();
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
+
     });
 
 
-    $(".btn-payus-table.answered-review").on("click", function () {
+    $(body).on("click", ".btn-payus-table.answered-review", function () {
         let accumulate_no = $(this).parent().parent().attr('accumulate');
         console.log(accumulate_no);
-        // TODO 해당 accumulate_no로 반려 사유 받아오기
+        let data = {"accumulate_no" : accumulate_no};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/point/accumulate/review',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            let reviewImageDiv = $('#review-images');
+            console.log(result);
+            // 모달 상위 textArea Setting - 답변 완료 모달
+            $('#review-writer').val(result.user_name);
+            $('#review-rate').val(result.rate);
+            $('#review-reg-date').val(SplitDateFunction(result.reg_date));
+            $('#review-answer-status').val('답변 완료');
 
-        reviewContentModal.addClass('show');
+            // 리뷰 내용 및 답변 내용
+            $('#review-content').val(result.content);
+            $('#review-answered-date').val(SplitDateFunction(result.answer_date));
+            $('#review-answered-content').val(result.answer_content);
 
-        reviewContentModal.children("div").children("div:eq(04)").css("display", "none");
-        reviewContentModal.children("div").children("div:eq(05)").css("display", "block");
-        reviewContentModal.children("div").scrollTop(0);
-        if (reviewContentModal.hasClass('show')) {
-            body.css("overflow", "hidden");
-            reviewContentModal.focus();
-        }
+            // 리뷰 이미지
+            reviewImageDiv.children().remove();
+            $(result.image_list).each(function (index, object) {
+                reviewImageDiv.append('<div class="col modal-image-div">\n' +
+                    '                                    <div class="img-container">\n' +
+                    '                                        <img class="clickable_img"\n' +
+                    '                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/' + object + '"\n' +
+                    '                                             alt style="width: 100%; height: 100%; object-fit: fill">\n' +
+                    '                                    </div>\n' +
+                    '                                </div>');
+            });
+
+            // Modal Open
+            reviewContentModal.addClass('show');
+
+            reviewContentModal.children("div").children("div:eq(04)").css("display", "none");
+            reviewContentModal.children("div").children("div:eq(05)").css("display", "block");
+            reviewContentModal.children("div").scrollTop(0);
+            if (reviewContentModal.hasClass('show')) {
+                body.css("overflow", "hidden");
+                reviewContentModal.focus();
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
     });
 
     $(".modal-close").on("click", function () {
@@ -459,7 +655,7 @@
         }
     });
 
-    $('.clickable_img').on("click", function () {
+    $(body).on("click",'.clickable_img',  function () {
         if (confirm('해당 이미지를 보시겠습니까?')) {
             let imageUrl = $(this).attr("src");
             window.open(imageUrl);

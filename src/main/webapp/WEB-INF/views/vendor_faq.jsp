@@ -132,13 +132,13 @@
                         <div class="col-12" id="table-col"
                              style="display: flex; justify-content: center; flex-direction: column">
                             <div class="tab">
-                                <button class="tablinks active">전체</button>
-                                <button class="tablinks">공급자</button>
-                                <button class="tablinks">결제</button>
-                                <button class="tablinks">이용방법</button>
-                                <button class="tablinks">리뷰</button>
-                                <button class="tablinks">페이백</button>
-                                <button class="tablinks">기타</button>
+                                <button class="tablinks active" data-type="1">전체</button>
+                                <button class="tablinks" data-type="2">공급자</button>
+                                <button class="tablinks" data-type="3">결제</button>
+                                <button class="tablinks" data-type="4">이용방법</button>
+                                <button class="tablinks" data-type="5">리뷰</button>
+                                <button class="tablinks" data-type="6">페이백</button>
+                                <button class="tablinks" data-type="7">기타</button>
                             </div>
                             <table class="payus-table">
                                 <thead>
@@ -151,15 +151,14 @@
                                     <th style="width: 15%">상세보기</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="pagination_layout">
                                 <c:forEach var="i" begin="1" end="${faq.size()}">
                                     <tr faq="${faq[i-1].faq_no}">
                                         <td>${i}</td>
                                         <td>
                                             <div class="overflow">
                                                 <div class="overflow-space">
-                                                    <div class="overflow-text">${faq[i-1].question}
-                                                    </div>
+                                                    <div class="overflow-text">${faq[i-1].question}</div>
                                                 </div>
                                             </div>
                                         </td>
@@ -171,11 +170,8 @@
                                             <c:when test="${faq[i-1].type == 5}">페이백</c:when>
                                             <c:when test="${faq[i-1].type == 6}">기타</c:when>
                                         </c:choose></td>
-                                        <td>
-                                                ${faq[i-1].reg_date}
-                                        </td>
-                                        <td>${faq[i-1].view_num}
-                                        </td>
+                                        <td class="td-date">${faq[i-1].reg_date}</td>
+                                        <td class="td-comma">${faq[i-1].view_num}</td>
                                         <td>
                                             <button type="button" style="display: block;"
                                                     class="btn btn-payus-table">
@@ -200,34 +196,105 @@
 <script src="/js/payus-pagination.js"></script>
 <script src="/js/date-formatter.js"></script>
 <script>
-
-
+    let paginationDivId = 'faq-table-pagination';
+    let paginationDiv = $('#' + paginationDivId);
+    let totalFAQNum = ${faqNum};
     $(".pagination").on("click", 'a', function () {
-        let data_order = $(this).attr('data-order');
+        let selectedPage = $(this);
+        let data_order = selectedPage.attr('data-order');
+        let data_type = $('.tab').children('.active').attr('data-type');
         console.log(data_order);
-        let paginationDiv = $("#faq-table-pagination");
         let active_page = paginationDiv.children('.active').attr('data-order');
-        if (active_page !== data_order) {
-            // TODO 페이지 별 데이터 AJAX
-            paginationDiv.children('.active').removeClass('active');
-            $(this).addClass('active');
+        if (data_order === '-1') {
+            if (tablePaginationChange(totalFAQNum, paginationDivId, false)) {
+                let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
+                dataCallFunction(firstPageAfterChange, data_type);
+            }
+        } else if (data_order === '0') {
+            if (tablePaginationChange(totalFAQNum, paginationDivId, true)) {
+                let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
+                dataCallFunction(firstPageAfterChange, data_type);
+            }
+        } else {
+            console.log("else");
+            if (active_page !== data_order) {
+                paginationDiv.children('.active').removeClass('active');
+                selectedPage.addClass('active');
+                dataCallFunction(data_order, data_type);
+            }
         }
     });
+
+    function dataCallFunction(page, data_type, dataTypeChaged, searchKeyword, sTitle, sContent) {
+        let data = {"page": page, "data_type": data_type};
+        let selectedPageIndex = (page * 10) - 10;
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/customer/faq/paging',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            $("#pagination_layout *").remove();
+            console.log(result);
+            console.log("length : " + result.faqList.length);
+            for (let i = 0; i < result.faqList.length; i++) {
+                let data = result.faqList[i];
+                let thisIndex = selectedPageIndex + i + 1;
+                let categoryText;
+                switch (data.type) {
+                    case 1:
+                        categoryText = '공급자';
+                        break;
+                    case 2:
+                        categoryText = '결제';
+                        break;
+                    case 3:
+                        categoryText = '이용방법';
+                        break;
+                    case 4:
+                        categoryText = '리뷰';
+                        break;
+                    case 5:
+                        categoryText = '페이백';
+                        break;
+                    case 6:
+                        categoryText = '기타';
+                        break;
+                }
+                $('#pagination_layout').append('<tr faq="'+ data.faq_no +'">\n' +
+                    '                                        <td>' + thisIndex + '</td>\n' +
+                    '                                        <td>\n' +
+                    '                                            <div class="overflow">\n' +
+                    '                                                <div class="overflow-space">\n' +
+                    '                                                    <div class="overflow-text">' + data.question + '</div>\n' +
+                    '                                                </div>\n' +
+                    '                                            </div>\n' +
+                    '                                        </td>\n' +
+                    '                                        <td>' + categoryText + '</td>\n' +
+                    '                                        <td class="td-date">' + SplitDateFunction(data.reg_date) + '</td>\n' +
+                    '                                        <td class="td-comma">' + comma(data.view_num) + '</td>\n' +
+                    '                                        <td>\n' +
+                    '                                            <button type="button" style="display: block;"\n' +
+                    '                                                    class="btn btn-payus-table">\n' +
+                    '                                                상세보기\n' +
+                    '                                            </button>\n' +
+                    '                                        </td>\n' +
+                    '                                    </tr>');
+                totalFAQNum = result.faq_num;
+
+                if(dataTypeChaged)
+                    tablePagination(totalFAQNum, paginationDivId);
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
+    }
 
     $(document).ready(function () {
         listenResize();
         tablePagination(${faqNum}, 'faq-table-pagination');
     });
-
-    function listenResize() {
-        let screenHeight = $(window).height();
-        console.log(screenHeight);
-
-        let tableWidth = $(".payus-table").width();
-        console.log("table Width : " + tableWidth);
-        let pagination = $(".pagination");
-        pagination.width(tableWidth);
-    }
 </script>
 <script>
     let body = $(document.body);
@@ -270,15 +337,6 @@
         }
     });
 
-    $(document).ready(function () {
-        let table = $(".payus-table");
-        let body = table.children('tbody');
-        for (let i = 0; i < body.children().length; i++) {
-            let originalRegDate = body.children('tr:eq(' + i + ')').children('td:eq(3)').text();
-            body.children('tr:eq(' + i + ')').children('td:eq(3)').text(SplitDateFunction(originalRegDate));
-        }
-    });
-
     $('.payus-modal').on("click", function (event) {
         if (event.target.className === 'payus-modal show') {
             modal.removeClass("show");
@@ -294,8 +352,7 @@
             const tabDiv = $(this).parent();
             tabDiv.children("button.active").removeClass("active");
             $(this).addClass("active");
-
-            // TODO AJAX OR URL MOVE - 카테고리에 맞는 FAQ 불러오기
+            dataCallFunction(1, $(this).attr('data-type'), true);
         }
     });
 </script>

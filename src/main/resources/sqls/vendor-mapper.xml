@@ -24,6 +24,11 @@
         <result column="image_list" property="image_list"
                 typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
     </resultMap>
+    <resultMap id="VendorStoreManagementPointAccumulateReviewInfo"
+               type="com.mvsolutions.payus.model.web.vendor.response.point.VendorStoreManagementPointAccumulateReviewInfo">
+        <result column="image_list" property="image_list"
+                typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+    </resultMap>
     <select id="checkVendorExists" resultType="_boolean">
         select EXISTS(select * from vendor WHERE id = #{id} AND password = #{password})
     </select>
@@ -201,7 +206,7 @@
             </when>
         </choose>
         ORDER BY review.reg_date DESC
-        LIMIT #{start_index}, #{end_index}
+        LIMIT #{start_index}, 10
     </select>
     <select id="getVendorStoreGoodsList" resultType="StoreGoods" resultMap="StoreGoods">
         SET @StoreNo = (select store_no
@@ -277,6 +282,12 @@
         ORDER BY reg_date DESC
         LIMIT 10
     </select>
+    <select id="getNoticeListByPaging" resultType="VendorAdminNoticeList">
+        select notice_no, title, reg_date, view_num
+        from notice
+        ORDER BY reg_date DESC
+        LIMIT #{start_index}, 10
+    </select>
     <select id="getNoticeNum" resultType="int">
         select COUNT(*)
         from notice
@@ -286,6 +297,20 @@
         from faq
         ORDER BY reg_date DESC
         LIMIT 10
+    </select>
+    <select id="getFAQListByPaging" resultType="VendorAdminFAQList">
+        select faq_no, question, answer, type, reg_date, view_num
+        from faq
+        <choose>
+            <when test="data_type == 2">WHERE type = 1</when>
+            <when test="data_type == 3">WHERE type = 2</when>
+            <when test="data_type == 4">WHERE type = 3</when>
+            <when test="data_type == 5">WHERE type = 4</when>
+            <when test="data_type == 6">WHERE type = 5</when>
+            <when test="data_type == 7">WHERE type = 6</when>
+        </choose>
+        ORDER BY reg_date DESC
+        LIMIT #{start_index}, 10
     </select>
     <select id="getFAQNum" resultType="int">
         select COUNT(*)
@@ -451,6 +476,23 @@
         ORDER BY point_accumulate.reg_date DESC
         LIMIT 10
     </select>
+    <select id="getVendorSalesListAllForExcel" resultType="VendorAdminSalesList">
+        SET @StoreNo = (select store_no
+                        from store
+                        WHERE vendor_no = #{vendor_no});
+        select accumulate_no,
+               user.nickname                                as user_name,
+               price,
+               payback_rate,
+               point_accumulate.point,
+               point_accumulate.reg_date,
+               IF(point_accumulate.status = 4, false, true) as status
+        from point_accumulate,
+             user
+        WHERE store_no = @StoreNo
+          AND user.user_no = point_accumulate.user_no
+        ORDER BY point_accumulate.reg_date DESC
+    </select>
     <select id="getVendorSalesSummary" resultType="VendorSalesPageSummary">
         SET @StoreNo = (select store_no
                         from store
@@ -475,7 +517,7 @@
         WHERE store_no = @StoreNo
           AND status != 4
     </select>
-    <select id="getVendorPointAccumulateListByPaging" resultType="VendorAdminPointChargeList">
+    <select id="getVendorPointChargeListByPaging" resultType="VendorAdminPointChargeList">
         select charge_no, point, reg_date, revise_date, status
         from point_charge
         WHERE vendor_no = #{vendor_no}
@@ -486,7 +528,7 @@
             <when test="data_type == 5">AND status = 5</when>
         </choose>
         ORDER BY reg_date DESC
-        LIMIT #{start_index}, #{end_index}
+        LIMIT #{start_index}, 10
     </select>
     <select id="getChargeListNumberByDataType" resultType="int">
         select COUNT(*)
@@ -498,5 +540,163 @@
             <when test="data_type == 4">AND (status = 1 OR status = 4)</when>
             <when test="data_type == 5">AND status = 5</when>
         </choose>
+    </select>
+    <select id="getVendorPointAccumulateListByPaging" resultType="VendorAdminPointAccumulateList">
+        SET @StoreNo = (select store_no
+        from store
+        WHERE vendor_no = #{vendor_no});
+        select accumulate_no,
+        user.nickname as user_name,
+        price,
+        payback_rate,
+        point_accumulate.point,
+        point_accumulate.reg_date,
+        status,
+        review_status,
+        IF(answer_date is NULL, false, true) as is_answered
+        from point_accumulate,
+        user
+        WHERE point_accumulate.store_no = @StoreNo
+        AND user.user_no = point_accumulate.user_no
+        <choose>
+            <when test="data_type == 2">AND status = 1</when>
+            <when test="data_type == 3">AND status = 2</when>
+            <when test="data_type == 4">AND status = 3</when>
+            <when test="data_type == 5">AND status = 4</when>
+            <when test="data_type == 6">AND status = 5</when>
+            <when test="data_type == 7">AND review_status = true AND answer_date is null</when>
+        </choose>
+        ORDER BY point_accumulate.reg_date DESC
+        LIMIT #{start_index}, 10
+    </select>
+    <select id="getAccumulateListNumberByDataType" resultType="int">
+        SET @StoreNo = (select store_no
+        from store
+        WHERE vendor_no = #{vendor_no});
+        select COUNT(*)
+        from point_accumulate
+        WHERE store_no = @StoreNo
+        <choose>
+            <when test="data_type == 2">AND status = 1</when>
+            <when test="data_type == 3">AND status = 2</when>
+            <when test="data_type == 4">AND status = 3</when>
+            <when test="data_type == 5">AND status = 4</when>
+            <when test="data_type == 6">AND status = 5</when>
+            <when test="data_type == 7">AND review_status = true AND answer_date is null</when>
+        </choose>
+    </select>
+    <select id="getVendorSalesListByPaging" resultType="VendorAdminSalesList">
+        SET @StoreNo = (select store_no
+        from store
+        WHERE vendor_no = #{vendor_no});
+        select accumulate_no,
+        user.nickname as user_name,
+        price,
+        payback_rate,
+        point_accumulate.point,
+        point_accumulate.reg_date,
+        IF(point_accumulate.status = 4, false, true) as status
+        from point_accumulate,
+        user
+        WHERE store_no = @StoreNo
+        AND user.user_no = point_accumulate.user_no
+        <choose>
+            <when test="data_type == 2">AND point_accumulate.status != 4</when>
+            <when test="data_type == 3">AND point_accumulate.status = 4</when>
+        </choose>
+        ORDER BY point_accumulate.reg_date DESC
+        LIMIT #{start_index}, 10
+    </select>
+    <select id="getVendorSalesNumByDataType" resultType="int">
+        SET @StoreNo = (select store_no
+        from store
+        WHERE vendor_no = #{vendor_no});
+        select COUNT(*)
+        from point_accumulate
+        WHERE store_no = @StoreNo
+        <choose>
+            <when test="data_type == 2">AND point_accumulate.status != 4</when>
+            <when test="data_type == 3">AND point_accumulate.status = 4</when>
+        </choose>
+    </select>
+    <select id="getVendorPointChargeRejectInfo" resultType="VendorStoreManagementPointChargeRejectInfo">
+        select point_charge.point, point_charge.reg_date as request_date, point_charge_reject.reason as reject_reason
+        from point_charge,
+             point_charge_reject
+        WHERE point_charge.charge_no = #{charge_no}
+          AND point_charge_reject.charge_no = #{charge_no}
+    </select>
+    <select id="getVendorPointChargeModalInfo" resultType="VendorStoreManagementPointChargeCancelInfo">
+        SET @CancelReason = (SELECT reason
+                             from point_charge_cancel
+                             WHERE charge_no = #{charge_no});
+        select point, reg_date as request_date, @CancelReason as cancel_reason
+        from point_charge
+        WHERE charge_no = #{charge_no}
+    </select>
+    <select id="checkPointChargeStatus" resultType="int">
+        select status
+        from point_charge
+        WHERE charge_no = #{charge_no}
+    </select>
+    <insert id="insertChargeRequest">
+        insert into point_charge_cancel(charge_no, reason, reg_date)
+        VALUES (#{charge_no}, #{reason}, #{reg_date})
+    </insert>
+    <update id="updatePointChargeByCancel">
+        SET @OriginalStatus = (select IF(status = 1, 5, 4)
+                               from point_charge
+                               WHERE charge_no = #{charge_no});
+        SET @CancelStatus = (select IF(status = 1, true, false)
+                             from point_charge
+                             WHERE charge_no = #{charge_no});
+        SET @AutoCancelDate = (select reg_date
+                               from point_charge_cancel
+                               WHERE charge_no = #{charge_no});
+        update point_charge
+        SET point_charge.status      = @OriginalStatus,
+            point_charge.revise_date = @AutoCancelDate
+        WHERE point_charge.charge_no = #{charge_no};
+
+        update point_charge_cancel
+        SET point_charge_cancel.cancel_status = @CancelStatus,
+            point_charge_cancel.cancel_date   = now()
+        WHERE point_charge_cancel.charge_no = #{charge_no}
+    </update>
+    <select id="getVendorPointAccumulateReviewInfo" resultType="VendorStoreManagementPointAccumulateReviewInfo"
+            resultMap="VendorStoreManagementPointAccumulateReviewInfo">
+        select review.review_no,
+               user.nickname as user_name,
+               review.rate,
+               review.reg_date,
+               review.answer_status,
+               review.content,
+               review.image_list,
+               review.answer_content,
+               review.answer_date
+        from review,
+             user
+        WHERE review.accumulate_no = #{accumulate_no}
+          AND user.user_no = review.user_no
+    </select>
+    <select id="getVendorPointAccumulateCancelRejectInfo"
+            resultType="VendorStoreManagementPointAccumulateCancelRejectInfo">
+        select point_accumulate.point,
+               point_accumulate.reg_date      as request_date,
+               point_accumulate_cancel.reason as cancel_reason,
+               point_accumulate_reject.reason as reject_reason
+        from point_accumulate,
+             point_accumulate_cancel,
+             point_accumulate_reject
+        WHERE point_accumulate.accumulate_no = #{accumulate_no}
+          AND point_accumulate_cancel.accumulate_no = #{accumulate_no}
+          AND point_accumulate_reject.accumulate_no = #{accumulate_no}
+    </select>
+    <select id="getVendorPointAccumulateCancelModalInfo" resultType="VendorStoreManagementPointAccumulateCancelInfo">
+        select user.nickname as user_name, point_accumulate.point, point_accumulate.reg_date
+        from point_accumulate,
+             user
+        WHERE point_accumulate.accumulate_no = #{accumulate_no}
+          AND user.user_no = point_accumulate.user_no
     </select>
 </mapper>

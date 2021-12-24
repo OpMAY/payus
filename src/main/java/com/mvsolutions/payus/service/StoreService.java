@@ -9,6 +9,7 @@ import com.mvsolutions.payus.model.rest.request.storedetailpage.UserInsertStoreF
 import com.mvsolutions.payus.model.rest.request.usermypage.UserFavoriteDeleteRequest;
 import com.mvsolutions.payus.model.rest.response.storedetailpage.StoreDetailLodgementResponse;
 import com.mvsolutions.payus.model.rest.response.storedetailpage.StoreDetailPageResponse;
+import com.mvsolutions.payus.model.rest.response.storedetailpage.StoreOptionResponse;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserFavoriteListPageResponse;
 import com.mvsolutions.payus.model.utility.kakaolocation.KakaoLocationResponse;
 import com.mvsolutions.payus.response.IntegerRes;
@@ -55,6 +56,9 @@ public class StoreService {
 
     @Autowired
     private StoreLodgementDao storeLodgementDao;
+
+    @Autowired
+    private StoreOptionDao storeOptionDao;
 
     @Autowired
     private KakaoLocationService kakaoLocationService;
@@ -139,7 +143,8 @@ public class StoreService {
             // 해당 상점 없을 때 S404
             return new ResponseEntity(StringRes.res(StatusCode.NO_STORE_FOUND), HttpStatus.OK);
         }
-        if(storeDao.checkPrivate(store_no)) {
+
+        if (storeDao.checkPrivate(store_no)) {
             // 정지된 상점일 때 D501
             return new ResponseEntity(StringRes.res(StatusCode.DENIED_CONTENT), HttpStatus.OK);
         }
@@ -154,9 +159,12 @@ public class StoreService {
         message.put("store", storeDetail);
         switch (storeDetail.getClass_first()) {
             case StoreType.LODGEMENT:
-                storeLodgementDao.setSqlSession(sqlSession);
-                StoreDetailLodgementResponse lodgementDetail = storeLodgementDao.getLodgementData(store_no);
-                message.put("lodgement", lodgementDetail);
+                storeOptionDao.setSqlSession(sqlSession);
+                StoreOptionResponse response = storeOptionDao.getStoreOption(store_no);
+                message.put("store_options", response);
+//                storeLodgementDao.setSqlSession(sqlSession);
+//                StoreDetailLodgementResponse lodgementDetail = storeLodgementDao.getLodgementData(store_no);
+//                message.put("lodgement", lodgementDetail);
                 break;
             case StoreType.RESTAURANT:
                 // 미개발 상점들

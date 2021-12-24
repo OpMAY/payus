@@ -138,8 +138,6 @@
                 if (result.valid_vendor && !result.vendor_penalty) {
                     // 세션에 vendor_no 값 저장
                     sessionStorage.setItem("vendor_no", result.vendor_no);
-                    console.log(sessionStorage.getItem("vendor_no"));
-                    alert("공급자 넘버 " + sessionStorage.getItem("vendor_no"));
                     window.location.href = "/vendor/mypage/vendor.do"
                 } else if (!result.valid_vendor) {
                     alert("아직 승인되지 않은 공급자입니다.");

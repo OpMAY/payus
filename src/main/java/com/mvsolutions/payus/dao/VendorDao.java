@@ -16,6 +16,7 @@ import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdmi
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
+import com.mvsolutions.payus.model.web.vendor.request.point.*;
 import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewAnswerRequest;
 import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewDetailRequest;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
@@ -26,8 +27,7 @@ import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminNoticeList;
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
-import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointAccumulateList;
-import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointChargeList;
+import com.mvsolutions.payus.model.web.vendor.response.point.*;
 import com.mvsolutions.payus.model.web.vendor.response.sales.VendorAdminSalesList;
 import com.mvsolutions.payus.model.web.vendor.response.sales.VendorSalesPageSummary;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewDetail;
@@ -318,6 +318,77 @@ public class VendorDao {
     public int getChargeListNumberByDataType(int vendor_no, int data_type) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         return mapper.getChargeListNumberByDataType(vendor_no, data_type);
+    }
+
+    public List<VendorAdminPointAccumulateList> getVendorPointAccumulateListByPaging(VendorPagingRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorPointAccumulateListByPaging(request);
+    }
+
+    public int getAccumulateListNumberByDataType(int vendor_no, int data_type) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getAccumulateListNumberByDataType(vendor_no, data_type);
+    }
+
+    public List<VendorAdminSalesList> getVendorSalesListByPaging(VendorPagingRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorSalesListByPaging(request);
+    }
+
+    public int getVendorSalesNumByDataType(int vendor_no, int data_type) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorSalesNumByDataType(vendor_no, data_type);
+    }
+
+    public List<VendorAdminNoticeList> getNoticeListByPaging(VendorPagingRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getNoticeListByPaging(request);
+    }
+
+    public List<VendorAdminFAQList> getFAQListByPaging(VendorPagingRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getFAQListByPaging(request);
+    }
+
+    public List<VendorAdminSalesList> getVendorSalesListAllForExcel(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorSalesListAllForExcel(vendor_no);
+    }
+
+    public VendorStoreManagementPointChargeRejectInfo getVendorPointChargeRejectInfo(VendorPointChargeRejectModalRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorPointChargeRejectInfo(request);
+    }
+
+    public VendorStoreManagementPointChargeCancelInfo getVendorPointChargeModalInfo(VendorPointChargeCancelModalRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorPointChargeModalInfo(request);
+    }
+
+    public int checkPointChargeStatus(int charge_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.checkPointChargeStatus(charge_no);
+    }
+
+    public void updatePointChargeByCancel(VendorPointChargeCancelRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.insertChargeRequest(request);
+        mapper.updatePointChargeByCancel(request);
+    }
+
+    public VendorStoreManagementPointAccumulateReviewInfo getVendorPointAccumulateReviewInfo(VendorPointAccumulateReviewRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorPointAccumulateReviewInfo(request);
+    }
+
+    public VendorStoreManagementPointAccumulateCancelRejectInfo getVendorPointAccumulateCancelRejectInfo(VendorPointAccumulateCancelRejectRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorPointAccumulateCancelRejectInfo(request);
+    }
+
+    public VendorStoreManagementPointAccumulateCancelInfo getVendorPointAccumulateCancelModalInfo(VendorPointAccumulateCancelModalRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorPointAccumulateCancelModalInfo(request);
     }
 
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);

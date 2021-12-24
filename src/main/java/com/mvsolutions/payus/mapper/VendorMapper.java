@@ -17,6 +17,7 @@ import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdmi
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
+import com.mvsolutions.payus.model.web.vendor.request.point.*;
 import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewAnswerRequest;
 import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewDetailRequest;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
@@ -27,8 +28,7 @@ import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminNoticeList;
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
-import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointAccumulateList;
-import com.mvsolutions.payus.model.web.vendor.response.point.VendorAdminPointChargeList;
+import com.mvsolutions.payus.model.web.vendor.response.point.*;
 import com.mvsolutions.payus.model.web.vendor.response.sales.VendorAdminSalesList;
 import com.mvsolutions.payus.model.web.vendor.response.sales.VendorSalesPageSummary;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewDetail;
@@ -146,4 +146,34 @@ public interface VendorMapper {
     List<VendorAdminPointChargeList> getVendorPointChargeListByPaging(VendorPagingRequest request);
 
     int getChargeListNumberByDataType(int vendor_no, int data_type);
+
+    List<VendorAdminPointAccumulateList> getVendorPointAccumulateListByPaging(VendorPagingRequest request);
+
+    int getAccumulateListNumberByDataType(int vendor_no, int data_type);
+
+    List<VendorAdminSalesList> getVendorSalesListByPaging(VendorPagingRequest request);
+
+    int getVendorSalesNumByDataType(int vendor_no, int data_type);
+
+    List<VendorAdminNoticeList> getNoticeListByPaging(VendorPagingRequest request);
+
+    List<VendorAdminFAQList> getFAQListByPaging(VendorPagingRequest request);
+
+    List<VendorAdminSalesList> getVendorSalesListAllForExcel(int vendor_no);
+
+    VendorStoreManagementPointChargeRejectInfo getVendorPointChargeRejectInfo(VendorPointChargeRejectModalRequest request);
+
+    VendorStoreManagementPointChargeCancelInfo getVendorPointChargeModalInfo(VendorPointChargeCancelModalRequest request);
+
+    int checkPointChargeStatus(int charge_no);
+
+    void insertChargeRequest(VendorPointChargeCancelRequest request);
+
+    void updatePointChargeByCancel(VendorPointChargeCancelRequest request);
+
+    VendorStoreManagementPointAccumulateReviewInfo getVendorPointAccumulateReviewInfo(VendorPointAccumulateReviewRequest request);
+
+    VendorStoreManagementPointAccumulateCancelRejectInfo getVendorPointAccumulateCancelRejectInfo(VendorPointAccumulateCancelRejectRequest request);
+
+    VendorStoreManagementPointAccumulateCancelInfo getVendorPointAccumulateCancelModalInfo(VendorPointAccumulateCancelModalRequest request);
 }
