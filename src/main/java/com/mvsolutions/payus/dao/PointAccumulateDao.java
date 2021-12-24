@@ -6,6 +6,7 @@ import com.mvsolutions.payus.model.rest.request.suphomepage.VendorAnswerReviewRe
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserReviewDeleteRequest;
 import com.mvsolutions.payus.model.rest.response.storedetailpage.UserAccumulateCheckResponse;
+import com.mvsolutions.payus.model.rest.response.suppointpage.VendorPointAccumulateCheckBan;
 import com.mvsolutions.payus.model.rest.response.suppointpage.VendorPointAccumulateListResponse;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserPointAccumulateListResponse;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserReviewPagePreDataResponse;
@@ -79,7 +80,7 @@ public class PointAccumulateDao {
         mapper.updateAccumulateByReviewDelete(request);
     }
 
-    public UserReviewPagePreDataResponse getPreDataForReview(int accumulate_no) {
+    public VendorPointAccumulateCheckBan getPreDataForReview(int accumulate_no) {
         PointAccumulateMapper mapper = sqlSession.getMapper(PointAccumulateMapper.class);
         return mapper.getPreDataForReview(accumulate_no);
     }

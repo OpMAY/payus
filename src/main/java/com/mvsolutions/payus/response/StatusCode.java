@@ -16,6 +16,7 @@ public class StatusCode {
     public static final String USER_EDIT_TYPE_ERROR = "U400";
     public static final String NO_USER_DETECTED = "U404";
     public static final String PENALTY_USER = "U501";
+    public static final String PENALTY_VENDOR = "V501";
 
     /** Content Loading / Reloading **/
     public static final String RELOAD_FAILED = "R400";
