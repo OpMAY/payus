@@ -199,9 +199,9 @@
         (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
         sin(radians(#{y})) * sin(radians(address_y)))) as dist
         from store left join advertisement_store on store.store_no = advertisement_store.store_no
-        WHERE name like concat('%',#{keyword},'%')
+        WHERE (name like concat('%',#{keyword},'%')
         OR address like concat('%',#{keyword},'%')
-        OR address_road like concat('%',#{keyword},'%')
+        OR address_road like concat('%',#{keyword},'%'))
         <if test="last_index != 0">
             AND ((6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
             sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[>]]> @LastDist OR ((6371 * acos(cos(radians(#{y})) *

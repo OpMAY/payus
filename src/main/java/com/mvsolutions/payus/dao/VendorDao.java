@@ -2,6 +2,7 @@ package com.mvsolutions.payus.dao;
 
 import com.mvsolutions.payus.mapper.VendorMapper;
 import com.mvsolutions.payus.model.rest.basic.Room;
+import com.mvsolutions.payus.model.rest.basic.Vendor;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
@@ -12,18 +13,21 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindPasswordReq
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorPasswordResetRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest;
 import com.mvsolutions.payus.model.web.vendor.request.common.VendorPagingRequest;
+import com.mvsolutions.payus.model.web.vendor.request.cs.VendorCustomerCenterFAQModalRequest;
+import com.mvsolutions.payus.model.web.vendor.request.cs.VendorCustomerCenterNoticeModalRequest;
 import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminDeleteGoodsRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.point.*;
-import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewAnswerRequest;
-import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewDetailRequest;
+import com.mvsolutions.payus.model.web.vendor.request.storemanagement.*;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
 import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminFAQList;
 import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminNoticeList;
+import com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementFAQModalInfo;
+import com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementNoticeModalInfo;
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
@@ -389,6 +393,84 @@ public class VendorDao {
     public VendorStoreManagementPointAccumulateCancelInfo getVendorPointAccumulateCancelModalInfo(VendorPointAccumulateCancelModalRequest request) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         return mapper.getVendorPointAccumulateCancelModalInfo(request);
+    }
+
+    public boolean checkPointAccumulateAlreadyCanceled(int accumulate_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.checkPointAccumulateAlreadyCanceled(accumulate_no);
+    }
+
+    public void updatePointAccumulateByDeleteCancel(VendorPointAccumulateCancelDeleteRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.updatePointAccumulateByDeleteCancel(request);
+    }
+
+    public boolean checkPointAccumulateAbleToCancel(int accumulate_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.checkPointAccumulateAbleToCancel(accumulate_no);
+    }
+
+    public void cancelPointAccumulate(VendorPointAccumulateCancelRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.updatePointAccumulateByCancel(request);
+        mapper.insertPointAccumulateCancel(request);
+    }
+
+    public boolean checkReviewAbleToAnswerForAccumulate(int accumulate_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.checkReviewAbleToAnswerForAccumulate(accumulate_no);
+    }
+
+    public void answerReviewFromPointAccumulate(VendorPointAccumulateReviewAnswerRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.answerReviewFromPointAccumulate(request);
+    }
+
+    public VendorStoreManagementNoticeModalInfo getNoticeDataForModal(VendorCustomerCenterNoticeModalRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.updateNoticeViewNum(request);
+        return mapper.getNoticeDataForModal(request);
+    }
+
+    public VendorStoreManagementFAQModalInfo getFAQDataForModal(VendorCustomerCenterFAQModalRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.updateFAQViewNum(request);
+        return mapper.getFAQDataForModal(request);
+    }
+
+    public void editExplainFromStoreDetail(VendorStoreManagementDetailExplainEditRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.editExplainFromStoreDetail(request);
+    }
+
+    public void editStoreService(VendorStoreManagementDetailServiceEditRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.editStoreService(request);
+    }
+
+    public void editStoreInformation(VendorStoreManagementDetailInformationEditRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.editStoreInformation(request);
+    }
+
+    public void registerStoreInformation(VendorStoreManagementDetailInformationRegisterRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.registerStoreInformation(request);
+    }
+
+    public void registerStoreService(VendorStoreManagementDetailServiceRegisterRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.registerStoreService(request);
+    }
+
+    public void deleteStoreService(VendorStoreManagementDetailServiceDeleteRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.deleteStoreService(request);
+    }
+
+    public void deleteStoreInformation(VendorStoreManagementDetailInformationDeleteRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.deleteStoreInformation(request);
     }
 
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);

@@ -72,10 +72,10 @@
                                                 style="color: black; height: 60px" onchange="checkSelectedValue()">
                                             <option selected disabled style="display: none">선택</option>
                                             <option id="category-lodgement" value="1">숙박</option>
-                                            <option disabled id="category-restaurant" value="2">식당</option>
-                                            <option disabled id="category-hospital" value="3">병원</option>
-                                            <option disabled id="category-shopping" value="4">쇼핑</option>
-                                            <option disabled id="category-grocery" value="5">식료품</option>
+                                            <option id="category-restaurant" value="2">식당</option>
+                                            <option id="category-hospital" value="3">병원</option>
+                                            <option id="category-shopping" value="4">쇼핑</option>
+                                            <option id="category-grocery" value="5">식료품</option>
                                         </select>
                                     </div>
                                     <div class="form-group" style="width: 45%">

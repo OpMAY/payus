@@ -12,19 +12,22 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorFindPasswordReq
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorPasswordResetRequest;
 import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest;
 import com.mvsolutions.payus.model.web.vendor.request.common.VendorPagingRequest;
+import com.mvsolutions.payus.model.web.vendor.request.cs.VendorCustomerCenterFAQModalRequest;
+import com.mvsolutions.payus.model.web.vendor.request.cs.VendorCustomerCenterNoticeModalRequest;
 import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminDeleteGoodsRequest;
 import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminRegisterGoodsRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.point.*;
-import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewAnswerRequest;
-import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewDetailRequest;
+import com.mvsolutions.payus.model.web.vendor.request.storemanagement.*;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
 import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminFAQList;
 import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminNoticeList;
+import com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementFAQModalInfo;
+import com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementNoticeModalInfo;
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
@@ -176,4 +179,40 @@ public interface VendorMapper {
     VendorStoreManagementPointAccumulateCancelRejectInfo getVendorPointAccumulateCancelRejectInfo(VendorPointAccumulateCancelRejectRequest request);
 
     VendorStoreManagementPointAccumulateCancelInfo getVendorPointAccumulateCancelModalInfo(VendorPointAccumulateCancelModalRequest request);
+
+    boolean checkPointAccumulateAlreadyCanceled(int accumulate_no);
+
+    void updatePointAccumulateByDeleteCancel(VendorPointAccumulateCancelDeleteRequest request);
+
+    boolean checkPointAccumulateAbleToCancel(int accumulate_no);
+
+    void updatePointAccumulateByCancel(VendorPointAccumulateCancelRequest request);
+
+    void insertPointAccumulateCancel(VendorPointAccumulateCancelRequest request);
+
+    boolean checkReviewAbleToAnswerForAccumulate(int accumulate_no);
+
+    void answerReviewFromPointAccumulate(VendorPointAccumulateReviewAnswerRequest request);
+
+    void updateNoticeViewNum(VendorCustomerCenterNoticeModalRequest request);
+
+    VendorStoreManagementNoticeModalInfo getNoticeDataForModal(VendorCustomerCenterNoticeModalRequest request);
+
+    void updateFAQViewNum(VendorCustomerCenterFAQModalRequest request);
+
+    VendorStoreManagementFAQModalInfo getFAQDataForModal(VendorCustomerCenterFAQModalRequest request);
+
+    void editExplainFromStoreDetail(VendorStoreManagementDetailExplainEditRequest request);
+
+    void editStoreService(VendorStoreManagementDetailServiceEditRequest request);
+
+    void editStoreInformation(VendorStoreManagementDetailInformationEditRequest request);
+
+    void registerStoreInformation(VendorStoreManagementDetailInformationRegisterRequest request);
+
+    void registerStoreService(VendorStoreManagementDetailServiceRegisterRequest request);
+
+    void deleteStoreService(VendorStoreManagementDetailServiceDeleteRequest request);
+
+    void deleteStoreInformation(VendorStoreManagementDetailInformationDeleteRequest request);
 }

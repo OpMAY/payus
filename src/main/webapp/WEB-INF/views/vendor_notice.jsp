@@ -54,19 +54,19 @@
                          style="margin-top: 2rem">
                         <div class="col-12 col-xl-8 col-lg-12 col-md-12 col-sm-12 payus-modal-textarea-form">
                             <label for="notice-modal-title">제목</label>
-                            <textarea class="payus-modal-textarea" id="notice-modal-title" rows="1" readonly>[이벤트] 페이백 이벤트를 진행합니다.</textarea>
+                            <textarea class="payus-modal-textarea" id="notice-modal-title" rows="1" readonly></textarea>
                         </div>
                         <div class="col-12 col-xl-4 col-lg-12 col-md-12 col-sm-12 payus-modal-textarea-form">
                             <label for="notice-modal-reg-date">등록 일자</label>
                             <textarea class="payus-modal-textarea" id="notice-modal-reg-date" rows="1"
-                                      readonly>2021.11.26</textarea>
+                                      readonly></textarea>
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 1rem">
                         <div class="col-12">
                             <label for="notice-modal-content">공지 내용</label>
-                            <textarea class="payus-modal-textarea" id="notice-modal-content" rows="5" readonly>페이어스 이벤트를 진행합니다.
-                            </textarea>
+                            <textarea class="payus-modal-textarea" id="notice-modal-content" rows="5"
+                                      readonly></textarea>
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 1rem">
@@ -75,7 +75,7 @@
                             <div class="row"
                                  id="content-image">
                                 <div class="col-12 modal-image-div">
-                                    <div class="img-container">
+                                    <div class="img-container" id="notice_img_container">
                                         <img class="clickable_img"
                                              src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
                                              alt style="width: 30%; object-fit: fill">
@@ -117,7 +117,7 @@
                             </label>
                             <input type="text" placeholder="검색" class="payus-search-input">
                             <button class="btn" style="padding: 10px 1rem;background-color: #8668d0; margin-left: 10px"
-                                    type="button"><i
+                                    type="button" id="search-btn" onclick="alert('준비 중')"><i
                                     class="fa fa-search"></i></button>
                         </div>
                     </div>
@@ -244,16 +244,36 @@
     let body = $(document.body);
     let modal = $(".payus-modal");
 
-    $(".btn-payus-table").on("click", function () {
+    $(body).on("click", ".btn-payus-table", function () {
         let notice_no = $(this).parent().parent().attr('notice');
         console.log(notice_no);
-        // TODO 해당 charge_no로 반려 사유 받아오기
-        modal.addClass('show');
+        let data = {"notice_no": notice_no};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/customer/notice/detail',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            $('#notice_img_container').children().remove();
+            $('#notice-modal-title').val(result.title);
+            $('#notice-modal-reg-date').val(SplitDateFunction(result.reg_date));
+            $('#notice-modal-content').val(result.content);
+            if (result.img !== null)
+                $('#notice_img_container').append('<img class="clickable_img" \n' +
+                    '                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/' + result.img + '"\n' +
+                    '                                             alt style="width: 30%; object-fit: fill">');
 
-        if (modal.hasClass('show')) {
-            body.css("overflow", "hidden");
-            modal.focus();
-        }
+
+            modal.addClass('show');
+
+            if (modal.hasClass('show')) {
+                body.css("overflow", "hidden");
+                modal.focus();
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
     });
 
     $(".modal-close").on("click", function () {

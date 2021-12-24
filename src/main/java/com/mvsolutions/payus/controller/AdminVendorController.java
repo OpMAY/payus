@@ -48,6 +48,7 @@ public class AdminVendorController {
     @Autowired
     private VendorAdminService vendorAdminService;
 
+
     private ModelAndView VIEW;
 
     @RequestMapping("/login.do")
@@ -182,9 +183,27 @@ public class AdminVendorController {
         return VIEW;
     }
 
+    @RequestMapping("/manage/store/info/edit.do")
+    public ModelAndView StoreManagementInformationEditPage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_store_management_1-1");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        VendorStoreManagementStoreInfo info = vendorAdminService.getVendorStoreInfoForStoreManagement(vendor_no);
+        VIEW.addObject("store", info);
+        return VIEW;
+    }
+
     @RequestMapping("/manage/store/detail.do")
     public ModelAndView StoreManagementDetailPage(HttpServletRequest request) {
         VIEW = new ModelAndView("vendor_store_management_2");
+        Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
+        VendorStoreManagementStoreDetailInfo info = vendorAdminService.getVendorStoreDetailForStoreManagement(vendor_no);
+        VIEW.addObject("store", info);
+        return VIEW;
+    }
+
+    @RequestMapping("/manage/store/detail/edit.do")
+    public ModelAndView StoreManagementDetailEditPage(HttpServletRequest request) {
+        VIEW = new ModelAndView("vendor_store_management_2-2");
         Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
         VendorStoreManagementStoreDetailInfo info = vendorAdminService.getVendorStoreDetailForStoreManagement(vendor_no);
         VIEW.addObject("store", info);

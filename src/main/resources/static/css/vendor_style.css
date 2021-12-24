@@ -323,6 +323,10 @@ h1, h2, h3, h4, h5, h6, span, div, section, i, b, small, input, button {
     line-height: 0 !important;
 }
 
+.btn-business-address-find.edit{
+    top: 37%;
+}
+
 .btn-password-find-button {
     position: absolute;
     top: 50%;
@@ -1007,6 +1011,17 @@ select {
     background-color: transparent;
 }
 
+.img-delete-btn-multiple{
+    position: absolute;
+    top: 0;
+    right: 2%;
+    transform: translate(-40%, 30%);
+    z-index: 1;
+    padding: 0 0;
+    border: transparent;
+    background-color: transparent;
+}
+
 .mypoint {
     font-size: 24px;
     font-weight: 500;
@@ -1074,4 +1089,54 @@ select {
     color: #010101;
     margin: 1rem 0;
     text-align: center;
+}
+
+.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    border-radius: 5px;
+}
+
+.accordion.active {
+    background-color: #ccc;
+}
+
+.accordion:hover {
+    background-color: #ccc;
+}
+
+.accordion:after {
+    content: '\002B';
+    color: #777;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+}
+
+.accordion.active:after {
+    content: '\2212';
+}
+
+.panel {
+    display: none;
+    padding: 18px;
+    background-color: white;
+    overflow: hidden;
+}
+
+.payus-service {
+    padding: 0 0 0 10px;
+    margin: 0;
+    background-color: white;
+}
+
+.m-btn {
+    display: none;
 }

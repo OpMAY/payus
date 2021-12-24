@@ -1,11 +1,12 @@
 package com.mvsolutions.payus.controller;
 
-import com.google.api.Http;
 import com.google.gson.Gson;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
 import com.mvsolutions.payus.model.web.vendor.request.auth.*;
 import com.mvsolutions.payus.model.web.vendor.request.common.VendorPagingRequest;
+import com.mvsolutions.payus.model.web.vendor.request.cs.VendorCustomerCenterFAQModalRequest;
+import com.mvsolutions.payus.model.web.vendor.request.cs.VendorCustomerCenterNoticeModalRequest;
 import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminDeleteGoodsRequest;
 import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminEditGoodsRequest;
 import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminRegisterGoodsRequest;
@@ -14,18 +15,18 @@ import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusi
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditPersonalDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorPasswordValidationRequest;
 import com.mvsolutions.payus.model.web.vendor.request.point.*;
-import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewAnswerRequest;
-import com.mvsolutions.payus.model.web.vendor.request.storemanagement.VendorAdminReviewDetailRequest;
+import com.mvsolutions.payus.model.web.vendor.request.storemanagement.*;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorRegisterEmailResponse;
+import com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementFAQModalInfo;
 import com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementFAQPagingResponse;
+import com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementNoticeModalInfo;
 import com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementNoticePagingResponse;
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.VendorStoreManagementGoodsPagingResponse;
 import com.mvsolutions.payus.model.web.vendor.response.point.*;
 import com.mvsolutions.payus.model.web.vendor.response.sales.VendorStoreManagementSalesPagingResponse;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewDetail;
-import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewInfo;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewPagingResponse;
 import com.mvsolutions.payus.service.VendorAdminService;
 import com.mvsolutions.payus.util.Constant;
@@ -45,7 +46,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 @Log4j2
@@ -246,10 +246,10 @@ public class VendorPostController {
         Iterator<String> keys = fileMap.keySet().iterator();
         ArrayList<String> imageList = new ArrayList<>();
         String timeForDB = Time.TimeFormatHMS();
-        while(keys.hasNext()){
+        while (keys.hasNext()) {
             String key = keys.next();
-            if(key.contains("img")){
-                if(!fileMap.get(key).isEmpty()){
+            if (key.contains("img")) {
+                if (!fileMap.get(key).isEmpty()) {
                     String path = fileUploadUtility.uploadFile("api/images/store/" + request.getStore_no() + "/", fileMap.get(key).getOriginalFilename(), fileMap.get(key).getBytes(), Constant.AWS_SAVE);
                     imageList.add("api/images/store/" + request.getStore_no() + "/" + path);
                 }
@@ -272,16 +272,16 @@ public class VendorPostController {
         Map<String, MultipartFile> fileMap = multipartHttpServletRequest.getFileMap();
         Iterator<String> keys = fileMap.keySet().iterator();
         ArrayList<String> imageList = new ArrayList<>();
-        while(keys.hasNext()){
+        while (keys.hasNext()) {
             String key = keys.next();
-            if(key.contains("img")){
-                if(!fileMap.get(key).isEmpty()){
+            if (key.contains("img")) {
+                if (!fileMap.get(key).isEmpty()) {
                     String path = fileUploadUtility.uploadFile("api/images/store/" + request.getStore_no() + "/", fileMap.get(key).getOriginalFilename(), fileMap.get(key).getBytes(), Constant.AWS_SAVE);
                     imageList.add("api/images/store/" + request.getStore_no() + "/" + path);
                 }
             }
         }
-        if(imageList.size() > 0){
+        if (imageList.size() > 0) {
             request.setGoods_img(imageList.get(0));
         }
         return vendorAdminService.editGoods(request);
@@ -365,7 +365,7 @@ public class VendorPostController {
 
     @RequestMapping("/manage/point/accumulate/review")
     public VendorStoreManagementPointAccumulateReviewInfo VendorPointAccumulateModalInfo(HttpSession session,
-                                                                                          @RequestBody String body) {
+                                                                                         @RequestBody String body) {
         VendorPointAccumulateReviewRequest request = new Gson().fromJson(body, VendorPointAccumulateReviewRequest.class);
         return vendorAdminService.getVendorPointAccumulateReviewInfo(request);
 
@@ -383,6 +383,88 @@ public class VendorPostController {
                                                                                                @RequestBody String body) {
         VendorPointAccumulateCancelModalRequest request = new Gson().fromJson(body, VendorPointAccumulateCancelModalRequest.class);
         return vendorAdminService.getVendorPointAccumulateCancelModalInfo(request);
+    }
+
+    @RequestMapping("/manage/point/accumulate/cancel/delete")
+    public int VendorPointAccumulateCancelDelete(HttpSession session, @RequestBody String body) {
+        VendorPointAccumulateCancelDeleteRequest request = new Gson().fromJson(body, VendorPointAccumulateCancelDeleteRequest.class);
+        return vendorAdminService.deleteVendorPointAccumulateCancel(request);
+    }
+
+    @RequestMapping("/manage/point/accumulate/cancel/request")
+    public int VendorPointAccumulateCancelRequest(HttpSession session, @RequestBody String body) {
+        VendorPointAccumulateCancelRequest request = new Gson().fromJson(body, VendorPointAccumulateCancelRequest.class);
+        return vendorAdminService.cancelVendorPointAccumulate(request);
+    }
+
+    @RequestMapping("/manage/point/accumulate/review/answer")
+    public int VendorPointAccumulateReviewAnswer(HttpSession session, @RequestBody String body) {
+        VendorPointAccumulateReviewAnswerRequest request = new Gson().fromJson(body, VendorPointAccumulateReviewAnswerRequest.class);
+        return vendorAdminService.answerReviewFromPointAccumulate(request);
+    }
+
+    @RequestMapping("/manage/customer/notice/detail")
+    public VendorStoreManagementNoticeModalInfo VendorNoticeModalInfo(HttpSession session, @RequestBody String body) {
+        VendorCustomerCenterNoticeModalRequest request = new Gson().fromJson(body, VendorCustomerCenterNoticeModalRequest.class);
+        return vendorAdminService.getNoticeDataForModal(request);
+    }
+
+    @RequestMapping("/manage/customer/faq/detail")
+    public VendorStoreManagementFAQModalInfo VendorFAQModalInfo(HttpSession session, @RequestBody String body) {
+        VendorCustomerCenterFAQModalRequest request = new Gson().fromJson(body, VendorCustomerCenterFAQModalRequest.class);
+        return vendorAdminService.getFAQDataForModal(request);
+    }
+
+    @RequestMapping("/manage/store/detail/edit/explain")
+    public int VendorStoreDetailExplainEdit(HttpSession session, @RequestBody String body) {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorStoreManagementDetailExplainEditRequest request = new Gson().fromJson(body, VendorStoreManagementDetailExplainEditRequest.class);
+        request.setVendor_no(vendor_no);
+        return vendorAdminService.editExplainFromStoreDetail(request);
+    }
+
+    @RequestMapping("/manage/store/detail/edit/service")
+    public int VendorStoreDetailServiceEdit(HttpSession session, @RequestBody String body) {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorStoreManagementDetailServiceEditRequest request = new Gson().fromJson(body, VendorStoreManagementDetailServiceEditRequest.class);
+        return vendorAdminService.editStoreService(request);
+    }
+
+    @RequestMapping("/manage/store/detail/edit/information")
+    public int VendorStoreDetailInformationEdit(HttpSession session, @RequestBody String body) {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorStoreManagementDetailInformationEditRequest request = new Gson().fromJson(body, VendorStoreManagementDetailInformationEditRequest.class);
+        return vendorAdminService.editStoreInformation(request);
+    }
+
+    @RequestMapping("/manage/store/detail/register/service")
+    public int VendorStoreDetailServiceRegister(HttpSession session, @RequestBody String body) {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorStoreManagementDetailServiceRegisterRequest request = new Gson().fromJson(body, VendorStoreManagementDetailServiceRegisterRequest.class);
+        request.setVendor_no(vendor_no);
+        return vendorAdminService.registerStoreService(request);
+    }
+
+    @RequestMapping("/manage/store/detail/register/information")
+    public int VendorStoreDetailInformationRegister(HttpSession session, @RequestBody String body) {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorStoreManagementDetailInformationRegisterRequest request = new Gson().fromJson(body, VendorStoreManagementDetailInformationRegisterRequest.class);
+        request.setVendor_no(vendor_no);
+        return vendorAdminService.registerStoreInformation(request);
+    }
+
+    @RequestMapping("/manage/store/detail/delete/service")
+    public int VendorStoreDetailServiceDelete(HttpSession session, @RequestBody String body) {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorStoreManagementDetailServiceDeleteRequest request = new Gson().fromJson(body, VendorStoreManagementDetailServiceDeleteRequest.class);
+        return vendorAdminService.deleteStoreService(request);
+    }
+
+    @RequestMapping("/manage/store/detail/delete/information")
+    public int VendorStoreDetailInformationDelete(HttpSession session, @RequestBody String body) {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorStoreManagementDetailInformationDeleteRequest request = new Gson().fromJson(body, VendorStoreManagementDetailInformationDeleteRequest.class);
+        return vendorAdminService.deleteStoreInformation(request);
     }
 
 }

@@ -217,11 +217,13 @@
                         <div class="row" style="margin-bottom: 1rem">
                             <div class="col-12 col-lg-4 col-xl-4" style="margin-bottom: 1rem">
                                 <label for="review-answered-date">답변 일자</label>
-                                <textarea class="payus-modal-textarea" id="review-answered-date" rows="1" readonly></textarea>
+                                <textarea class="payus-modal-textarea" id="review-answered-date" rows="1"
+                                          readonly></textarea>
                             </div>
                             <div class="col-12">
                                 <label for="review-answered-content">답변 내용</label>
-                                <textarea class="payus-modal-textarea" id="review-answered-content" rows="5" readonly></textarea>
+                                <textarea class="payus-modal-textarea" id="review-answered-content" rows="5"
+                                          readonly></textarea>
                             </div>
                         </div>
                         <div class="row modal-btn-div"
@@ -340,6 +342,7 @@
     let paginationDivId = 'accumulate-table-pagination';
     let paginationDiv = $('#' + paginationDivId);
     let totalAccumulateNum = ${accumulateNum};
+    let thisDataNo = 0;
     $(".pagination").on("click", 'a', function () {
         let selectedPage = $(this);
         let data_order = selectedPage.attr('data-order');
@@ -417,7 +420,7 @@
                         break;
                     case 1:
                         reviewString = '작성';
-                        if(data.is_answered) {
+                        if (data.is_answered) {
                             reviewString = reviewString + '<button type="button" style="display: block; margin-top: 10px"\n' +
                                 '                                                    class="btn btn-payus-table answered-review">리뷰 보기\n' +
                                 '                                            </button>';
@@ -468,8 +471,9 @@
     $(body).on("click", ".btn-payus-table.cancel-point", function () {
         let accumulate_no = $(this).parent().parent().attr('accumulate');
         console.log(accumulate_no);
+        thisDataNo = accumulate_no;
         // TODO 해당 accumulate_no로 간단 데이터
-        let data = {"accumulate_no" : accumulate_no};
+        let data = {"accumulate_no": accumulate_no};
         $.ajax({
             type: 'POST',
             url: '/vendor/manage/point/accumulate/cancel/info',
@@ -498,8 +502,26 @@
     $(body).on("click", ".btn-payus-table.cancel-request", function () {
         let accumulate_no = $(this).parent().parent().attr('accumulate');
         console.log(accumulate_no);
-        if(confirm('취소 요청한 포인트 적립을 철회하시겠습니까?')){
-            // TODO 포인트 취소 요청 철회 - 3일 이내면 status -> 1, 3일 지났으면 status -> 2
+        if (confirm('취소 요청한 포인트 적립을 철회하시겠습니까?\n취소 요청을 철회하면 다시 적립 내역을 취소 하실 수 없습니다.')) {
+            // 포인트 취소 요청 철회 - status -> 2
+            let data = {"accumulate_no": accumulate_no};
+            $.ajax({
+                type: 'POST',
+                url: '/vendor/manage/point/accumulate/cancel/delete',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (result) {
+                if (result === 1) {
+                    alert('철회할 수 없는 상태의 내역입니다.\n정보 갱신을 위해 새로고침합니다.');
+                    window.location.reload();
+                } else {
+                    alert('해당 취소 요청을 철회했습니다.');
+                    window.location.reload();
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
         } else {
             return false;
         }
@@ -509,7 +531,7 @@
         let accumulate_no = $(this).parent().parent().attr('accumulate');
         console.log(accumulate_no);
         // TODO 해당 accumulate_no로 반려 사유 받아오기
-        let data = {"accumulate_no" : accumulate_no};
+        let data = {"accumulate_no": accumulate_no};
         $.ajax({
             type: 'POST',
             url: '/vendor/manage/point/accumulate/reject',
@@ -541,7 +563,8 @@
     $(body).on("click", ".btn-payus-table.answer-review", function () {
         let accumulate_no = $(this).parent().parent().attr('accumulate');
         console.log(accumulate_no);
-        let data = {"accumulate_no" : accumulate_no};
+        thisDataNo = accumulate_no;
+        let data = {"accumulate_no": accumulate_no};
         $.ajax({
             type: 'POST',
             url: '/vendor/manage/point/accumulate/review',
@@ -587,11 +610,65 @@
 
     });
 
+    $(body).on('click', '#btn-for-request', function () {
+        let reason = $('#cancel-reason').val();
+        // TODO Input Validation Check
+        let data = {"accumulate_no" : thisDataNo, "reason" : reason};
+        if(confirm('적립 취소 요청을 하시겠습니까?')){
+            $.ajax({
+                type: 'POST',
+                url: '/vendor/manage/point/accumulate/cancel/request',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (result) {
+                if(result === 0) {
+                    alert('적립 취소 요청을 전송하였습니다.');
+                    window.location.reload();
+                } else {
+                    alert('적립 취소를 할 수 없는 내역입니다.\n정보 갱신을 위해 새로고침합니다.');
+                    window.location.reload();
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+        } else {
+            return false;
+        }
+    });
+
+    $(body).on('click', '#btn-for-submit', function () {
+        let answer = $('#review-answer').val();
+        // TODO Input Validation Check
+        let data = {"accumulate_no" : thisDataNo, "answer" : answer};
+        if(confirm('리뷰 답변 작성을 하시겠습니까?')){
+            $.ajax({
+                type: 'POST',
+                url: '/vendor/manage/point/accumulate/review/answer',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function (result) {
+                if(result === 0) {
+                    alert('답변 작성이 완료되었습니다.');
+                    window.location.reload();
+                } else {
+                    alert('답변 작성을 할 수 없는 내역입니다.\n정보 갱신을 위해 새로고침합니다.');
+                    window.location.reload();
+                }
+            }).fail(function (error) {
+                console.log(error);
+            });
+        } else {
+            return false;
+        }
+    });
+
 
     $(body).on("click", ".btn-payus-table.answered-review", function () {
         let accumulate_no = $(this).parent().parent().attr('accumulate');
         console.log(accumulate_no);
-        let data = {"accumulate_no" : accumulate_no};
+        let data = {"accumulate_no": accumulate_no};
         $.ajax({
             type: 'POST',
             url: '/vendor/manage/point/accumulate/review',
@@ -655,7 +732,7 @@
         }
     });
 
-    $(body).on("click",'.clickable_img',  function () {
+    $(body).on("click", '.clickable_img', function () {
         if (confirm('해당 이미지를 보시겠습니까?')) {
             let imageUrl = $(this).attr("src");
             window.open(imageUrl);

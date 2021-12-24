@@ -80,7 +80,7 @@
                             <div class="row"
                                  id="content-image">
                                 <div class="col-12 modal-image-div">
-                                    <div class="img-container">
+                                    <div class="img-container" id="faq-img-container">
                                         <img class="clickable_img"
                                              src="https://payus.s3.ap-northeast-2.amazonaws.com/api/test/sample_hotel_img_2.jpg"
                                              alt style="width: 30%; object-fit: fill">
@@ -123,7 +123,7 @@
                             </label>
                             <input type="text" placeholder="검색" class="payus-search-input">
                             <button class="btn" style="padding: 10px 1rem;background-color: #8668d0; margin-left: 10px"
-                                    type="button"><i
+                                    type="button" id="search-btn" onclick="alert('준비 중')"><i
                                     class="fa fa-search"></i></button>
                         </div>
                     </div>
@@ -262,7 +262,7 @@
                         categoryText = '기타';
                         break;
                 }
-                $('#pagination_layout').append('<tr faq="'+ data.faq_no +'">\n' +
+                $('#pagination_layout').append('<tr faq="' + data.faq_no + '">\n' +
                     '                                        <td>' + thisIndex + '</td>\n' +
                     '                                        <td>\n' +
                     '                                            <div class="overflow">\n' +
@@ -283,7 +283,7 @@
                     '                                    </tr>');
                 totalFAQNum = result.faq_num;
 
-                if(dataTypeChaged)
+                if (dataTypeChaged)
                     tablePagination(totalFAQNum, paginationDivId);
             }
         }).fail(function (error) {
@@ -300,16 +300,58 @@
     let body = $(document.body);
     let modal = $(".payus-modal");
 
-    $(".btn-payus-table").on("click", function () {
-        let notice_no = $(this).parent().parent().attr('notice');
-        console.log(notice_no);
-        // TODO 해당 charge_no로 반려 사유 받아오기
-        modal.addClass('show');
+    $(body).on("click", ".btn-payus-table", function () {
+        let faq_no = $(this).parent().parent().attr('faq');
+        console.log(faq_no);
+        let data = {"faq_no": faq_no};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/customer/faq/detail',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            let imgContainer = $('#faq-img-container');
+            imgContainer.children().remove();
+            let categoryString;
+            switch (result.type) {
+                case 1:
+                    categoryString = '공급자';
+                    break;
+                case 2:
+                    categoryString = '결제';
+                    break;
+                case 3:
+                    categoryString = '이용방법';
+                    break;
+                case 4:
+                    categoryString = '리뷰';
+                    break;
+                case 5:
+                    categoryString = '페이백';
+                    break;
+                case 6:
+                    categoryString = '기타';
+                    break;
+            }
+            $('#faq-modal-question').val(result.question);
+            $('#faq-modal-category').val(categoryString);
+            $('#faq-modal-reg-date').val(SplitDateFunction(result.reg_date));
+            $('#faq-modal-answer').val(result.answer);
+            if (result.img !== null)
+                imgContainer.append('<img class="clickable_img"\n' +
+                    '                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/' + result.img + '"\n' +
+                    '                                             alt style="width: 30%; object-fit: fill">');
 
-        if (modal.hasClass('show')) {
-            body.css("overflow", "hidden");
-            modal.focus();
-        }
+            modal.addClass('show');
+
+            if (modal.hasClass('show')) {
+                body.css("overflow", "hidden");
+                modal.focus();
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
     });
 
     $(".modal-close").on("click", function () {

@@ -4,13 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mvsolutions.payus.mapper.StoreOptionMapper">
     <select id="getStoreServiceList" resultType="StoreService">
-        select title, content
+        select service_no, title, content
         from store_service
         WHERE store_no = #{store_no}
         ORDER BY reg_date
     </select>
     <select id="getStoreInformationList" resultType="StoreInformation">
-        select title, content
+        select information_no, title, content
         from store_information
         WHERE store_no = #{store_no}
         ORDER BY reg_date

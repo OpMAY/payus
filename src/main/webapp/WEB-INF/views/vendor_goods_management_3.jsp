@@ -53,8 +53,10 @@
                         <div class="col-12">
                             <div class="row" id="image-container"
                                  style="margin-bottom: 1rem; overflow: hidden">
-                                <input type="file" id="image-add-input" name="img" accept="image/*"
-                                       hidden>
+                                <form id="img-form">
+                                    <input type="file" id="image-add-input" name="img" accept="image/*"
+                                           hidden>
+                                </form>
                                 <div class="col image-div" id="img-add-div"
                                      style="display: flex; justify-content: center; height: 200px; position: relative">
                                     <div class="img-add" id="img-add-btn"
@@ -131,8 +133,8 @@
         let form = $("#img-form")[0];
         let formData = new FormData(form);
         let goodsData = {
-            "original_goods_name" : '${room.name}',
-            "goods_no" : ${room.room_no},
+            "original_goods_name": '${room.name}',
+            "goods_no": ${room.room_no},
             "goods_name": goodsName,
             "goods_explain": goodsExplain,
             "price": unComma(goodsPrice),
@@ -147,7 +149,7 @@
             processData: false,
             data: formData
         }).done(function (result) {
-            if(result === 0){
+            if (result === 0) {
                 alert("상품 수정이 완료되었습니다.");
                 window.location.href = '/vendor/manage/goods/list.do'
             } else if (result === 1) {

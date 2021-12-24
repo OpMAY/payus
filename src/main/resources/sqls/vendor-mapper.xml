@@ -7,13 +7,6 @@
                type="com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreInfo">
         <result column="image_list" property="image_list" typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
     </resultMap>
-    <resultMap id="VendorStoreManagementStoreDetailInfo"
-               type="com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreDetailInfo">
-        <result column="service_list" property="service_list"
-                typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
-        <result column="information" property="information"
-                typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
-    </resultMap>
     <resultMap id="StoreGoods"
                type="com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods">
         <result column="room_options" property="room_options"
@@ -153,18 +146,13 @@
         WHERE vendor.vendor_no = #{vendor_no}
           AND store.vendor_no = #{vendor_no}
     </select>
-    <select id="getVendorStoreDetailForStoreManagement" resultType="VendorStoreManagementStoreDetailInfo"
-            resultMap="VendorStoreManagementStoreDetailInfo">
+    <select id="getVendorStoreDetailForStoreManagement" resultType="VendorStoreManagementStoreDetailInfo">
         select store.store_no,
                store.class_first,
                store.class_second,
-               store.explain,
-               store_lodgement.service_list,
-               store_lodgement.information
-        from store,
-             store_lodgement
+               store.explain
+        from store
         WHERE store.vendor_no = #{vendor_no}
-          AND store_lodgement.store_no = store.store_no
     </select>
     <select id="getVendorReviewListForStoreManagementInit" resultType="VendorStoreManagementReviewInfo">
         SET @StoreNo = (select store_no
@@ -699,4 +687,111 @@
         WHERE point_accumulate.accumulate_no = #{accumulate_no}
           AND user.user_no = point_accumulate.user_no
     </select>
+    <select id="checkPointAccumulateAlreadyCanceled" resultType="_boolean">
+        select IF(status = 3, false, true)
+        from point_accumulate
+        WHERE accumulate_no = #{accumulate_no}
+    </select>
+    <update id="updatePointAccumulateByDeleteCancel">
+        update point_accumulate
+        SET status = 2
+        WHERE accumulate_no = #{accumulate_no}
+    </update>
+    <select id="checkPointAccumulateAbleToCancel" resultType="_boolean">
+        select IF(status = 1, true, false)
+        from point_accumulate
+        WHERE accumulate_no = #{accumulate_no}
+    </select>
+    <update id="updatePointAccumulateByCancel">
+        update point_accumulate
+        SET status = 3
+        WHERE accumulate_no = #{accumulate_no}
+    </update>
+    <insert id="insertPointAccumulateCancel">
+        insert into point_accumulate_cancel(accumulate_no, reason, reg_date)
+        VALUES (#{accumulate_no}, #{reason}, #{reg_date})
+    </insert>
+    <select id="checkReviewAbleToAnswerForAccumulate" resultType="_boolean">
+        # 리뷰 답변 작성 가능 조건
+        # 리뷰가 존재할 때 AND 리뷰가 답변이 달리지 않았을 때 return true
+        select IF(EXISTS(select * from review WHERE accumulate_no = #{accumulate_no}) AND answer_status = false, true,
+                  false)
+        from review
+        WHERE accumulate_no = #{accumulate_no}
+    </select>
+    <update id="answerReviewFromPointAccumulate">
+        update review
+        SET answer_content = #{answer},
+            answer_date    = #{reg_date},
+            answer_status  = true
+        WHERE accumulate_no = #{accumulate_no};
+
+        update point_accumulate
+        SET answer_date = #{reg_date}
+        WHERE accumulate_no = #{accumulate_no}
+    </update>
+    <update id="updateNoticeViewNum">
+        update notice
+        SET view_num = view_num + 1
+        WHERE notice_no = #{notice_no}
+    </update>
+    <select id="getNoticeDataForModal" resultType="VendorStoreManagementNoticeModalInfo">
+        select title, content, img, reg_date
+        from notice
+        WHERE notice_no = #{notice_no}
+    </select>
+    <update id="updateFAQViewNum">
+        update faq
+        SET view_num = view_num + 1
+        WHERE faq_no = #{faq_no}
+    </update>
+    <select id="getFAQDataForModal" resultType="VendorStoreManagementFAQModalInfo">
+        select question, answer, img, type, reg_date
+        from faq
+        WHERE faq_no = #{faq_no}
+    </select>
+    <update id="editExplainFromStoreDetail">
+        SET @StoreNo = (select store_no
+                        from store
+                        WHERE vendor_no = #{vendor_no});
+        update store
+        SET `explain` = #{explain}
+        WHERE store_no = @StoreNo
+    </update>
+    <update id="editStoreService">
+        update store_service
+        SET title  = #{title},
+            content= #{content}
+        WHERE service_no = #{service_no}
+    </update>
+    <update id="editStoreInformation">
+        update store_information
+        SET title  = #{title},
+            content= #{content}
+        WHERE information_no = #{information_no}
+    </update>
+    <insert id="registerStoreInformation" useGeneratedKeys="true" keyProperty="information_no">
+        SET @StoreNo = (select store_no
+                        from store
+                        WHERE vendor_no = #{vendor_no});
+        insert into store_information(store_no, title, content, reg_date)
+        VALUES (@StoreNo, #{title}, #{content}, #{reg_date})
+    </insert>
+    <insert id="registerStoreService" useGeneratedKeys="true" keyProperty="service_no">
+        SET @StoreNo = (select store_no
+                        from store
+                        WHERE vendor_no = #{vendor_no});
+        insert into store_service(store_no, title, content, reg_date)
+        VALUES (@StoreNo, #{title}, #{content}, #{reg_date})
+    </insert>
+    <delete id="deleteStoreService">
+        delete
+        from store_service
+        WHERE service_no = #{service_no}
+    </delete>
+    <delete id="deleteStoreInformation">
+        delete
+        from store_information
+        WHERE information_no = #{information_no}
+    </delete>
 </mapper>
