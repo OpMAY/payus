@@ -21,6 +21,7 @@ public class WebConfiguration implements WebMvcConfigurer {
     private List<String> rest_interceptor_excluded_urls;
     private List<String> mvc_interceptor_excluded_urls;
     private List<String> vendor_admin_interceptor_excluded_urls;
+    private List<String> admin_interceptor_excluded_urls;
 
     @PostConstruct
     public void WebConfiguration() {
@@ -33,6 +34,9 @@ public class WebConfiguration implements WebMvcConfigurer {
         vendor_admin_interceptor_excluded_urls.add("/vendor/register/**");
         vendor_admin_interceptor_excluded_urls.add("/vendor/find/**");
         vendor_admin_interceptor_excluded_urls.add("/vendor/terms/**");
+        admin_interceptor_excluded_urls = new ArrayList<>();
+        admin_interceptor_excluded_urls.add("/admin/login.do");
+        admin_interceptor_excluded_urls.add("/admin/login");
     }
 
     public WebConfiguration() {
@@ -65,7 +69,8 @@ public class WebConfiguration implements WebMvcConfigurer {
                 .addPathPatterns("/vendor/manage/**")
                 .addPathPatterns("/vendor/mypage/**")
                 .addPathPatterns("/vendor/login/fail/**")
-                .excludePathPatterns(vendor_admin_interceptor_excluded_urls);
+                .excludePathPatterns(vendor_admin_interceptor_excluded_urls)
+                .excludePathPatterns(admin_interceptor_excluded_urls);
         /*.excludePathPatterns(mvc_interceptor_excluded_urls);*/
     }
 

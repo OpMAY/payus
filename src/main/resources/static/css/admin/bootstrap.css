@@ -2173,8 +2173,8 @@ textarea.form-control-lg {
 
 .btn-primary {
   color: #fff;
-  background-color: #6658dd;
-  border-color: #6658dd; }
+  background-color: #6D29D0;
+  border-color: #6D29D0; }
   .btn-primary:hover {
     color: #fff;
     background-color: #574bbc;
@@ -2196,8 +2196,8 @@ textarea.form-control-lg {
       box-shadow: 0 0 0 0.15rem rgba(125, 113, 226, 0.5); }
   .btn-primary:disabled, .btn-primary.disabled {
     color: #fff;
-    background-color: #6658dd;
-    border-color: #6658dd; }
+    background-color: #6D29D0;
+    border-color: #6D29D0; }
 
 .btn-secondary {
   color: #fff;
@@ -8724,7 +8724,7 @@ textarea.form-control-lg {
   font-family: "Material Design Icons"; }
 
 .btn-primary {
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075) rgba(102, 88, 221, 0.5); }
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075) rgba(109, 41, 208, 0.8); }
 
 .btn-secondary {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075) rgba(108, 117, 125, 0.5); }

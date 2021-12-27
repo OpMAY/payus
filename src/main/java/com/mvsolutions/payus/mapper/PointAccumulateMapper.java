@@ -5,6 +5,7 @@ import com.mvsolutions.payus.model.rest.request.suphomepage.VendorAnswerReviewRe
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserReviewDeleteRequest;
 import com.mvsolutions.payus.model.rest.response.storedetailpage.UserAccumulateCheckResponse;
+import com.mvsolutions.payus.model.rest.response.suppointpage.VendorPointAccumulateCheckBan;
 import com.mvsolutions.payus.model.rest.response.suppointpage.VendorPointAccumulateListResponse;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserPointAccumulateListResponse;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserReviewPagePreDataResponse;
@@ -36,7 +37,7 @@ public interface PointAccumulateMapper {
 
     void updateAccumulateByReviewDelete(UserReviewDeleteRequest request);
 
-    UserReviewPagePreDataResponse getPreDataForReview(int accumulate_no);
+    VendorPointAccumulateCheckBan getPreDataForReview(int accumulate_no);
 
     boolean checkReviewWritten(int accumulate_no);
 

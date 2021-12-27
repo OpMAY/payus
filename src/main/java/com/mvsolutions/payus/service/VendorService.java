@@ -92,4 +92,14 @@ public class VendorService {
         message.put("store", response);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getStorePaybackData()")), HttpStatus.OK);
     }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity getVendorAutoLoginCheck(int vendor_no) throws JSONException {
+        Message message = new Message();
+        if(vendorDao.checkVendorPenalty(vendor_no)) {
+            return new ResponseEntity(StringRes.res(StatusCode.PENALTY_VENDOR, message.getHashMap("Vendor Penalty")), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
+        }
+    }
 }

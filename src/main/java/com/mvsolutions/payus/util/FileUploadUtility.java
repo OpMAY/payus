@@ -22,7 +22,8 @@ import java.util.UUID;
 @Service
 @PropertySources({
         @PropertySource("classpath:aws.properties"),
-        @PropertySource("classpath:path.properties")
+        @PropertySource("classpath:path.properties"),
+        @PropertySource("classpath:admin.properties")
 })
 public class FileUploadUtility {
     @Value("${path.upload_path}")

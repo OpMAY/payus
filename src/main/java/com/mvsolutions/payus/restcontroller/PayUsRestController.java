@@ -653,4 +653,12 @@ public class PayUsRestController {
     public ResponseEntity UserAccumulateCheck(@RequestParam("user_code") int user_code) throws JSONException {
         return pointService.checkUserAccumulate(user_code);
     }
+
+    /**
+     * AutoLoginVendor #001
+     */
+    @RequestMapping(value = "/api/vendor/auto/login/check", method = RequestMethod.GET)
+    public ResponseEntity VendorAutoLoginCheck(@RequestParam("vendor_no") int vendor_no) throws JSONException {
+        return vendorService.getVendorAutoLoginCheck(vendor_no);
+    }
 }
