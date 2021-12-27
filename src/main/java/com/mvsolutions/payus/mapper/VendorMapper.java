@@ -14,6 +14,7 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest
 import com.mvsolutions.payus.model.web.vendor.request.common.VendorPagingRequest;
 import com.mvsolutions.payus.model.web.vendor.request.cs.VendorCustomerCenterFAQModalRequest;
 import com.mvsolutions.payus.model.web.vendor.request.cs.VendorCustomerCenterNoticeModalRequest;
+import com.mvsolutions.payus.model.web.vendor.request.cs.VendorStoreManagementInquiryModalRequest;
 import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminDeleteGoodsRequest;
 import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminRegisterGoodsRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
@@ -24,13 +25,11 @@ import com.mvsolutions.payus.model.web.vendor.request.storemanagement.*;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
-import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminFAQList;
-import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminNoticeList;
-import com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementFAQModalInfo;
-import com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementNoticeModalInfo;
+import com.mvsolutions.payus.model.web.vendor.response.cs.*;
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
+import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorSidebarDataResponse;
 import com.mvsolutions.payus.model.web.vendor.response.point.*;
 import com.mvsolutions.payus.model.web.vendor.response.sales.VendorAdminSalesList;
 import com.mvsolutions.payus.model.web.vendor.response.sales.VendorSalesPageSummary;
@@ -84,7 +83,9 @@ public interface VendorMapper {
 
     List<VendorStoreManagementReviewInfo> getVendorReviewListForStoreManagementInit(int vendor_no);
 
-    StoreGoods getVendorStoreGoodsList(int vendor_no, int goods_type);
+    List<StoreGoods> getVendorStoreGoodsList(int vendor_no);
+
+    StoreGoods getVendorStoreGoodsInfo(int goods_no);
 
     int getPaybackRateForRegisterGoods(int vendor_no);
 
@@ -130,17 +131,15 @@ public interface VendorMapper {
 
     int getVendorStoreType(int vendor_no);
 
-    boolean checkRoomNameExists(String goods_name, int vendor_no);
+    boolean checkGoodsNameExists(String goods_name, int vendor_no);
 
-    void registerRoom(Room room, int store_no);
-
-    String getRoomKeyList(int store_no);
+    void registerGoods(StoreGoods storeGoods);
 
     int getVendorStoreNo(int vendor_no);
 
-    boolean checkRoomNameSameByRoomNo(int goods_no, String goods_name, int store_no);
+    boolean checkGoodsNameSameByGoodsNo(int goods_no, String goods_name);
 
-    void updateRoom(Room room, String original_goods_name, int store_no);
+    void updateGoods(StoreGoods storeGoods);
 
     List<VendorAdminSalesList> getVendorSalesList(int vendor_no);
 
@@ -215,4 +214,32 @@ public interface VendorMapper {
     void deleteStoreService(VendorStoreManagementDetailServiceDeleteRequest request);
 
     void deleteStoreInformation(VendorStoreManagementDetailInformationDeleteRequest request);
+
+    String getOriginalStoreImageList(int store_no);
+
+    void editStoreInfo(VendorStoreInfoEditRequest request);
+
+    List<StoreGoods> getVendorStoreGoodsListByPagination(VendorPagingRequest request);
+
+    int getVendorStoreGoodsNum(int vendor_no);
+
+    boolean checkGoodsBelongToVendor(int goods_no, int vendor_no);
+
+    List<VendorInquiryList> getVendorInquiryList(int vendor_no);
+
+    int getVendorInquiryNum(int vendor_no);
+
+    void requestInquiry(VendorInquiryRequest request);
+
+    int getInquiryNumByDataType(VendorPagingRequest request);
+
+    List<VendorInquiryList> getInquiryListByPaging(VendorPagingRequest request);
+
+    VendorStoreManagementInquiryModalInfo getVendorInquiryModalInfo(VendorStoreManagementInquiryModalRequest request);
+
+    VendorSidebarDataResponse getVendorSidebarData(int vendor_no);
+
+    int getNoticeNumByDataType(VendorPagingRequest request);
+
+    int getFAQNumByDataType(VendorPagingRequest request);
 }

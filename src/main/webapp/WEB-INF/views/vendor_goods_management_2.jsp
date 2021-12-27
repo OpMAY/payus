@@ -123,6 +123,7 @@
         </div>
     </div>
 </div>
+<script src="/js/common.js"></script>
 <script>
     let storeNo = ${store_no};
     $('.btn-payus').on("click", function () {
@@ -187,16 +188,6 @@
             resultArea.val('');
         }
     });
-
-    function comma(str) {
-        str = String(str);
-        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
-    }
-
-    function unComma(str) {
-        str = String(str);
-        return str.replace(/[^\d]+/g, '');
-    }
 
     $("#img-add-btn").on("click", function () {
         console.log("add-btn clicked");

@@ -51,17 +51,20 @@
                      style="margin-bottom: 20px; flex-direction: row; align-items: center">
                     <div class="row">
                         <div class="col-12">
-                            <div class="row row-cols-4" id="image-container"
-                                 style="margin-bottom: 1rem; height: 236px; overflow: hidden">
+                            <div class="row row-cols-2 row-cols-xl-4 row-cols-md-3 row-cols-lg-4 row-cols-sm-2" id="image-container"
+                                 style="margin-bottom: 1rem; height: 380px; overflow: hidden">
                                 <c:forEach var="url" items="${store.image_list}">
-                                    <div class="col image-div">
+                                    <div class="col image-div" style="height: 180px">
                                         <div class="img-container">
                                             <img class="clickable_img"
                                                  src="https://payus.s3.ap-northeast-2.amazonaws.com/${url}" alt
-                                                 style="width: 100%; height: 100px; object-fit: fill">
+                                                 style="width: 100%; height: 100%; object-fit: fill">
                                         </div>
                                     </div>
                                 </c:forEach>
+                            </div>
+                            <div>
+                                <button class="m-btn btn btn-grey" type="button">더 보기</button>
                             </div>
                         </div>
                         <div class="col-12">
@@ -195,6 +198,7 @@
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b4cf906c03295c29420721a730a4ef0b&libraries=services"></script>
 <script>
+    let imageListSize = ${store.image_list.size()};
     let mapContainer = document.getElementById("map"),
         mapOption = {
             center: new daum.maps.LatLng(${store.address_y}, ${store.address_x}),
@@ -215,17 +219,21 @@
         map: map
     });
 
-    console.log(${store.image_list.size()});
     let container = $("#image-container");
-    console.log(container.height());
-    container.height((204 + 32));
+    if (imageListSize <= 4)
+        container.height(190);
+    else if (imageListSize <= 8)
+        container.height(380);
+    else {
+        container.height(380);
+        $('.m-btn').css('display', 'block');
+    }
 </script>
 <script>
-    function cutImageContainer() {
-        let container = $("#image-container");
-        console.log(container.height);
-        container.height((204 + 32));
-    }
+    $('.m-btn').on('click', function () {
+        $('#image-container').css('height', '100%');
+        $(this).css('display', 'none');
+    });
 
     $('#personal-edit-btn').on('click', function () {
         // alert('준비 중입니다.\n오류 발생으로 24일 금일 수정 완료 예정');

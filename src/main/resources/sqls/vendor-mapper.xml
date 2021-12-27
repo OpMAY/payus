@@ -7,11 +7,6 @@
                type="com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementStoreInfo">
         <result column="image_list" property="image_list" typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
     </resultMap>
-    <resultMap id="StoreGoods"
-               type="com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods">
-        <result column="room_options" property="room_options"
-                typeHandler="com.mvsolutions.payus.handler.JsonRoomTypeHandler"/>
-    </resultMap>
     <resultMap id="VendorStoreManagementReviewDetail"
                type="com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewDetail">
         <result column="image_list" property="image_list"
@@ -19,6 +14,11 @@
     </resultMap>
     <resultMap id="VendorStoreManagementPointAccumulateReviewInfo"
                type="com.mvsolutions.payus.model.web.vendor.response.point.VendorStoreManagementPointAccumulateReviewInfo">
+        <result column="image_list" property="image_list"
+                typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
+    </resultMap>
+    <resultMap id="VendorStoreManagementInquiryModalInfo"
+               type="com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementInquiryModalInfo">
         <result column="image_list" property="image_list"
                 typeHandler="com.mvsolutions.payus.handler.JsonTypeHandler"/>
     </resultMap>
@@ -196,13 +196,20 @@
         ORDER BY review.reg_date DESC
         LIMIT #{start_index}, 10
     </select>
-    <select id="getVendorStoreGoodsList" resultType="StoreGoods" resultMap="StoreGoods">
+    <select id="getVendorStoreGoodsList" resultType="StoreGoods">
         SET @StoreNo = (select store_no
                         from store
                         WHERE vendor_no = #{vendor_no});
-        select room_options
-        from store_lodgement
+        select goods_no, name, price, reg_date, img, goods_explain
+        from store_goods
         WHERE store_no = @StoreNo
+        ORDER BY reg_date
+        LIMIT 10
+    </select>
+    <select id="getVendorStoreGoodsInfo" resultType="StoreGoods">
+        select goods_no, name, price, reg_date, img, goods_explain
+        from store_goods
+        WHERE goods_no = #{goods_no}
     </select>
     <select id="getPaybackRateForRegisterGoods" resultType="int">
         select IF(EXISTS(select *
@@ -273,8 +280,40 @@
     <select id="getNoticeListByPaging" resultType="VendorAdminNoticeList">
         select notice_no, title, reg_date, view_num
         from notice
+        <if test="search_keyword != null">
+            <choose>
+                <when test="(sTitle == true and sContent == true) or (sTitle == false and sContent == false)">
+                    WHERE (title like concat('%', #{search_keyword}, '%') OR content like concat('%', #{search_keyword},
+                    '%'))
+                </when>
+                <when test="sTitle == true and sContent == false">
+                    WHERE (title like concat('%', #{search_keyword}, '%'))
+                </when>
+                <when test="sTitle == false and sContent == true">
+                    WHERE (content like concat('%', #{search_keyword}, '%'))
+                </when>
+            </choose>
+        </if>
         ORDER BY reg_date DESC
         LIMIT #{start_index}, 10
+    </select>
+    <select id="getNoticeNumByDataType" resultType="int">
+        select COUNT(*)
+        from notice
+        <if test="search_keyword != null">
+            <choose>
+                <when test="(sTitle == true and sContent == true) or (sTitle == false and sContent == false)">
+                    WHERE (title like concat('%', #{search_keyword}, '%') OR content like concat('%', #{search_keyword},
+                    '%'))
+                </when>
+                <when test="sTitle == true and sContent == false">
+                    WHERE (title like concat('%', #{search_keyword}, '%'))
+                </when>
+                <when test="sTitle == false and sContent == true">
+                    WHERE (content like concat('%', #{search_keyword}, '%'))
+                </when>
+            </choose>
+        </if>
     </select>
     <select id="getNoticeNum" resultType="int">
         select COUNT(*)
@@ -290,15 +329,78 @@
         select faq_no, question, answer, type, reg_date, view_num
         from faq
         <choose>
-            <when test="data_type == 2">WHERE type = 1</when>
-            <when test="data_type == 3">WHERE type = 2</when>
-            <when test="data_type == 4">WHERE type = 3</when>
-            <when test="data_type == 5">WHERE type = 4</when>
-            <when test="data_type == 6">WHERE type = 5</when>
-            <when test="data_type == 7">WHERE type = 6</when>
+            <when test="search_keyword != null">
+                <choose>
+                    <when test="(sTitle == true and sContent == false) or (sTitle == false and sContent == false)">
+                        WHERE (question like concat('%', #{search_keyword}, '%') OR answer like concat('%',
+                        #{search_keyword}, '%'))
+                    </when>
+                    <when test="sTitle == true and sContent == false">
+                        WHERE (question like concat('%', #{search_keyword}, '%'))
+                    </when>
+                    <when test="sTitle == false and sContent == true">
+                        WHERE (answer like concat('%', #{search_keyword}, '%'))
+                    </when>
+                </choose>
+                <choose>
+                    <when test="data_type == 2">AND type = 1</when>
+                    <when test="data_type == 3">AND type = 2</when>
+                    <when test="data_type == 4">AND type = 3</when>
+                    <when test="data_type == 5">AND type = 4</when>
+                    <when test="data_type == 6">AND type = 5</when>
+                    <when test="data_type == 7">AND type = 6</when>
+                </choose>
+            </when>
+            <when test="search_keyword == null">
+                <choose>
+                    <when test="data_type == 2">WHERE type = 1</when>
+                    <when test="data_type == 3">WHERE type = 2</when>
+                    <when test="data_type == 4">WHERE type = 3</when>
+                    <when test="data_type == 5">WHERE type = 4</when>
+                    <when test="data_type == 6">WHERE type = 5</when>
+                    <when test="data_type == 7">WHERE type = 6</when>
+                </choose>
+            </when>
         </choose>
         ORDER BY reg_date DESC
         LIMIT #{start_index}, 10
+    </select>
+    <select id="getFAQNumByDataType" resultType="int">
+        select COUNT(*) from faq
+        <choose>
+            <when test="search_keyword != null">
+                <choose>
+                    <when test="(sTitle == true and sContent == false) or (sTitle == false and sContent == false)">
+                        WHERE (question like concat('%', #{search_keyword}, '%') OR answer like concat('%',
+                        #{search_keyword}, '%'))
+                    </when>
+                    <when test="sTitle == true and sContent == false">
+                        WHERE (question like concat('%', #{search_keyword}, '%'))
+                    </when>
+                    <when test="sTitle == false and sContent == true">
+                        WHERE (answer like concat('%', #{search_keyword}, '%'))
+                    </when>
+                </choose>
+                <choose>
+                    <when test="data_type == 2">AND type = 1</when>
+                    <when test="data_type == 3">AND type = 2</when>
+                    <when test="data_type == 4">AND type = 3</when>
+                    <when test="data_type == 5">AND type = 4</when>
+                    <when test="data_type == 6">AND type = 5</when>
+                    <when test="data_type == 7">AND type = 6</when>
+                </choose>
+            </when>
+            <when test="search_keyword == null">
+                <choose>
+                    <when test="data_type == 2">WHERE type = 1</when>
+                    <when test="data_type == 3">WHERE type = 2</when>
+                    <when test="data_type == 4">WHERE type = 3</when>
+                    <when test="data_type == 5">WHERE type = 4</when>
+                    <when test="data_type == 6">WHERE type = 5</when>
+                    <when test="data_type == 7">WHERE type = 6</when>
+                </choose>
+            </when>
+        </choose>
     </select>
     <select id="getFAQNum" resultType="int">
         select COUNT(*)
@@ -377,18 +479,11 @@
         WHERE review.review_no = #{review_no}
           AND point_accumulate.accumulate_no = review.accumulate_no
     </update>
-    <update id="deleteRoom">
-        SET @StoreNo = (select store_no
-                        from store
-                        WHERE vendor_no = #{vendor_no});
-        SET @RoomIndex = (select REPLACE(REPLACE(JSON_SEARCH(room_options, 'one', #{goods_name}, null,
-                                                             '$[*].name'), '"$[', ''), '].name"', '')
-                          from store_lodgement
-                          WHERE store_no = @StoreNo);
-        update store_lodgement
-        SET room_options = JSON_REMOVE(room_options, CONCAT('$[', @RoomIndex, ']'))
-        WHERE store_no = @StoreNo
-    </update>
+    <delete id="deleteRoom">
+        delete
+        from store_goods
+        WHERE goods_no = #{goods_no}
+    </delete>
     <select id="getVendorStoreType" resultType="int">
         SET @StoreNo = (select store_no
                         from store
@@ -397,54 +492,33 @@
         from store
         WHERE store_no = @StoreNo
     </select>
-    <select id="checkRoomNameExists" resultType="_boolean">
+    <select id="checkGoodsNameExists" resultType="_boolean">
         SET @StoreNo = (select store_no
                         from store
                         WHERE vendor_no = #{vendor_no});
-        select IF(JSON_SEARCH(room_options, 'one', #{goods_name}, null, '$[*].name') is NULL, false, true)
-        from store_lodgement
-        WHERE store_no = @StoreNo
+        select IF(EXISTS(select * from store_goods WHERE name = #{goods_name} AND store_no = @StoreNo), true, false)
     </select>
-    <select id="getRoomKeyList" resultType="string">
-        select room_options -> '$[*].room_no'
-        from store_lodgement
-        WHERE store_no = #{store_no}
-    </select>
-    <update id="registerRoom">
-        update store_lodgement
-        SET room_options = JSON_ARRAY_APPEND(room_options, '$',
-                                             JSON_OBJECT('room_no', #{room.room_no}, 'name', #{room.name},
-                                                         'room_explain', #{room.room_explain}, 'price', #{room.price},
-                                                         'room_img', #{room.room_img}, 'reg_date', #{room.reg_date}))
-        WHERE store_no = #{store_no}
-    </update>
+    <insert id="registerGoods">
+        insert into store_goods(store_no, name, price, reg_date, img, goods_explain)
+        VALUES (#{store_no}, #{name}, #{price}, #{reg_date}, #{img}, #{goods_explain})
+    </insert>
     <select id="getVendorStoreNo" resultType="int">
         select store_no
         from store
         WHERE vendor_no = #{vendor_no}
     </select>
-    <select id="checkRoomNameSameByRoomNo" resultType="_boolean">
-        SET @RoomNameIndex =
-                (select REPLACE(REPLACE(JSON_SEARCH(room_options, 'one', #{goods_name}, null, '$[*].name'), '"$[', ''),
-                                '].name"', '')
-                 from store_lodgement
-                 WHERE store_no = #{store_no});
-        select IF(JSON_EXTRACT(room_options, CONCAT('$[', @RoomNameIndex, '].room_no')) = #{goods_no}, true, false)
-        from store_lodgement
-        WHERE store_no = #{store_no}
+    <select id="checkGoodsNameSameByGoodsNo" resultType="_boolean">
+        select IF(name = #{goods_name}, true, false)
+        from store_goods
+        WHERE goods_no = #{goods_no}
     </select>
-    <update id="updateRoom">
-        SET @RoomNameIndex =
-        (select REPLACE(REPLACE(JSON_SEARCH(room_options, 'one', #{original_goods_name}, null, '$[*].name'),
-        '"$[', ''),
-        '].name"', '')
-        from store_lodgement
-        WHERE store_no = #{store_no});
-        update store_lodgement
-        SET room_options = JSON_REPLACE(room_options, concat('$[', @RoomNameIndex, '].name'), #{room.name}, <if
-            test="room.room_img != null">concat('$[', @RoomNameIndex, '].room_img'), #{room.room_img},
-    </if> concat('$[', @RoomNameIndex, '].price'), #{room.price}, concat('$[', @RoomNameIndex, '].room_explain'),
-        #{room.room_explain}) WHERE store_no = #{store_no}
+    <update id="updateGoods">
+        update store_goods
+        SET name          = #{name},
+            price         = #{price},
+            img           = IF(#{img} is not null, #{img}, img),
+            goods_explain = #{goods_explain}
+        WHERE goods_no = #{goods_no}
     </update>
     <select id="getVendorSalesList" resultType="VendorAdminSalesList">
         SET @StoreNo = (select store_no
@@ -794,4 +868,102 @@
         from store_information
         WHERE information_no = #{information_no}
     </delete>
+    <select id="getOriginalStoreImageList" resultType="string">
+        select image_list
+        from store
+        WHERE store_no = #{store_no}
+    </select>
+    <update id="editStoreInfo">
+        update store
+        SET address_road   = IF(#{road_address} is not null, #{road_address}, address_road),
+            address        = IF(#{jibun_address} is not null, #{jibun_address}, address),
+            address_x      = IF(#{x} != 0, #{x}, address_x),
+            address_y      = IF(#{y} != 0, #{y}, address_y),
+            address_1depth = IF(#{address_1depth} is not null, #{address_1depth}, address_1depth),
+            address_2depth = IF(#{address_2depth} is not null, #{address_2depth}, address_2depth),
+            address_3depth = IF(#{address_3depth} is not null, #{address_3depth}, address_3depth),
+            address_short  = IF(#{address_short} is not null, #{address_short}, address_short),
+            image_list     = #{image_list},
+            `explain`      = #{store_explain},
+            name           = #{store_name},
+            phone          = #{store_phone},
+            payback_rate   = #{payback_rate}
+        WHERE store_no = #{store_no}
+    </update>
+    <select id="getVendorStoreGoodsListByPagination" resultType="StoreGoods">
+        SET @StoreNo = (select store_no
+                        from store
+                        where vendor_no = #{vendor_no});
+        select goods_no, name, price, reg_date, img, goods_explain
+        from store_goods
+        WHERE store_no = @StoreNo
+        ORDER BY reg_date
+        LIMIT #{start_index}, 10
+    </select>
+    <select id="getVendorStoreGoodsNum" resultType="int">
+        SET @StoreNo = (select store_no
+                        from store
+                        where vendor_no = #{vendor_no});
+        select COUNT(*)
+        from store_goods
+        WHERE store_no = @StoreNo
+    </select>
+    <select id="checkGoodsBelongToVendor" resultType="_boolean">
+        SET @StoreNo = (select store_no
+                        from store
+                        where vendor_no = #{vendor_no});
+        select IF(store_no = @StoreNo, true, false)
+        from store_goods
+        WHERE goods_no = #{goods_no}
+    </select>
+    <select id="getVendorInquiryList" resultType="VendorInquiryList">
+        select inquiry_no, type, title, reg_date, answer_status
+        from inquiry_vendor
+        WHERE vendor_no = #{vendor_no}
+        ORDER BY reg_date DESC
+        LIMIT 10
+    </select>
+    <select id="getVendorInquiryNum" resultType="int">
+        select COUNT(*)
+        from inquiry_vendor
+        WHERE vendor_no = #{vendor_no}
+    </select>
+    <insert id="requestInquiry">
+        insert into inquiry_vendor (vendor_no, type, title, content, image_list, inquiry_json, reg_date)
+        VALUES (#{vendor_no}, #{type}, #{title}, #{content}, #{image_list}, #{inquiry_json}, #{reg_date})
+    </insert>
+    <select id="getInquiryNumByDataType" resultType="int">
+        select COUNT(*)
+        from inquiry_vendor
+        WHERE vendor_no = #{vendor_no}
+        <if test="data_type != 0">AND type = #{data_type}</if>
+        <choose>
+            <when test="answer_type == 2">AND answer_status = true</when>
+            <when test="answer_type == 3">AND answer_status = false</when>
+        </choose>
+    </select>
+    <select id="getInquiryListByPaging" resultType="VendorInquiryList">
+        select inquiry_no, type, title, reg_date, answer_status
+        from inquiry_vendor
+        WHERE vendor_no = #{vendor_no}
+        <if test="data_type != 0">AND type = #{data_type}</if>
+        <choose>
+            <when test="answer_type == 2">AND answer_status = true</when>
+            <when test="answer_type == 3">AND answer_status = false</when>
+        </choose>
+        ORDER BY reg_date DESC LIMIT #{start_index}, 10
+    </select>
+    <select id="getVendorInquiryModalInfo" resultType="VendorStoreManagementInquiryModalInfo"
+            resultMap="VendorStoreManagementInquiryModalInfo">
+        select title, content, type, reg_date, answer_status, answer_content, image_list
+        from inquiry_vendor
+        WHERE inquiry_no = #{inquiry_no}
+    </select>
+    <select id="getVendorSidebarData" resultType="VendorSidebarDataResponse">
+        select store.name, vendor.point
+        from store,
+             vendor
+        WHERE vendor.vendor_no = #{vendor_no}
+          AND store.vendor_no = #{vendor_no}
+    </select>
 </mapper>

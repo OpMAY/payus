@@ -1,11 +1,14 @@
 package com.mvsolutions.payus.model.web.vendor.response.goodsmanagement;
 
-import com.mvsolutions.payus.model.rest.basic.Room;
 import lombok.Data;
-
-import java.util.ArrayList;
 
 @Data
 public class StoreGoods {
-    private ArrayList<Room> room_options;
+    private int goods_no;
+    private int store_no;
+    private String name;
+    private int price;
+    private String reg_date;
+    private String img;
+    private String goods_explain;
 }

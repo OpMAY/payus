@@ -65,15 +65,15 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group" style="margin-bottom: 2rem">
-                                <label for="vendor-inquiry-name">문의 제목</label>
-                                <textarea class="payus-textarea" id="vendor-inquiry-name" rows="1"
+                                <label for="vendor-inquiry-title">문의 제목</label>
+                                <textarea class="payus-textarea" id="vendor-inquiry-title" rows="1"
                                 ></textarea>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group" style="margin-bottom: 2rem">
-                                <label for="vendor-inquiry-explain">문의 내용</label>
-                                <textarea class="payus-textarea" id="vendor-inquiry-explain" rows="3"
+                                <label for="vendor-inquiry-content">문의 내용</label>
+                                <textarea class="payus-textarea" id="vendor-inquiry-content" rows="3"
                                 ></textarea>
                             </div>
                         </div>
@@ -107,7 +107,57 @@
         </div>
     </div>
 </div>
+<script src="/js/common.js"></script>
 <script>
+    let isReviewReport = false;
+    let review_no = 0;
+    let body = $(document.body);
+    const img_add_div_height = $('#img-add-div').height();
+    function getCookie(name) {
+        let nameOfCookie = name + "=";
+        let x = 0;
+        while (x <= document.cookie.length) {
+            let y = (x + nameOfCookie.length);
+            if (document.cookie.substring(x, y) === nameOfCookie) {
+                if ((endOfCookie = document.cookie.indexOf(";", y)) === -1)
+                    endOfCookie = document.cookie.length;
+                return unescape(document.cookie.substring(y, endOfCookie));
+            }
+            x = document.cookie.indexOf(" ", x) + 1;
+            if (x === 0)
+                break;
+        }
+        return "";
+    }
+
+    let deleteCookie = function (name) {
+        console.log('deleting Cookie');
+        document.cookie = name + '=; expires=SAT, 01 Jan 2000 00:00:10 GMT; domain=' + window.location.hostname + '; path=/vendor';
+        console.log('Cookie Deleted : ' + getCookie(name));
+    };
+
+    $(document).ready(function () {
+        if(getCookie("report_review") !== undefined && getCookie("report_review") !== null && getCookie("report_review") !== ''){
+            isReviewReport = true;
+            review_no = getCookie('report_review');
+            console.log("review_no : " + review_no);
+            $('#vendor-inquiry-category').val(5);
+            deleteCookie('report_review');
+        }
+    });
+
+    $('#vendor-inquiry-category').on("change", function (e) {
+        if(isReviewReport) {
+            if($(this).val() !== '5'){
+                alert('리뷰 신고를 통해서 들어온 경우는 다른 종류를 클릭할 수 없습니다.');
+                $(this).val(5);
+            }
+        } else {
+            if($(this).val() === '5') {
+                alert("리뷰 신고는 리뷰 목록 페이지에서\n신고 버튼 클릭을 통해 문의하시면 원활한 신고가 가능합니다.");
+            }
+        }
+    });
     // $("#img-add-btn").on("click", function () {
     //     console.log("add-btn clicked");
     //     $("#image-add-input").click();
@@ -126,56 +176,92 @@
     //     })
     // });
 
-    $(".img-delete-btn").on("click", function () {
+    $(body).on("click", ".img-delete-btn", function () {
+        console.log('delete clicked');
+        let inputId = $(this).parent().prev().attr('id');
+        console.log(inputId);
         let agent = navigator.userAgent.toLowerCase();
         if ((navigator.appName === 'Netscape' && navigator.userAgent.search('Trident') !== -1) || (agent.indexOf("msie") !== -1)) {
-            $("#image-add-input").replaceWith($("#image-add-input").clone(true));
+            $(inputId).replaceWith($(inputId).clone(true));
         } else {
-            $("#image-add-input").val('');
+            $(inputId).val('');
         }
-        $("#img-add-btn").children('img').attr("src", '/images/Group%20334.svg');
-        $("#img-add-btn").children('img').css("transform", "scale(0.45)");
-        $(".img-delete-btn").css("display", "none");
+        $(this).parent().remove();
+        if(imageIndex === 5) {
+            $('#img-add-div').css('display', 'block');
+        }
+        imageIndex--;
     });
 
-    let imageIndex = 1;
+    let imageInputIndex = 1;
+    let imageIndex = 0;
 
     $("#img-add-btn").click(function () {
-        console.log(imageIndex);
+        console.log(imageInputIndex);
 
-        $("#image-add-input-" + imageIndex).click();
+        $("#image-add-input-" + imageInputIndex).click();
         console.log("clicked");
 
-        $("#image-add-input-" + imageIndex).change(function () {
+        $("#image-add-input-" + imageInputIndex).change(function () {
             console.log("changed");
             if (this.files && this.files[0]) {
-                console.log("ImageIndex before Upload : " + imageIndex);
+                console.log("ImageIndex before Upload : " + imageInputIndex);
                 let reader = new FileReader();
                 reader.onload = function (data) {
                     console.log(data);
-                    console.log($("#image-add-input-" + imageIndex).val());
-                    let fileValue = $("#image-add-input-" + imageIndex).val().split("\\");
+                    console.log($("#image-add-input-" + imageInputIndex).val());
+                    let fileValue = $("#image-add-input-" + imageInputIndex).val().split("\\");
                     let fileName = fileValue[fileValue.length - 1];
                     if (fileName !== "") {
-                        $('<div class="col image-div" style="position: relative; height: 172px">\n' +
+                        $('<div class="col image-div" style="position: relative; height: ' + img_add_div_height + 'px">\n' +
                             '<div class="img-container">\n' +
-                            '<img src="' + data.target.result + '" alt style="width: 100%;height:172px;object-fit: fill">\n' +
+                            '<img src="' + data.target.result + '" alt style="width: 100%;height:' + img_add_div_height + 'px;object-fit: fill">\n' +
                             '</div>\n' +
                             '<button type="button" class="img-delete-btn small"><img src="/images/x-button.svg" alt width="90%"></button>\n' +
                             '</div>').insertBefore("#img-add-div");
+                        imageInputIndex++;
                         imageIndex++;
-                        $('<input type="file" id="image-add-input-' + imageIndex + '" name="img' + imageIndex + '" accept="image/*" hidden>').insertBefore("#img-add-div");
+                        $('<input type="file" id="image-add-input-' + imageInputIndex + '" name="img' + imageInputIndex + '" accept="image/*" hidden>').insertBefore("#img-add-div");
                         $('.img-delete-btn').css("display", "block");
-                        console.log("ImageIndex After Upload : " + imageIndex);
+                        console.log("ImageIndex After Upload : " + imageInputIndex);
+                        if(imageIndex === 5){
+                            $('#img-add-div').css('display', 'none');
+                        }
                     }
                 };
                 reader.readAsDataURL(this.files[0]);
-
             }
         });
-
     });
 
+    $('.btn-payus').on('click', function () {
+        let type = $('#vendor-inquiry-category option:selected').val();
+        let title = $('#vendor-inquiry-title').val();
+        let content = $('#vendor-inquiry-content').val();
+        let data = {"type" : type, "title" : title, "content" : content};
+        let formData = new FormData();
+        let json = {"type" : type, "review_no" : review_no * 1};
+        formData.append('inquiry_data', JSON.stringify(data));
+        formData.append('imgs', $('input[type=file]')[0].files[0]);
+        formData.append("inquiry_json", JSON.stringify(json));
+        $.ajax({
+            type: 'POST',
+            enctype: 'multipart/form-data',
+            url: '/vendor/manage/customer/inquiry/request',
+            contentType: false,
+            processData: false,
+            data: formData
+        }).done(function (result) {
+            if(result === 0){
+                alert('문의가 등록되었습니다.');
+                window.location.href = '/vendor/manage/customer/inquiry/list.do';
+            } else {
+                alert('오류가 발생했습니다.');
+            }
+        }).fail(function (error) {
+            console.log(error);
+        })
+    })
 </script>
 </body>
 </html>

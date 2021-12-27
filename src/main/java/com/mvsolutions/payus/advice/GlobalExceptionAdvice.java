@@ -1,7 +1,7 @@
 package com.mvsolutions.payus.advice;
 
 import com.mvsolutions.payus.exception.rest.GrantAccessDeniedException;
-import com.mvsolutions.payus.exception.web.VendorAdminLoginException;
+import com.mvsolutions.payus.exception.web.PayusVendorAccessException;
 import lombok.extern.log4j.Log4j2;
 import org.json.JSONException;
 import org.springframework.validation.BindException;
@@ -144,6 +144,14 @@ public class GlobalExceptionAdvice {
     protected ModelAndView handlerFileNotFoundException(FileNotFoundException e) {
         log.error("", e);
         log.info("handlerFileNotFoundException");
+        modelAndView = new ModelAndView("error/error");
+        return modelAndView;
+    }
+
+    @ExceptionHandler(PayusVendorAccessException.class)
+    protected ModelAndView handlerPayusVendorAccessException(PayusVendorAccessException e) {
+        log.error("", e);
+        log.info("handlerPayusVendorAccessException");
         modelAndView = new ModelAndView("error/error");
         return modelAndView;
     }

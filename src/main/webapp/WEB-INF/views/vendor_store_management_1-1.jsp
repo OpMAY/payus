@@ -291,7 +291,7 @@
         let data_type = $(this).parent().attr('data-type');
         console.log('img_index : ' + img_idx);
         if (confirm('해당 이미지를 삭제하시겠습니까?')) {
-            if (data_type === 'original'){
+            if (data_type === 'original') {
                 // 서버에 등록된 이미지면 해당 Index 반환
                 deletedImgIdx.push(img_idx - 1);
             } else {
@@ -352,7 +352,7 @@
 
         $('#image-add-input-' + imageInputIndex).on('change', function () {
             console.log('changed');
-            if(this.files && this.files[0]){
+            if (this.files && this.files[0]) {
                 console.log('ImageIndex before Upload : ' + imageIndex);
                 console.log('ImageInputIndex before Upload : ' + imageInputIndex);
                 let reader = new FileReader();
@@ -361,7 +361,7 @@
                     console.log($('#image-add-input-' + imageInputIndex).val());
                     let fileValue = $('#image-add-input-' + imageInputIndex).val().split('\\');
                     let fileName = fileValue[fileValue.length - 1];
-                    if(fileName !== ''){
+                    if (fileName !== '') {
                         $('<div class="col image-div" style="height: 180px">\n' +
                             '                                        <div class="img-container" img-idx="' + imageIndex + '" data-type="added">\n' +
                             '                                            <img class="clickable_img"\n' +
@@ -385,7 +385,6 @@
                 reader.readAsDataURL(this.files[0]);
             }
         })
-
     });
 
     $('#personal-edit-btn').on('click', function () {
@@ -403,6 +402,43 @@
         console.log(paybackRate);
         let imageInput = $('input[type=file]')[0].files[0];
         console.log("inputs : " + imageInput);
+        console.log(deletedImgIdx);
+        console.log("sorted : " + deletedImgIdx.sort(function (a, b) {
+            return a - b;
+        }));
+
+        let formData = new FormData();
+        formData.append('imgs', imageInput);
+
+        let data = {
+            "store_no" : ${store.store_no},
+            "road_address": roadAddress,
+            "jibun_address": jibunAddress,
+            "store_name": storeName,
+            "store_explain": storeExplain,
+            "store_phone" : storePhone,
+            "payback_rate" : paybackRate,
+            "deleted_img_index" : deletedImgIdx
+        };
+        formData.append('store_data', JSON.stringify(data));
+
+        $.ajax({
+            type: 'POST',
+            enctype: 'multipart/form-data',
+            url: '/vendor/manage/store/info/edit',
+            contentType: false,
+            processData: false,
+            data: formData
+        }).done(function (result) {
+            if(result === 0){
+                alert('수정이 완료되었습니다');
+                window.location.href = '/vendor/manage/store/info.do';
+            } else {
+                alert('오류가 발생했습니다.');
+            }
+        }).fail(function (error) {
+            console.log(error);
+        })
     });
 
     $(body).on("click", '.clickable_img', function () {

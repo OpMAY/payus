@@ -76,18 +76,18 @@
                                 </tr>
                                 </thead>
                                 <tbody id="pagination_layout">
-                                <c:forEach var="i" begin="1" end="${rooms.size()}">
+                                <c:forEach var="i" begin="1" end="${goods.size()}">
                                     <c:if test="${i <= 10}">
-                                        <tr goods="${rooms[i-1].room_no}">
+                                        <tr goods="${goods[i-1].goods_no}">
                                             <td>${i}</td>
                                             <td><img class="clickable_img"
-                                                     src="https://payus.s3.ap-northeast-2.amazonaws.com/${rooms[i-1].room_img}"
+                                                     src="https://payus.s3.ap-northeast-2.amazonaws.com/${goods[i-1].img}"
                                                      alt style="width: 100%; object-fit: fill"></td>
                                             <td>
                                                 <div class="overflow">
                                                     <div class="overflow-space">
                                                         <div class="overflow-text"
-                                                             title="${rooms[i-1].name}">${rooms[i-1].name}</div>
+                                                             title="${goods[i-1].name}">${goods[i-1].name}</div>
                                                     </div>
                                                 </div>
                                             </td>
@@ -95,12 +95,12 @@
                                                 <div class="overflow">
                                                     <div class="overflow-space">
                                                         <div class="overflow-text"
-                                                             title="${rooms[i-1].room_explain}">${rooms[i-1].room_explain}</div>
+                                                             title="${goods[i-1].goods_explain}">${goods[i-1].goods_explain}</div>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="td-comma">${rooms[i-1].price}원</td>
-                                            <td class="td-date">${rooms[i-1].reg_date}</td>
+                                            <td class="td-comma">${goods[i-1].price}원</td>
+                                            <td class="td-date">${goods[i-1].reg_date}</td>
                                             <td>
                                                     <%--      TODO 수정하기 페이지 이동              --%>
                                                 <button type="button" class="btn btn-payus-table">
@@ -132,9 +132,8 @@
 <script src="/js/date-formatter.js"></script>
 <script src="/js/payus-pagination.js"></script>
 <script>
-    let totalGoodsNum = ${rooms.size()};
+    let totalGoodsNum = ${goods.size()};
     const paginationDivId = 'goods-table-pagination';
-    let GoodsType = ${goodsType};
     let body = $(document.body);
 
     $(body).on("click", ".btn-payus-table-report", function () {
@@ -142,7 +141,7 @@
         console.log(goods_no);
         let goodsName = $(this).parent().parent().children(':eq(2)').children().children().children('.overflow-text').text();
         if (confirm('상품 \'' + goodsName + '\'을 삭제합니다.\n정말 삭제하시겠습니까?')) {
-            let data = {"room_no": goods_no, "goods_name": goodsName, "goods_type": GoodsType};
+            let data = {"room_no": goods_no};
             $.ajax({
                 type: 'POST',
                 url: '/vendor/manage/goods/delete',
@@ -163,13 +162,14 @@
     });
 
     $(body).on("click", ".btn-payus-table", function () {
-        let room_no = $(this).parent().parent().attr('goods');
-        console.log(room_no);
-        window.location.href = "/vendor/manage/goods/edit.do?goods_no=" + room_no;
+        let goods_no = $(this).parent().parent().attr('goods');
+        console.log(goods_no);
+        window.location.href = "/vendor/manage/goods/edit.do?goods_no=" + goods_no;
     });
 
     function dataCallFunction(page) {
         let data = {"page": page};
+        let selectedPageIndex = (page * 10) - 10;
         $.ajax({
             type: 'POST',
             url: '/vendor/manage/goods/list/paging',
@@ -178,16 +178,15 @@
             data: JSON.stringify(data)
         }).done(function (result) {
             $("#pagination_layout *").remove();
-            let startIndex = (page - 1) * 10;
-            for (let i = startIndex; i < totalGoodsNum; i++) {
-                if(i === startIndex + 10)
+            for (let i = 0; i < result.goodsList.length; i++) {
+                if(i === 10)
                     break;
-                let thisIndex = i + 1;
-                let data = result.goodsList.room_options[i];
-                $('#pagination_layout').append('<tr goods="' + data.room_no + '">\n' +
+                let thisIndex = selectedPageIndex + i + 1;
+                let data = result.goodsList[i];
+                $('#pagination_layout').append('<tr goods="' + data.goods_no + '">\n' +
                     '                                        <td>' + thisIndex + '</td>\n' +
                     '                                        <td><img class="clickable_img"\n' +
-                    '                                                 src="https://payus.s3.ap-northeast-2.amazonaws.com/' + data.room_img + '"\n' +
+                    '                                                 src="https://payus.s3.ap-northeast-2.amazonaws.com/' + data.img + '"\n' +
                     '                                                 alt style="width: 100%; object-fit: fill"></td>\n' +
                     '                                        <td>\n' +
                     '                                            <div class="overflow">\n' +
@@ -201,7 +200,7 @@
                     '                                            <div class="overflow">\n' +
                     '                                                <div class="overflow-space">\n' +
                     '                                                    <div class="overflow-text"\n' +
-                    '                                                         title="' + data.room_explain +'">' + data.room_explain +'</div>\n' +
+                    '                                                         title="' + data.goods_explain +'">' + data.goods_explain +'</div>\n' +
                     '                                                </div>\n' +
                     '                                            </div>\n' +
                     '                                        </td>\n' +
@@ -220,6 +219,8 @@
                     '                                            </button>\n' +
                     '                                        </td>\n' +
                     '                                    </tr>');
+
+                totalGoodsNum = result.goods_num;
             }
         }).fail(function (error) {
             console.log(error);
@@ -252,7 +253,7 @@
 
     $(document).ready(function () {
         listenResize();
-        tablePagination(${roomNum}, 'goods-table-pagination');
+        tablePagination(${goodsNum}, 'goods-table-pagination');
     });
 </script>
 <script>

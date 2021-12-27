@@ -197,21 +197,21 @@
                 e.preventDefault();
     });
 
-    // $(document).ready(function () {
-    //     let firstCookie = getCookie("first_step");
-    //     let secondCookie = getCookie("second_step");
-    //     let thirdCookie = getCookie("third_step");
-    //     if (firstCookie === "" || secondCookie === "" || thirdCookie === "") {
-    //         alert("올바르지 않은 접근입니다.\n로그인 페이지로 이동합니다.");
-    //         deleteCookie("first_cookie");
-    //         deleteCookie("second_cookie");
-    //         deleteCookie("third_cookie");
-    //         window.location.href = '/vendor/login.do';
-    //         return false;
-    //     }
-    //     let obj = JSON.parse(thirdCookie);
-    //     $("#vendor-register-store-name").val(obj.store_name);
-    // });
+    $(document).ready(function () {
+        let firstCookie = getCookie("first_step");
+        let secondCookie = getCookie("second_step");
+        let thirdCookie = getCookie("third_step");
+        if (firstCookie === "" || secondCookie === "" || thirdCookie === "") {
+            alert("올바르지 않은 접근입니다.\n로그인 페이지로 이동합니다.");
+            deleteCookie("first_cookie");
+            deleteCookie("second_cookie");
+            deleteCookie("third_cookie");
+            window.location.href = '/vendor/login.do';
+            return false;
+        }
+        let obj = JSON.parse(thirdCookie);
+        $("#vendor-register-store-name").val(obj.store_name);
+    });
 
     function getCookie(name) {
         let nameOfCookie = name + "=";

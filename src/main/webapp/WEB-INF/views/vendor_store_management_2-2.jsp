@@ -246,7 +246,6 @@
         $(this).prev().removeAttr('readonly');
         $(this).parent().next().removeAttr('readonly');
         $(this).html('<i class="fa fa-check" aria-hidden="true"></i>');
-        $(this).css('background-color', '#34A853')
     });
 
     $(body).on('click', '.e-i-btn.edit', function () {
@@ -255,7 +254,6 @@
         $(this).prev().removeAttr('readonly');
         $(this).parent().next().removeAttr('readonly');
         $(this).html('<i class="fa fa-check" aria-hidden="true"></i>');
-        $(this).css('background-color', '#34A853')
     });
 
     $(body).on('click', '.e-e-btn.edit', function () {
@@ -328,7 +326,6 @@
                     content.attr('readonly', true);
                     console.log($(this));
                     pressedBtn.html('<i class="fa fa-pencil" aria-hidden="true"></i>');
-                    pressedBtn.css('background-color', 'rgba(109, 41, 208, 0.8)');
                     pressedBtn.removeClass('submit');
                     pressedBtn.addClass('edit');
                 }
@@ -363,7 +360,6 @@
                     title.attr('readonly', true);
                     content.attr('readonly', true);
                     pressedBtn.html('<i class="fa fa-pencil" aria-hidden="true"></i>');
-                    pressedBtn.css('background-color', 'rgba(109, 41, 208, 0.8)');
                     pressedBtn.removeClass('submit');
                     pressedBtn.addClass('edit');
                 }
@@ -396,7 +392,6 @@
                 title.attr('readonly', true);
                 content.attr('readonly', true);
                 pressedBtn.html('<i class="fa fa-pencil" aria-hidden="true"></i>');
-                pressedBtn.css('background-color', 'rgba(109, 41, 208, 0.8)');
                 pressedBtn.removeClass('r-s-btn');
                 pressedBtn.addClass('e-s-btn');
                 pressedBtn.addClass('edit');
@@ -429,7 +424,6 @@
                 title.attr('readonly', true);
                 content.attr('readonly', true);
                 pressedBtn.html('<i class="fa fa-pencil" aria-hidden="true"></i>');
-                pressedBtn.css('background-color', 'rgba(109, 41, 208, 0.8)');
                 pressedBtn.removeClass('r-i-btn');
                 pressedBtn.addClass('e-i-btn');
                 pressedBtn.addClass('edit');

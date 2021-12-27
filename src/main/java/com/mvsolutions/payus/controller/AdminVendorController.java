@@ -1,8 +1,11 @@
 package com.mvsolutions.payus.controller;
 
+import com.mvsolutions.payus.exception.enums.BusinessExceptionType;
+import com.mvsolutions.payus.exception.web.PayusVendorAccessException;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
 import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminFAQList;
 import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminNoticeList;
+import com.mvsolutions.payus.model.web.vendor.response.cs.VendorInquiryList;
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
@@ -224,10 +227,9 @@ public class AdminVendorController {
     public ModelAndView GoodsManagementListPage(HttpServletRequest request) {
         VIEW = new ModelAndView("vendor_goods_management_1");
         Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
-        StoreGoods goods = vendorAdminService.getVendorStoreGoodsList(vendor_no, GoodsType.ROOMS);
-        VIEW.addObject("rooms", goods.getRoom_options());
-        VIEW.addObject("goodsType", GoodsType.ROOMS);
-        VIEW.addObject("roomNum", goods.getRoom_options().size());
+        List<StoreGoods> goods = vendorAdminService.getVendorStoreGoodsList(vendor_no);
+        VIEW.addObject("goods", goods);
+        VIEW.addObject("goodsNum", vendorAdminService.getStoreGoodsNum(vendor_no));
         return VIEW;
     }
 
@@ -247,19 +249,14 @@ public class AdminVendorController {
                                                 @RequestParam("goods_no") int goods_no) {
         VIEW = new ModelAndView("vendor_goods_management_3");
         Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
-        int goodsIndex = 0;
-        StoreGoods goods = vendorAdminService.getVendorStoreGoodsList(vendor_no, GoodsType.ROOMS);
-        log.info(goods.getRoom_options());
-        for (int i = 0; i < goods.getRoom_options().size(); i++) {
-            if (goods.getRoom_options().get(i).getRoom_no() == goods_no) {
-                goodsIndex = i;
-                break;
-            }
+        StoreGoods goods = vendorAdminService.getGoodsInfo(goods_no, vendor_no);
+        if(goods == null) {
+            throw new PayusVendorAccessException(BusinessExceptionType.NOT_QUALIFIED_ACCESS);
         }
         int paybackRate = vendorAdminService.getPaybackRateForRegisterGoods(vendor_no);
         int storeNo = vendorAdminService.getVendorStoreNo(vendor_no);
         VIEW.addObject("paybackRate", paybackRate);
-        VIEW.addObject("room", goods.getRoom_options().get(goodsIndex));
+        VIEW.addObject("goods", goods);
         VIEW.addObject("store_no", storeNo);
         return VIEW;
     }
@@ -335,6 +332,10 @@ public class AdminVendorController {
         VIEW = new ModelAndView("vendor_inquiry_1");
         Integer vendor_no = (Integer) request.getSession().getAttribute("vendor_no");
         //TODO Inquiry List
+        List<VendorInquiryList> inquiryList = vendorAdminService.getVendorInquiryList(vendor_no);
+        int inquiryNum = vendorAdminService.getVendorInquiryNum(vendor_no);
+        VIEW.addObject("inquiry", inquiryList);
+        VIEW.addObject("inquiryNum", inquiryNum);
         return VIEW;
     }
 

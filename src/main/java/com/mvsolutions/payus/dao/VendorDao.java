@@ -1,7 +1,6 @@
 package com.mvsolutions.payus.dao;
 
 import com.mvsolutions.payus.mapper.VendorMapper;
-import com.mvsolutions.payus.model.rest.basic.Room;
 import com.mvsolutions.payus.model.rest.basic.Vendor;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.request.suppointpage.PaybackRequest;
@@ -15,6 +14,7 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.VendorRegisterRequest
 import com.mvsolutions.payus.model.web.vendor.request.common.VendorPagingRequest;
 import com.mvsolutions.payus.model.web.vendor.request.cs.VendorCustomerCenterFAQModalRequest;
 import com.mvsolutions.payus.model.web.vendor.request.cs.VendorCustomerCenterNoticeModalRequest;
+import com.mvsolutions.payus.model.web.vendor.request.cs.VendorStoreManagementInquiryModalRequest;
 import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminDeleteGoodsRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBankDataRequest;
 import com.mvsolutions.payus.model.web.vendor.request.mypage.VendorAdminEditBusinessDataRequest;
@@ -24,13 +24,11 @@ import com.mvsolutions.payus.model.web.vendor.request.storemanagement.*;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResultData;
-import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminFAQList;
-import com.mvsolutions.payus.model.web.vendor.response.cs.VendorAdminNoticeList;
-import com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementFAQModalInfo;
-import com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementNoticeModalInfo;
+import com.mvsolutions.payus.model.web.vendor.response.cs.*;
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGoods;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
+import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorSidebarDataResponse;
 import com.mvsolutions.payus.model.web.vendor.response.point.*;
 import com.mvsolutions.payus.model.web.vendor.response.sales.VendorAdminSalesList;
 import com.mvsolutions.payus.model.web.vendor.response.sales.VendorSalesPageSummary;
@@ -159,9 +157,9 @@ public class VendorDao {
         return mapper.getVendorReviewListForStoreManagementInit(vendor_no);
     }
 
-    public StoreGoods getVendorStoreGoodsList(int vendor_no, int goods_type) {
+    public List<StoreGoods> getVendorStoreGoodsList(int vendor_no) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
-        return mapper.getVendorStoreGoodsList(vendor_no, goods_type);
+        return mapper.getVendorStoreGoodsList(vendor_no);
     }
 
     public int getPaybackRateForRegisterGoods(int vendor_no) {
@@ -274,19 +272,14 @@ public class VendorDao {
         return mapper.getVendorStoreType(vendor_no);
     }
 
-    public boolean checkRoomNameExists(String goods_name, int vendor_no) {
+    public boolean checkGoodsNameExists(String goods_name, int vendor_no) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
-        return mapper.checkRoomNameExists(goods_name, vendor_no);
+        return mapper.checkGoodsNameExists(goods_name, vendor_no);
     }
 
-    public void registerRoom(Room room, int store_no) {
+    public void registerGoods(StoreGoods storeGoods) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
-        mapper.registerRoom(room, store_no);
-    }
-
-    public String getRoomKeyList(int store_no) {
-        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
-        return mapper.getRoomKeyList(store_no);
+        mapper.registerGoods(storeGoods);
     }
 
     public int getVendorStoreNo(int vendor_no) {
@@ -294,14 +287,14 @@ public class VendorDao {
         return mapper.getVendorStoreNo(vendor_no);
     }
 
-    public boolean checkRoomNameSameByRoomNo(int goods_no, String goods_name, int store_no) {
+    public boolean checkGoodsNameSameByGoodsNo(int goods_no, String goods_name) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
-        return mapper.checkRoomNameSameByRoomNo(goods_no, goods_name, store_no);
+        return mapper.checkGoodsNameSameByGoodsNo(goods_no, goods_name);
     }
 
-    public void updateRoom(Room room, String original_goods_name, int store_no) {
+    public void updateGoods(StoreGoods storeGoods) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
-        mapper.updateRoom(room, original_goods_name, store_no);
+        mapper.updateGoods(storeGoods);
     }
 
     public List<VendorAdminSalesList> getVendorSalesList(int vendor_no) {
@@ -471,6 +464,81 @@ public class VendorDao {
     public void deleteStoreInformation(VendorStoreManagementDetailInformationDeleteRequest request) {
         VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
         mapper.deleteStoreInformation(request);
+    }
+
+    public String getOriginalStoreImageList(int store_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getOriginalStoreImageList(store_no);
+    }
+
+    public void editStoreInfo(VendorStoreInfoEditRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.editStoreInfo(request);
+    }
+
+    public StoreGoods getVendorStoreGoodsInfo(int goods_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorStoreGoodsInfo(goods_no);
+    }
+
+    public List<StoreGoods> getVendorStoreGoodsListByPagination(VendorPagingRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorStoreGoodsListByPagination(request);
+    }
+
+    public int getVendorStoreGoodsNum(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorStoreGoodsNum(vendor_no);
+    }
+
+    public boolean checkGoodsBelongToVendor(int goods_no, int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.checkGoodsBelongToVendor(goods_no, vendor_no);
+    }
+
+    public List<VendorInquiryList> getVendorInquiryList(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorInquiryList(vendor_no);
+    }
+
+    public int getVendorInquiryNum(int vendor_no){
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorInquiryNum(vendor_no);
+    }
+
+    public void requestInquiry(VendorInquiryRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        mapper.requestInquiry(request);
+    }
+
+    public int getInquiryNumByDataType(VendorPagingRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getInquiryNumByDataType(request);
+    }
+
+    public List<VendorInquiryList> getInquiryListByPaging(VendorPagingRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getInquiryListByPaging(request);
+    }
+
+    public VendorStoreManagementInquiryModalInfo getVendorInquiryModalInfo(VendorStoreManagementInquiryModalRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorInquiryModalInfo(request);
+    }
+
+    public VendorSidebarDataResponse getVendorSidebarData(int vendor_no) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getVendorSidebarData(vendor_no);
+    }
+
+    public int getNoticeNumByDataType(VendorPagingRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getNoticeNumByDataType(request);
+    }
+
+    public int getFAQNumByDataType(VendorPagingRequest request) {
+        VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);
+        return mapper.getFAQNumByDataType(request);
     }
 
 //    private VendorMapper mapper = sqlSession.getMapper(VendorMapper.class);

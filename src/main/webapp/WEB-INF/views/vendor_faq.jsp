@@ -123,8 +123,11 @@
                             </label>
                             <input type="text" placeholder="검색" class="payus-search-input">
                             <button class="btn" style="padding: 10px 1rem;background-color: #8668d0; margin-left: 10px"
-                                    type="button" id="search-btn" onclick="alert('준비 중')"><i
+                                    type="button" id="search-btn"><i
                                     class="fa fa-search"></i></button>
+                            <button class="btn" style="padding: 10px 1rem;background-color: white; color: #8668d0; border: 1px solid #8668d0; margin-left: 10px"
+                                    type="button" id="reset-btn"><i
+                                    class="fa fa-refresh"></i></button>
                         </div>
                     </div>
                     <div class="row" id="table-div" style="overflow-x: auto;">
@@ -155,7 +158,7 @@
                                 <c:forEach var="i" begin="1" end="${faq.size()}">
                                     <tr faq="${faq[i-1].faq_no}">
                                         <td>${i}</td>
-                                        <td>
+                                        <td style="text-align: left">
                                             <div class="overflow">
                                                 <div class="overflow-space">
                                                     <div class="overflow-text">${faq[i-1].question}</div>
@@ -199,6 +202,9 @@
     let paginationDivId = 'faq-table-pagination';
     let paginationDiv = $('#' + paginationDivId);
     let totalFAQNum = ${faqNum};
+    let sQuestionSelected = false;
+    let sAnswerSelected = false;
+    let sKeyword = null;
     $(".pagination").on("click", 'a', function () {
         let selectedPage = $(this);
         let data_order = selectedPage.attr('data-order');
@@ -208,25 +214,25 @@
         if (data_order === '-1') {
             if (tablePaginationChange(totalFAQNum, paginationDivId, false)) {
                 let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
-                dataCallFunction(firstPageAfterChange, data_type);
+                dataCallFunction(firstPageAfterChange, data_type, false, sKeyword, sQuestionSelected, sAnswerSelected);
             }
         } else if (data_order === '0') {
             if (tablePaginationChange(totalFAQNum, paginationDivId, true)) {
                 let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
-                dataCallFunction(firstPageAfterChange, data_type);
+                dataCallFunction(firstPageAfterChange, data_type, false, sKeyword, sQuestionSelected, sAnswerSelected);
             }
         } else {
             console.log("else");
             if (active_page !== data_order) {
                 paginationDiv.children('.active').removeClass('active');
                 selectedPage.addClass('active');
-                dataCallFunction(data_order, data_type);
+                dataCallFunction(data_order, data_type, false, sKeyword, sQuestionSelected, sAnswerSelected);
             }
         }
     });
 
     function dataCallFunction(page, data_type, dataTypeChaged, searchKeyword, sTitle, sContent) {
-        let data = {"page": page, "data_type": data_type};
+        let data = {"page": page, "data_type": data_type, "search_keyword" : searchKeyword, "sTitle" : sTitle, "sContent" : sContent};
         let selectedPageIndex = (page * 10) - 10;
         $.ajax({
             type: 'POST',
@@ -264,7 +270,7 @@
                 }
                 $('#pagination_layout').append('<tr faq="' + data.faq_no + '">\n' +
                     '                                        <td>' + thisIndex + '</td>\n' +
-                    '                                        <td>\n' +
+                    '                                        <td style="text-align: left">\n' +
                     '                                            <div class="overflow">\n' +
                     '                                                <div class="overflow-space">\n' +
                     '                                                    <div class="overflow-text">' + data.question + '</div>\n' +
@@ -290,6 +296,32 @@
             console.log(error);
         });
     }
+
+    $('#search-btn').on('click', function () {
+        sQuestionSelected = $('#faq-search-question').is(':checked');
+        sAnswerSelected = $('#faq-search-answer').is(':checked');
+        let keyword = $('.payus-search-input').val();
+        let data_type = $('.tab').children('.active').attr('data-type');
+        if(keyword === ''){
+            alert('검색어를 입력하세요.');
+            return false;
+        } else if(keyword.length < 2){
+            alert('검색어는 최소 2자 이상 입력해주세요.');
+            return false;
+        } else {
+            sKeyword = keyword;
+            dataCallFunction(1, data_type, true, sKeyword, sQuestionSelected, sAnswerSelected);
+        }
+    });
+
+    $('#reset-btn').on('click', function() {
+        sQuestionSelected = false;
+        sAnswerSelected = false;
+        sKeyword = null;
+        let data_type = $('.tab').children('.active').attr('data-type');
+        $('.payus-search-input').val('');
+        dataCallFunction(1, data_type, true, sKeyword, sQuestionSelected, sAnswerSelected);
+    });
 
     $(document).ready(function () {
         listenResize();
@@ -394,7 +426,7 @@
             const tabDiv = $(this).parent();
             tabDiv.children("button.active").removeClass("active");
             $(this).addClass("active");
-            dataCallFunction(1, $(this).attr('data-type'), true);
+            dataCallFunction(1, $(this).attr('data-type'), true, sKeyword, sQuestionSelected, sAnswerSelected);
         }
     });
 </script>

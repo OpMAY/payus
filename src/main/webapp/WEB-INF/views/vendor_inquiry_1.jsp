@@ -121,7 +121,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" style="margin-bottom: 1rem">
+                    <div class="row" style="margin-bottom: 1rem" id="answer-div">
                         <div class="col-12">
                             <label for="inquiry-modal-answer">답변</label>
                             <textarea class="payus-modal-textarea" id="inquiry-modal-answer" rows="5" readonly>공급자 회원가입 후 승인 시 등록이 가능합니다.
@@ -158,7 +158,7 @@
                                 문의하기
                             </button>
                             <select class="payus-select inquiry" id="review-data-type-select"
-                                    style="color: black;" onchange="alert('바뀜')">
+                                    style="color: black;">
                                 <option selected value="1">전체</option>
                                 <option value="2">답변 완료</option>
                                 <option value="3">미답변</option>
@@ -170,13 +170,13 @@
                         <div class="col-12" id="table-col"
                              style="display: flex; justify-content: center; flex-direction: column">
                             <div class="tab">
-                                <button class="tablinks active">전체</button>
-                                <button class="tablinks">이용 방법</button>
-                                <button class="tablinks">페이백</button>
-                                <button class="tablinks">이벤트</button>
-                                <button class="tablinks">불만</button>
-                                <button class="tablinks">신고</button>
-                                <button class="tablinks">기타</button>
+                                <button class="tablinks active" data-type="0">전체</button>
+                                <button class="tablinks" data-type="1">이용 방법</button>
+                                <button class="tablinks" data-type="2">페이백</button>
+                                <button class="tablinks" data-type="3">이벤트</button>
+                                <button class="tablinks" data-type="4">불만</button>
+                                <button class="tablinks" data-type="5">신고</button>
+                                <button class="tablinks" data-type="6">기타</button>
                             </div>
                             <table class="payus-table" style="border-top: 3px solid #8668d0;">
                                 <thead>
@@ -189,65 +189,33 @@
                                     <th style="width: 15%">상세보기</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr inquiry="1">
-                                    <td>1</td>
-                                    <td>
-                                        이용방법
-                                    </td>
-                                    <td>
-                                        회원 탈퇴를 진행하고 싶습니다.
-                                    </td>
-                                    <td>
-                                        2021.11.23
-                                    </td>
-                                    <td>
-                                        답변 완료
-                                    </td>
-                                    <td>
-                                        <button type="button" style="display: block;"
-                                                class="btn btn-payus-table">
-                                            상세 보기
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr inquiry="2">
-                                    <td>1</td>
-                                    <td>
-                                        페이백
-                                    </td>
-                                    <td>
-                                        회원 탈퇴를 진행하고 싶습니다.
-                                    </td>
-                                    <td>
-                                        2021.11.23
-                                    </td>
-                                    <td>
-                                        미답변
-                                    </td>
-                                    <td>
-                                        <button type="button" style="display: block;"
-                                                class="btn btn-payus-table">
-                                            상세 보기
-                                        </button>
-                                    </td>
-                                </tr>
+                                <tbody id="pagination_layout">
+                                <c:forEach var="i" begin="1" end="${inquiry.size()}">
+                                    <tr inquiry="${inquiry[i-1].inquiry_no}">
+                                        <td>${i}</td>
+                                        <td><c:choose><c:when test="${inquiry[i-1].type == 1}">이용방법</c:when><c:when
+                                                test="${inquiry[i-1].type == 2}">페이백</c:when><c:when
+                                                test="${inquiry[i-1].type == 3}">이벤트</c:when><c:when
+                                                test="${inquiry[i-1].type == 4}">불만</c:when><c:when
+                                                test="${inquiry[i-1].type == 5}">신고</c:when><c:when
+                                                test="${inquiry[i-1].type == 6}">기타</c:when></c:choose></td>
+                                        <td>${inquiry[i-1].title}</td>
+                                        <td class="td-date">${inquiry[i-1].reg_date}</td>
+                                        <td><c:choose><c:when
+                                                test="${inquiry[i-1].answer_status == true}">답변 완료</c:when><c:when
+                                                test="${inquiry[i-1].answer_status == false}">미답변</c:when></c:choose></td>
+                                        <td>
+                                            <button type="button" style="display: block;"
+                                                    class="btn btn-payus-table">
+                                                상세 보기
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                             <%--  TODO 전체 리뷰 갯수로 페이지네이션 리뷰 페이지당 10개씩   --%>
-                            <div class="pagination" id="charge-table-pagination">
-                                <a href="#">&laquo;</a>
-                                <a data-order="1" style="cursor: pointer" class="active">1</a>
-                                <a data-order="2" style="cursor: pointer">2</a>
-                                <a data-order="3" style="cursor: pointer">3</a>
-                                <a data-order="4" style="cursor: pointer">4</a>
-                                <a data-order="5" style="cursor: pointer">5</a>
-                                <a data-order="6" style="cursor: pointer">6</a>
-                                <a data-order="7" style="cursor: pointer">7</a>
-                                <a data-order="8" style="cursor: pointer">8</a>
-                                <a data-order="9" style="cursor: pointer">9</a>
-                                <a data-order="10" style="cursor: pointer">10</a>
-                                <a href="#">&raquo;</a>
+                            <div class="pagination" id="inquiry-table-pagination">
                             </div>
                         </div>
                     </div>
@@ -257,23 +225,105 @@
     </div>
 </div>
 <script src="/js/date-formatter.js"></script>
+<script src="/js/payus-pagination.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/text-input-checker.js"></script>
 <script>
+    let totalInquiryNum = ${inquiryNum};
+    const paginationDivId = 'inquiry-table-pagination';
+    const paginationDiv = $("#" + paginationDivId);
 
-
-    $(".pagination a").on("click", function () {
-        let data_order = $(this).attr('data-order');
+    $(".pagination").on("click", 'a', function () {
+        let selectedPage = $(this);
+        let data_order = selectedPage.attr('data-order');
+        let data_type = $('.tab').children('.active').attr('data-type');
+        let answerType = $('.payus-select option:selected').val();
         console.log(data_order);
-        let paginationDiv = $("#charge-table-pagination");
         let active_page = paginationDiv.children('.active').attr('data-order');
-        if (active_page !== data_order) {
-            // TODO 페이지 별 데이터 AJAX
-            paginationDiv.children('.active').removeClass('active');
-            $(this).addClass('active');
+        if (data_order === '-1') {
+            if (tablePaginationChange(totalInquiryNum, paginationDivId, false)) {
+                let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
+                dataCallFunction(firstPageAfterChange, data_type, answerType);
+            }
+        } else if (data_order === '0') {
+            if (tablePaginationChange(totalInquiryNum, paginationDivId, true)) {
+                let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
+                dataCallFunction(firstPageAfterChange, data_type, answerType);
+            }
+        } else {
+            console.log("else");
+            if (active_page !== data_order) {
+                paginationDiv.children('.active').removeClass('active');
+                selectedPage.addClass('active');
+                dataCallFunction(data_order, data_type, answerType);
+            }
         }
     });
 
+    function dataCallFunction(page, data_type, answerType, dataTypeChanged) {
+        let data = {"page": page, "data_type": data_type, "answer_type": answerType};
+        let selectedPageIndex = (page * 10) - 10;
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/customer/inquiry/list/paging',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            $("#pagination_layout *").remove();
+            console.log(result);
+            for (let i = 0; i < result.inquiryList.length; i++) {
+                let data = result.inquiryList[i];
+                let thisIndex = selectedPageIndex + i + 1;
+                let categoryText;
+                let answerStatus = data.answer_status === true ? '답변 완료' : '미답변';
+                switch (data.type) {
+                    case 1:
+                        categoryText = '이용방법';
+                        break;
+                    case 2:
+                        categoryText = '페이백';
+                        break;
+                    case 3:
+                        categoryText = '이벤트';
+                        break;
+                    case 4:
+                        categoryText = '불만';
+                        break;
+                    case 5:
+                        categoryText = '신고';
+                        break;
+                    case 6:
+                        categoryText = '기타';
+                        break;
+                }
+                $('#pagination_layout').append('<tr inquiry="' + data.inquiry_no + '">\n' +
+                    '                                        <td>' + thisIndex + '</td>\n' +
+                    '                                        <td>' + categoryText + '</td>\n' +
+                    '                                        <td>' + data.title + '</td>\n' +
+                    '                                        <td class="td-date">' + SplitDateFunction(data.reg_date) + '</td>\n' +
+                    '                                        <td>' + answerStatus + '</td>\n' +
+                    '                                        <td>\n' +
+                    '                                            <button type="button" style="display: block;"\n' +
+                    '                                                    class="btn btn-payus-table">\n' +
+                    '                                                상세 보기\n' +
+                    '                                            </button>\n' +
+                    '                                        </td>\n' +
+                    '                                    </tr>');
+            }
+            totalInquiryNum = result.inquiryNum;
+
+            if (dataTypeChanged) {
+                tablePagination(totalInquiryNum, paginationDivId);
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
+    }
+
     $(document).ready(function () {
         listenResize();
+        tablePagination(totalInquiryNum, paginationDivId);
     });
 
     function listenResize() {
@@ -290,16 +340,77 @@
     let body = $(document.body);
     let modal = $(".payus-modal");
 
-    $(".btn-payus-table").on("click", function () {
-        let notice_no = $(this).parent().parent().attr('notice');
-        console.log(notice_no);
-        // TODO 해당 charge_no로 반려 사유 받아오기
-        modal.addClass('show');
+    $(body).on("click", ".btn-payus-table", function () {
+        let inquiry_no = $(this).parent().parent().attr('inquiry');
+        console.log(inquiry_no);
+        let data = {"inquiry_no": inquiry_no};
+        $.ajax({
+            type: 'POST',
+            url: '/vendor/manage/customer/inquiry/detail',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function (result) {
+            console.log(result);
+            $('#inquiry-modal-title').val(result.title);
+            let categoryText;
+            switch (result.type) {
+                case 1:
+                    categoryText = '이용방법';
+                    break;
+                case 2:
+                    categoryText = '페이백';
+                    break;
+                case 3:
+                    categoryText = '이벤트';
+                    break;
+                case 4:
+                    categoryText = '불만';
+                    break;
+                case 5:
+                    categoryText = '신고';
+                    break;
+                case 6:
+                    categoryText = '기타';
+                    break;
+            }
+            let answerStatus = result.answer_status === true ? '답변 완료' : '미답변';
+            $('#inquiry-modal-category').val(categoryText);
+            $('#inquiry-modal-reg-date').val(SplitDateFunction(result.reg_date));
+            $('#inquiry-modal-answer-status').val(answerStatus);
+            $('#inquiry-modal-content').val(result.content);
+            let imageDiv = $('#inquiry-modal-images');
+            imageDiv.children().remove();
+            $(result.image_list).each(function (index, object) {
+                imageDiv.append('<div class="col modal-image-div">\n' +
+                    '                                    <div class="img-container">\n' +
+                    '                                        <img class="clickable_img"\n' +
+                    '                                             src="https://payus.s3.ap-northeast-2.amazonaws.com/' + object + '"\n' +
+                    '                                             alt style="width: 100%; height: 100%; object-fit: fill">\n' +
+                    '                                    </div>\n' +
+                    '                                </div>')
+            });
+            if (result.answer_status) {
+                $('#answer-div').css('display', 'block');
+                $('#inquiry-modal-answer').val(result.answer_content);
+            } else {
+                $('#answer-div').css('display', 'none');
+            }
 
-        if (modal.hasClass('show')) {
-            body.css("overflow", "hidden");
-            modal.focus();
-        }
+            modal.addClass('show');
+
+            if (modal.hasClass('show')) {
+                body.css("overflow", "hidden");
+                modal.focus();
+            }
+        }).fail(function (error) {
+            console.log(error);
+        });
+
+    });
+
+    $(".btn-payus").on('click', function () {
+        window.location.href = '/vendor/manage/customer/inquiry/request.do';
     });
 
     $(".modal-close").on("click", function () {
@@ -327,15 +438,6 @@
         }
     });
 
-    $(document).ready(function () {
-        let table = $(".payus-table");
-        let body = table.children('tbody');
-        for (let i = 0; i < body.children().length; i++) {
-            let originalRegDate = body.children('tr:eq(' + i + ')').children('td:eq(3)').text();
-            body.children('tr:eq(' + i + ')').children('td:eq(3)').text(SplitDateFunction(originalRegDate));
-        }
-    });
-
     $('.payus-modal').on("click", function (event) {
         if (event.target.className === 'payus-modal show') {
             modal.removeClass("show");
@@ -344,17 +446,22 @@
                 body.css("overflow", "auto");
             }
         }
-    })
+    });
 
     $('.tablinks').on("click", function () {
         if (!$(this).hasClass("active")) {
             const tabDiv = $(this).parent();
             tabDiv.children("button.active").removeClass("active");
             $(this).addClass("active");
-
-            // TODO AJAX OR URL MOVE - 카테고리에 맞는 FAQ 불러오기
+            let answerType = $('.payus-select option:selected').val();
+            dataCallFunction(1, $(this).attr('data-type'), answerType, true);
         }
     });
+
+    $('.payus-select').on('change', function () {
+        let selectedText = $('.payus-select option:selected').val();
+        dataCallFunction(1, $('.tablinks.active').attr('data-type'), selectedText, true);
+    })
 
 
 </script>

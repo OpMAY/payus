@@ -1,11 +1,11 @@
 package com.mvsolutions.payus.service;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.mvsolutions.payus.dao.StoreDao;
 import com.mvsolutions.payus.dao.StoreOptionDao;
 import com.mvsolutions.payus.dao.VendorDao;
-import com.mvsolutions.payus.model.rest.basic.Room;
+import com.mvsolutions.payus.exception.enums.BusinessExceptionType;
+import com.mvsolutions.payus.exception.rest.GrantAccessDeniedException;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
 import com.mvsolutions.payus.model.rest.response.storedetailpage.StoreOptionResponse;
@@ -17,6 +17,7 @@ import com.mvsolutions.payus.model.web.vendor.request.auth.*;
 import com.mvsolutions.payus.model.web.vendor.request.common.VendorPagingRequest;
 import com.mvsolutions.payus.model.web.vendor.request.cs.VendorCustomerCenterFAQModalRequest;
 import com.mvsolutions.payus.model.web.vendor.request.cs.VendorCustomerCenterNoticeModalRequest;
+import com.mvsolutions.payus.model.web.vendor.request.cs.VendorStoreManagementInquiryModalRequest;
 import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminDeleteGoodsRequest;
 import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminEditGoodsRequest;
 import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminRegisterGoodsRequest;
@@ -34,13 +35,12 @@ import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.StoreGood
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.VendorStoreManagementGoodsPagingResponse;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageBusinessInfo;
 import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorMyPageInfo;
+import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorSidebarDataResponse;
 import com.mvsolutions.payus.model.web.vendor.response.point.*;
 import com.mvsolutions.payus.model.web.vendor.response.sales.VendorAdminSalesList;
 import com.mvsolutions.payus.model.web.vendor.response.sales.VendorSalesPageSummary;
 import com.mvsolutions.payus.model.web.vendor.response.sales.VendorStoreManagementSalesPagingResponse;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.*;
-import com.mvsolutions.payus.response.payus.StoreType;
-import com.mvsolutions.payus.response.payus.vendor.GoodsType;
 import com.mvsolutions.payus.util.BusinessValidationService;
 import com.mvsolutions.payus.util.EmailSendService;
 import com.mvsolutions.payus.util.KakaoLocationService;
@@ -57,6 +57,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Log4j2
@@ -246,9 +247,9 @@ public class VendorAdminService {
     }
 
     @Transactional(readOnly = true)
-    public StoreGoods getVendorStoreGoodsList(int vendor_no, int goods_type) {
+    public List<StoreGoods> getVendorStoreGoodsList(int vendor_no) {
         vendorDao.setSqlSession(sqlSession);
-        return vendorDao.getVendorStoreGoodsList(vendor_no, goods_type);
+        return vendorDao.getVendorStoreGoodsList(vendor_no);
     }
 
     @Transactional(readOnly = true)
@@ -370,68 +371,26 @@ public class VendorAdminService {
     @Transactional(propagation = Propagation.REQUIRED)
     public boolean deleteGoods(VendorAdminDeleteGoodsRequest request) {
         vendorDao.setSqlSession(sqlSession);
-        switch (request.getGoods_type()) {
-            case GoodsType.ROOMS:
-                vendorDao.deleteRoom(request);
-                return true;
-            case GoodsType.RESTAURANT_FOODS:
-                log.info("식당 상품은 현재 지원하지 않는 상품입니다.");
-                return false;
-            case GoodsType.HOSPITAL_GOODS:
-                log.info("병원 상품은 현재 지원하지 않는 상품입니다.");
-                return false;
-            case GoodsType.GROCERY_GOODS:
-                log.info("식료품 상품은 현재 지원하지 않는 상품입니다.");
-                return false;
-            case GoodsType.SHOPPING_GOODS:
-                log.info("쇼핑 상품은 현재 지원하지 않는 상품입니다.");
-                return false;
-            default:
-                return false;
-        }
+        vendorDao.deleteRoom(request);
+        return true;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public int registerGoods(VendorAdminRegisterGoodsRequest request) {
         vendorDao.setSqlSession(sqlSession);
-        int storeType = vendorDao.getVendorStoreType(request.getVendor_no());
-        switch (storeType) {
-            case StoreType.LODGEMENT:
-                if (vendorDao.checkRoomNameExists(request.getGoods_name(), request.getVendor_no())) {
-                    // 이미 존재하는 상품 이름일 시 - 이름 중복 X
-                    return 1;
-                }
-                String roomKeyListString = vendorDao.getRoomKeyList(request.getStore_no());
-                List<Integer> roomNoList = new Gson().fromJson(roomKeyListString, new TypeToken<List<Integer>>() {
-                }.getType());
-                Room room = new Room();
-                if (roomNoList.size() > 0) {
-                    room.setRoom_no(roomNoList.get(roomNoList.size() - 1) + 1);
-                } else {
-                    room.setRoom_no(1);
-                }
-                room.setName(request.getGoods_name());
-                room.setRoom_explain(request.getGoods_explain());
-                room.setPrice(request.getPrice());
-                room.setReg_date(request.getReg_date());
-                room.setRoom_img(request.getGoods_img());
-                vendorDao.registerRoom(room, request.getStore_no());
-                return 0;
-            case StoreType.RESTAURANT:
-                log.info("식당 상품은 현재 지원하지 않는 상품입니다.");
-                return -1;
-            case StoreType.HOSPITAL:
-                log.info("병원 상품은 현재 지원하지 않는 상품입니다.");
-                return -1;
-            case StoreType.GROCERY:
-                log.info("식료품 상품은 현재 지원하지 않는 상품입니다.");
-                return -1;
-            case StoreType.SHOPPING:
-                log.info("쇼핑 상품은 현재 지원하지 않는 상품입니다.");
-                return -1;
-            default:
-                return -1;
+        if (vendorDao.checkGoodsNameExists(request.getGoods_name(), request.getVendor_no())) {
+            // 이미 존재하는 상품 이름일 시 - 이름 중복 X
+            return 1;
         }
+        StoreGoods storeGoods = new StoreGoods();
+        storeGoods.setName(request.getGoods_name());
+        storeGoods.setGoods_explain(request.getGoods_explain());
+        storeGoods.setPrice(request.getPrice());
+        storeGoods.setReg_date(request.getReg_date());
+        storeGoods.setImg(request.getGoods_img());
+        storeGoods.setStore_no(request.getStore_no());
+        vendorDao.registerGoods(storeGoods);
+        return 0;
     }
 
     @Transactional(readOnly = true)
@@ -443,40 +402,22 @@ public class VendorAdminService {
     @Transactional(propagation = Propagation.REQUIRED)
     public int editGoods(VendorAdminEditGoodsRequest request) {
         vendorDao.setSqlSession(sqlSession);
-        int storeType = vendorDao.getVendorStoreType(request.getVendor_no());
-        switch (storeType) {
-            case StoreType.LODGEMENT:
-                if (!vendorDao.checkRoomNameSameByRoomNo(request.getGoods_no(), request.getGoods_name(), request.getStore_no())) {
-                    // 변경하려는 상품의 이름이 변경되었는지 확인
-                    if (vendorDao.checkRoomNameExists(request.getGoods_name(), request.getVendor_no())) {
-                        // 변경하려는 상품의 이름이 변경되었지만, 다른 상품의 이름과 동일한 경우
-                        return 1;
-                    }
-                }
-                Room room = new Room();
-                room.setRoom_no(request.getGoods_no());
-                if (request.getGoods_img() != null)
-                    room.setRoom_img(request.getGoods_img());
-                room.setName(request.getGoods_name());
-                room.setRoom_explain(request.getGoods_explain());
-                room.setPrice(request.getPrice());
-                vendorDao.updateRoom(room, request.getOriginal_goods_name(), request.getStore_no());
-                return 0;
-            case StoreType.RESTAURANT:
-                log.info("식당 상품은 현재 지원하지 않는 상품입니다.");
-                return -1;
-            case StoreType.HOSPITAL:
-                log.info("병원 상품은 현재 지원하지 않는 상품입니다.");
-                return -1;
-            case StoreType.GROCERY:
-                log.info("식료품 상품은 현재 지원하지 않는 상품입니다.");
-                return -1;
-            case StoreType.SHOPPING:
-                log.info("쇼핑 상품은 현재 지원하지 않는 상품입니다.");
-                return -1;
-            default:
-                return -1;
+        if (!vendorDao.checkGoodsNameSameByGoodsNo(request.getGoods_no(), request.getGoods_name())) {
+            // 변경하려는 상품의 이름이 변경되었는지 확인
+            if (vendorDao.checkGoodsNameExists(request.getGoods_name(), request.getVendor_no())) {
+                // 변경하려는 상품의 이름이 변경되었지만, 다른 상품의 이름과 동일한 경우
+                return 1;
+            }
         }
+        StoreGoods storeGoods = new StoreGoods();
+        storeGoods.setGoods_no(request.getGoods_no());
+        if (request.getGoods_img() != null)
+            storeGoods.setImg(request.getGoods_img());
+        storeGoods.setName(request.getGoods_name());
+        storeGoods.setGoods_explain(request.getGoods_explain());
+        storeGoods.setPrice(request.getPrice());
+        vendorDao.updateGoods(storeGoods);
+        return 0;
     }
 
     @Transactional(readOnly = true)
@@ -492,12 +433,18 @@ public class VendorAdminService {
     }
 
     @Transactional(readOnly = true)
+    public int getStoreGoodsNum(int vendor_no) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorStoreGoodsNum(vendor_no);
+    }
+
+    @Transactional(readOnly = true)
     public VendorStoreManagementGoodsPagingResponse getGoodsListDataCallByPagination(VendorPagingRequest request) {
         vendorDao.setSqlSession(sqlSession);
-        StoreGoods storeGoods = vendorDao.getVendorStoreGoodsList(request.getVendor_no(), GoodsType.ROOMS);
+        List<StoreGoods> storeGoods = vendorDao.getVendorStoreGoodsListByPagination(request);
         VendorStoreManagementGoodsPagingResponse response = new VendorStoreManagementGoodsPagingResponse();
         response.setGoodsList(storeGoods);
-        response.setGoods_num(storeGoods.getRoom_options().size());
+        response.setGoods_num(vendorDao.getVendorStoreGoodsNum(request.getVendor_no()));
         return response;
     }
 
@@ -536,7 +483,7 @@ public class VendorAdminService {
     public VendorStoreManagementNoticePagingResponse getNoticeListDataCallByPagination(VendorPagingRequest request) {
         vendorDao.setSqlSession(sqlSession);
         VendorStoreManagementNoticePagingResponse response = new VendorStoreManagementNoticePagingResponse();
-        response.setNotice_num(vendorDao.getNoticeNum());
+        response.setNotice_num(vendorDao.getNoticeNumByDataType(request));
         response.setNoticeList(vendorDao.getNoticeListByPaging(request));
         return response;
     }
@@ -545,7 +492,7 @@ public class VendorAdminService {
     public VendorStoreManagementFAQPagingResponse getFAQListDataCallByPagination(VendorPagingRequest request) {
         vendorDao.setSqlSession(sqlSession);
         VendorStoreManagementFAQPagingResponse response = new VendorStoreManagementFAQPagingResponse();
-        response.setFaq_num(vendorDao.getFAQNum(request.getData_type() - 1));
+        response.setFaq_num(vendorDao.getFAQNumByDataType(request));
         response.setFaqList(vendorDao.getFAQListByPaging(request));
         return response;
     }
@@ -699,5 +646,91 @@ public class VendorAdminService {
         vendorDao.setSqlSession(sqlSession);
         vendorDao.deleteStoreInformation(request);
         return 0;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public int editStoreInfo(VendorStoreInfoEditRequest request) throws IOException, URISyntaxException {
+        vendorDao.setSqlSession(sqlSession);
+        String imageListString = vendorDao.getOriginalStoreImageList(request.getStore_no());
+        List<String> imageList = new ArrayList<>(Arrays.asList(imageListString.replace("[", "").replace("]", "").replace("\"", "").split(", ")));
+        log.info(imageList);
+        log.info("list size : " + imageList.size());
+        log.info("first Element : " + imageList.get(0));
+        log.info("toString : " + imageList.toString());
+        List<String> array = new ArrayList<>(imageList);
+        log.info("Tojson : " + new Gson().toJson(array));
+        // 받은 주소가 null 이 아니면 주소로 좌표 확인
+        if (request.getRoad_address() != null) {
+            String result = kakaoLocationService.getLocationCoordinates(request.getRoad_address());
+            KakaoLocationResponse kakaoLocationResponse = new Gson().fromJson(result, KakaoLocationResponse.class);
+            double x = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getX());
+            double y = Double.parseDouble(kakaoLocationResponse.getDocuments().get(0).getY());
+            request.setX(x);
+            request.setY(y);
+        }
+        if (request.getDeleted_img_index().size() != 0) {
+            for (Integer index : request.getDeleted_img_index()) {
+                if (index != null)
+                    imageList.remove((int) index);
+            }
+        }
+        if (request.getNew_imgs().size() != 0) {
+            imageList.addAll(request.getNew_imgs());
+        }
+
+        request.setImage_list(new Gson().toJson(imageList));
+        vendorDao.editStoreInfo(request);
+
+        return 0;
+    }
+
+    @Transactional(readOnly = true)
+    public StoreGoods getGoodsInfo(int goods_no, int vendor_no) {
+        vendorDao.setSqlSession(sqlSession);
+        if(vendorDao.checkGoodsBelongToVendor(goods_no, vendor_no)){
+            return vendorDao.getVendorStoreGoodsInfo(goods_no);
+        } else {
+            return null;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<VendorInquiryList> getVendorInquiryList(int vendor_no) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorInquiryList(vendor_no);
+    }
+
+    @Transactional(readOnly = true)
+    public int getVendorInquiryNum(int vendor_no) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorInquiryNum(vendor_no);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public int registerInquiry(VendorInquiryRequest request) {
+        vendorDao.setSqlSession(sqlSession);
+        vendorDao.requestInquiry(request);
+        return 0;
+    }
+
+    @Transactional(readOnly = true)
+    public VendorStoreManagementInquiryPagingResponse getInquiryListDataCallByPagination(VendorPagingRequest request) {
+        vendorDao.setSqlSession(sqlSession);
+        VendorStoreManagementInquiryPagingResponse response = new VendorStoreManagementInquiryPagingResponse();
+        response.setInquiryNum(vendorDao.getInquiryNumByDataType(request));
+        response.setInquiryList(vendorDao.getInquiryListByPaging(request));
+        return response;
+    }
+
+    @Transactional(readOnly = true)
+    public VendorStoreManagementInquiryModalInfo getVendorInquiryModalInfo(VendorStoreManagementInquiryModalRequest request) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorInquiryModalInfo(request);
+    }
+
+    @Transactional(readOnly = true)
+    public VendorSidebarDataResponse getVendorSidebarData(int vendor_no) {
+        vendorDao.setSqlSession(sqlSession);
+        return vendorDao.getVendorSidebarData(vendor_no);
     }
 }

@@ -50,6 +50,11 @@ function comma(str) {
     return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
 }
 
+function unComma(str) {
+    str = String(str);
+    return str.replace(/[^\d]+/g, '');
+}
+
 function listenResize() {
     let screenHeight = $(window).height();
     console.log(screenHeight);

@@ -61,7 +61,7 @@
                                      style="display: flex; justify-content: center; height: 200px; position: relative">
                                     <div class="img-add" id="img-add-btn"
                                          style="display: flex; width: 50%; height: 100%;">
-                                        <img src="https://payus.s3.ap-northeast-2.amazonaws.com/${room.room_img}" alt
+                                        <img src="https://payus.s3.ap-northeast-2.amazonaws.com/${goods.img}" alt
                                              width="100%" height="100%"
                                              style="border-radius: 5px">
                                     </div>
@@ -74,14 +74,14 @@
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="vendor-goods-name">상품명</label>
                                 <textarea class="payus-textarea" id="vendor-goods-name" rows="1"
-                                >${room.name}</textarea>
+                                >${goods.name}</textarea>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group" style="margin-bottom: 2rem">
                                 <label for="vendor-goods-explain">상품 옵션</label>
                                 <textarea class="payus-textarea" id="vendor-goods-explain" rows="3"
-                                >${room.room_explain}</textarea>
+                                >${goods.goods_explain}</textarea>
                             </div>
                         </div>
                         <div class="col-12">
@@ -89,7 +89,7 @@
                                 <div class="col-12 col-xl-6" style="position: relative; margin-bottom: 2rem">
                                     <label for="vendor-goods-price">상품 가격</label>
                                     <textarea class="payus-textarea" id="vendor-goods-price" rows="1"
-                                    >${room.price}</textarea>
+                                    >${goods.price}</textarea>
                                     <span class="price-unit">원</span>
                                 </div>
                                 <div class="col-4 col-xl-2" style="margin-bottom: 2rem">
@@ -124,6 +124,7 @@
         </div>
     </div>
 </div>
+<script src="/js/common.js"></script>
 <script>
     $('.btn-payus').on('click', function () {
         console.log('clicked');
@@ -133,8 +134,8 @@
         let form = $("#img-form")[0];
         let formData = new FormData(form);
         let goodsData = {
-            "original_goods_name": '${room.name}',
-            "goods_no": ${room.room_no},
+            "original_goods_name": '${goods.name}',
+            "goods_no": ${goods.goods_no},
             "goods_name": goodsName,
             "goods_explain": goodsExplain,
             "price": unComma(goodsPrice),
@@ -198,16 +199,6 @@
             resultArea.val('');
         }
     });
-
-    function comma(str) {
-        str = String(str);
-        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
-    }
-
-    function unComma(str) {
-        str = String(str);
-        return str.replace(/[^\d]+/g, '');
-    }
 
     $("#img-add-btn").on("click", function () {
         console.log("add-btn clicked");

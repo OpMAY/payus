@@ -383,6 +383,18 @@ h1, h2, h3, h4, h5, h6, span, div, section, i, b, small, input, button {
     margin-bottom: 10px;
 }
 
+.btn-payus.edit {
+    background-color: transparent;
+    border: 2px solid rgba(109, 41, 208, 0.8);
+    color: rgba(109, 41, 208, 0.8);
+}
+
+.btn-payus.submit {
+    background-color: transparent;
+    border: 2px solid #34A853;
+    color: #34A853;
+}
+
 .btn-email-validation-resend {
     position: absolute;
     top: 50%;
@@ -782,9 +794,9 @@ select {
 }
 
 .div-sidebar-open {
-    border-right: 1px solid black;
     display: flex;
-    align-content: center;
+    justify-content: center;
+    align-items: center;
     width: 80px;
     cursor: pointer;
     height: 100%;

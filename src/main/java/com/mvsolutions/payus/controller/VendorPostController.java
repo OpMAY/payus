@@ -1,12 +1,14 @@
 package com.mvsolutions.payus.controller;
 
 import com.google.gson.Gson;
+import com.mvsolutions.payus.model.rest.basic.Vendor;
 import com.mvsolutions.payus.model.rest.request.loginpage.vendor.VendorLoginRequest;
 import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorLoginResponse;
 import com.mvsolutions.payus.model.web.vendor.request.auth.*;
 import com.mvsolutions.payus.model.web.vendor.request.common.VendorPagingRequest;
 import com.mvsolutions.payus.model.web.vendor.request.cs.VendorCustomerCenterFAQModalRequest;
 import com.mvsolutions.payus.model.web.vendor.request.cs.VendorCustomerCenterNoticeModalRequest;
+import com.mvsolutions.payus.model.web.vendor.request.cs.VendorStoreManagementInquiryModalRequest;
 import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminDeleteGoodsRequest;
 import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminEditGoodsRequest;
 import com.mvsolutions.payus.model.web.vendor.request.goodsmanagement.VendorAdminRegisterGoodsRequest;
@@ -19,11 +21,9 @@ import com.mvsolutions.payus.model.web.vendor.request.storemanagement.*;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorFindIdResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorPasswordFindResponse;
 import com.mvsolutions.payus.model.web.vendor.response.auth.VendorRegisterEmailResponse;
-import com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementFAQModalInfo;
-import com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementFAQPagingResponse;
-import com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementNoticeModalInfo;
-import com.mvsolutions.payus.model.web.vendor.response.cs.VendorStoreManagementNoticePagingResponse;
+import com.mvsolutions.payus.model.web.vendor.response.cs.*;
 import com.mvsolutions.payus.model.web.vendor.response.goodsmanagement.VendorStoreManagementGoodsPagingResponse;
+import com.mvsolutions.payus.model.web.vendor.response.mypage.VendorSidebarDataResponse;
 import com.mvsolutions.payus.model.web.vendor.response.point.*;
 import com.mvsolutions.payus.model.web.vendor.response.sales.VendorStoreManagementSalesPagingResponse;
 import com.mvsolutions.payus.model.web.vendor.response.storemanagement.VendorStoreManagementReviewDetail;
@@ -228,7 +228,6 @@ public class VendorPostController {
                                      @RequestBody String body) {
         VendorAdminDeleteGoodsRequest request = new Gson().fromJson(body, VendorAdminDeleteGoodsRequest.class);
         Integer vendor_no = (Integer) session.getAttribute("vendor_no");
-        request.setVendor_no(vendor_no);
         return vendorAdminService.deleteGoods(request);
     }
 
@@ -467,4 +466,82 @@ public class VendorPostController {
         return vendorAdminService.deleteStoreInformation(request);
     }
 
+    @RequestMapping("/manage/store/info/edit")
+    public int VendorStoreInfoEdit(HttpSession session,
+                                   @RequestParam("store_data") String body,
+                                   HttpServletRequest servletRequest) throws IOException, URISyntaxException {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorStoreInfoEditRequest request = new Gson().fromJson(body, VendorStoreInfoEditRequest.class);
+        request.setVendor_no(vendor_no);
+
+        // File Control
+        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) servletRequest;
+        Map<String, MultipartFile> fileMap = multipartHttpServletRequest.getFileMap();
+        Iterator<String> keys = fileMap.keySet().iterator();
+        ArrayList<String> imageList = new ArrayList<>();
+        String timeForDB = Time.TimeFormatHMS();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            if(key.contains("img")) {
+                if(!fileMap.get(key).isEmpty()) {
+                    String path = fileUploadUtility.uploadFile("api/images/store/" + request.getStore_no() + "/", fileMap.get(key).getOriginalFilename(), fileMap.get(key).getBytes(), Constant.AWS_SAVE);
+                    imageList.add("api/images/store/" + request.getStore_no() + "/" + path);
+                }
+            }
+        }
+        request.setNew_imgs(imageList);
+        return vendorAdminService.editStoreInfo(request);
+    }
+
+    @RequestMapping("/manage/customer/inquiry/request")
+    public int VendorRequestInquiry(HttpSession session,
+                                    @RequestParam("inquiry_data") String body,
+                                    HttpServletRequest servletRequest,
+                                    @RequestParam("inquiry_json") String json) throws IOException {
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        VendorInquiryRequest request = new Gson().fromJson(body, VendorInquiryRequest.class);
+        request.setVendor_no(vendor_no);
+        request.setReg_date(Time.TimeFormatHMS());
+
+        // File Control
+        MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) servletRequest;
+        Map<String, MultipartFile> fileMap = multipartHttpServletRequest.getFileMap();
+        Iterator<String> keys = fileMap.keySet().iterator();
+        ArrayList<String> imageList = new ArrayList<>();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            if(key.contains("img")) {
+                if(!fileMap.get(key).isEmpty()) {
+                    String path = fileUploadUtility.uploadFile("api/images/inquiry/" + request.getVendor_no() + "/", fileMap.get(key).getOriginalFilename(), fileMap.get(key).getBytes(), Constant.AWS_SAVE);
+                    imageList.add("api/images/inquiry/" + request.getVendor_no() + "/" + path);
+                }
+            }
+        }
+        request.setImage_list(new Gson().toJson(imageList));
+        request.setInquiry_json(json);
+        return vendorAdminService.registerInquiry(request);
+    }
+
+    @RequestMapping("/manage/customer/inquiry/list/paging")
+    public VendorStoreManagementInquiryPagingResponse VendorInquiryListPaging(HttpSession session,
+                                                                              @RequestBody String body) {
+        VendorPagingRequest request = new Gson().fromJson(body, VendorPagingRequest.class);
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        request.setVendor_no(vendor_no);
+        request.setStart_index((request.getPage() - 1) * 10);
+        return vendorAdminService.getInquiryListDataCallByPagination(request);
+    }
+
+    @RequestMapping("/manage/customer/inquiry/detail")
+    public VendorStoreManagementInquiryModalInfo VendorInquiryModalInfo(HttpSession session,
+                                                                        @RequestBody String body) {
+        VendorStoreManagementInquiryModalRequest request = new Gson().fromJson(body, VendorStoreManagementInquiryModalRequest.class);
+        return vendorAdminService.getVendorInquiryModalInfo(request);
+    }
+
+    @RequestMapping("/mypage/point")
+    public VendorSidebarDataResponse VendorSidebarDataCall(HttpSession session){
+        Integer vendor_no = (Integer) session.getAttribute("vendor_no");
+        return vendorAdminService.getVendorSidebarData(vendor_no);
+    }
 }

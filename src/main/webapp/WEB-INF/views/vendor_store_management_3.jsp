@@ -273,7 +273,8 @@
     $(".btn-payus-table-report").on("click", function () {
         let review_no = $(this).parent().parent().attr('review');
         console.log(review_no);
-        // TODO 해당 review_no 실어서 리뷰 신고 페이지 이동
+        setCookie("report_review", review_no, 9999);
+        window.location.href = '/vendor/manage/customer/inquiry/request.do';
     });
 
     function listenResize() {
@@ -347,6 +348,14 @@
         }).fail(function (error) {
             console.log(error);
         });
+    }
+
+    function setCookie(cookie_name, value, seconds) {
+        let exdate = new Date();
+        exdate.setDate(exdate.getSeconds() + seconds);
+
+        let cookie_value = escape(value) + ((seconds == null) ? '' : '; path=/vendor; expires=' + exdate.toUTCString());
+        document.cookie = cookie_name + '=' + cookie_value;
     }
 
     $(".pagination").on("click", 'a', function () {
@@ -483,11 +492,10 @@
         } else {
             if (confirm('답변은 한 번만 등록 가능하며 등록 후 수정이 불가능합니다. 그래도 등록하시겠습니까?')) {
                 let answerContent = answerTextArea.val();
-                if (checkValue(answerContent, 'review_answer')) {
-                    return false;
-                }
                 let review_no = modal.children().attr("data-number");
-                if (review_no === 0) {
+                if (!checkValue(answerContent, 'review_answer')) {
+                    return false;
+                } else if (review_no === 0) {
                     alert("올바르지 않은 접근입니다.");
                     return false;
                 }

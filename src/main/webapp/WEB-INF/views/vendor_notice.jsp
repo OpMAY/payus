@@ -117,8 +117,11 @@
                             </label>
                             <input type="text" placeholder="검색" class="payus-search-input">
                             <button class="btn" style="padding: 10px 1rem;background-color: #8668d0; margin-left: 10px"
-                                    type="button" id="search-btn" onclick="alert('준비 중')"><i
+                                    type="button" id="search-btn"><i
                                     class="fa fa-search"></i></button>
+                            <button class="btn" style="padding: 10px 1rem;background-color: white; color: #8668d0; border: 1px solid #8668d0; margin-left: 10px"
+                                    type="button" id="reset-btn"><i
+                                    class="fa fa-refresh"></i></button>
                         </div>
                     </div>
                     <div class="row" id="table-div" style="overflow-x: auto;">
@@ -139,7 +142,13 @@
                                 <c:forEach var="i" begin="1" end="${notice.size()}">
                                     <tr notice="${notice[i-1].notice_no}">
                                         <td>${i}</td>
-                                        <td>${notice[i-1].title}</td>
+                                        <td style="text-align: left">
+                                            <div class="overflow">
+                                                <div class="overflow-space">
+                                                    <div class="overflow-text">${notice[i-1].title}</div>
+                                                </div>
+                                            </div>
+                                        </td>
                                         <td class="td-date">${notice[i-1].reg_date}</td>
                                         <td class="td-comma">${notice[i-1].view_num}</td>
                                         <td>
@@ -169,34 +178,65 @@
     let paginationDivId = 'notice-table-pagination';
     let paginationDiv = $('#' + paginationDivId);
     let totalNoticeNum = ${noticeNum};
+    let sTitleSelected = false;
+    let sContentSelected = false;
+    let sKeyword = null;
     $(".pagination").on("click", 'a', function () {
         let selectedPage = $(this);
         let data_order = selectedPage.attr('data-order');
-        let data_type = $('.payus-select option:selected').val();
         console.log(data_order);
         let active_page = paginationDiv.children('.active').attr('data-order');
         if (data_order === '-1') {
             if (tablePaginationChange(totalNoticeNum, paginationDivId, false)) {
                 let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
-                dataCallFunction(firstPageAfterChange, data_type);
+                dataCallFunction(firstPageAfterChange, sKeyword, sTitleSelected, sContentSelected, false);
             }
         } else if (data_order === '0') {
             if (tablePaginationChange(totalNoticeNum, paginationDivId, true)) {
                 let firstPageAfterChange = paginationDiv.children('.active').attr('data-order');
-                dataCallFunction(firstPageAfterChange, data_type);
+                dataCallFunction(firstPageAfterChange, sKeyword, sTitleSelected, sContentSelected, false);
             }
         } else {
             console.log("else");
             if (active_page !== data_order) {
                 paginationDiv.children('.active').removeClass('active');
                 selectedPage.addClass('active');
-                dataCallFunction(data_order, data_type);
+                dataCallFunction(data_order, sKeyword, sTitleSelected, sContentSelected, false);
             }
         }
     });
 
-    function dataCallFunction(page, data_type, searchKeyword, sTitle, sContent) {
-        let data = {"page": page, "data_type": data_type};
+    $('#search-btn').on('click', function () {
+        sTitleSelected = $('#notice-search-title').is(':checked');
+        sContentSelected = $('#notice-search-content').is(':checked');
+        let keyword = $('.payus-search-input').val();
+        if(keyword === ''){
+            alert('검색어를 입력하세요.');
+            return false;
+        } else if(keyword.length < 2){
+            alert('검색어는 최소 2자 이상 입력해주세요.');
+            return false;
+        } else {
+            sKeyword = keyword;
+            dataCallFunction(1, sKeyword, sTitleSelected, sContentSelected, true);
+        }
+    });
+
+    $('#reset-btn').on('click', function() {
+        sTitleSelected = false;
+        sContentSelected = false;
+        sKeyword = null;
+        $('.payus-search-input').val('');
+        dataCallFunction(1, sKeyword, sTitleSelected, sContentSelected, true);
+    });
+
+    function dataCallFunction(page, searchKeyword, sTitle, sContent, isReset) {
+        let data = {
+            "page": page,
+            "search_keyword": searchKeyword,
+            "sTitle": sTitle,
+            "sContent": sContent
+        };
         let selectedPageIndex = (page * 10) - 10;
         $.ajax({
             type: 'POST',
@@ -213,12 +253,21 @@
                 let thisIndex = selectedPageIndex + i + 1;
                 $('#pagination_layout').append('<tr notice="' + data.notice_no + '">\n' +
                     '                                        <td>' + thisIndex + '</td>\n' +
-                    '                                        <td>' + data.title + '</td>\n' +
+                    '                                        <td style="text-align: left">\n' +
+                    '                                            <div class="overflow">\n' +
+                    '                                                <div class="overflow-space">\n' +
+                    '                                                    <div class="overflow-text">' + data.title + '</div>\n' +
+                    '                                                </div>\n' +
+                    '                                            </div>\n' +
+                    '                                        </td>\n' +
                     '                                        <td class="td-date">' + SplitDateFunction(data.reg_date) + '</td>\n' +
                     '                                        <td class="td-comma">' + comma(data.view_num) + '</td>\n' +
                     '                                        <td><button type="button" style="display: block;" class="btn btn-payus-table">상세보기</button></td>\n' +
                     '                                    </tr>');
                 totalNoticeNum = result.notice_num;
+            }
+            if(isReset) {
+                tablePagination(totalNoticeNum, paginationDivId);
             }
         }).fail(function (error) {
             console.log(error);
@@ -301,14 +350,6 @@
         }
     });
 
-    $(document).ready(function () {
-        let table = $(".payus-table");
-        let body = table.children('tbody');
-        for (let i = 0; i < body.children().length; i++) {
-            let originalRegDate = body.children('tr:eq(' + i + ')').children('td:eq(5)').text();
-            body.children('tr:eq(' + i + ')').children('td:eq(5)').text(SplitDateFunction(originalRegDate));
-        }
-    });
 
     $('.payus-modal').on("click", function (event) {
         if (event.target.className === 'payus-modal show') {

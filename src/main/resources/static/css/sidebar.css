@@ -4,15 +4,27 @@ body {
 }
 
 .sidebar-header {
-    padding: 10px;
-    font-size: 30px;
+    padding: 16px;
+    font-size: 24px;
     font-weight: bold;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     position: relative;
-    height: 80px;
-    align-items: center;
+    height: 170px;
     background-color: rgb(241, 241, 241);
+}
+
+.sidebar-info {
+    display: block;
+    font-size: 20px;
+}
+
+.sidebar-info.name {
+    word-break: break-word;
+}
+
+.sidebar-info.point {
+    color: rgb(109, 41, 208)
 }
 
 .sidebar .sidebar-subject {
@@ -111,8 +123,8 @@ div.content {
     display: block;
     padding: 0;
     position: absolute;
-    top: 20%;
-    right: 2%;
+    top: 1%;
+    right: 5%;
     transform: translate(0, 40%);
 }
 
@@ -136,6 +148,15 @@ div.content {
     }
     /*.sidebar a {float: left;}*/
     div.content {margin-left: 0;}
+
+    .sidebar-header{
+        justify-content: center;
+        align-items: center;
+    }
+
+    .sidebar-info.point{
+        text-align: center;
+    }
 
     .sidemain {
         margin-left: 0;
