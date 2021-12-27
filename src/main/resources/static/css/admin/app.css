@@ -1862,7 +1862,7 @@ body[data-layout-mode="two-column"][data-layout-width="boxed"]:not([data-sidebar
   min-height: 100px; }
 
 .bg-pattern {
-  background-image: url("../../../images/bg-pattern-2.png");
+  background-image: url("../../images/admin/bg-pattern-2.png");
   background-size: cover; }
 
 body.authentication-bg {
@@ -1871,7 +1871,7 @@ body.authentication-bg {
   background-position: center; }
 
 body.authentication-bg-pattern {
-  background-image: url("../../../images/bg-pattern.png"); }
+  background-image: url("../../images/admin/bg-pattern.png"); }
 
 .logout-icon {
   width: 140px; }

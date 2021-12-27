@@ -133,8 +133,8 @@
         SET review_status = 2
         WHERE accumulate_no = @AccumulateNo
     </update>
-    <select id="getPreDataForReview" resultType="UserReviewPagePreDataResponse">
-        select point_accumulate.store_no, store.name as store_name
+    <select id="getPreDataForReview" resultType="VendorPointAccumulateCheckBan">
+        select point_accumulate.store_no, store.name as store_name, user_no, point_accumulate.store_no, store.vendor_no
         from point_accumulate,
              store
         WHERE accumulate_no = #{accumulate_no}

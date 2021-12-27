@@ -6,9 +6,12 @@ import com.mvsolutions.payus.model.rest.basic.*;
 import com.mvsolutions.payus.model.rest.request.suphomepage.VendorAnswerReviewRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.ReviewUploadRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserReviewDeleteRequest;
+import com.mvsolutions.payus.model.rest.response.loginpage.user.UserPenaltyResponse;
+import com.mvsolutions.payus.model.rest.response.loginpage.vendor.VendorPenaltyResponse;
 import com.mvsolutions.payus.model.rest.response.storedetailpage.StoreReviewPageResponse;
 import com.mvsolutions.payus.model.rest.response.suphomepage.ReviewAnswerNotificationData;
 import com.mvsolutions.payus.model.rest.response.suphomepage.VendorReviewContentResponse;
+import com.mvsolutions.payus.model.rest.response.suppointpage.VendorPointAccumulateCheckBan;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserMyReviewResponse;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserReviewPagePreDataResponse;
 import com.mvsolutions.payus.response.IntegerRes;
@@ -31,6 +34,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Log4j2
@@ -59,6 +65,15 @@ public class ReviewService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private PenaltyUserDao penaltyUserDao;
+
+    @Autowired
+    private PenaltyVendorDao penaltyVendorDao;
+
+    @Autowired
+    private VendorDao vendorDao;
 
     @Transactional(readOnly = true)
     public ResponseEntity getReviewContentFromNotification(int review_no) throws JSONException {
@@ -153,7 +168,51 @@ public class ReviewService {
     public ResponseEntity getUserReviewPagePreData(int accumulate_no) throws JSONException {
         Message message = new Message();
         pointAccumulateDao.setSqlSession(sqlSession);
-        UserReviewPagePreDataResponse response = pointAccumulateDao.getPreDataForReview(accumulate_no);
+        VendorPointAccumulateCheckBan response = pointAccumulateDao.getPreDataForReview(accumulate_no);
+        if (response == null) {
+            // 삭제된 리뷰에 접근 했을 때 D404
+            return new ResponseEntity(StringRes.res(StatusCode.DELETED_CONTENT), HttpStatus.OK);
+        }
+        // check Ban User // check Ban Vendor
+        log.info(response);
+        userDao.setSqlSession(sqlSession);
+        if(userDao.checkUserPenalty(response.getUser_no())) {
+            penaltyUserDao.setSqlSession(sqlSession);
+            List<UserPenaltyResponse> penaltyList = penaltyUserDao.getUserPenaltyInfo(response.getUser_no());
+            UserPenaltyResponse penaltyResponse = penaltyList.get(0);
+            try {
+                SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+                // 지금
+                Date date1 = transFormat.parse(Time.TimeFormatDay());
+                // 가져온 데이터.
+                Date date2 = transFormat.parse(penaltyResponse.getEnd_date());
+                if (date1.before(date2)) {
+                    return new ResponseEntity(StringRes.res(StatusCode.PENALTY_USER, message.getHashMap("requestPayback() - User or Vendor is penalty")), HttpStatus.OK);
+                }
+            } catch (ParseException ex) {
+                return new ResponseEntity(StringRes.res(StatusCode.PENALTY_USER, message.getHashMap("requestPayback() - User or Vendor is penalty")), HttpStatus.OK);
+            }
+        }
+        vendorDao.setSqlSession(sqlSession);
+        if(vendorDao.checkVendorPenalty(response.getVendor_no())) {
+            penaltyVendorDao.setSqlSession(sqlSession);
+            List<VendorPenaltyResponse> penaltyList = penaltyVendorDao.getVendorPenaltyInfo(response.getVendor_no());
+            VendorPenaltyResponse penaltyResponse = penaltyList.get(0);
+            try {
+                SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+                // 지금
+                Date date1 = transFormat.parse(Time.TimeFormatDay());
+                // 가져온 데이터.
+                Date date2 = transFormat.parse(penaltyResponse.getEnd_date());
+                if(date1.before(date2)) {
+                    return new ResponseEntity(StringRes.res(StatusCode.PENALTY_VENDOR, message.getHashMap("requestPayback() - User or Vendor is penalty")), HttpStatus.OK);
+                }
+            } catch (ParseException ex) {
+                return new ResponseEntity(StringRes.res(StatusCode.PENALTY_VENDOR, message.getHashMap("requestPayback() - User or Vendor is penalty")), HttpStatus.OK);
+            }
+        }
+        
+
         message.put("pre_data", response);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS, message.getHashMap("getUserReviewPagePreData()")), HttpStatus.OK);
     }
