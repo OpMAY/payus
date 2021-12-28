@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mvsolutions.payus.mapper.FAQMapper">
+    <select id="getFAQList" resultType="FAQResponse">
+        select * from faq
+        <if test="faq_type != 0">
+            WHERE type = #{faq_type}
+        </if>
+        ORDER BY reg_date DESC
+    </select>
+</mapper>

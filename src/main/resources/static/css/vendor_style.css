@@ -1,0 +1,1154 @@
+@import url(//fonts.googleapis.com/earlyaccess/hanna.css);
+@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Hahmlet:wght@300&family=Noto+Sans+KR:wght@300&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+/*SC Dream*/
+@font-face {
+    font-family: 'SCDream';
+    font-style: normal;
+    font-weight: 300;
+    src: local('SCDream'), url('/fonts/scdream/SCDream3.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'SCDream';
+    font-style: normal;
+    font-weight: normal;
+    src: local('SCDream'), url('/fonts/scdream/SCDream4.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'SCDream';
+    font-style: normal;
+    font-weight: 500;
+    src: local('SCDream'), url('/fonts/scdream/SCDream5.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'SCDream';
+    font-style: normal;
+    font-weight: bold;
+    src: local('SCDream'), url('/fonts/scdream/SCDream6.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'SCDream';
+    font-style: normal;
+    font-weight: 700;
+    src: local('SCDream'), url('/fonts/scdream/SCDream7.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'SCDream';
+    font-style: normal;
+    font-weight: 800;
+    src: local('SCDream'), url('/fonts/scdream/SCDream8.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'SCDream';
+    font-style: normal;
+    font-weight: 900;
+    src: local('SCDream'), url('/fonts/scdream/SCDream9.otf') format('truetype');
+}
+
+/*SC Dream End*/
+
+/*SpoqaHanSansNeo*/
+@font-face {
+    font-family: 'SpoqaHanSansNeo';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Regular.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SpoqaHanSansNeo';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SpoqaHanSansNeo';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SpoqaHanSansNeo';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SpoqaHanSansNeo';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Medium.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SpoqaHanSansNeo';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SpoqaHanSansNeo';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SpoqaHanSansNeo';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/*SpoqaHanSansNeo End*/
+
+/*Pretendard*/
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Thin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-ExtraLight.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-ExtraBold.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+}
+
+
+* {
+    /*font-family: 'SCDream', 'SpoqaHanSansNeo', sans-serif;*/
+    font-family: 'SCDream', 'SpoqaHanSansNeo', 'Pretendard', 'Roboto', 'Noto Sans KR', sans-serif;
+    /*font-family: 'SpoqaHanSansNeo', 'Pretendard', 'SCDream', 'Roboto', 'Noto Sans KR', sans-serif;*/
+}
+
+h1, h2, h3, h4, h5, h6, span, div, section, i, b, small, input, button {
+    /*font-family: 'SCDream', 'SpoqaHanSansNeo', sans-serif;*/
+    font-family: 'SCDream', 'SpoqaHanSansNeo', 'Pretendard', 'Roboto', 'Noto Sans KR', sans-serif;
+    word-break: keep-all;
+}
+
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(109, 41, 208, 0.8);
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: rgba(194, 184, 208, 0.68);
+}
+
+.s-core-dream {
+    font-family: 'SCDream', sans-serif !important;
+}
+
+.btn-auth-sign-in {
+    color: #FAFAFA;
+    font-family: 'SCDream', sans-serif;
+    background-color: rgba(109, 41, 208, 0.8);
+    border-color: transparent;
+    font-size: large;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.image-div {
+    margin-bottom: 1rem;
+    height: 102px;
+}
+
+.img-container {
+    width: 100%;
+    height: 100%;
+    background-color: #FAFAFA;
+}
+
+.btn {
+    border-radius: 5px;
+}
+
+.img-add {
+    background-color: #e9ecef;
+    display: flex;
+    align-content: center;
+}
+
+.img-add:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.btn-grey {
+    color: black;
+    font-family: 'SCDream', sans-serif;
+    background-color: #DDDDDD;
+    border-color: #DDDDDD;
+    font-size: large;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.btn-grey {
+    color: black !important;
+}
+
+.vendor-input-warning {
+    color: #ff6b6a;
+    font-size: small;
+    display: none;
+    justify-content: end;
+}
+
+.btn-back {
+    color: #5d647a;
+    font-family: 'SCDream', sans-serif;
+    background-color: #b6cfd0;
+    border-color: #b6cfd0;
+    font-size: large;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.btn-auth-sign-up {
+    color: white;
+    font-family: 'SCDream', sans-serif;
+    background-color: rgba(109, 41, 208, 0.8);
+    border-color: transparent;
+    font-size: large;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.btn-id-copy {
+    position: absolute;
+    top: 50%;
+    right: 3%;
+    color: white;
+    font-family: 'SCDream', sans-serif;
+    background-color: rgba(109, 41, 208, 0.8);
+    border-color: transparent;
+    height: 30px;
+}
+
+.btn-business-verify-text {
+    position: absolute;
+    top: 50%;
+    right: 3%;
+    color: white;
+    font-family: 'SCDream', sans-serif;
+    background-color: rgba(109, 41, 208, 0.8);
+    border-color: transparent;
+    height: 30px;
+}
+
+.btn-business-address-find {
+    position: absolute;
+    top: 50%;
+    right: 3%;
+    color: white;
+    font-family: 'SCDream', sans-serif;
+    background-color: rgba(109, 41, 208, 0.8);
+    border-color: transparent;
+    height: 30px;
+    line-height: 0 !important;
+}
+
+.btn-business-address-find.edit{
+    top: 37%;
+}
+
+.btn-password-find-button {
+    position: absolute;
+    top: 50%;
+    right: 3%;
+    color: white;
+    font-family: 'SCDream', sans-serif;
+    background-color: rgba(109, 41, 208, 0.8);
+    border-color: transparent;
+    height: 30px;
+}
+
+.btn-payus-table {
+    color: rgba(109, 41, 208, 0.7);
+    font-family: 'SCDream', sans-serif;
+    /*background-color: rgba(109, 41, 208, 0.7);*/
+    /*border-color: transparent;*/
+    font-size: 1rem;
+    width: 100%;
+    padding: 10px 0;
+    font-weight: 500;
+    border: 2px solid rgba(109, 41, 208, 0.7);
+}
+
+.btn-payus-table:hover {
+    color: rgba(109, 41, 208, 0.7) !important;
+    opacity: 0.7;
+}
+
+.btn-payus-table-report:hover {
+    color: rgba(255, 56, 69, 0.8) !important;
+    opacity: 0.7;
+}
+
+.btn-payus-table-report {
+    color: rgba(255, 56, 69, 0.8);
+    font-family: 'SCDream', sans-serif;
+    /*background-color: rgba(255, 56, 69, 0.8);*/
+    /*border-color: transparent;*/
+    font-size: 1rem;
+    width: 100%;
+    padding: 10px 0;
+    font-weight: 500;
+    border: 2px solid rgba(255, 56, 69, 0.8);
+}
+
+.btn-payus {
+    color: white;
+    font-family: 'SCDream', sans-serif;
+    background-color: rgba(109, 41, 208, 0.8);
+    border-color: transparent;
+    font-size: large;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.btn-payus.edit {
+    background-color: transparent;
+    border: 2px solid rgba(109, 41, 208, 0.8);
+    color: rgba(109, 41, 208, 0.8);
+}
+
+.btn-payus.submit {
+    background-color: transparent;
+    border: 2px solid #34A853;
+    color: #34A853;
+}
+
+.btn-email-validation-resend {
+    position: absolute;
+    top: 50%;
+    right: 3%;
+    color: white;
+    font-family: 'SCDream', sans-serif;
+    background-color: rgba(109, 41, 208, 0.8);
+    border-color: transparent;
+    height: 30px;
+    border-radius: 0;
+}
+
+.btn-business-verify-file {
+    position: absolute;
+    top: 32%;
+    right: 3%;
+    color: white;
+    font-family: 'SCDream', sans-serif;
+    background-color: rgba(109, 41, 208, 0.8);
+    border-color: transparent;
+    height: 30px;
+    border-radius: 0;
+}
+
+.hanna-font {
+    font-family: 'Hanna', sans-serif;
+    color: #6D29D0;
+}
+
+.noto-font {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+
+.payus-small-textarea {
+    line-height: 150%;
+    padding: 15px;
+    width: 150px;
+    font-size: 15px;
+    text-align: center;
+    border-color: transparent;
+    border-radius: 5px;
+}
+
+.payus-small-textarea:read-only {
+    background-color: #efefef;
+    border-color: transparent;
+}
+
+.payus-textarea {
+    display: block;
+    line-height: 150%;
+    padding: 15px;
+    width: 100%;
+    font-size: 15px;
+    /*font-family: 'SCDream', sans-serif !important;*/
+    font-family: 'SpoqaHanSansNeo', 'Pretendard', 'SCDream', 'Roboto', 'Noto Sans KR', sans-serif;
+    border-color: #efefef;
+    border-radius: 5px;
+}
+
+.payus-textarea:read-only {
+    background-color: #efefef;
+    border-color: transparent;
+}
+
+.payus-textarea.sales {
+    padding: 30px 0;
+    margin-bottom: 1rem;
+    word-break: keep-all;
+    white-space: nowrap;
+    font-size: 1rem;
+    text-align: center;
+}
+
+
+.payus-modal-textarea {
+    display: block;
+    line-height: 150%;
+    padding: 15px;
+    width: 100%;
+    font-size: 15px;
+    font-family: 'SCDream', sans-serif !important;
+    border-radius: 5px;
+}
+
+.payus-modal-textarea:read-only {
+    background-color: #efefef;
+}
+
+.payus-modal-textarea-form {
+    margin-bottom: 1rem;
+}
+
+.payus-terms-textarea {
+    width: 100%;
+    font-size: 20px;
+    background-color: #e9e9e9;
+    line-height: 150%;
+    border: transparent;
+}
+
+.dohyun-font {
+    font-family: 'Do Hyeon', sans-serif;
+    font-weight: 400;
+}
+
+.vendor-input-file {
+    color: #5d647a;
+    font-size: small;
+    display: flex;
+    justify-content: flex-start;
+    line-height: 150%;
+}
+
+.filebox .upload-name {
+    display: inline-block;
+    height: 40px;
+    padding: 0 10px;
+    vertical-align: middle;
+    border: 1px solid #dddddd;
+    width: 78%;
+    color: #999999;
+}
+
+.filebox-label {
+    display: inline-block;
+    color: white;
+    background-color: rgba(109, 41, 208, 0.8);
+    cursor: pointer;
+    height: 30px;
+    margin-left: 10px;
+}
+
+.filebox input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
+.validation-timer {
+    position: absolute;
+    top: 5%;
+    right: 0;
+    color: #ff5959;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: bold;
+}
+
+.btn-modal-save {
+    color: white;
+    font-family: 'SCDream', sans-serif;
+    background-color: rgba(109, 41, 208, 0.8);
+    border-color: transparent;
+    border-radius: 0;
+    line-height: 20px;
+}
+
+.btn-modal-cancel {
+    color: black;
+    font-family: 'SCDream', sans-serif;
+    background-color: #9dd0c1;
+    border-color: #9dd0c1;
+    border-radius: 0;
+    line-height: 20px;
+    margin-left: 8px;
+}
+
+.btn:hover:enabled {
+    opacity: 0.7;
+    color: #FAFAFA;
+}
+
+
+input:disabled {
+    background-color: #f6f7f7 !important;
+    border: transparent;
+}
+
+input:read-only {
+    background-color: #f6f7f7 !important;
+    border: transparent;
+}
+
+.payus-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: none;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.clickable_img {
+    cursor: pointer;
+}
+
+.payus-modal.show {
+    display: block !important;
+}
+
+.payus-modal .modal-body {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+
+    width: 50%;
+    height: 70%;
+
+    padding: 40px;
+
+    overflow-y: auto;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    z-index: 2000;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+@media (min-width: 1400px) {
+    .payus-modal .modal-body {
+        width: 50%;
+    }
+}
+
+@media (max-width: 1399px) {
+    .payus-modal .modal-body {
+        width: 60%;
+    }
+}
+
+@media (max-width: 767px) {
+    .payus-modal .modal-body {
+        width: 80%;
+    }
+}
+
+
+.sub-title {
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+
+    color: rgba(0, 0, 0, 0.63);
+}
+
+input:focus {
+    border: transparent !important;
+    border-top: 1px solid #6D29D0 !important;
+    border-bottom: 1px solid #6D29D0 !important;
+}
+
+input {
+    border-left: transparent !important;
+    border-right: transparent !important;
+}
+
+select:focus {
+    border: transparent !important;
+    border-top: 1px solid #6D29D0 !important;
+    border-bottom: 1px solid #6D29D0 !important;
+}
+
+select {
+    border-left: transparent !important;
+    border-right: transparent !important;
+}
+
+.vendor-identification-find {
+    color: black;
+}
+
+.vendor-identification-find:hover {
+    color: #343a40;
+}
+
+.footer-link {
+    font-size: 15px;
+    color: black;
+    border-right: 1px rgba(0, 0, 0, 0.10) solid;
+    word-break: keep-all;
+    padding-right: 10px;
+    margin: 5px 5px 0;
+    min-inline-size: max-content;
+}
+
+.footer-link:hover {
+    color: #343a40;
+}
+
+.payus-footer {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding-bottom: 2rem;
+}
+
+.payus-footer-inner {
+    margin: 1rem 1rem;
+}
+
+.page-content-border {
+    border-bottom: 1px #2b0034 solid
+}
+
+.payus-atag {
+    color: black;
+}
+
+.payus-atag :hover {
+    opacity: 0.7;
+}
+
+.footer-info {
+    display: block;
+    margin-left: 80px;
+}
+
+.validation-fail-message {
+    font-size: 1.875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    word-break: keep-all;
+}
+
+@media (max-width: 668px) {
+    .vendor-select-menu {
+        display: block !important;
+    }
+}
+
+@media (max-width: 921px) {
+    .validation-fail-message {
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.2;
+    }
+}
+
+@media (min-width: 1200px) {
+    .footer-bottom {
+        justify-content: right !important;
+    }
+
+    .appstore-btn {
+        width: 80% !important;
+    }
+
+    .validation-fail-message {
+        font-size: 1.185rem;
+        font-weight: 600;
+        line-height: 1.2;
+    }
+}
+
+@media (min-width: 1800px) {
+    .validation-fail-message {
+        font-size: 1.875rem;
+        font-weight: 600;
+        line-height: 1.2;
+    }
+}
+
+@media (max-width: 1199px) {
+    .footer-bottom {
+        justify-content: center !important;
+    }
+
+    .vendor-application-buttons {
+        justify-content: center !important;
+    }
+
+    .page-wrapper .page-content {
+        margin-top: 0;
+        padding: 0 0;
+    }
+    .page-wrapper {
+        margin-top: 0 !important;
+    }
+}
+
+@media screen and (min-width: 1201px) {
+    .payus-nav {
+        display: none;
+    }
+}
+
+.payus-nav {
+    width: 100%;
+    height: 80px;
+    background-color: rgba(241, 241, 241, 0.91);
+}
+
+.div-sidebar-open {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    cursor: pointer;
+    height: 100%;
+}
+
+/* Customize the label (the container) */
+.container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+    background-color: rgba(109, 41, 208, 0.8);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.payus-table {
+    width: 100%;
+}
+
+.payus-table thead {
+    border-bottom: 3px solid #8668d0;
+    border-top: 3px solid #8668d0;
+}
+
+.payus-table th {
+    padding: 16px 16px;
+    text-align: center;
+}
+
+.payus-table td {
+    padding: 16px 16px;
+    text-align: center;
+}
+
+.payus-table tbody tr {
+    border-bottom: 1px solid #c9c9c9;
+}
+
+.payus-table tbody tr td {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.payus-table tbody tr:hover {
+    background-color: rgba(201, 201, 201, 0.18);
+}
+
+.pagination {
+    display: inline-flex;
+    margin-top: 3rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+}
+
+.pagination a.active {
+    background-color: rgba(109, 41, 208, 0.8);
+    color: white;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+}
+
+.payus-select {
+    height: 40px;
+    color: black;
+}
+
+.payus-table tbody tr .overflow {
+    display: flex;
+    flex: 1;
+}
+
+.payus-table tbody tr .overflow .overflow-space {
+    flex: 1;
+    width: 1px;
+}
+
+.payus-table tbody tr .overflow .overflow-space .overflow-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-break: break-all;
+}
+
+.btn-payus-modal {
+    color: white;
+    font-family: 'SCDream', sans-serif;
+    background-color: rgba(109, 41, 208, 0.8);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.btn-payus-modal.submit {
+    width: 100%;
+    padding: 1rem 0;
+}
+
+.btn-payus-modal.cancel {
+    width: 100%;
+    background-color: rgba(221, 221, 221, 0.9);
+    color: #010101;
+    padding: 1rem 0;
+}
+
+.btn-payus-modal.cancel:hover {
+    color: #010101;
+    opacity: 0.7;
+}
+
+.modal-btn-div {
+    flex-direction: row;
+}
+
+@media (max-width: 991px) {
+    .modal-btn-div {
+        flex-direction: column-reverse;
+    }
+}
+
+.modal-image-div {
+    margin-bottom: 1rem;
+}
+
+
+.payus-input {
+    display: block;
+    padding: 1rem 1rem;
+    border: transparent;
+    width: 100%;
+}
+
+.payus-search-input {
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.price-unit {
+    position: absolute;
+    bottom: 0;
+    right: 10%;
+    font-size: 20px;
+    font-weight: 400;
+    color: #666666;
+    transform: translate(30%, -45%);
+}
+
+.img-delete-btn {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 25%;
+    transform: translate(-40%, 30%);
+    z-index: 1;
+    padding: 0 0;
+    border: transparent;
+    background-color: transparent;
+}
+
+.img-delete-btn-multiple{
+    position: absolute;
+    top: 0;
+    right: 2%;
+    transform: translate(-40%, 30%);
+    z-index: 1;
+    padding: 0 0;
+    border: transparent;
+    background-color: transparent;
+}
+
+.mypoint {
+    font-size: 24px;
+    font-weight: 500;
+    margin-right: 1rem;
+    display: block;
+}
+
+/* Style the tab */
+.tab {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    white-space: pre;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: rgba(102, 102, 102, 0.5);
+}
+
+.tab button.active:hover {
+    opacity: 0.7;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: rgba(109, 41, 208, 0.8);
+    color: #FFFFFF;
+}
+
+.btn-payus.inquiry {
+    margin-bottom: 0;
+    width: 23vw;
+}
+
+.payus-select.inquiry {
+    width: 30vw;
+}
+
+.payus-select.inquiry-request {
+    width: 30%;
+}
+
+.payus-textarea:focus {
+    border-color: rgba(109, 41, 208, 0.8);
+}
+
+.img-delete-btn.small {
+    right: 3%;
+}
+
+.pw-change-note {
+    font-size: 1rem;
+    color: #010101;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    border-radius: 5px;
+}
+
+.accordion.active {
+    background-color: #ccc;
+}
+
+.accordion:hover {
+    background-color: #ccc;
+}
+
+.accordion:after {
+    content: '\002B';
+    color: #777;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+}
+
+.accordion.active:after {
+    content: '\2212';
+}
+
+.panel {
+    display: none;
+    padding: 18px;
+    background-color: white;
+    overflow: hidden;
+}
+
+.payus-service {
+    padding: 0 0 0 10px;
+    margin: 0;
+    background-color: white;
+}
+
+.m-btn {
+    display: none;
+}

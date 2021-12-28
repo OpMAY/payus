@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mvsolutions.payus.mapper.PointAccumulateMapper">
+    <select id="getVendorAccumulateList" resultType="VendorPointAccumulateListResponse">
+        SET @StoreNo = (select store_no
+                        from store
+                        WHERE vendor_no = #{vendor_no});
+        select point_accumulate.accumulate_no,
+               point_accumulate.user_no,
+               user.nickname     as user_name,
+               point_accumulate.point,
+               status,
+               point_accumulate.reg_date,
+               vendor_read_check as read_check
+        from point_accumulate,
+             user
+        WHERE point_accumulate.store_no = @StoreNo
+          AND user.user_no = point_accumulate.user_no
+        ORDER BY point_accumulate.reg_date DESC, accumulate_no DESC
+        LIMIT 10
+    </select>
+    <select id="getVendorAccumulateListReload" resultType="VendorPointAccumulateListResponse">
+        SET @StoreNo = (select store_no
+                        from store
+                        WHERE vendor_no = #{vendor_no});
+        SET @RegDate = (select reg_date
+                        from point_accumulate
+                        WHERE accumulate_no = #{last_index});
+        select point_accumulate.accumulate_no,
+               point_accumulate.user_no,
+               user.nickname     as user_name,
+               point_accumulate.point,
+               status,
+               point_accumulate.reg_date,
+               vendor_read_check as read_check
+        from point_accumulate,
+             user
+        WHERE point_accumulate.store_no = @StoreNo
+          AND user.user_no = point_accumulate.user_no
+          AND (point_accumulate.reg_date <![CDATA[<]]> @RegDate OR
+               (point_accumulate.reg_date <![CDATA[=]]> @RegDate AND point_accumulate.accumulate_no <![CDATA[<]]> #{last_index}))
+        ORDER BY point_accumulate.reg_date DESC, accumulate_no DESC
+        LIMIT 10
+    </select>
+    <select id="checkPointAbleToCancel" resultType="_boolean">
+        select IF(status = 1, false, true)
+        from point_accumulate
+        WHERE accumulate_no = #{accumulate_no}
+    </select>
+    <update id="pointCancelRequestUpdate">
+        update point_accumulate
+        SET status = 3
+        WHERE accumulate_no = #{accumulate_no}
+    </update>
+    <update id="updateVendorReadCheck">
+        update point_accumulate SET vendor_read_check = true WHERE
+        <choose>
+            <when test="accumulateList.size != 0">
+                accumulate_no in
+                <foreach collection="accumulateList" item="item" index="index" open="(" separator="," close=")">
+                    #{item.accumulate_no}
+                </foreach>
+            </when>
+        </choose>
+    </update>
+    <insert id="requestPayback" useGeneratedKeys="true" keyProperty="accumulate_no">
+        SET @StoreNo = (select store_no
+                        from store
+                        WHERE vendor_no = #{vendor_no});
+        insert into point_accumulate (user_no, store_no, point, reg_date, payback_rate, price)
+        VALUES (#{user_no}, @StoreNo, #{point}, #{reg_date}, #{payback_rate}, #{price})
+        <selectKey resultType="int" keyProperty="accumulate_no" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <select id="getUserPointAccumulateList" resultType="UserPointAccumulateListResponse">
+        select accumulate_no,
+               point_accumulate.store_no,
+               store.name as store_name,
+               point_accumulate.reg_date,
+               point,
+               status,
+               review_status,
+               user_read_check,
+               answer_date
+        from point_accumulate,
+             store
+        WHERE user_no = #{user_no}
+          AND store.store_no = point_accumulate.store_no
+        ORDER BY point_accumulate.reg_date DESC, accumulate_no DESC
+        LIMIT 10
+    </select>
+    <select id="getUserPointAccumulateListReload" resultType="UserPointAccumulateListResponse">
+        SET @RegDate = (select reg_date
+                        from point_accumulate
+                        WHERE accumulate_no = #{last_index});
+        select accumulate_no,
+               point_accumulate.store_no,
+               store.name as store_name,
+               point_accumulate.reg_date,
+               point,
+               status,
+               review_status,
+               user_read_check,
+               answer_date
+        from point_accumulate,
+             store
+        WHERE user_no = #{user_no}
+          AND store.store_no = point_accumulate.store_no
+          AND (point_accumulate.reg_date <![CDATA[<]]> @RegDate OR
+               (point_accumulate.reg_date <![CDATA[=]]> @RegDate AND point_accumulate.accumulate_no <![CDATA[<]]> #{last_index}))
+        ORDER BY point_accumulate.reg_date DESC, accumulate_no DESC
+        LIMIT 10
+    </select>
+    <update id="updateUserReadCheck">
+        update point_accumulate SET user_read_check = true WHERE
+        <choose>
+            <when test="accumulateList.size != 0">
+                accumulate_no in
+                <foreach collection="accumulateList" item="item" index="index" open="(" separator="," close=")">
+                    #{item.accumulate_no}
+                </foreach>
+            </when>
+        </choose>
+    </update>
+    <update id="updateAccumulateByReviewDelete">
+        SET @AccumulateNo = (select accumulate_no
+                             from review
+                             WHERE review_no = #{review_no});
+        update point_accumulate
+        SET review_status = 2
+        WHERE accumulate_no = @AccumulateNo
+    </update>
+    <select id="getPreDataForReview" resultType="VendorPointAccumulateCheckBan">
+        select point_accumulate.store_no, store.name as store_name, user_no, point_accumulate.store_no, store.vendor_no
+        from point_accumulate,
+             store
+        WHERE accumulate_no = #{accumulate_no}
+          AND store.store_no = point_accumulate.store_no
+    </select>
+    <select id="checkReviewWritten" resultType="_boolean">
+        select IF(review_status != 0, true, false)
+        from point_accumulate
+        WHERE accumulate_no = #{accumulate_no}
+    </select>
+    <update id="updateAccumulateByUploadReview">
+        update point_accumulate
+        SET review_status = 1
+        WHERE accumulate_no = #{accumulate_no}
+    </update>
+    <select id="getPointAccumulateByAccumulateNo" resultType="PointAccumulate">
+        select *
+        from point_accumulate
+        WHERE accumulate_no = #{accumulate_no}
+    </select>
+    <select id="checkUserAccumulate" resultType="UserAccumulateCheckResponse">
+        select user_no, store.name as store_name, point_accumulate.reg_date, point_accumulate.point
+        from point_accumulate,
+             store
+        WHERE status = 1
+          AND point_accumulate.reg_date <![CDATA[>=]]> DATE_ADD(now(), INTERVAL -1 DAY)
+          AND user_no = #{user_no}
+        ORDER BY reg_date DESC
+        LIMIT 1
+    </select>
+    <select id="getStoreNoFromAccumulate" resultType="int">
+        select store_no
+        from point_accumulate
+        WHERE accumulate_no = #{accumulate_no}
+    </select>
+    <select id="checkAccumulateCanceled" resultType="_boolean">
+        select IF(status = 4, TRUE, FALSE)
+        from point_accumulate
+        WHERE accumulate_no = #{content_no}
+    </select>
+    <select id="checkUserUnreadExists" resultType="_boolean">
+        select IF(EXISTS(select * from point_accumulate WHERE user_no = #{user_no}
+                                                          AND user_read_check = false
+                                                          AND reg_date <![CDATA[>=]]> DATE_SUB(now(), INTERVAL 3 DAY)), TRUE,
+                  FALSE);
+    </select>
+    <update id="updateUserReadCheckByVendorReviewAnswer">
+        SET @AccumulateNo = (select accumulate_no
+                             from review
+                             WHERE review_no = #{review_no});
+        update point_accumulate
+        SET user_read_check = false
+        WHERE accumulate_no = @AccumulateNo
+    </update>
+    <update id="updateUserReadCheckAccumulate">
+        update point_accumulate
+        set user_read_check = true
+        where accumulate_no = #{accumulate_no}
+    </update>
+    <update id="updateAnswerDate">
+        SET @AccumulateNo = (select accumulate_no from review where review_no = #{review_no});
+        update point_accumulate
+        set answer_date = #{answer_date}, user_read_check = false
+        where accumulate_no = @AccumulateNo
+    </update>
+</mapper>

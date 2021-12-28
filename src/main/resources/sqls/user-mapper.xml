@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mvsolutions.payus.mapper.UserMapper">
+    <select id="getUserForMainPage" resultType="MainPageUser">
+        select user_no, nickname, point
+        from user
+        WHERE user_no = #{user_no}
+    </select>
+    <select id="checkUserExists" resultType="_boolean">
+        select EXISTS(select * from user WHERE sns = #{sns} AND access_token = #{access_token})
+    </select>
+    <select id="getUserForLogin" resultType="UserLoginResponse">
+        select user_no, user_penalty
+        from user
+        WHERE sns = #{sns}
+          AND access_token = #{access_token}
+    </select>
+    <update id="updateUserFcmToken">
+        update user
+        SET fcm_token = #{fcm_token}
+        WHERE user_no = #{user_no}
+    </update>
+    <select id="checkUserPenalty" resultType="_boolean">
+        select user_penalty
+        from user
+        WHERE user_no = #{user_no}
+    </select>
+    <select id="getUserName" resultType="string">
+        select nickname
+        from user
+        WHERE user_no = #{user_no}
+    </select>
+    <insert id="registerUser" useGeneratedKeys="true" keyProperty="user_no">
+        insert into user(sns, access_token, fcm_token, reg_date, marketing_agree, event_push)
+        VALUES (#{sns}, #{access_token}, #{fcm_token}, #{reg_date}, #{marketing_agree}, #{event_push})
+    </insert>
+    <update id="updateUserName">
+        update user
+        SET nickname=#{nickname}
+        WHERE user_no = #{user_no}
+    </update>
+    <select id="getUserDataForPayback" resultType="PaybackUserDataResponse">
+        select user_no, nickname as name, user_penalty
+        from user
+        WHERE user_no = #{user_no}
+    </select>
+    <update id="requestPayback">
+        update user
+        SET point = point + #{point}
+        WHERE user_no = #{user_no}
+    </update>
+    <select id="getUserMyPageData" resultType="UserMyPageResponse">
+        select user_no, nickname, point
+        from user
+        WHERE user_no = #{user_no}
+    </select>
+    <select id="getUserDataForWithdraw" resultType="UserWithdrawPageResponse">
+        select user_no, point
+        from user
+        WHERE user_no = #{user_no}
+    </select>
+    <select id="getUserPoint" resultType="_int">
+        select point
+        from user
+        WHERE user_no = #{user_no}
+    </select>
+    <update id="updatePointWithdraw">
+        update user
+        SET point = point - #{request_point}
+        WHERE user_no = #{user_no}
+    </update>
+    <select id="getUserMyPagePersonalData" resultType="UserMyPagePersonalDataResponse">
+        select user_no,
+               sns,
+               nickname,
+               phone,
+               bank_name,
+               bank_account,
+               bank_owner,
+               event_push,
+               review_push,
+               point_push,
+               report_push,
+               marketing_agree
+        from user
+        WHERE user_no = #{user_no}
+    </select>
+    <select id="checkUserExistsByUserNo" resultType="_boolean">
+        select EXISTS(select * from user WHERE user_no = #{user_no})
+    </select>
+    <update id="editUserNickName">
+        update user
+        SET nickname = #{data}
+        WHERE user_no = #{user_no}
+    </update>
+    <update id="editUserPhone">
+        update user
+        SET phone = #{data}
+        WHERE user_no = #{user_no}
+    </update>
+    <update id="editUserBankName">
+        update user
+        SET bank_name = #{data}
+        WHERE user_no = #{user_no}
+    </update>
+    <update id="editUserBankAccount">
+        update user
+        SET bank_account = #{data}
+        WHERE user_no = #{user_no}
+    </update>
+    <update id="editUserBankOwner">
+        update user
+        SET bank_owner = #{data}
+        WHERE user_no = #{user_no}
+    </update>
+    <update id="updateUserEventPush">
+        <!-- 해당 boolean 값이 true면 false 반환, false 면 true 반환 -> 설정을 바꾸는 것-->
+        SET @EventPush = (select IF(event_push = true, false, true)
+        from user
+        WHERE user_no = #{user_no});
+        update user
+        SET event_push = @EventPush
+        WHERE user_no = #{user_no}
+        <selectKey keyColumn="event_push" resultType="_boolean" order="AFTER" statementType="CALLABLE">
+            select event_push from user WHERE user_no = #{user_no}
+        </selectKey>
+    </update>
+    <update id="updateUserReviewPush">
+        SET @ReviewPush = (select IF(review_push = true, false, true)
+        from user
+        WHERE user_no = #{user_no});
+        update user
+        SET review_push = @ReviewPush
+        WHERE user_no = #{user_no}
+        <selectKey keyColumn="event_push" resultType="_boolean" order="AFTER">
+            select event_push from user WHERE user_no = #{user_no}
+        </selectKey>
+    </update>
+    <update id="updateUserPointPush">
+        SET @PointPush = (select IF(point_push = true, false, true)
+        from user
+        WHERE user_no = #{user_no});
+        update user
+        SET point_push = @PointPush
+        WHERE user_no = #{user_no}
+        <selectKey keyColumn="point_push" resultType="_boolean" order="AFTER">
+            select point_push from user WHERE user_no = #{user_no}
+        </selectKey>
+    </update>
+    <update id="updateUserReportPush">
+        SET @ReportPush = (select IF(report_push = true, false, true)
+        from user
+        WHERE user_no = #{user_no});
+        update user
+        SET report_push = @ReportPush
+        WHERE user_no = #{user_no}
+        <selectKey keyColumn="report_push" resultType="_boolean" order="AFTER">
+            select report_push from user WHERE user_no = #{user_no}
+        </selectKey>
+    </update>
+    <update id="updateMarketingAgree">
+        SET @MarketingAgree = (select IF(marketing_agree = true, false, true)
+        from user
+        WHERE user_no = #{user_no});
+        update user
+        SET marketing_agree = @MarketingAgree,
+        event_push = @MarketingAgree
+        WHERE user_no = #{user_no}
+        <selectKey keyColumn="marketing_agree" resultType="java.lang.Boolean" order="AFTER">
+            select marketing_agree from user WHERE user_no = #{user_no}
+        </selectKey>
+    </update>
+    <select id="checkUserNickNameExists" resultType="_boolean">
+        select EXISTS(select nickname from user WHERE nickname = #{nickname})
+    </select>
+    <select id="getUserFCMToken" resultType="string">
+        select fcm_token
+        from user
+        WHERE user_no = #{user_no}
+    </select>
+    <delete id="resignUser">
+        delete
+        from user
+        WHERE user_no = #{user_no}
+    </delete>
+    <select id="getUserPushData" resultType="UserPushData">
+        select event_push, review_push, point_push, report_push, marketing_agree
+        from user
+        WHERE user_no = #{user_no}
+    </select>
+</mapper>

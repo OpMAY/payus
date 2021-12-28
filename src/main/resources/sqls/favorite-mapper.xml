@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mvsolutions.payus.mapper.FavoriteMapper">
+    <select id="getUserFavorites" resultType="UserFavoriteListPageResponse">
+        select favorite.favorite_no,
+        favorite.store_no,
+        store.thumbnail,
+        store.name,
+        store.address_short,
+        store.class_first,
+        IF(EXISTS(select * from advertisement_store where advertisement_store.store_no = store.store_no and status = true), advertisement_store.advertise_payback, store.payback_rate) as payback_rate
+        from favorite,
+        store left join advertisement_store on store.store_no = advertisement_store.store_no
+        WHERE favorite.user_no = #{user_no}
+        AND store.store_no = favorite.store_no
+        <if test="class_first != 0">
+            AND store.class_first = #{class_first}
+        </if>
+        ORDER BY favorite.reg_date DESC, favorite_no DESC
+        LIMIT 10
+    </select>
+    <select id="getUserFavoritesReload" resultType="UserFavoriteListPageResponse">
+        SET @RegDate = (select reg_date
+        from favorite
+        WHERE favorite_no = #{last_index});
+        select favorite.favorite_no,
+        favorite.store_no,
+        store.thumbnail,
+        store.name,
+        store.address_short,
+        store.class_first,
+               IF(EXISTS(select * from advertisement_store where advertisement_store.store_no = store.store_no and status = true), advertisement_store.advertise_payback, store.payback_rate) as payback_rate
+        from favorite,
+        store left join advertisement_store on store.store_no = advertisement_store.store_no
+        WHERE favorite.user_no = #{user_no}
+        AND store.store_no = favorite.store_no
+        <if test="class_first != 0">
+            AND store.class_first = #{class_first}
+        </if>
+        AND (favorite.reg_date <![CDATA[<]]> @RegDate
+        OR (favorite.reg_date <![CDATA[=]]> @RegDate AND favorite_no <![CDATA[<]]> #{last_index}))
+        ORDER BY favorite.reg_date DESC, favorite_no DESC
+        LIMIT 10
+    </select>
+    <select id="checkFavoriteExists" resultType="_boolean">
+        select EXISTS(select * from favorite WHERE favorite_no = #{last_index})
+    </select>
+    <delete id="deleteUserFavorite">
+        delete
+        from favorite
+        WHERE favorite_no = #{favorite_no}
+    </delete>
+    <select id="checkUserFavoriteStatus" resultType="_boolean">
+        select EXISTS(select * from favorite WHERE store_no = #{store_no} AND user_no = #{user_no})
+    </select>
+    <insert id="userInsertStoreFavorite">
+        insert into favorite(store_no, user_no, reg_date)
+        VALUES (#{store_no}, #{user_no}, #{reg_date})
+    </insert>
+    <delete id="deleteUserFavoriteByUserAndStoreNo">
+        delete from favorite WHERE user_no = #{user_no} AND store_no = #{store_no}
+    </delete>
+</mapper>

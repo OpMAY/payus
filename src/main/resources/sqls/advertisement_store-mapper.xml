@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mvsolutions.payus.mapper.AdvertisementStoreMapper">
+    <select id="getEventStoreList" resultType="PayusHomeEventResponse">
+        select store.store_no,
+               store.name,
+               store.address_short,
+               store.thumbnail,
+               store.star_rate,
+               store.review_num,
+               advertisement_store.advertise_payback as payback_rate,
+               (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+                            sin(radians(#{y})) * sin(radians(address_y))))
+                                                     AS dist
+        from store,
+             advertisement_store
+        WHERE (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+                           sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[<=]]> 100
+          AND advertisement_store.store_no = store.store_no
+          AND advertisement_store.status = true
+          AND store.class_first = #{class_first}
+        ORDER BY RAND()
+        LIMIT 8
+    </select>
+    <select id="getStoreEventInfoByList" resultType="StoreEventInfo">
+        select store_no, advertise_payback
+        from advertisement_store
+        <choose>
+            <when test="storeList.size != 0">
+                store_no in
+                <foreach collection="storeList" item="item" index="index" open="(" separator="OR" close=")">
+                    #{item.store_no}
+                </foreach>
+            </when>
+        </choose>
+    </select>
+    <select id="getStoreEventInfo" resultType="StoreEventInfo">
+        select store_no, advertise_payback
+        from advertisement_store
+        WHERE store_no = #{store_no}
+    </select>
+    <select id="checkStoreOnEvent" resultType="int">
+        select IF(EXISTS(select * from advertisement_store WHERE store_no = #{store_no}),
+                  advertisement_store.advertise_payback, store.payback_rate)
+        from advertisement_store,
+             store
+    </select>
+    <select id="getEventStorePageList" resultType="PayusHomeEventResponse">
+        <if test="last_index != 0">
+            SET @StarRate = (select star_rate from store WHERE store_no = #{last_index});
+            SET @PayBackRate = (select advertise_payback from advertisement_store WHERE store_no = #{last_index} AND
+            status = true);
+            SET @ReviewNum = (select review_num from store WHERE store_no = #{last_index});
+        </if>
+        select store.store_no,
+        store.name,
+        store.address_short,
+        store.thumbnail,
+        store.star_rate,
+        store.review_num,
+        advertisement_store.advertise_payback as payback_rate,
+        advertisement_store.apply_date as start_date,
+        advertisement_store.end_date as end_date,
+        (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+        sin(radians(#{y})) * sin(radians(address_y))))
+        AS dist
+        from store,
+        advertisement_store
+        WHERE (6371 * acos(cos(radians(#{y})) * cos(radians(address_y)) * cos(radians(address_x) - radians(#{x})) +
+        sin(radians(#{y})) * sin(radians(address_y)))) <![CDATA[<=]]> 100
+        AND advertisement_store.store_no = store.store_no
+        AND advertisement_store.status = true
+        AND store.class_first = #{class_first}
+        <if test="last_index != 0">
+            <choose>
+                <when test="order_type == 1">
+                    AND (star_rate <![CDATA[<]]> @StarRate OR (star_rate <![CDATA[=]]> @StarRate AND store.store_no
+                    <![CDATA[<]]> #{last_index}))
+                </when>
+                <when test="order_type == 2">
+                    AND (advertisement_store.advertise_payback <![CDATA[<]]> @PayBackRate OR
+                    (advertisement_store.advertise_payback <![CDATA[=]]> @PayBackRate AND store.store_no
+                    <![CDATA[<]]> #{last_index}))
+                </when>
+                <when test="order_type == 3">
+                    AND (store.review_num <![CDATA[<]]> @ReviewNum OR (store.review_num <![CDATA[=]]> @ReviewNum AND
+                    store.store_no
+                    <![CDATA[<]]> #{last_index}))
+                </when>
+            </choose>
+        </if>
+        <choose>
+            <when test="order_type == 1">
+                ORDER BY star_rate DESC, store.store_no DESC
+            </when>
+            <when test="order_type == 2">
+                ORDER BY advertisement_store.advertise_payback DESC, store.store_no DESC
+            </when>
+            <when test="order_type == 3">
+                ORDER BY store.review_num DESC, store.store_no DESC
+            </when>
+        </choose>
+        LIMIT 10
+    </select>
+</mapper>

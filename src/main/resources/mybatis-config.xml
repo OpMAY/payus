@@ -9,6 +9,6 @@
         <setting name="jdbcTypeForNull" value="NULL"/>
     </settings>
     <typeAliases>
-        <typeAlias alias="Test" type="com.boot.demo.model.Test"/>
+        <typeAlias alias="ColumnInfo" type="com.mvsolutions.payus.model.ColumnInfo"/>
     </typeAliases>
 </configuration>

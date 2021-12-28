@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mvsolutions.payus.mapper.PointWithdrawMapper">
+    <insert id="requestWithdraw">
+        insert into point_withdraw (user_no, point, reg_date, revise_date)
+        VALUES (#{user_no}, #{request_point}, #{reg_date}, #{revise_date})
+    </insert>
+    <select id="getUserPointWithdrawList" resultType="UserPointWithdrawListResponse">
+        select withdraw_no, point, status, reg_date, read_check, revise_date
+        from point_withdraw
+        WHERE user_no = #{user_no}
+        ORDER BY reg_date DESC, withdraw_no DESC
+        LIMIT 10
+    </select>
+    <select id="getUserPointWithdrawListReload" resultType="UserPointWithdrawListResponse">
+        SET @RegDate = (select reg_date
+                        from point_withdraw
+                        WHERE withdraw_no = #{last_index});
+        select withdraw_no, point, status, reg_date, read_check, revise_date
+        from point_withdraw
+        WHERE user_no = #{user_no}
+          AND (reg_date <![CDATA[<]]> @RegDate OR
+               (reg_date <![CDATA[=]]> @RegDate AND withdraw_no <![CDATA[<]]> #{last_index}))
+        ORDER BY reg_date DESC, withdraw_no DESC
+        LIMIT 10
+    </select>
+    <select id="checkWithdrawRejected" resultType="_boolean">
+        select IF(status = 3, true, false)
+        from point_withdraw
+        WHERE withdraw_no = #{withdraw_no}
+    </select>
+    <update id="updateUserReadCheck">
+        update point_withdraw SET read_check = true WHERE
+        <choose>
+            <when test="withdrawList.size != 0">
+                withdraw_no in
+                <foreach collection="withdrawList" item="item" index="index" open="(" separator="," close=")">
+                    #{item.withdraw_no}
+                </foreach>
+            </when>
+        </choose>
+    </update>
+    <select id="checkUserUnreadExists" resultType="_boolean">
+        select IF(EXISTS(select * from point_withdraw WHERE user_no = #{user_no}
+                                                        AND reg_date <![CDATA[>=]]> DATE_SUB(now(), INTERVAL 3 DAY)), TRUE, FALSE);
+    </select>
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mvsolutions.payus.mapper.NotificationUserMapper">
+    <resultMap id="UserNotificationResponse"
+               type="com.mvsolutions.payus.model.rest.response.mainpage.UserNotificationResponse">
+        <result property="notification_json" column="notification_json"
+                javaType="com.mvsolutions.payus.model.rest.basic.UserNotificationJson"
+                typeHandler="com.mvsolutions.payus.handler.JsonObjectTypeHandler"/>
+    </resultMap>
+    <select id="checkUserNotificationUnread" resultType="_boolean">
+        select EXISTS(SELECT * from notification_user WHERE user_no = #{user_no} AND read_check = false)
+    </select>
+    <insert id="insertNotification">
+        insert into notification_user (user_no, type, content, reg_date, notification_json)
+        VALUES (#{user_no}, #{type}, #{content}, #{reg_date}, #{notification_json})
+    </insert>
+    <select id="checkUserNotificationExists" resultType="_boolean">
+        select EXISTS(select * from notification_user WHERE notification_no = #{last_index})
+    </select>
+    <select id="getUserNotification" resultType="UserNotificationResponse" resultMap="UserNotificationResponse">
+        select notification_no, type, content, reg_date, notification_json, review_status, read_check
+        from notification_user
+        WHERE user_no = #{user_no}
+        <if test="type != 0">
+            AND type = #{type}
+        </if>
+        ORDER BY reg_date DESC, notification_no DESC LIMIT 10
+    </select>
+    <select id="getUserNotificationReload" resultType="UserNotificationResponse" resultMap="UserNotificationResponse">
+        SET @RegDate = (select reg_date
+        from notification_user
+        WHERE notification_no = #{last_index});
+        select notification_no, type, content, reg_date, notification_json, review_status, read_check
+        from notification_user WHERE user_no = #{user_no}
+        AND (reg_date <![CDATA[<]]> @RegDate OR
+        (reg_date <![CDATA[=]]> @RegDate AND notification_no <![CDATA[<]]> #{last_index}))
+        <if test="type != 0">
+            AND type=#{type}
+        </if>
+        ORDER BY reg_date DESC, notification_no DESC LIMIT 10
+    </select>
+    <update id="updateReadCheck">
+        update notification_user SET read_check = true WHERE
+        <choose>
+            <when test="notificationList.size != 0">
+                notification_no in
+                <foreach collection="notificationList" item="item" index="index" open="(" separator="," close=")">
+                    #{item.notification_no}
+                </foreach>
+            </when>
+        </choose>
+    </update>
+    <update id="updateNotificationByUploadReview">
+        update notification_user
+        SET notification_json = JSON_SET(notification_json, '$.review_status', true)
+        WHERE JSON_EXTRACT(notification_json, '$.content_no') = #{accumulate_no}
+          AND type = 2
+        # Notification type = 2 (포인트 알림) 에서 content_no (accumulate_no) 가 일치하는 곳의 리뷰 작성 여부를 1로 변환, 리뷰 삭제는 고려하지 않음
+    </update>
+    <delete id="deleteUserNotification">
+        delete from notification_user where user_no = #{user_no}
+        <if test="type != 0">
+            and type = #{type}
+        </if>
+    </delete>
+</mapper>
