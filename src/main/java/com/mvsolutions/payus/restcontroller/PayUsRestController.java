@@ -638,6 +638,15 @@ public class PayUsRestController {
     }
 
     /**
+     * UserPenaltyCheck#001
+     * **/
+    @RequestMapping(value = "/api/user/check/penalty", method = RequestMethod.GET)
+    public ResponseEntity CheckUserPenalty(@RequestParam("user_no") int user_no) {
+        // 유저 정지된 상태면 U501, 아니면 200
+        return userService.checkUserPenalty(user_no);
+    }
+
+    /**
      * ShopReviewList#001
      **/
     @RequestMapping(value = "/api/store/review", method = RequestMethod.GET)

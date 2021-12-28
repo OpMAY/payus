@@ -217,4 +217,14 @@ public class UserService {
         userDao.resignUser(request);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
     }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity checkUserPenalty(int user_no) {
+        userDao.setSqlSession(sqlSession);
+        if (userDao.checkUserPenalty(user_no)) {
+            return new ResponseEntity(StringRes.res(StatusCode.PENALTY_USER), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
+        }
+    }
 }

@@ -7,7 +7,6 @@ import com.mvsolutions.payus.exception.rest.GrantAccessDeniedException;
 import com.mvsolutions.payus.model.rest.request.storedetailpage.StoreReportRequest;
 import com.mvsolutions.payus.model.rest.request.storedetailpage.UserInsertStoreFavoriteRequest;
 import com.mvsolutions.payus.model.rest.request.usermypage.UserFavoriteDeleteRequest;
-import com.mvsolutions.payus.model.rest.response.storedetailpage.StoreDetailLodgementResponse;
 import com.mvsolutions.payus.model.rest.response.storedetailpage.StoreDetailPageResponse;
 import com.mvsolutions.payus.model.rest.response.storedetailpage.StoreOptionResponse;
 import com.mvsolutions.payus.model.rest.response.usermypage.UserFavoriteListPageResponse;
@@ -74,6 +73,11 @@ public class StoreService {
     public ResponseEntity getUserFavoritePage(int user_no) throws JSONException {
         Message message = new Message();
         favoriteDao.setSqlSession(sqlSession);
+        userDao.setSqlSession(sqlSession);
+        if(userDao.checkUserPenalty(user_no)) {
+            // 유저 정지 시
+            return new ResponseEntity(StringRes.res(StatusCode.PENALTY_USER), HttpStatus.OK);
+        }
         // 전체 즐겨찾기
         List<UserFavoriteListPageResponse> allFavoriteList = favoriteDao.getUserFavorites(user_no, StoreType.ALL);
         // 숙박 즐겨찾기
@@ -113,9 +117,13 @@ public class StoreService {
     public ResponseEntity getUserFavoritePageReload(int user_no, int class_first, int last_index) throws JSONException {
         Message message = new Message();
         favoriteDao.setSqlSession(sqlSession);
+        userDao.setSqlSession(sqlSession);
         if (!favoriteDao.checkFavoriteExists(last_index)) {
             // 리로딩 중 삭제 여부 R400
             return new ResponseEntity(StringRes.res(StatusCode.RELOAD_FAILED), HttpStatus.OK);
+        } else if (userDao.checkUserPenalty(user_no)) {
+            // 유저 정지 시 U501
+            return new ResponseEntity(StringRes.res(StatusCode.PENALTY_USER), HttpStatus.OK);
         }
         List<UserFavoriteListPageResponse> favoriteList = favoriteDao.getUserFavoritesReload(user_no, class_first, last_index);
         message.put("favorite", favoriteList);
@@ -127,6 +135,11 @@ public class StoreService {
     @Transactional(propagation = Propagation.REQUIRED)
     public ResponseEntity deleteUserFavorite(UserFavoriteDeleteRequest request) {
         favoriteDao.setSqlSession(sqlSession);
+        userDao.setSqlSession(sqlSession);
+        if(userDao.checkUserPenalty(request.getUser_no())) {
+            // 유저 정지 시 U501
+            return new ResponseEntity(StringRes.res(StatusCode.PENALTY_USER), HttpStatus.OK);
+        }
         favoriteDao.deleteUserFavorite(request);
         return new ResponseEntity(IntegerRes.res(StatusCode.SUCCESS), HttpStatus.OK);
     }
@@ -187,10 +200,15 @@ public class StoreService {
     @Transactional(propagation = Propagation.REQUIRED)
     public ResponseEntity userInsertStoreFavorite(UserInsertStoreFavoriteRequest request) {
         favoriteDao.setSqlSession(sqlSession);
+        storeDao.setSqlSession(sqlSession);
+        userDao.setSqlSession(sqlSession);
         request.setReg_date(Time.TimeFormatHMS());
         if (!storeDao.checkStoreExists(request.getStore_no())) {
             // 상점 없을 때
             return new ResponseEntity(StringRes.res(StatusCode.NO_STORE_FOUND), HttpStatus.OK);
+        } else if (userDao.checkUserPenalty(request.getUser_no())) {
+            // 정지된 유저가 즐겨찾기 하려고 할 때
+            return new ResponseEntity(StringRes.res(StatusCode.PENALTY_USER), HttpStatus.OK);
         }
         if (favoriteDao.checkUserFavoriteStatus(request.getUser_no(), request.getStore_no())) {
             // 즐겨찾기 했을 때
